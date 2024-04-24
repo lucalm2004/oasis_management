@@ -15,10 +15,15 @@ class Discoteca extends Model
         return $this->belongsTo(Ciudad::class, 'id');
     }
 
-    /* public function eventos()
+    public function evento()
     {
-        return $this->hasMany(Evento::class, 'id_discoteca');
-    } */
+        return $this->hasMany(Evento::class, 'id');
+    } 
+    public function users_discoteca()
+    {
+        return $this->belongsToMany(UserDiscoteca::class, 'id_discoteca');
+    }
+
 
   
 }
