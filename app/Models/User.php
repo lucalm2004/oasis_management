@@ -16,13 +16,26 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-   
+    protected $table = "users";
     protected $fillable = ['name', 'apellidos', 'email', 'password', 'google_id', 'habilitado', 'puntos', 'id_rol'];
     
     public function rol()
     {
         return $this->belongsTo(Rol::class, 'id');
     }
+    public function users_discoteca()
+    {
+        return $this->belongsToMany(UserDiscoteca::class, 'id_users');
+    }
+    public function puntosUsers()
+    {
+        return $this->hasMany(BonificacionUser::class, 'id_users');
+    }
+    public function carrito()
+    {
+        return $this->hasMany(Carrito::class, 'id_user');
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.

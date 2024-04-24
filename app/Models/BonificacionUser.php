@@ -2,10 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 use Illuminate\Database\Eloquent\Model;
 
 class BonificacionUser extends Model
 {
-    use HasFactory;
+    protected $table = 'users_bonificaciones';
+    protected $fillable = ['id_users', 'id_bonificacion'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'id');
+    }
+
+    public function bonificacion()
+    {
+        return $this->belongsTo(Bonificacion::class, 'id');
+    }
 }
