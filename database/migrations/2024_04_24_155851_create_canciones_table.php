@@ -12,11 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('canciones', function (Blueprint $table) {
-            $table->id();
+            $table->foreignId('id')->constrained('productos');
             $table->string('name', 45);
             $table->time('duracion');
             $table->decimal('precio', 2);
-            $table->foreignId('id_producto')->constrained('productos');
             $table->timestamps();
         });
     }
