@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('google_id', 45)->nullable();
             $table->boolean('habilitado');
             $table->integer('puntos')->nullable();
-            $table->foreignId('id_rol')->constrained('rol');
+            $table->foreignId('id_rol')->constrained('roles');
             $table->rememberToken();
             $table->timestamps();
         });
