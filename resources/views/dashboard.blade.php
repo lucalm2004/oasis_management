@@ -10,6 +10,9 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     {{ __("You're logged in!") }}
+
+                    <!-- Botón para ir a cliente.discoteca -->
+                    <a href="{{ route('cliente.discoteca', ['id' => Auth::id()]) }}" class="text-blue-500 hover:text-blue-700">Go to Cliente Discoteca</a>
                 </div>
             </div>
         </div>
