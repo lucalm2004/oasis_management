@@ -1869,17 +1869,17 @@
         },
         {
             "name": "laravel/socialite",
-            "version": "v5.13.0",
-            "version_normalized": "5.13.0.0",
+            "version": "v5.13.1",
+            "version_normalized": "5.13.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/socialite.git",
-                "reference": "a03e9b2f63d8125f61952fe4f5b75d70fd7c8286"
+                "reference": "feed1c1ccfd991bc12af59de4aa24f657d9c5cbe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/socialite/zipball/a03e9b2f63d8125f61952fe4f5b75d70fd7c8286",
-                "reference": "a03e9b2f63d8125f61952fe4f5b75d70fd7c8286",
+                "url": "https://api.github.com/repos/laravel/socialite/zipball/feed1c1ccfd991bc12af59de4aa24f657d9c5cbe",
+                "reference": "feed1c1ccfd991bc12af59de4aa24f657d9c5cbe",
                 "shasum": ""
             },
             "require": {
@@ -1899,7 +1899,7 @@
                 "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^8.0|^9.3|^10.4"
             },
-            "time": "2024-04-15T18:09:46+00:00",
+            "time": "2024-04-24T20:36:50+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -1914,7 +1914,7 @@
                     }
                 }
             },
-            "installation-source": "dist",
+            "installation-source": "source",
             "autoload": {
                 "psr-4": {
                     "Laravel\\Socialite\\": "src/"
