@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Artista;
 
-class ArtistaSeeder extends Seeder
+class ArtistasSeeder extends Seeder
 {
     /**
      * Run the database seeds.

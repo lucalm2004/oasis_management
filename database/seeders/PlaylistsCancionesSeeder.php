@@ -17,17 +17,17 @@ class PlaylistsCancionesSeeder extends Seeder
         // Relacionar canciones con eventos en las playlists
         PlaylistCancion::create([
             'id_evento' => 1, // ID del evento
-            'id_canciones' => 1, // ID de la canción
+            'id_canciones' => 4, // ID de la canción
         ]);
 
         PlaylistCancion::create([
             'id_evento' => 1, // ID del evento
-            'id_canciones' => 2, // ID de otra canción
+            'id_canciones' => 5, // ID de otra canción
         ]);
 
         PlaylistCancion::create([
             'id_evento' => 2, // ID de otro evento
-            'id_canciones' => 2, // ID de la misma canción o otra
+            'id_canciones' => 5, // ID de la misma canción o otra
         ]);
 
     }

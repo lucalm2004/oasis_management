@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('id')->constrained('productos');
             $table->string('name', 45);
             $table->time('duracion');
-            $table->decimal('precio', 2);
+            $table->decimal('precio', 3);
             $table->timestamps();
         });
     }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('tipos_entradas', function (Blueprint $table) {
             $table->foreignId('id')->constrained('productos');
             $table->longText('descripcion');
-            $table->decimal('precio', 3);
+            $table->decimal('precio', 5);
             $table->timestamps();
         });
     }

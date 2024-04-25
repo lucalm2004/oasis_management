@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 45);
             $table->string('direccion', 80);
-            $table->string('image', 20);
+            $table->string('image', 255);
             $table->string('lat', 45);
             $table->string('long', 45);
             $table->integer('capacidad');

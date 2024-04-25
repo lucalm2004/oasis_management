@@ -17,42 +17,42 @@ class ArtistasCancionesSeeder extends Seeder
         // Relacionar canciones con artistas
         ArtistaCancion::create([
             'id_artista' => 1, // ID del artista
-            'id_cancion' => 1, // ID de la canción
+            'id_cancion' => 4, // ID de la canción
         ]);
 
         ArtistaCancion::create([
             'id_artista' => 6, // ID del artista
-            'id_cancion' => 1, // ID de la canción
+            'id_cancion' => 4, // ID de la canción
         ]);
 
         ArtistaCancion::create([
             'id_artista' => 7, // ID del otro artista
-            'id_cancion' => 1, // ID de la misma canción o otra
-        ]);
-
-        ArtistaCancion::create([
-            'id_artista' => 9, // ID del otro artista
-            'id_cancion' => 1, // ID de la misma canción o otra
-        ]);
-
-        ArtistaCancion::create([
-            'id_artista' => 5, // ID del otro artista
-            'id_cancion' => 2, // ID de la misma canción o otra
-        ]);
-
-        ArtistaCancion::create([
-            'id_artista' => 4, // ID del otro artista
-            'id_cancion' => 3, // ID de la misma canción o otra
-        ]);
-
-        ArtistaCancion::create([
-            'id_artista' => 3, // ID del otro artista
             'id_cancion' => 4, // ID de la misma canción o otra
         ]);
 
         ArtistaCancion::create([
-            'id_artista' => 2, // ID del otro artista
+            'id_artista' => 9, // ID del otro artista
+            'id_cancion' => 4, // ID de la misma canción o otra
+        ]);
+
+        ArtistaCancion::create([
+            'id_artista' => 5, // ID del otro artista
             'id_cancion' => 5, // ID de la misma canción o otra
+        ]);
+
+        ArtistaCancion::create([
+            'id_artista' => 4, // ID del otro artista
+            'id_cancion' => 6, // ID de la misma canción o otra
+        ]);
+
+        ArtistaCancion::create([
+            'id_artista' => 3, // ID del otro artista
+            'id_cancion' => 7, // ID de la misma canción o otra
+        ]);
+
+        ArtistaCancion::create([
+            'id_artista' => 2, // ID del otro artista
+            'id_cancion' => 8, // ID de la misma canción o otra
         ]);
 
     }

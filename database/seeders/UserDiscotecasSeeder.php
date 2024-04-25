@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\UserDiscoteca;
 
-class UserDiscotecaSeeder extends Seeder
+class UserDiscotecasSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,14 +17,14 @@ class UserDiscotecaSeeder extends Seeder
         // Crear relaciones de ejemplo entre usuarios y discotecas
         // Por ejemplo, usuario con ID 1 asistió a la discoteca con ID 1
         UserDiscoteca::create([
-            'user_id' => 4,
-            'discoteca_id' => 1,
+            'id_discoteca' => 1,
+            'id_users' => 4,
         ]);
 
         // Otro ejemplo, usuario con ID 2 asistió a la discoteca con ID 2
         UserDiscoteca::create([
-            'user_id' => 5,
-            'discoteca_id' => 2,
+            'id_discoteca' => 2,
+            'id_users' => 5,
         ]);
 
         // Puedes agregar más relaciones según sea necesario

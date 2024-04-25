@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Rol;
 
@@ -26,8 +25,9 @@ class UserSeeder extends Seeder
             'name' => 'Admin',
             'apellidos' => 'Admin',
             'email' => 'admin@example.com',
-            'password' => Hash::make('password'),
+            'password' => bcrypt('password'),
             'habilitado' => true,
+            'DNI' => null,
             'id_rol' => $AdminRole->id,
         ]);
 
@@ -35,8 +35,9 @@ class UserSeeder extends Seeder
             'name' => 'David',
             'apellidos' => 'Hernández',
             'email' => 'dhernandez@gmail.com',
-            'password' => Hash::make('password'),
+            'password' => bcrypt('password'),
             'habilitado' => true,
+            'DNI' => null,
             'id_rol' => $userRole->id,
         ]);
 
@@ -44,8 +45,9 @@ class UserSeeder extends Seeder
             'name' => 'Sergi',
             'apellidos' => 'Marín',
             'email' => 'smarin@gmail.com',
-            'password' => Hash::make('password'),
+            'password' => bcrypt('password'),
             'habilitado' => true,
+            'DNI' => null,
             'id_rol' => $userRole->id,
         ]);
 
@@ -53,8 +55,19 @@ class UserSeeder extends Seeder
             'name' => 'Luca',
             'apellidos' => 'Lusuardi',
             'email' => 'gestor1@gmail.com',
-            'password' => Hash::make('password'),
+            'password' => bcrypt('password'),
             'habilitado' => true,
+            'DNI' => '49902352B',
+            'id_rol' => $gestorRole->id,
+        ]);
+
+        User::create([
+            'name' => 'Ivan',
+            'apellidos' => 'Rubio',
+            'email' => 'gestor2@gmail.com',
+            'password' => bcrypt('password'),
+            'habilitado' => true,
+            'DNI' => '49902352B',
             'id_rol' => $gestorRole->id,
         ]);
 
@@ -62,11 +75,11 @@ class UserSeeder extends Seeder
             'name' => 'Ian',
             'apellidos' => 'Romero',
             'email' => 'iromero@gmail.com',
-            'password' => Hash::make('password'),
+            'password' => bcrypt('password'),
             'habilitado' => true,
+            'DNI' => null,
             'id_rol' => $camareroRole->id,
         ]);
 
-        // Puedes agregar más usuarios según sea necesario
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PlaylistCancion extends Model
 {
-    protected $table = 'playlist_canciones';
+    protected $table = 'playlists_canciones';
     protected $fillable = ['id_evento', 'id_canciones'];
 
     public function evento()

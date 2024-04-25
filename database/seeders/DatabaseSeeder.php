@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         $this->call(CiudadSeeder::class);
         $this->call(DiscotecaSeeder::class);
-        $this->call(UserDiscotecaSeeder::class);
+        $this->call(UserDiscotecasSeeder::class);
         $this->call(EventoSeeder::class);
         $this->call(BonificacionSeeder::class);
         // $this->call(UserBonificacionSeeder::class);
@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductoSeeder::class);
         $this->call(TipoEntradaSeeder::class);
         $this->call(CancionSeeder::class);
-        $this->call(ArtistaSeeder::class);
+        $this->call(ArtistasSeeder::class);
         $this->call(ArtistasCancionesSeeder::class);
         $this->call(PlaylistsCancionesSeeder::class);
         // $this->call(CarritoSeeder::class);

@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class TipoEntrada extends Model
 {
-    protected $table = 'tipo_entradas';
-    protected $fillable = ['descripcion', 'precio', 'id_producto'];
+    protected $table = 'tipos_entradas';
+    protected $fillable = ['descripcion', 'precio'];
 
     public function producto()
     {

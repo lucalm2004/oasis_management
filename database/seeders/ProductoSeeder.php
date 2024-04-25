@@ -31,10 +31,30 @@ class ProductoSeeder extends Seeder
         ]);
 
         Producto::create([
-            'name' => 'Canción a tu elección',
-            'tipo' => 'Cancion',
+            'name' => 'Exclava Remix',
+            'tipo' => 'Canción',
+
         ]);
 
-        // Puedes agregar más productos según sea necesario
+        Producto::create([
+            'name' => 'Calentón',
+            'tipo' => 'Canción',
+        ]);
+
+        Producto::create([
+            'name' => 'La Playa',
+            'tipo' => 'Canción',
+        ]);
+
+        Producto::create([
+            'name' => 'Fardos',
+            'tipo' => 'Canción',
+        ]);
+
+        Producto::create([
+            'name' => 'Perreo Lento',
+            'tipo' => 'Canción',
+        ]);
+
     }
 }

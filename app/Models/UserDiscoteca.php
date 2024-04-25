@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserDiscoteca extends Model
 {
-    protected $table = 'users_discoteca';
+    protected $table = 'users_discotecas';
     protected $fillable = ['id_discoteca', 'id_users'];
 
     public function discoteca()

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Cancion extends Model
 {
     protected $table = 'canciones';
-    protected $fillable = ['name', 'duracion', 'precio', 'id_producto'];
+    protected $fillable = ['name', 'duracion', 'precio'];
 
     public function producto()
     {
