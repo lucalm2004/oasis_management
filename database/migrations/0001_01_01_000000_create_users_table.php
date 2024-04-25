@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('name', 45);
             $table->string('apellidos', 60);
             $table->string('email', 80);
-            $table->string('password', 20);
+            $table->string('password', 255);
+            $table->string('DNI', 9);
             $table->string('google_id', 45)->nullable();
             $table->boolean('habilitado');
             $table->integer('puntos')->nullable();
