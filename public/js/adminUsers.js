@@ -1,21 +1,26 @@
-/* Listar Usuarios con filtros */
 buscar.addEventListener("keyup", () => {
     const valor = buscar.value;
-    if (valor == "") {
-        ListarUsuarios('');
-    } else {
-        ListarUsuarios(valor);
-    }
+    const rol = document.getElementById("rol").value;
+    ListarUsuarios(valor, rol);
 });
 
-ListarUsuarios('');
+rol = document.getElementById("rol");
+rol.addEventListener("change", () => {
+    const valor = buscar.value;
+    const rol = document.getElementById("rol").value;
 
-function ListarUsuarios(valor) {
+    ListarUsuarios(valor, rol);
+});
+
+ListarUsuarios('', '');
+
+function ListarUsuarios(valor, rol) {
     var resultado = document.getElementById('resultado');
     var formdata = new FormData();
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     formdata.append('_token', csrfToken);
     formdata.append('busqueda', valor);
+    formdata.append('rol', rol);
     var ajax = new XMLHttpRequest();
     ajax.open('POST', 'admin/crudusuarios');
     ajax.onload = function() {
@@ -42,29 +47,25 @@ function ListarUsuarios(valor) {
     }
     ajax.send(formdata);
 }
+obtenerRoles('');
 
-// Función para obtener los marcadores asociados a un tag seleccionado
 function obtenerRoles() {
-    console.log(tagId);
-    fetch(`crudgymkhana/marcadores/${tagId}`)
+    fetch(`admin/crudusuarios/roles`)
         .then(response => response.json())
         .then(data => {
-            console.log(data);
-            // Limpiar opciones anteriores del segundo select
-            var selectMarcador = document.getElementById('markerSeleccionado');
+            var selectMarcador = document.getElementById('rol');
             selectMarcador.innerHTML = '';
 
-            // Agregar una opción en blanco al segundo select
             var blankOption = document.createElement('option');
             blankOption.value = ''; // Valor vacío
             blankOption.text = ''; // Texto descriptivo
             selectMarcador.appendChild(blankOption);
 
-            // Iterar sobre los marcadores obtenidos y agregarlos al segundo select
-            data.forEach(marcador => {
+
+            data.forEach(rol => {
                 var option = document.createElement('option');
-                option.value = marcador.id;
-                option.text = marcador.name; // Suponiendo que el nombre del marcador se almacena en la propiedad 'nombre'
+                option.value = rol.id;
+                option.text = rol.name;
                 selectMarcador.appendChild(option);
             });
         })

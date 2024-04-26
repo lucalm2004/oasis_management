@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(AdminController::class)->group(function () {
         Route::post('admin/crudusuarios', 'showCrudUsers')->name('crud.showCrudUsers');
+        Route::get('admin/crudusuarios/roles', 'showRoles')->name('crud.showRoles');
         Route::get('admin/crudusuarios/modadmin/{id}', 'editUsers')->name('crud.editUsers');
         Route::post('admin/crudusuarios/actualizar/{id}', 'actualizarUsers')->name('crud.actualizarUsers');
         Route::delete('admin/crudusuarios/{id}', 'EliminarUsers')->name('crud.EliminarUsers');
