@@ -21,7 +21,7 @@
     @if ($eventos->isNotEmpty())
         <h2>Lista de Eventos</h2>
         @foreach ($eventos as $evento)
-            <a href="{{ route('cliente.entradas', $evento->id) }}">{{ $evento->name }}</a> -
+            <a href="{{ route('cliente.entradas', $evento->id) }}">{{ $evento->name }}</a>
             {{ $evento->fecha_inicio }}
         @endforeach
     @else

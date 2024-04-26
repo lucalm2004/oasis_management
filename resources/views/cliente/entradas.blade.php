@@ -19,7 +19,9 @@
     <h2>Lista de Entradas Disponibles</h2>
     <ul>
         @foreach ($tiposEntradas as $entrada)
-            <li>{{ $entrada->nombre }} - {{ $entrada->precio }}</li>
+            <li>{{ $entrada->descripcion }} - {{ $entrada->precio }} 
+                <button onclick="comprarEntrada({{ $entrada->id }})">Comprar</button>
+            </li>
         @endforeach
     </ul>
 @else
@@ -29,5 +31,25 @@
 <!-- Botón de volver -->
 <a href="{{ route('cliente.eventos', $evento->discoteca->id) }}">Volver a los eventos de {{ $evento->discoteca->name }}</a>
 
+
+<script>
+    var entradasTipo3Seleccionadas = 0; // Contador de entradas de tipo 3 seleccionadas
+
+    function comprarEntrada(tipoEntrada) {
+        // Si es una entrada de tipo 3 y ya se ha seleccionado una, no se puede comprar más
+        if (tipoEntrada === 3 && entradasTipo3Seleccionadas >= 1) {
+            alert('Solo puedes comprar una entrada de este tipo.');
+            return;
+        }
+
+        // Aquí puedes agregar la lógica para realizar la compra de la entrada con el ID proporcionado
+        window.location.href = "{{ route('cliente.carrito') }}";
+
+        // Si es una entrada de tipo 3, incrementa el contador
+        if (tipoEntrada === 3) {
+            entradasTipo3Seleccionadas++;
+        }
+    }
+</script>
 </body>
 </html>
