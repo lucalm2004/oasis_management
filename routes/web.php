@@ -42,3 +42,15 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+
+
+
+use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\ValoracionController;
+
+Route::get('/valoracion', [ValoracionController::class, 'showValoracionPage'])->name('valoracion');
+Route::get('/valoracion/form/{idEvento}', [ValoracionController::class, 'create'])->name('valoracion.form');
+
+// Ruta por defecto
+Route::get('/', [WelcomeController::class, 'index']);

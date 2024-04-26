@@ -1,0 +1,210 @@
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #343a40; /* Fondo negro */
+    color: #ffffff; /* Texto blanco */
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilo del navbar */
+.navbar {
+    background-color: #1a1d1f;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    padding: 15px 0;
+    transition: background-color 0.3s ease; /* Animación de transición */
+}
+
+/* Cambio de color al hacer scroll */
+.navbar.scrolled {
+    background-color: #343a40; /* Cambia a fondo negro al hacer scroll */
+}
+       /* Definir colores personalizados */
+       :root {
+        --orange-color: #f17822; /* Color naranja */
+    }
+
+    /* Estilos personalizados */
+    .bg-orange {
+        background-color: var(--orange-color) !important;
+    }
+
+    .btn-orange {
+        background-color: var(--orange-color);
+        color: #fff;
+    }
+
+    h2, h3 {
+        color: var(--orange-color);
+    }
+/* Estilo del logo */
+.logo {
+    height: 30px;
+}
+
+/* Estilo del texto de la marca en el navbar */
+.navbar-brand {
+    font-size: 1.4rem;
+    color: #6eaff0; /* Azul neón para el texto de la marca */
+}
+
+/* Estilo de los enlaces en el navbar */
+.navbar-nav .nav-link {
+    color: #ffffff;
+}
+
+/* Efecto de zoom al pasar el ratón por encima */
+.carousel-item img:hover {
+    transform: scale(1.1); /* Zoom al 110% */
+}
+
+/* Estilo del contenido debajo del slider */
+.container.my-5 {
+    padding: 50px 0;
+}
+
+.container.my-5 h2 {
+    color: #6eaff0; /* Azul neón para los títulos */
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.container.my-5 p {
+    color: #ffffff;
+    font-size: 1.2rem;
+    line-height: 1.6;
+}
+
+/* Animación de desvanecimiento y escala al hacer hover */
+.carousel-item img {
+    height: 300px;
+    object-fit: cover;
+    transition: transform 0.5s ease, opacity 0.5s ease; /* Transiciones para transformación y opacidad */
+}
+
+.carousel-item img:hover {
+    transform: scale(1.1); /* Zoom al 110% */
+    opacity: 0.8; /* Opacidad reducida al hacer hover */
+}
+
+/* Estilos para el contenedor de valoración */
+.rating-section {
+    background-color: #343a40; /* Fondo oscuro */
+    color: #ffffff; /* Texto blanco */
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el título */
+.rating-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Estilos para la descripción */
+.rating-description {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+}
+
+/* Estilos para el botón de valoración */
+.rating-button .btn-primary {
+    font-size: 1.5rem;
+    padding: 12px 24px;
+    border-radius: 30px;
+}
+
+/* Hover del botón */
+.rating-button .btn-primary:hover {
+    transform: scale(1.1);
+    background-color: #0069d9; /* Cambio de color al hacer hover */
+}
+
+/* Definir una animación personalizada */
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Estilo específico para las imágenes */
+.img-fluid {
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
+}
+
+/* Efecto de zoom y sombra al hacer hover */
+.img-fluid:hover {
+    transform: scale(1.05); /* Zoom al 105% */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
+    opacity: 0.9; /* Reducción de opacidad al hacer hover */
+}
+
+/* Aplicar la animación a un elemento específico */
+.content-box {
+    animation: slideInFromLeft 1s ease-out;
+}
+
+.content-box h2 {
+    color: #ffffff; /* Azul neón para los títulos dentro de los cuadros */
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* Animación del footer con hover */
+.footer {
+    background-color: #ff8725;
+    color: #ffffff;
+    padding: 30px 0;
+    text-align: center;
+    transition: background-color 0.3s ease; /* Animación de transición */
+}
+
+.footer a {
+    color: #6eaff0; /* Azul neón para los enlaces del footer */
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+/* Cambio de color al hacer hover */
+.footer:hover {
+    background-color: #ff6827; /* Cambia a fondo negro al hacer hover */
+}
+
+/* Estilos específicos para dispositivos móviles */
+@media (max-width: 767.98px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .carousel-item img {
+        height: 200px;
+    }
+
+    .container.my-5 h2 {
+        font-size: 2rem;
+    }
+
+    .container.my-5 p {
+        font-size: 1rem;
+    }
+
+    .content-box h2 {
+        font-size: 1.8rem;
+    }
+
+    .footer {
+        padding: 20px 0;
+    }
+}

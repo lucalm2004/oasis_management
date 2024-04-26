@@ -1,0 +1,132 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    padding-top: 70px; /* Ajuste para compensar la altura de la barra de navegación */
+}
+
+.container {
+    max-width: 1200px;
+}
+
+/* Estilos para la barra de navegación superior */
+.navbar {
+    background-color: #343a40;
+    position: fixed; /* Fija la barra en la parte superior */
+    width: 100%; /* Ocupa todo el ancho disponible */
+    top: 0; /* Alinea la barra en la parte superior */
+    z-index: 1000; /* Asegura que esté por encima de otros elementos */
+    transition: top 0.3s; /* Agrega transición suave al cambio de posición */
+}
+
+.navbar.hidden {
+    top: -70px; /* Mueve la barra fuera de la pantalla */
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+}
+
+.navbar-brand .logo {
+    width: 40px;
+    height: 40px;
+}
+
+.navbar-nav .nav-link {
+    color: #fff;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ffc107;
+}
+
+/* Estilos para las tarjetas de discotecas */
+.card {
+    transition: transform 0.3s ease;
+    background-color: #ffb53d;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img-top {
+    height: 250px;
+    object-fit: contain;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background-color: #ffc107;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #e0a800;
+}
+
+/* Estilos para el footer */
+.footer {
+    background-color: #ff7316;
+    color: #fff;
+    padding-bottom: 50px; /* Ajuste para evitar que el contenido del footer se solape */
+    position: relative; /* Ajuste para mantener el espacio para la animación */
+}
+
+.footer a {
+    color: #fff;
+}
+
+.footer a:hover {
+    color: #ffc107;
+}
+/* Estilos para el slider */
+.slider {
+    width: 100%;
+    overflow: hidden;
+}
+
+.slide-track {
+    display: flex;
+    animation: scroll 40s linear infinite;
+}
+
+.slide {
+    flex: 0 0 200px; /* Ancho fijo de cada slide */
+    margin-right: 20px; /* Espacio entre slides */
+}
+
+.slide img {
+    width: 100%;
+}
+
+/* Animación de desplazamiento infinito */
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
