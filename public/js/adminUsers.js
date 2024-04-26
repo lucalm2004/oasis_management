@@ -74,7 +74,7 @@ function obtenerRoles() {
         .catch(error => console.error('Error al obtener los marcadores:', error));
 }
 
-/* function Eliminar(id) {
+function Eliminar(id) {
     var rol = document.getElementById("rol").value;
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     Swal.fire({
@@ -128,7 +128,7 @@ function obtenerRoles() {
                 .catch(error => console.error('Error al eliminar el usuario:', error));
         }
     });
-} */
+}
 
 /* Cambiar estado del usuario */
 function CambiarEstado(id) {
@@ -239,6 +239,7 @@ function Editar(id) {
                         <label class="estiloslabel" for="dniModificar">DNI</label>
                     </div>
                     <div class="col-9">
+                    <span clas-9s="form-error-label" id="dniErrorModificar"></span>
                         <input type="text" name="dni" value="${data.DNI}" id="dniModificar" class="estilosinput">
                     </div>
                 </div>` : ''}
@@ -309,13 +310,16 @@ function validarFormularioMod() {
     var nombreError = document.getElementById('nombreErrorModificar');
     var emailError = document.getElementById('emailErrorModificar');
     var passwordError = document.getElementById('passwordErrorModificar');
+    var dniError = document.getElementById('dniErrorModificar');
+    var dni = document.getElementById('dniModificar');
+    var dniValue = dni ? dni.value : null;
 
     // Validar nombre
     if (nombre === "") {
-        nombreError.innerText = 'Please enter a name';
+        nombreError.innerText = 'Por favor ingresa un nombre';
         nombreError.style.display = 'block';
     } else if (nombre.length < 3) {
-        nombreError.innerText = 'Incorrect format';
+        nombreError.innerText = 'Formato Incorrecto';
         nombreError.style.display = 'block';
     } else {
         nombreError.innerText = '';
@@ -328,10 +332,10 @@ function validarFormularioMod() {
     }
 
     if (email === "") {
-        emailError.innerText = 'Please enter an email';
+        emailError.innerText = 'Por favor ingrese un correo electrónico';
         emailError.style.display = 'block';
     } else if (!validarEmail(email)) {
-        emailError.innerText = 'Please enter a valid email';
+        emailError.innerText = 'Por favor introduzca un correo electrónico válida';
         emailError.style.display = 'block';
     } else {
         emailError.innerText = '';
@@ -341,7 +345,7 @@ function validarFormularioMod() {
     // Validar contraseña
     if (password !== "") {
         if (password.length < 8) {
-            passwordError.innerText = 'Please enter a valid password';
+            passwordError.innerText = 'Por favor introduce una contraseña válida';
             passwordError.style.display = 'block';
         } else {
             passwordError.innerText = '';
@@ -352,10 +356,101 @@ function validarFormularioMod() {
         passwordError.style.display = 'none';
     }
 
+    //Validar DNI
+    if (dni) {
+        if (dniValue === "") {
+            dniError.innerText = 'Por favor introduce un DNI';
+        } else {
+            var formatoDni = /^\d{8}[a-zA-Z]$/.test(dniValue);
+            if (!formatoDni) {
+                dniError.textContent = "El DNI debe tener 8 dígitos seguidos de una letra";
+            } else {
+                var numerosDNI = dniValue.slice(0, 8);
+                var letraCalculada = calcularLetraDNI(numerosDNI);
+                if (letraCalculada !== dniValue.slice(-1).toUpperCase()) {
+                    dniError.textContent = "La letra del DNI no es válida";
+                } else {
+                    dniError.textContent = "";
+                }
+            }
+        }
+    } else {
+        // Si no hay campo de DNI, establecer el valor del DNI como null
+        dniValue = null;
+    }
+    // Función para calcular la letra del DNI
+    function calcularLetraDNI(numerosDNI) {
+        var letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+        var resto = numerosDNI % 23;
+        return letras.charAt(resto);
+    }
+    
+
+     
+
     return {
         nombre: nombre,
         email: email,
         password: password,
+        dni: dniValue,
         rol: rol
     };
+}
+
+function enviarFormularioModificado(id, formData) {
+    var rol2 = document.getElementById("rol").value;
+    var nombre = formData.nombre;
+    var email = formData.email;
+    var password = formData.password;
+    var rol = formData.rol;
+    var dni = formData.dni;
+    var bodyData = {
+        nombre: nombre,
+        email: email,
+        password: password,
+        dni: dni,
+        rol: rol
+    };
+
+    // Obtener el token CSRF del documento HTML
+    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    // Incluir el token CSRF en el encabezado de la solicitud
+    var headers = {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'X-CSRF-TOKEN': token
+    };
+
+    fetch(`admin/crudusuarios/actualizar/${id}`, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(bodyData),
+        })
+        .then(response => {
+            if (response.ok) {
+                Swal.fire({
+                    title: "Success",
+                    text: "Changes saved successfully",
+                    icon: "success"
+                }).then(() => {
+                    Swal.close();
+                    ListarUsuarios('', rol2);
+                });
+            } else {
+                Swal.fire({
+                    title: "Error",
+                    text: "Failed to save changes",
+                    icon: "error"
+                });
+            }
+        })
+        .catch(error => {
+            Swal.fire({
+                title: "Error",
+                text: "An error occurred while processing the request",
+                icon: "error"
+            });
+            console.error('Error:', error);
+        });
 }
