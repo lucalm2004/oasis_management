@@ -19,24 +19,7 @@ body {
 .navbar.scrolled {
     background-color: #343a40; /* Cambia a fondo negro al hacer scroll */
 }
-       /* Definir colores personalizados */
-       :root {
-        --orange-color: #f17822; /* Color naranja */
-    }
 
-    /* Estilos personalizados */
-    .bg-orange {
-        background-color: var(--orange-color) !important;
-    }
-
-    .btn-orange {
-        background-color: var(--orange-color);
-        color: #fff;
-    }
-
-    h2, h3 {
-        color: var(--orange-color);
-    }
 /* Estilo del logo */
 .logo {
     height: 30px;
@@ -154,14 +137,14 @@ body {
 }
 
 .content-box h2 {
-    color: #ffffff; /* Azul neón para los títulos dentro de los cuadros */
+    color: #6eaff0; /* Azul neón para los títulos dentro de los cuadros */
     font-size: 2rem;
     font-weight: bold;
 }
 
 /* Animación del footer con hover */
 .footer {
-    background-color: #ff8725;
+    background-color: #1a1d1f;
     color: #ffffff;
     padding: 30px 0;
     text-align: center;
@@ -179,7 +162,7 @@ body {
 
 /* Cambio de color al hacer hover */
 .footer:hover {
-    background-color: #ff6827; /* Cambia a fondo negro al hacer hover */
+    background-color: #343a40; /* Cambia a fondo negro al hacer hover */
 }
 
 /* Estilos específicos para dispositivos móviles */

@@ -15,7 +15,7 @@
 
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-orange">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="#">
                 <img src="/img/logonegro.png" class="logo mr-2" alt="Logo">
@@ -202,35 +202,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Script de SweetAlert -->
     <script>
-                // Función para verificar si un elemento está visible en la ventana del navegador
-                function isElementInViewport(el) {
-            var rect = el.getBoundingClientRect();
-            return (
-                rect.top >= 0 &&
-                rect.left >= 0 &&
-                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
-            );
-        }
-
-        // Función para agregar clases de animación a los elementos visibles
-        function handleScrollAnimations() {
-            const elements = document.querySelectorAll('.animate__animated');
-            elements.forEach((el) => {
-                if (isElementInViewport(el)) {
-                    el.classList.add('visible');
-                    el.classList.remove('hidden');
-                } else {
-                    el.classList.add('hidden');
-                    el.classList.remove('visible');
-                }
-            });
-        }
-
-        // Agregar evento de scroll para activar las animaciones al hacer scroll
-        document.addEventListener('scroll', handleScrollAnimations);
-        // Llamar a la función inicialmente para animar elementos que ya son visibles
-        handleScrollAnimations();
+        
         document.getElementById('valorarBtn').addEventListener('click', function () {
             // Verificar si el usuario está autenticado
             @guest
@@ -255,42 +227,6 @@
             @endguest
         });
     </script>
-    <script>
-        // Configuración del cubo interactivo
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(300, 300);
-        document.getElementById('cube-container').appendChild(renderer.domElement);
-
-        const geometry = new THREE.BoxGeometry();
-        const materialOptions = [
-            new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide }), // Cara Roja
-            new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide }), // Cara Verde
-            new THREE.MeshBasicMaterial({ color: 0x0000ff, side: THREE.DoubleSide }), // Cara Azul
-            new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide }), // Cara Amarilla
-            new THREE.MeshBasicMaterial({ color: 0xff00ff, side: THREE.DoubleSide }), // Cara Magenta
-            new THREE.MeshBasicMaterial({ color: 0x00ffff, side: THREE.DoubleSide })  // Cara Cyan
-        ];
-
-        const cube = new THREE.Mesh(geometry, materialOptions);
-        scene.add(cube);
-
-        camera.position.z = 5;
-
-        function animate() {
-            requestAnimationFrame(animate);
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
-            renderer.render(scene, camera);
-        }
-        animate();
-    </script>
-
-    <!-- Bootstrap JS y otros scripts -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>
