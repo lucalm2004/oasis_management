@@ -84,7 +84,7 @@ class AdminController extends Controller
             return response()->json(['error' => 'El correo electrónico ya está en uso por otro usuario'], 422);
         }
 
-        // Validar que el DNI no esté duplicado
+        
         $dni = $request->input('dni');
         if ($dni) {
             $existingUser = User::where('DNI', $dni)->where('id', '!=', $id)->first();
@@ -163,6 +163,52 @@ class AdminController extends Controller
     
             return response()->json(['success' => false, 'error' => 'Error al eliminar usuario: ' . $e->getMessage()], 500);
         }
+    }
+
+    public function storeUser(Request $request){
+        $name = $request->input('nombre');
+        $email = $request->input('email');
+        $password = $request->input('password');
+        $dni = $request->input('dni');
+        $rol = $request->input('rol');
+
+        try {
+            DB::beginTransaction();
+    
+            // Validar si ya existe un usuario con el mismo correo electrónico
+            $existingUser = User::where('email', $email)->first();
+    
+            // Si el usuario ya existe, retorna un mensaje de error
+            if ($existingUser) {
+                return response()->json(['error' => 'Ya existe este usuario'], 422);
+            } 
+
+            if ($dni) {
+                $existingUser = User::where('DNI', $dni)->first();
+                if ($existingUser) {
+                    return response()->json(['error' => 'El DNI ya está en uso por otro usuario'], 422);
+                }
+            }
+    
+            // Si el usuario no existe, procede con la creación del nuevo usuario
+            $user = new User();
+            $user->name = $name;
+            $user->email = $email;
+            $user->password = Hash::make($password);
+            $user->DNI = $dni;
+            $user->id_rol = $rol;
+            $user->habilitado= 1;
+            $user->save();
+    
+            DB::commit();
+    
+            return response()->json(['success' => 'Usuario creado correctamente.']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            return response()->json(['error' => 'Error al crear usuario: ' . $e->getMessage()], 500);
+        }
+
     }
     
 }

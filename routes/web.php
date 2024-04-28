@@ -47,6 +47,8 @@ Route::middleware('auth')->group(function () {
     })->middleware(['auth', 'verified'])->name('admin.crudusuarios');
 
     Route::controller(AdminController::class)->group(function () {
+
+        /* CRUD DE USUARIOS */
         Route::post('admin/crudusuarios', 'showCrudUsers')->name('crud.showCrudUsers');
         Route::delete('admin/crudusuarios/{id}', 'EliminarUsers')->name('crud.EliminarUsers');
         Route::get('admin/crudusuarios/roles', 'showRoles')->name('crud.showRoles');
@@ -54,6 +56,7 @@ Route::middleware('auth')->group(function () {
         Route::post('admin/crudusuarios/actualizar/{id}', 'actualizarUsers')->name('crud.actualizarUsers');
         Route::post('admin/crudusuarios/cambiarestado/{id}', 'cambiarEstado')->name('crud.cambiarEstado');
         Route::post('admin/crudusuarios/insertuser', 'storeUser')->name('crud.storeUser');
+        Route::get('admin/crudusuarios/insertuser', 'storeUser')->name('crud.storeUser');
     });
 
 

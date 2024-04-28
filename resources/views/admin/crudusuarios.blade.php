@@ -40,6 +40,8 @@
           </select>
           </form>
         </div>
+        <br>
+        <button class="btn-primary" id="CrearUser">Crear Usuarios</button>
 
 
         <!-- Segundo una tabla con los datos del CRUD a mostrar -->

@@ -209,7 +209,7 @@ function Editar(id) {
                 <input type="hidden" name="id" value="${data.id}">
                 <div class="rownew">
                     <div class="col-3">
-                        <label class="estiloslabel" for="nombreModificar">Name</label>
+                        <label class="estiloslabel" for="nombreModificar">Nombre</label>
                     </div>
                     <div class="col-9">
                         <span class="form-error-label" id="nombreErrorModificar"></span>
@@ -227,7 +227,7 @@ function Editar(id) {
                 </div>
                 <div class="rownew">
                     <div class="col-3">
-                        <label class="estiloslabel" for="passwordModificar">Pwd</label>
+                        <label class="estiloslabel" for="passwordModificar">Contraseña</label>
                     </div>
                     <div class="col">
                         <span clas-9s="form-error-label" id="passwordErrorModificar"></span>
@@ -271,6 +271,7 @@ function Editar(id) {
 
             // Agregar evento keyup al formulario después de crearlo
             document.getElementById('ModificarForm').addEventListener('keyup', validarFormularioMod);
+            document.getElementById('ModificarForm').addEventListener('change', validarFormularioMod);
 
         })
         .catch((error) => {
@@ -453,5 +454,277 @@ function enviarFormularioModificado(id, formData) {
                 icon: "error"
             });
             console.error('Error:', error);
+        });
+}
+
+/* Crear usurio */
+var crearUser = document.getElementById("CrearUser");
+crearUser.addEventListener("click", function() {
+    mostrarFormulario();
+
+});
+
+function mostrarFormulario() {
+    obtenerRolesCrear('');
+    Swal.fire({
+        title: "Create User",
+        confirmButtonColor: "#0052CC",
+        confirmButtonText: "Create",
+        html: `
+        <form id="CrearForm">
+        <div class="rownew">
+            <div class="col-3">
+                <label class="estiloslabel" for="nombreCrear">Name</label>
+            </div>
+            <div class="col-9">
+                <span class="form-error-label" id="nombreErrorCrear"></span>
+                <input type="text" name="nombre" id="nombreCrear" class="estilosinput">
+            </div>
+        </div>
+        <div class="rownew">
+            <div class="col-3">
+                <label class="estiloslabel" for="emailCrear">Email</label>
+            </div>
+            <div class="col-9">
+                <span class="form-error-label" id="emailErrorCrear"></span>
+                <input type="text" name="email" id="emailCrear" class="estilosinput">
+            </div>
+        </div>
+        <div class="rownew">
+            <div class="col-3">
+                <label class="estiloslabel" for="passwordCrear">Pwd</label>
+            </div>
+            <div class="col">
+                <span clas-9s="form-error-label" id="passwordErrorCrear"></span>
+                <input type="password" name="password" id="passwordCrear" class="estilosinput">
+            </div>
+        </div>
+        <div class="rownew">
+            <div class="col-3">
+                <label class="estiloslabel" for="rolCrear">Rol</label>
+            </div>
+            <div class="col-9">
+                <span class="form-error-label" id="rolErrorCrear"></span>
+                <select name="rol" id="rolCrear" class="estilosinput">
+                
+                </select>
+            </div>
+            
+        </div>
+        <div class="rownew">
+            <div id="dniField" style="display: none;">
+                <label for="dniCrear">DNI:</label>
+                <br>
+                <span class="form-error-label" id="dniErrorCrear"></span>
+                <input type="text" id="dniCrear" name="dni">
+            </div>
+        </div>
+        </form>
+
+        `,
+        preConfirm: () => {
+            return validarFormulario(); // Llama a la función validarFormulario antes de cerrar la ventana modal
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // El formulario es válido, puedes enviarlo
+            enviarFormulario();
+        }
+    });
+    document.getElementById('CrearForm').addEventListener('keyup', validarFormulario);
+    document.getElementById('CrearForm').addEventListener('change', validarFormulario);
+    document.getElementById("rolCrear").addEventListener("change", mostrarDNI);
+}
+
+function mostrarDNI() {
+    var selectedRol = document.getElementById("rolCrear").value;
+    var dniField = document.getElementById("dniField");
+
+    // Si el rol seleccionado es "Gestor", mostrar el campo DNI. De lo contrario, ocultarlo.
+    if (selectedRol === "3") {
+        dniField.style.display = "block";
+    } else {
+        dniField.style.display = "none";
+    }
+}
+
+
+function obtenerRolesCrear() {
+    fetch(`admin/crudusuarios/roles`)
+        .then(response => response.json())
+        .then(data => {
+            var selectMarcador = document.getElementById('rolCrear');
+            selectMarcador.innerHTML = '';
+
+            var blankOption = document.createElement('option');
+            blankOption.value = ''; // Valor vacío
+            blankOption.text = ''; // Texto descriptivo
+            selectMarcador.appendChild(blankOption);
+
+
+            data.forEach(rol => {
+                var option = document.createElement('option');
+                option.value = rol.id;
+                option.text = rol.name;
+                selectMarcador.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error al obtener los marcadores:', error));
+}
+
+function validarFormulario() {
+
+    var nombre = document.getElementById('nombreCrear').value;
+    var email = document.getElementById('emailCrear').value;
+    var password = document.getElementById('passwordCrear').value;
+    var rol = document.getElementById('rolCrear').value;
+    var dni = document.getElementById('dniCrear');
+    var dniValue = dni ? dni.value : null;
+    // Validar campos según tus criterios de validación
+    var nombreError = document.getElementById('nombreErrorCrear');
+    var emailError = document.getElementById('emailErrorCrear');
+    var passwordError = document.getElementById('passwordErrorCrear');
+    var rolError = document.getElementById('rolErrorCrear');
+    var dniError = document.getElementById('dniErrorCrear');
+
+    // Validar nombre
+    if (nombre === "") {
+        nombreError.innerText = 'Por favor introduce un nombre';
+        nombreError.style.display = 'block';
+    } else if (nombre.length < 3) {
+        nombreError.innerText = 'Formato Incorrecto';
+        nombreError.style.display = 'block';
+    } else {
+        nombreError.innerText = '';
+    }
+
+    // Validar email
+    function validarEmail(email) {
+        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return regex.test(email);
+    }
+
+    if (email === "") {
+        emailError.innerText = 'Por favor introduce un email';
+        emailError.style.display = 'block';
+    } else if (!validarEmail(email)) {
+        emailError.innerText = 'Introduce un email que sea válido';
+        emailError.style.display = 'block';
+    } else {
+        emailError.innerText = '';
+        emailError.style.display = 'none';
+    }
+
+    // Validar contraseña
+    if (password === "") {
+        passwordError.innerText = 'Por favor introduce una contraseña válida';
+        passwordError.style.display = 'block';
+
+
+    } else if (password.length < 8) {
+        passwordError.innerText = 'Por favor introduce una contraseña válida';
+        passwordError.style.display = 'block';
+
+
+    } else {
+        passwordError.innerText = '';
+        passwordError.style.display = 'none';
+    }
+
+    if (rol === "") {
+        rolError.innerText = 'Por favor seleccione un rol';
+        rolError.style.display = 'block';
+    } else {
+        rolError.innerText = '';
+    }
+    if (document.getElementById('dniField').style.display === 'block') {
+        if (dniValue === "") {
+            dniError.innerText = 'Por favor introduce un DNI';
+        } else {
+            var formatoDni = /^\d{8}[a-zA-Z]$/.test(dniValue);
+            if (!formatoDni) {
+                dniError.textContent = "El DNI debe tener 8 dígitos seguidos de una letra";
+            } else {
+                var numerosDNI = dniValue.slice(0, 8);
+                var letraCalculada = calcularLetraDNI(numerosDNI);
+                if (letraCalculada !== dniValue.slice(-1).toUpperCase()) {
+                    dniError.textContent = "La letra del DNI no es válida";
+                } else {
+                    dniError.textContent = "";
+                }
+            }
+        }
+    }
+    // Función para calcular la letra del DNI
+    function calcularLetraDNI(numerosDNI) {
+        var letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+        var resto = numerosDNI % 23;
+        return letras.charAt(resto);
+    }
+    // Habilitar o deshabilitar el botón de enviar según la validez del formulario
+    /* var enviarBtn = document.getElementById('btnEnviar'); */
+    var formularioValido = !nombreError.innerText && !emailError.innerText && !passwordError.innerText && !rolError.innerText && !dniError.innerText;
+    /*  enviarBtn.disabled = !formularioValido; */
+
+    return formularioValido;
+}
+
+function enviarFormulario() {
+    var nombre = document.getElementById('nombreCrear').value;
+    var email = document.getElementById('emailCrear').value;
+    var password = document.getElementById('passwordCrear').value;
+    var rol = document.getElementById('rolCrear').value;
+    var dni = document.getElementById('dniCrear').value;
+    // Si el campo DNI está vacío, establecerlo como null
+    dni = dni === '' ? null : dni;
+
+    console.log(nombre);
+    console.log(email);
+    console.log(password);
+    console.log(rol);
+    console.log(dni);
+    
+
+
+
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    var rol2 = document.getElementById("rol").value;
+
+
+    fetch('admin/crudusuarios/insertuser', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: JSON.stringify({
+                nombre: nombre,
+                email: email,
+                password: password,
+                dni: dni,
+                rol: rol
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al crear el usuario: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+
+           
+            Swal.fire({
+                title: "Creado",
+                text: "Usuario creado correctamente",
+                icon: "success"
+            }).then(() => {
+                ListarUsuarios('', rol2);
+
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire('Error', 'Error al crear el usuario', 'error');
         });
 }

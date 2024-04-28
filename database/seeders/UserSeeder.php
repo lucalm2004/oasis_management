@@ -57,7 +57,7 @@ class UserSeeder extends Seeder
             'email' => 'gestor1@gmail.com',
             'password' => bcrypt('password'),
             'habilitado' => true,
-            'DNI' => '49902352B',
+            'DNI' => '47667719N',
             'id_rol' => $gestorRole->id,
         ]);
 
