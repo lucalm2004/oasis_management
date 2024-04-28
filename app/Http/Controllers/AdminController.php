@@ -268,18 +268,28 @@ class AdminController extends Controller
     
             // Eliminar las playlists, carritos y valoraciones asociadas a cada evento
             foreach ($eventos as $evento) {
-                $playlist = PlaylistCancion::where('id_evento', $evento->id)->first();
-                if ($playlist) {
-                    $playlist->delete();
+                $playlists = PlaylistCancion::where('id_evento', $evento->id)->get();
+                foreach ($playlists as $playlist) {
+                    if ($playlist) {
+                        $playlist->delete();
+                    }
+
                 }
-                $carrito = Carrito::where('id_evento', $evento->id)->first();
-                if ($carrito) {
-                    $carrito->delete();
+                
+                $carritos = Carrito::where('id_evento', $evento->id)->get();
+                foreach ($carritos as $carrito) {
+                    if ($carrito) {
+                        $carrito->delete();
+                    }
+
                 }
 
-                $valoracion = Valoracion::where('id_evento', $evento->id)->first();
-                if ($valoracion) {
-                    $valoracion->delete();
+                $valoraciones = Valoracion::where('id_evento', $evento->id)->get();
+                foreach ($valoraciones as $valoracion) {
+                    if ($valoracion) {
+                        $valoracion->delete();
+                    }
+
                 }
                 
             }
