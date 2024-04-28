@@ -96,10 +96,10 @@ function Eliminar(id) {
                 })
                 .then(response => {
                     if (!response.ok) {
-                        EndLoading();
+
                         Swal.fire({
-                            title: "An error has occurred.",
-                            text: "Could not delete.",
+                            title: "Ha ocurrido un error",
+                            text: "Error al eliminar el usuario",
                             icon: "error"
                         });
                         return;
@@ -107,6 +107,7 @@ function Eliminar(id) {
                     return response.json();
                 })
                 .then(data => {
+                    console.log(data);
 
                     if (data.success == true) {
                         Swal.fire({
@@ -114,7 +115,7 @@ function Eliminar(id) {
                             text: "Usuario eliminado correctamente",
                             icon: "success"
                         }).then(() => {
-                            listarUsers('', rol);
+                            ListarUsuarios('', rol);
 
                         });
                     } else {
@@ -153,7 +154,7 @@ function CambiarEstado(id) {
                 })
                 .then(response => {
                     if (!response.ok) {
-                        EndLoading();
+
                         Swal.fire({
                             title: "Ha ocurrido un error al cambiar el estado.",
                             text: "No se ha podido cambiar",

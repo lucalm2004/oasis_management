@@ -36,6 +36,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(Carrito::class, 'id_user');
     }
+    public function valoracion()
+    {
+        return $this->hasMany(Valoracion::class, 'id_user');
+    }
+
 
 
     /**

@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Rol;
 use App\Models\User;
+use App\Models\UserDiscoteca;
+use App\Models\BonificacionUser;
+use App\Models\Carrito;
+use App\Models\Valoracion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -114,4 +118,51 @@ class AdminController extends Controller
             return response()->json(['error' => 'Error al actualizar usuario: ' . $e->getMessage()], 500);
         }
     }
+
+    public function EliminarUsers($id){
+        try {
+            DB::beginTransaction();
+    
+            // Eliminar registros relacionados de la tabla UserDiscoteca si existen
+            $UserDiscoteca = UserDiscoteca::where('id_users', $id)->first();
+            if($UserDiscoteca){
+                $UserDiscoteca->delete();
+            }
+    
+            // Eliminar registros relacionados de la tabla BonificacionUser si existen
+            $BonificacionUser = BonificacionUser::where('id_users', $id)->first();
+            if($BonificacionUser){
+                $BonificacionUser->delete();
+            }
+    
+            // Eliminar registros relacionados de la tabla Carrito si existen
+            $Carrito = Carrito::where('id_user', $id)->first();
+            if($Carrito){
+                $Carrito->delete();
+            }
+    
+            // Eliminar registros relacionados de la tabla Valoracion si existen
+            $Valoracion = Valoracion::where('id_user', $id)->first();
+            if($Valoracion){
+                $Valoracion->delete();
+            } 
+    
+            // Eliminar el usuario principal si existe
+            $user = User::findOrFail($id);
+            if ($user) {
+                $user->delete();
+            }
+            
+            // Confirmar la transacción
+            DB::commit();
+    
+            return response()->json(['success' => true, 'message' => 'Usuario eliminado correctamente']);
+        } catch (\Exception $e) {
+         
+            DB::rollBack();
+    
+            return response()->json(['success' => false, 'error' => 'Error al eliminar usuario: ' . $e->getMessage()], 500);
+        }
+    }
+    
 }
