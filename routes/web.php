@@ -45,6 +45,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin', function () {
         return view('admin/crudusuarios');
     })->middleware(['auth', 'verified'])->name('admin.crudusuarios');
+    Route::get('/admin2', function () {
+        return view('admin/cruddiscotecas');
+    })->middleware(['auth', 'verified'])->name('admin.cruddiscotecas');
 
     Route::controller(AdminController::class)->group(function () {
 
@@ -57,6 +60,13 @@ Route::middleware('auth')->group(function () {
         Route::post('admin/crudusuarios/cambiarestado/{id}', 'cambiarEstado')->name('crud.cambiarEstado');
         Route::post('admin/crudusuarios/insertuser', 'storeUser')->name('crud.storeUser');
         Route::get('admin/crudusuarios/insertuser', 'storeUser')->name('crud.storeUser');
+
+        /* CRUD DISCOTECAS */
+        Route::post('admin2/cruddiscotecas', 'showCrudDiscotecas')->name('crud.showCrudDiscotecas');
+        Route::delete('admin2/cruddiscotecas/{id}', 'EliminarDiscotecas')->name('crud.EliminarDiscotecas');
+        Route::get('admin2/cruddiscotecas/ciudades', 'showCiudades')->name('crud.showCiudades');
+       
+
     });
 
 

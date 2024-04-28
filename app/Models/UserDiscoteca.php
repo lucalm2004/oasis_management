@@ -11,7 +11,7 @@ class UserDiscoteca extends Model
 
     public function discoteca()
     {
-        return $this->belongsTo(Discoteca::class, 'id');
+        return $this->belongsTo(Discoteca::class, 'id_discoteca');
     }
 
     public function user()

@@ -17,7 +17,7 @@ class Discoteca extends Model
 
     public function evento()
     {
-        return $this->hasMany(Evento::class, 'id');
+        return $this->hasMany(Evento::class, 'id_discoteca');
     } 
     public function users_discoteca()
     {

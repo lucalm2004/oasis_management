@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Rol;
 use App\Models\User;
 use App\Models\UserDiscoteca;
+use App\Models\Discoteca;
 use App\Models\BonificacionUser;
 use App\Models\Carrito;
 use App\Models\Valoracion;
+use App\Models\Ciudad;
+use App\Models\Evento;
+use App\Models\PlaylistCancion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -15,6 +19,9 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
+    /* CRUD DISCOTECAS */
+
+    /* ver usuarios */
     public function showCrudUsers(Request $request)
     {
         $query = User::query();
@@ -37,12 +44,13 @@ class AdminController extends Controller
 
         return response()->json($users);
     }
-
+    /* obtener roles */
     public function showRoles()
     {
         $roles = Rol::all();
         return response()->json($roles);
     }
+    /* cambiar estado del usuario */
     public function cambiarEstado($id)
     {
         try {
@@ -65,11 +73,15 @@ class AdminController extends Controller
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
+    /* obetener datos editar usuario */
 
     public function editUsers($id){
         $users = User::findOrFail($id);
         return response()->json($users);
     }
+
+    /* actualizar usuario */
+
     public function actualizarUsers($id, Request $request){
         try {
             DB::beginTransaction();
@@ -119,6 +131,8 @@ class AdminController extends Controller
         }
     }
 
+    /* eliminar usuario */
+
     public function EliminarUsers($id){
         try {
             DB::beginTransaction();
@@ -165,6 +179,8 @@ class AdminController extends Controller
         }
     }
 
+    /* crear un usuario nuevo */
+
     public function storeUser(Request $request){
         $name = $request->input('nombre');
         $email = $request->input('email');
@@ -210,5 +226,90 @@ class AdminController extends Controller
         }
 
     }
+
+    /* CRUD DISCOTECAS */
+
+    /* ver discotecas con filtros*/
+    public function showCrudDiscotecas(Request $request){
+        $query = Discoteca::query();
+
+        // Verificar si se proporcionó un filtro de búsqueda
+        if ($request->input('busqueda')) {
+            $data = $request->input('busqueda');
+            $query->where('name', 'like', "%$data%");
+        }
+
+        // Verificar si se proporcionó un filtro de rol
+        if ($request->input('ciudad')) {
+            $ciudadId = $request->input('ciudad');
+            $query->where('id_ciudad', $ciudadId);
+        }
+
+      
+        $discotecas = $query->with('ciudad')->get();
+
+        return response()->json($discotecas);
+
+    }
+
+    /* obtener lista ciudades para desplegables */
+    public function showCiudades(){
+        $cuidades = Ciudad::all();
+        return response()->json($cuidades);
+
+    }
+
+    public function EliminarDiscotecas($id){
+        try {
+            DB::beginTransaction();
+    
+            // Obtener todos los eventos asociados a la discoteca
+            $eventos = Evento::where('id_discoteca', $id)->get();
+    
+            // Eliminar las playlists, carritos y valoraciones asociadas a cada evento
+            foreach ($eventos as $evento) {
+                $playlist = PlaylistCancion::where('id_evento', $evento->id)->first();
+                if ($playlist) {
+                    $playlist->delete();
+                }
+                $carrito = Carrito::where('id_evento', $evento->id)->first();
+                if ($carrito) {
+                    $carrito->delete();
+                }
+
+                $valoracion = Valoracion::where('id_evento', $evento->id)->first();
+                if ($valoracion) {
+                    $valoracion->delete();
+                }
+                
+            }
+    
+            // Eliminar registros relacionados de la tabla UserDiscoteca si existen
+            $UserDiscoteca = UserDiscoteca::where('id_discoteca', $id)->first();
+            if($UserDiscoteca){
+                $UserDiscoteca->delete();
+            }
+    
+            // Eliminar los eventos asociados a la discoteca
+            Evento::where('id_discoteca', $id)->delete();
+    
+            // Eliminar la discoteca principal si existe
+            $discoteca = Discoteca::findOrFail($id);
+            if ($discoteca) {
+                $discoteca->delete();
+            }
+    
+            // Confirmar la transacción
+            DB::commit();
+    
+            return response()->json(['success' => true, 'message' => 'Discoteca eliminada correctamente']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            return response()->json(['success' => false, 'error' => 'Error al eliminar discoteca: ' . $e->getMessage()], 500);
+        }
+    }
+
+     
     
 }
