@@ -17,6 +17,6 @@ class BonificacionUser extends Model
 
     public function bonificacion()
     {
-        return $this->belongsTo(Bonificacion::class, 'id');
+        return $this->belongsTo(Bonificacion::class, 'id_bonificacion');
     }
 }

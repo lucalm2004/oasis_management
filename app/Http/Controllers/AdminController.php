@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bonificacion;
 use App\Models\Rol;
 use App\Models\User;
 use App\Models\UserDiscoteca;
@@ -144,7 +145,8 @@ class AdminController extends Controller
             }
     
             // Eliminar registros relacionados de la tabla BonificacionUser si existen
-            $BonificacionUser = BonificacionUser::where('id_users', $id)->first();
+            $BonificacionUsers = BonificacionUser::where('id_users', $id)->get();
+            foreach($BonificacionUsers as $BonificacionUser)
             if($BonificacionUser){
                 $BonificacionUser->delete();
             }
@@ -156,10 +158,12 @@ class AdminController extends Controller
             }
     
             // Eliminar registros relacionados de la tabla Valoracion si existen
-            $Valoracion = Valoracion::where('id_user', $id)->first();
-            if($Valoracion){
-                $Valoracion->delete();
-            } 
+            $Valoraciones = Valoracion::where('id_user', $id)->get();
+            foreach($Valoraciones as $Valoracion){
+                if($Valoracion){
+                    $Valoracion->delete();
+                } 
+            }
     
             // Eliminar el usuario principal si existe
             $user = User::findOrFail($id);
@@ -291,17 +295,19 @@ class AdminController extends Controller
                     }
 
                 }
+                $evento->delete();
                 
             }
     
             // Eliminar registros relacionados de la tabla UserDiscoteca si existen
-            $UserDiscoteca = UserDiscoteca::where('id_discoteca', $id)->first();
-            if($UserDiscoteca){
-                $UserDiscoteca->delete();
+            $UserDiscotecas = UserDiscoteca::where('id_discoteca', $id)->get();
+            foreach ($UserDiscotecas as $UserDiscoteca) {
+                if($UserDiscoteca){
+                    $UserDiscoteca->delete();
+                }
+
             }
-    
-            // Eliminar los eventos asociados a la discoteca
-            Evento::where('id_discoteca', $id)->delete();
+        
     
             // Eliminar la discoteca principal si existe
             $discoteca = Discoteca::findOrFail($id);
@@ -320,6 +326,146 @@ class AdminController extends Controller
         }
     }
 
-     
+
+    /* CRUD BONIFICACIONES */
+
+    /* mostrar bonificaciones con filtros */
+    public function showCrudBonificaciones(Request $request){
+        if ($request->input('busqueda')) {
+            $data = $request->input('busqueda'); 
+            $bonificaciones = Bonificacion::where('name', 'like', "%$data%")->get();
+        } else {
+            $bonificaciones = Bonificacion::all();
+        }
+        return response()->json($bonificaciones);
+
+    }
+
+    /* eliminar una bonificación */
+    public function EliminarBonificaciones($id){
+        try {
+            DB::beginTransaction();
+    
+            // Obtener todos las bonificaciones canjeadas por los usuarios
+            $bonificacionesUsers = BonificacionUser::where('id_bonificacion', $id)->get();
+    
+            // Eliminar las playlists, carritos y valoraciones asociadas a cada evento
+            foreach ($bonificacionesUsers as $bonificacionesUser) {
+               if ($bonificacionesUser) {
+                    $bonificacionesUser->delete();
+               }
+               
+            }
+
+            // Eliminar la bonificacion principal si existe
+            $bonificacion = Bonificacion::findOrFail($id);
+            if ($bonificacion) {
+                $bonificacion->delete();
+            }
+    
+            // Confirmar la transacción
+            DB::commit();
+    
+            return response()->json(['success' => true, 'message' => 'Bonificacion eliminada correctamente']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            return response()->json(['success' => false, 'error' => 'Error al eliminar bonificación: ' . $e->getMessage()], 500);
+        }
+
+    }
+
+    /* obtener datos para formulario de modificar */
+
+    public function editBonificaciones($id){
+        $bonificaciones = Bonificacion::findOrFail($id);
+        return response()->json($bonificaciones);
+    }
+
+    /* actualizar una bonificacion */
+    
+    public function actualizarBonificaciones($id, Request $request){
+        try {
+            DB::beginTransaction();
+
+            $bonificacion = Bonificacion::findOrFail($id);
+    
+            $name = $request->input('nombre');
+            $descripcion = $request->input('descripcion');
+            $puntos = $request->input('puntos');
+
+            $existingName = Bonificacion::where('name', $name)->where('id', '!=', $id)->first();
+            if ($existingName) {
+                return response()->json(['error' => 'El nombre ya está en uso '], 422);
+            }
+
+            $existingDescripcion = Bonificacion::where('descripcion', $descripcion)->where('id', '!=', $id)->first();
+            if ($existingDescripcion) {
+                return response()->json(['error' => 'Descripcion ya está en uso '], 422);
+            }
+
+            $existingPuntos = Bonificacion::where('puntos', $puntos)->where('id', '!=', $id)->first();
+            if ($existingPuntos) {
+                return response()->json(['error' => 'Puntos ya está en uso '], 422);
+            }
+
+            $bonificacion->name = $name;
+            $bonificacion->descripcion = $descripcion;
+            $bonificacion->puntos = $puntos;
+            $bonificacion->save();
+
+            DB::commit();
+
+            return response()->json(['message' => 'Bonificacion actualizada correctamente']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            return response()->json(['error' => 'Error al actualizar bonificacion: ' . $e->getMessage()], 500);
+        }
+
+    }
+
+    /* insertar una nueva bonificación */
+
+    public function storeBonificacion(Request $request){
+        try {
+            DB::beginTransaction();
+
+            $name = $request->input('nombre');
+            $descripcion = $request->input('descripcion');
+            $puntos = $request->input('puntos');
+
+            $existingName = Bonificacion::where('name', $name)->first();
+            if ($existingName) {
+                return response()->json(['error' => 'El nombre ya está en uso '], 422);
+            }
+
+            $existingDescripcion = Bonificacion::where('descripcion', $descripcion)->first();
+            if ($existingDescripcion) {
+                return response()->json(['error' => 'Descripcion ya está en uso '], 422);
+            }
+
+            $existingPuntos = Bonificacion::where('puntos', $puntos)->first();
+            if ($existingPuntos) {
+                return response()->json(['error' => 'Puntos ya está en uso '], 422);
+            }
+
+            $bonificacion = new Bonificacion();
+            $bonificacion->name = $name;
+            $bonificacion->descripcion = $descripcion;
+            $bonificacion->puntos = $puntos;
+            $bonificacion->save();
+
+            DB::commit();
+
+            return response()->json(['message' => 'Bonificacion creada correctamente']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            return response()->json(['error' => 'Error al crear bonificacion: ' . $e->getMessage()], 500);
+        }
+
+
+    }
     
 }

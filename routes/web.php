@@ -48,6 +48,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin2', function () {
         return view('admin/cruddiscotecas');
     })->middleware(['auth', 'verified'])->name('admin.cruddiscotecas');
+    Route::get('/admin3', function () {
+        return view('admin/crudbonificaciones');
+    })->middleware(['auth', 'verified'])->name('admin.crudbonificaciones');
 
     Route::controller(AdminController::class)->group(function () {
 
@@ -59,14 +62,22 @@ Route::middleware('auth')->group(function () {
         Route::post('admin/crudusuarios/actualizar/{id}', 'actualizarUsers')->name('crud.actualizarUsers');
         Route::post('admin/crudusuarios/cambiarestado/{id}', 'cambiarEstado')->name('crud.cambiarEstado');
         Route::post('admin/crudusuarios/insertuser', 'storeUser')->name('crud.storeUser');
-        Route::get('admin/crudusuarios/insertuser', 'storeUser')->name('crud.storeUser');
+       
 
         /* CRUD DISCOTECAS */
         Route::post('admin2/cruddiscotecas', 'showCrudDiscotecas')->name('crud.showCrudDiscotecas');
         Route::delete('admin2/cruddiscotecas/{id}', 'EliminarDiscotecas')->name('crud.EliminarDiscotecas');
         Route::get('admin2/cruddiscotecas/ciudades', 'showCiudades')->name('crud.showCiudades');
-       
 
+
+        /* CRUD BONIFICACIONES */
+        Route::post('admi3/crudbonificaciones', 'showCrudBonificaciones')->name('crud.showCrudBonificaciones');
+        Route::delete('admi3/crudbonificaciones/{id}', 'EliminarBonificaciones')->name('crud.EliminarBonificaciones');
+        Route::get('admi3/crudbonificaciones/modadmin/{id}', 'editBonificaciones')->name('crud.editBonificaciones');
+        Route::post('admi3/crudbonificaciones/actualizar/{id}', 'actualizarBonificaciones')->name('crud.actualizarBonificaciones');
+        Route::post('admi3/crudbonificaciones/insertuser', 'storeBonificacion')->name('crud.storeBonificacion');
+   
+   
     });
 
 

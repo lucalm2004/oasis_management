@@ -15,8 +15,9 @@
 <body>
 
   <header>
-    <a href="{{ route('admin.crudusuarios') }}">Crud Usuarios</a>
-    <a href="{{ route('admin.cruddiscotecas') }}">Crud Discotecas</a>
+    <a href="{{ route('admin.crudusuarios') }}">Usuarios</a>
+    <a href="{{ route('admin.cruddiscotecas') }}">Discotecas</a>
+    <a href="{{ route('admin.crudbonificaciones') }}">Bonificaciones</a>
   </header>
     <h1 style="text-align: center">DISCOTECAS</h1>
 <div class="container" >

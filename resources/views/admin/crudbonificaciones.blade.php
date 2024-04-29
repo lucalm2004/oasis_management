@@ -5,7 +5,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Oasis Management - Administrar Usuarios</title>
+  <title>Oasis Management - Administrar Bonificaciones</title>
   <!-- Se ha de añadir el token para poder usarlo en el formdata de AJAX -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -13,12 +13,13 @@
 
 
 <body>
+
   <header>
     <a href="{{ route('admin.crudusuarios') }}">Usuarios</a>
     <a href="{{ route('admin.cruddiscotecas') }}">Discotecas</a>
     <a href="{{ route('admin.crudbonificaciones') }}">Bonificaciones</a>
   </header>
-    <h1 style="text-align: center">USUARIOS</h1>
+    <h1 style="text-align: center">Bonificaciones</h1>
 <div class="container" >
   <div class="row">
     <!-- Formulario de la izquierda (4 de las 12 columnas de bootstrap)
@@ -38,15 +39,11 @@
               <label for="buscar">Buscar:</label>
               <input type="text" name="buscar" id="buscar" placeholder="Buscar..." class="form-control">
             </div>
-            <label for="rol">Rol</label>
-            <select name="rol" id="rol" class="button-40">
-              <option value=""></option>
-              
-          </select>
+           
           </form>
         </div>
         <br>
-        <button class="btn-primary" id="CrearUser">Crear Usuarios</button>
+        <button class="btn-primary" id="crearBonificacion">Crear Bonificación</button>
 
 
         <!-- Segundo una tabla con los datos del CRUD a mostrar -->
@@ -56,15 +53,15 @@
                 <tr>
                   <th>ID</th>
                   <th>Nombre</th>
-                  <th>Email</th>
-                  <th>Rol</th>
-                  <th>Estado</th>
+                  <th>Descripción</th>
+                  <th>Puntos</th>
                   <th>Editar</th>
                   <th>Eliminar</th>
                 </tr>
             </thead>
             <tbody id="resultado">
             </tbody>
+            
           </table>
         </div>
       </div>
@@ -77,7 +74,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
    
 
-<script src="{{ asset('js/adminUsers.js') }}"></script>
+<script src="{{ asset('js/adminBonificaciones.js') }}"></script>
    
 </body>
 
