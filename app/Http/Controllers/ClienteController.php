@@ -10,6 +10,8 @@ use App\Models\Evento;
 use App\Models\TipoEntrada;
 use App\Models\Ciudad;
 use App\Models\Bonificacion;
+use App\Models\Cancion;
+use App\Models\Carrito;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -47,21 +49,31 @@ class ClienteController extends Controller
         return view('cliente.entradas', compact('evento', 'tiposEntradas'));
     }
 
+    public function mostrarDetallesEvento($id)
+    {
+        $evento = Evento::findOrFail($id);
+
+        return response()->json($evento);
+    }
+
+    public function mostrarTiposEntrada($id)
+    {
+        $tiposEntrada = TipoEntrada::all();
+
+        return response()->json($tiposEntrada);
+    }
+
+
+
     public function carrito()
     {
-        // Aquí puedes obtener la información de las entradas compradas por el usuario
-        // Puedes hacer esto de acuerdo a tu lógica de negocio específica
 
-        // Por ahora, simplemente redireccionaremos al usuario a la vista del carrito
         return view('cliente.carrito');
     }
 
     public function bonificacion()
     {
-        // Aquí puedes obtener la información de las entradas compradas por el usuario
-        // Puedes hacer esto de acuerdo a tu lógica de negocio específica
 
-        // Por ahora, simplemente redireccionaremos al usuario a la vista del carrito
         return view('cliente.bonificacion');
     }
 
@@ -88,6 +100,40 @@ class ClienteController extends Controller
         // Devolver los resultados como JSON
         return response()->json($resultados);
     }
+
+    public function mostrareventos(Request $request, $id_discoteca)
+    {
+        // Obtener todos los registros de eventos relacionados con la discoteca
+        $eventos = Evento::where('id_discoteca', $id_discoteca);
+
+        // Filtrar por nombre del evento si se proporciona
+        if ($request->has('nombre')) {
+            $nombreEvento = $request->input('nombre');
+            $eventos->where('name', 'like', '%' . $nombreEvento . '%');
+        }
+
+        // Filtrar por día de inicio si se proporciona
+        if ($request->has('diaInicio')) {
+            $diaInicio = $request->input('diaInicio');
+            $eventos->whereDate('fecha_inicio', $diaInicio);
+        }
+
+        // Obtener los resultados
+        $resultados = $eventos->get();
+
+        // Devolver los resultados como JSON
+        return response()->json($resultados);
+    }
+
+
+    public function mostrarDetallesDiscoteca($id)
+    {
+        $discoteca = Discoteca::findOrFail($id);
+
+        return response()->json($discoteca);
+    }
+
+
 
     public function mostrarpuntos()
     {
@@ -132,4 +178,46 @@ class ClienteController extends Controller
 
         return redirect('/');
     }
+
+    public function mostrarCancionesEvento($id_evento)
+    {
+        // Obtener los IDs de las canciones asociadas al evento
+        $ids_canciones = DB::table('playlists_canciones')
+            ->where('id_evento', $id_evento)
+            ->pluck('id_canciones');
+
+        // Obtener los detalles de las canciones asociadas
+        $canciones = Cancion::whereIn('id', $ids_canciones)->get();
+
+        return response()->json($canciones);
+    }
+
+    public function insertarEnCarrito(Request $request)
+    {
+        // Obtener los datos de la solicitud
+        $data = $request->json()->all();
+        $entradasSeleccionadas = $data['entradas'];
+        $idUsuario = $request->user()->id; // Suponiendo que estés utilizando autenticación y el usuario esté autenticado
+        $idEvento = $request->input('id_evento'); // Obtener el ID del evento de la solicitud
+    
+        // Decodificar las entradas JSON
+        $entradasJSON = json_decode($entradasSeleccionadas, true);
+    
+        // Iterar sobre las entradas seleccionadas e insertarlas en la tabla carrito
+        foreach ($entradasJSON as $tipoEntradaId => $cantidad) {
+            $carrito = new Carrito();
+            $carrito->tipo_entrada_id = $tipoEntradaId;
+            $carrito->cantidad = $cantidad;
+            $carrito->bonificacion = $request-> null; // Obtener bonificación de la solicitud
+            $carrito->precio_total = $request-> null; // Obtener precio total de la solicitud
+            $carrito->id_user = $idUsuario;
+            $carrito->id_evento = $idEvento;
+            $carrito->id_producto = $request->input('id_producto'); // Obtener ID del producto de la solicitud
+            $carrito->save();
+        }
+    
+        // Puedes retornar una respuesta de éxito si lo deseas
+        return response()->json(['message' => 'Entradas insertadas en el carrito con éxito'], 200);
+    }
+    
 }

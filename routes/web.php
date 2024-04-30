@@ -25,10 +25,18 @@ Route::get('/cliente/carrito', [ClienteController::class, 'carrito'])->name('cli
 Route::get('/cliente/bonificacion', [ClienteController::class, 'bonificacion'])->name('cliente.bonificacion');
 Route::get('/bonificaciones', [ClienteController::class, 'fetchBonificaciones'])->name('bonificaciones.ajax');
 Route::get('/cliente/mostrardisco', [ClienteController::class, 'mostrardisco'])->name('cliente.mostrardisco');
+Route::get('/cliente/mostrareventos/{id_discoteca}', [ClienteController::class, 'mostrareventos'])->name('cliente.mostrareventos');
 Route::get('/cliente/mostrarpuntos', [ClienteController::class, 'mostrarpuntos']);
 Route::get('/cliente/ciudades', [ClienteController::class, 'ciudades']);
+Route::get('/cliente/detallesdiscoteca/{id}', [ClienteController::class, 'mostrarDetallesDiscoteca']);
+Route::get('/cliente/tiposentrada/{id}', [ClienteController::class, 'mostrarTiposEntrada']);
+Route::get('/cliente/detallesevento/{id}', [ClienteController::class, 'mostrarDetallesEvento']);
 Route::get('/cliente/logout', [ClienteController::class, 'logout'])->name('logout');
+Route::get('/cliente/mostrarCancionesEvento/{id}', [ClienteController::class, 'mostrarCancionesEvento'])->name('mostrarCancionesEvento');
 
+Route::post('/cliente/insertarEnCarrito', [ClienteController::class, 'insertarEnCarrito'])->name('cliente.insertarEnCarrito');
+
+//Poner funcion de controlador playlist
 
 Route::get('/google-auth/callback-url', function () {
     $user_google = Socialite::driver('google')->user();

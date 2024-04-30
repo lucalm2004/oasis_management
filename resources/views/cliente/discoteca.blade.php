@@ -1,98 +1,120 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Discotecas</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+        integrity="sha512-RZ72P5XENRmoZH/4/ZFVk1WF+IgPtA7O8WzW+Fl0oBn7y0J5dzb65B1J3fnu7zPQZz4BB5t3IZ5hjTVv9yQjsg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
         }
 
-        #container {
-            max-width: 1200px;
-            margin: 0 auto;
+        /* Nuevo estilo para el header */
+        header {
+            background-color: #666;
             padding: 20px;
+            color: white;
         }
 
-        h1 {
-            font-size: 24px;
-            color: #333;
-            margin-bottom: 10px;
+        /* Estilo para el contenedor del header */
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        p {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 20px;
+        /* Estilo para el mensaje de bienvenida */
+        .welcome-message {
+            flex: 1;
+            text-align: center;
+            /* Para centrar el texto horizontalmente */
         }
 
-        button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
+        /* Estilo para los botones del header */
+        .header-buttons {
+            display: flex;
+            align-items: center;
         }
 
-        button:hover {
-            background-color: #0056b3;
+        /* Estilo para el botón de cerrar sesión */
+        .header-buttons form {
+            margin-left: 20px;
         }
 
-        form {
-            margin-top: 20px;
-        }
-
+        /* Ajustes para el botón de cerrar sesión */
         #logout-btn {
-            background-color: #dc3545;
+            background-color: #f44336;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            border-radius: 8px;
         }
 
         #logout-btn:hover {
-            background-color: #bd2130;
+            color: #ddd;
         }
 
-        #puntosUsuario {
-            font-weight: bold;
-            color: blue;
-            text-decoration: none;
+        /* Create two columns/boxes that floats next to each other */
+        #container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        #puntosUsuario:hover {
-            text-decoration: underline;
-        }
-
-        input[type="text"] {
+        /* Style the footer */
+        footer {
+            background-color: #777;
             padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            margin-bottom: 10px;
+            text-align: center;
+            color: white;
+            width: 100%;
         }
 
+        /* Style the rest of the content */
+        h1,
+        p {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
         select {
+            width: 100%;
             padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
             margin-bottom: 10px;
         }
 
-        #discotecasContainer {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
-        }
-
-        .discoteca {
-            background-color: #fff;
-            border: 1px solid #ccc;
+        button[type="submit"] {
+            width: 100%;
             padding: 10px;
-            border-radius: 5px;
+            margin-top: 10px;
+            background-color: #666;
+            color: white;
+            border: none;
+            cursor: pointer;
         }
 
         #popup {
@@ -101,75 +123,219 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: white;
+            background-color: #f9f9f9;
             padding: 20px;
-            border: 1px solid black;
-            z-index: 999;
+            border-radius: 5px;
         }
 
         #mapid {
+            width: 100%;
             height: 400px;
+            /* Altura deseada para el mapa */
+        }
+
+        /* Estilos para las tarjetas */
+        .card {
+            width: 300px;
+            padding: 10px;
+            margin: 0.25rem;
+            /* Ajusta el margen para reducir la separación */
+            cursor: pointer;
+            border-radius: 10px;
+            background-color: #10102a;
+            border: 1px solid #10102a;
+            transition: all .2s linear;
+            color: white;
+            /* Establecer el color del texto en blanco */
+        }
+
+        .card:hover {
+            border-color: aqua;
+            transform: scale(1.01);
+            background-color: rgba(235, 152, 78);
+            box-shadow: 0 0px 5px 0px #cbc0c0;
+        }
+
+        .card h2 {
+            color: #fff;
+            font-size: 20px;
+            margin: 0;
+            padding: 10px;
+        }
+
+        .card p {
+            padding: 15px;
+            margin: 0;
+            color: #333;
+        }
+
+        .card a {
+            display: block;
+            text-align: center;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px;
+        }
+
+        /* Estilos para el contenedor de las tarjetas */
+        #discotecasContainer {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            /* Alinear los items al centro */
+            gap: 20px;
+            /* Espacio entre las tarjetas */
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+            color: white;
+        }
+
+        /* .logout-form {
+            text-align: center;
+            margin-top: 10px;
+        } */
+
+        /* .logout-form button {
+            background-color: #f44336;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .logout-form button:hover {
+            background-color: #d32f2f;
+        } */
+
+        .points {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .points a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .points a:hover {
+            text-decoration: underline;
+        }
+
+        #filtroNombre {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        #selectCiudad {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
         }
     </style>
 </head>
+
 <body>
 
-<div id="container">
+    <header>
+        <div class="header-container">
+            <div class="welcome-message">
+                <h1>Bienvenido, {{ $nombreUsuario }}</h1>
+                <p>¡Esperamos que disfrutes explorando nuestras discotecas!</p>
+            </div>
+            <div class="header-buttons">
+                <!-- Botón para introducir código -->
+                <button class="button" onclick="mostrarPopup()">Chat</button>
+                <!-- Botón de cerrar sesión -->
+                <form class="logout-form" action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" id="logout-btn">Cerrar Sesión</button>
+                </form>
+            </div>
+        </div>
+    </header>
 
-    <h1>Bienvenido, {{ $nombreUsuario }}</h1>
-    <p>¡Esperamos que disfrutes explorando nuestras discotecas!</p>
+    <div id="container">
 
-    <h1>Lista de Discotecas</h1>
+        <!-- Marcador de puntos del usuario -->
+        <p class="points">Tienes <a href="#" id="puntosLink"><span id="puntosUsuario"></span> puntos.</a></p>
 
-    <!-- Botón para introducir código -->
-    <button onclick="mostrarPopup()">Chat</button>
+        <input type="text" id="filtroNombre" placeholder="Filtrar por nombre...">
 
-    <!-- Botón de cerrar sesión -->
-    <form id="logout-form" action="{{ route('logout') }}" method="POST">
-        @csrf
-        <button type="submit" id="logout-btn">Cerrar Sesión</button>
-    </form>
+        <select id="selectCiudad">
+            <option value="">Todas las ciudades</option>
+            <!-- Las opciones de ciudades se cargarán dinámicamente aquí -->
+        </select>
 
-    <!-- Marcador de puntos del usuario -->
-    <p>Tienes <a href="#" id="puntosLink"><span id="puntosUsuario"></span> puntos.</a></p>
+        <br>
+        <br>
 
-    <br>
-    <br>
+        <!-- Contenedor para mostrar las discotecas -->
+        <div id="discotecasContainer">
+            <!-- Aquí se mostrarán las discotecas -->
+        </div>
 
-    <input type="text" id="filtroNombre" placeholder="Filtrar por nombre...">
-    <select id="selectCiudad">
-        <option value="">Todas las ciudades</option>
-        <!-- Las opciones de ciudades se cargarán dinámicamente aquí -->
-    </select>
+        <!-- Popup -->
+        <div id="popup">
+            <h2>Introducir Código</h2>
+            <form action="" method="POST">
+                @csrf
+                <label for="codigo">Código:</label><br>
+                <input type="text" id="codigo" name="codigo"><br><br>
+                <button type="submit">Enviar</button>
+            </form>
+            <button onclick="cerrarPopup()">Cerrar</button>
+        </div>
 
-    <br>
-    <br>
+        <br>
+        <br>
 
-    <!-- Contenedor para mostrar las discotecas -->
-    <div id="discotecasContainer">
-        <!-- Aquí se mostrarán las discotecas -->
+        <div id="mapid"></div>
+
     </div>
 
-    <br>
-    <br>
+    <footer>
+        <p>Footer</p>
+    </footer>
 
-    <!-- Popup -->
-    <div id="popup">
-        <h2>Introducir Código</h2>
-        <form action="" method="POST">
-            @csrf
-            <label for="codigo">Código:</label><br>
-            <input type="text" id="codigo" name="codigo"><br><br>
-            <button type="submit">Enviar</button>
-        </form>
-        <button onclick="cerrarPopup()">Cerrar</button>
-    </div>
-
-    <div id="mapid"></div>
-
-</div>
-
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <script>
         var map = L.map('mapid').setView([40.505, -100.09], 4); // Define la posición inicial del mapa y el nivel de zoom
@@ -270,24 +436,42 @@
             xhr.send();
         }
 
-        // Función para mostrar las discotecas en el contenedor
+        // Función para mostrar las discotecas en tarjetas con los nuevos estilos
         function mostrarDiscotecas(discotecas) {
-            console.log("Discotecas sin filtrar:", discotecas);
-
             var discotecasContainer = document.getElementById('discotecasContainer');
-            discotecasContainer.innerHTML = '';
+            discotecasContainer.innerHTML = ''; // Limpiar el contenido anterior
 
             discotecas.forEach(function(discoteca) {
-                var discotecaLink = document.createElement('a');
-                discotecaLink.href = '/cliente/' + discoteca.id + '/eventos';
-                discotecaLink.textContent = discoteca.name;
+                // Crear un div para la tarjeta
+                var cardDiv = document.createElement('div');
+                cardDiv.classList.add('card');
 
-                var discotecaElement = document.createElement('div');
-                discotecaElement.appendChild(discotecaLink);
+                // Crear un encabezado para el nombre de la discoteca con los nuevos estilos
+                var cardHeader = document.createElement('h2');
+                cardHeader.classList.add('card-header'); // Agregar clase para el encabezado
+                cardHeader.textContent = discoteca.name;
 
-                discotecasContainer.appendChild(discotecaElement);
+                // Crear un párrafo para la información adicional con los nuevos estilos
+                var cardInfo = document.createElement('p');
+                cardInfo.classList.add('card-info'); // Agregar clase para la información
+                cardInfo.textContent = 'Dirección: ' + discoteca.direccion;
+
+                // Crear un enlace para más detalles con los nuevos estilos
+                var cardLink = document.createElement('a');
+                cardLink.classList.add('card-link'); // Agregar clase para el enlace
+                cardLink.href = '/cliente/' + discoteca.id + '/eventos';
+                cardLink.textContent = 'Ver eventos';
+
+                // Agregar el encabezado, información y enlace a la tarjeta
+                cardDiv.appendChild(cardHeader);
+                cardDiv.appendChild(cardInfo);
+                cardDiv.appendChild(cardLink);
+
+                // Agregar la tarjeta al contenedor de discotecas
+                discotecasContainer.appendChild(cardDiv);
             });
         }
+
 
         // Función para cargar las ciudades disponibles
         function cargarCiudades() {
