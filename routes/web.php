@@ -5,15 +5,19 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\googlecontroller;
+
+
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 
+
 Route::get('/google-auth/redirect', function () {
     return Socialite::driver('google')->redirect();
-});
+})->name('login.google');
  
 Route::get('/google-auth/callback-url', function () {
     $user_google = Socialite::driver('google')->user();
