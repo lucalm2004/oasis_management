@@ -6,55 +6,55 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
+use App\Models\Discoteca;
+use Illuminate\Support\Facades\Redirect;
 
 class ProfileController extends Controller
 {
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): View
+    public function edit(Request $request)
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $discotecas = Discoteca::all();  // Obtener las discotecas desde el modelo Discoteca
+        $user = Auth::user();            // Obtener el usuario autenticado
+    
+        return view('perfil', compact('discotecas', 'user'));
     }
-
+    
     /**
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $user = $request->user();
+    
+        // Actualizar los campos del usuario con los datos validados del formulario
+        $user->fill($request->validated());
+    
+        // Verificar si se proporcionó una nueva contraseña
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->input('password'));
         }
-
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    
+        // Guardar los cambios en el usuario
+        $user->save();
+    
+        // Redirigir de vuelta a la página de edición del perfil con un mensaje de éxito
+        return redirect()->route('profile.edit')->with('status', 'profile-updated');
     }
+    
 
     /**
-     * Delete the user's account.
+     * Show the user's profile with role.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function perfil(): View
     {
-        $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
-        ]);
+        $user = Auth::user(); // Obtener el usuario autenticado
+        $discotecas = Discoteca::all(); // Obtener todas las discotecas desde el modelo Discoteca
 
-        $user = $request->user();
-
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
+        return view('perfil', compact('discotecas', 'user'));
     }
 }

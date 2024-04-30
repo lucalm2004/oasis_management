@@ -48,9 +48,28 @@ require __DIR__.'/auth.php';
 
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\ValoracionController;
+use App\Http\Controllers\DiscotecaController;
 
+// Rutas públicas
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+
+// Rutas para valoraciones
 Route::get('/valoracion', [ValoracionController::class, 'showValoracionPage'])->name('valoracion');
-Route::get('/valoracion/form/{idEvento}', [ValoracionController::class, 'create'])->name('valoracion.form');
+Route::get('/valoracion/form/{idEvento}', [ValoracionController::class, 'create'])->name('valoracion.create');
+Route::post('/valoracion/store', [ValoracionController::class, 'store'])->name('valoracion.store');
+Route::get('/eventos/{idEvento}/resenas', [ValoracionController::class, 'showResenas'])->name('eventos.resenas');
 
-// Ruta por defecto
-Route::get('/', [WelcomeController::class, 'index']);
+// Rutas para discotecas y eventos
+Route::get('/discotecas/{id}/eventos', [DiscotecaController::class, 'getEventosByDiscoteca'])->name('discotecas.eventos');
+
+// Rutas protegidas con autenticación
+Route::middleware('auth')->group(function () {
+    // Ruta para mostrar y editar el perfil
+    Route::get('/perfil', [ProfileController::class, 'edit'])->name('perfil');
+// Mantén solo una de estas rutas y elimina la otra
+Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+// Si quieres mantener una ruta con POST, puedes cambiar su nombre
+Route::post('/perfil/update', [ProfileController::class, 'update'])->name('perfil.update');
+
+});

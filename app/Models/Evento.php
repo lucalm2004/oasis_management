@@ -12,12 +12,12 @@ class Evento extends Model
 
     public function discoteca()
     {
-        return $this->belongsTo(Discoteca::class, 'id');
+        return $this->belongsTo(Discoteca::class, 'id_discoteca');
     }
 
     public function valoraciones()
     {
-        return $this->hasMany(Valoracion::class, 'id_evento');
+        return $this->hasMany(Valoraciones::class, 'id_evento');
     }
 
     public function playlistCanciones()

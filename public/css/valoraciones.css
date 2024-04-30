@@ -1,8 +1,8 @@
 /* Estilos generales */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
-    color: #333;
+    background-color: #ffffff; /* Blanco */
+    color: #333; /* Texto principal */
     padding-top: 70px; /* Ajuste para compensar la altura de la barra de navegación */
 }
 
@@ -12,7 +12,7 @@ body {
 
 /* Estilos para la barra de navegación superior */
 .navbar {
-    background-color: #343a40;
+    background-color: #f58220; /* Naranja */
     position: fixed; /* Fija la barra en la parte superior */
     width: 100%; /* Ocupa todo el ancho disponible */
     top: 0; /* Alinea la barra en la parte superior */
@@ -27,7 +27,7 @@ body {
 .navbar-brand {
     display: flex;
     align-items: center;
-    color: #fff;
+    color: #ffffff; /* Blanco */
     text-decoration: none;
 }
 
@@ -37,74 +37,74 @@ body {
 }
 
 .navbar-nav .nav-link {
-    color: #fff;
+    color: #ffffff; /* Blanco */
 }
 
 .navbar-nav .nav-link:hover {
-    color: #ffc107;
+    color: #ffd54f; /* Amarillo */
 }
 
 /* Estilos para las tarjetas de discotecas */
 .card {
-    transition: transform 0.3s ease;
-    background-color: #ffb53d;
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffa200; /* Color de fondo */
+    border: 1px solid #dee2e6; /* Borde */
+    border-radius: 10px; /* Esquinas redondeadas */
+    transition: transform 0.3s; /* Transición al hacer hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
 }
 
 .card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-5px); /* Efecto de levantamiento al hacer hover */
 }
 
 .card-img-top {
-    height: 250px;
-    object-fit: contain;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
-
-.card-body {
-    padding: 20px;
+    height: 250px; /* Altura de la imagen */
+    object-fit: cover; /* Ajuste de la imagen */
+    border-top-left-radius: 10px; /* Esquina redondeada superior izquierda */
+    border-top-right-radius: 10px; /* Esquina redondeada superior derecha */
 }
 
 .card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
+    font-size: 1.5rem; /* Tamaño del título */
+    font-weight: bold; /* Texto en negrita */
+    color: #212529; /* Color del texto del título */
 }
 
 .card-text {
-    font-size: 1rem;
+    font-size: 1rem; /* Tamaño del texto */
+    color: #6c757d; /* Color del texto */
 }
 
 .btn-primary {
-    background-color: #ffc107;
+    background-color: #f58220; /* Naranja */
     border: none;
 }
 
 .btn-primary:hover {
-    background-color: #e0a800;
+    background-color: #e0620d; /* Naranja más oscuro */
 }
 
 /* Estilos para el footer */
 .footer {
-    background-color: #ff7316;
-    color: #fff;
+    background-color: #343a40; /* Gris oscuro */
+    color: #ffffff; /* Blanco */
     padding-bottom: 50px; /* Ajuste para evitar que el contenido del footer se solape */
     position: relative; /* Ajuste para mantener el espacio para la animación */
 }
 
 .footer a {
-    color: #fff;
+    color: #ffffff; /* Blanco */
 }
 
 .footer a:hover {
-    color: #ffc107;
+    color: #ffd54f; /* Amarillo */
 }
+
 /* Estilos para el slider */
 .slider {
     width: 100%;
     overflow: hidden;
+    position: relative;
 }
 
 .slide-track {
@@ -119,6 +119,39 @@ body {
 
 .slide img {
     width: 100%;
+}
+/* Estilos para las estrellas de valoración */
+.rating {
+    display: flex; /* Contenedor en línea */
+    align-items: center; /* Alineación vertical al centro */
+    margin-top: 10px; /* Margen superior */
+}
+
+.rating-num {
+    font-size: 1.2rem; /* Tamaño del número de valoración */
+    font-weight: bold; /* Texto en negrita */
+    margin-right: 10px; /* Margen derecho */
+}
+
+/* Estilos para las estrellas de valoración */
+.rating i {
+    color: #f58220; /* Color de las estrellas (naranja) */
+    font-size: 1.5rem; /* Tamaño de las estrellas */
+}
+
+/* Estilos para las estrellas llenas */
+.rating .fas.fa-star {
+    color: #ffdd00; /* Naranja */
+}
+
+/* Estilos para las medias estrellas */
+.rating .fas.fa-star-half-alt {
+    color: #fff200; /* Naranja */
+}
+
+/* Estilos para las estrellas vacías */
+.rating .far.fa-star {
+    color: #e0e0e0; /* Gris claro */
 }
 
 /* Animación de desplazamiento infinito */

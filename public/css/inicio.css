@@ -1,193 +1,155 @@
-/* Estilo general */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #343a40; /* Fondo negro */
-    color: #ffffff; /* Texto blanco */
-    margin: 0;
-    padding: 0;
-}
-
-/* Estilo del navbar */
+/* Estilos para la Navbar */
 .navbar {
-    background-color: #1a1d1f;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    padding: 15px 0;
-    transition: background-color 0.3s ease; /* Animación de transición */
+    background-color: #f58220; /* Naranja */
 }
 
-/* Cambio de color al hacer scroll */
-.navbar.scrolled {
-    background-color: #343a40; /* Cambia a fondo negro al hacer scroll */
-}
-
-/* Estilo del logo */
-.logo {
-    height: 30px;
-}
-
-/* Estilo del texto de la marca en el navbar */
 .navbar-brand {
-    font-size: 1.4rem;
-    color: #6eaff0; /* Azul neón para el texto de la marca */
-}
-
-/* Estilo de los enlaces en el navbar */
-.navbar-nav .nav-link {
-    color: #ffffff;
-}
-
-/* Efecto de zoom al pasar el ratón por encima */
-.carousel-item img:hover {
-    transform: scale(1.1); /* Zoom al 110% */
-}
-
-/* Estilo del contenido debajo del slider */
-.container.my-5 {
-    padding: 50px 0;
-}
-
-.container.my-5 h2 {
-    color: #6eaff0; /* Azul neón para los títulos */
-    font-size: 2.5rem;
-    font-weight: bold;
-}
-
-.container.my-5 p {
-    color: #ffffff;
+    display: flex;
+    align-items: center;
+    color: #ffffff; /* Blanco */
     font-size: 1.2rem;
-    line-height: 1.6;
 }
 
-/* Animación de desvanecimiento y escala al hacer hover */
+.navbar-brand img {
+    max-width: 40px;
+    margin-right: 10px;
+}
+
+.nav-link {
+    color: #ffffff !important; /* Blanco */
+}
+
+.nav-link:hover {
+    color: #ffd54f !important; /* Amarillo */
+}
+
+/* Estilos para el Slider */
+.parallax {
+    position: relative;
+    overflow: hidden;
+}
+
 .carousel-item img {
-    height: 300px;
+    height: 400px;
     object-fit: cover;
-    transition: transform 0.5s ease, opacity 0.5s ease; /* Transiciones para transformación y opacidad */
 }
 
-.carousel-item img:hover {
-    transform: scale(1.1); /* Zoom al 110% */
-    opacity: 0.8; /* Opacidad reducida al hacer hover */
-}
-
-/* Estilos para el contenedor de valoración */
-.rating-section {
-    background-color: #343a40; /* Fondo oscuro */
-    color: #ffffff; /* Texto blanco */
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Estilos para el título */
-.rating-title {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-/* Estilos para la descripción */
-.rating-description {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
-}
-
-/* Estilos para el botón de valoración */
-.rating-button .btn-primary {
-    font-size: 1.5rem;
-    padding: 12px 24px;
-    border-radius: 30px;
-}
-
-/* Hover del botón */
-.rating-button .btn-primary:hover {
-    transform: scale(1.1);
-    background-color: #0069d9; /* Cambio de color al hacer hover */
-}
-
-/* Definir una animación personalizada */
-@keyframes slideInFromLeft {
-    0% {
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    100% {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-/* Estilo específico para las imágenes */
-.img-fluid {
-    border-radius: 8px; /* Bordes redondeados */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease; /* Transiciones suaves */
-}
-
-/* Efecto de zoom y sombra al hacer hover */
-.img-fluid:hover {
-    transform: scale(1.05); /* Zoom al 105% */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada */
-    opacity: 0.9; /* Reducción de opacidad al hacer hover */
-}
-
-/* Aplicar la animación a un elemento específico */
+/* Estilos para el Contenido */
 .content-box {
-    animation: slideInFromLeft 1s ease-out;
+    background-color: #ffffff; /* Blanco */
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .content-box h2 {
-    color: #6eaff0; /* Azul neón para los títulos dentro de los cuadros */
-    font-size: 2rem;
-    font-weight: bold;
+    color: #f58220; /* Naranja */
 }
 
-/* Animación del footer con hover */
+.content-box p {
+    color: #757575; /* Gris oscuro */
+}
+
+/* Estilos para el Botón de Valorar */
+.rating-button {
+    margin-top: 20px;
+}
+
+/* Estilos para el Footer */
 .footer {
-    background-color: #1a1d1f;
-    color: #ffffff;
-    padding: 30px 0;
-    text-align: center;
-    transition: background-color 0.3s ease; /* Animación de transición */
+    background-color: #343a40;
+    color: #ffffff; /* Blanco */
 }
 
 .footer a {
-    color: #6eaff0; /* Azul neón para los enlaces del footer */
-    text-decoration: none;
+    color: #ffffff; /* Blanco */
 }
 
 .footer a:hover {
-    text-decoration: underline;
+    color: #ffd54f; /* Amarillo */
 }
 
-/* Cambio de color al hacer hover */
-.footer:hover {
-    background-color: #343a40; /* Cambia a fondo negro al hacer hover */
+/* Animaciones */
+.animate__animated {
+    animation-duration: 1s;
 }
 
-/* Estilos específicos para dispositivos móviles */
-@media (max-width: 767.98px) {
-    .navbar-brand {
-        font-size: 1.2rem;
-    }
+.animate__fadeInLeft {
+    animation-name: fadeInLeft;
+}
 
-    .carousel-item img {
-        height: 200px;
-    }
+.animate__fadeInRight {
+    animation-name: fadeInRight;
+}
 
-    .container.my-5 h2 {
-        font-size: 2rem;
-    }
+.animate__fadeInUp {
+    animation-name: fadeInUp;
+}
 
-    .container.my-5 p {
-        font-size: 1rem;
-    }
+/* Estilos adicionales */
+.my-5 {
+    margin-top: 5rem !important;
+    margin-bottom: 5rem !important;
+}
 
-    .content-box h2 {
-        font-size: 1.8rem;
-    }
+.mt-auto {
+    margin-top: auto !important;
+}
 
-    .footer {
-        padding: 20px 0;
+.py-5 {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+/* Estilos específicos para Botones */
+.btn-lg {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: 5px;
+}
+
+.btn-primary {
+    background-color: #f58220; /* Naranja */
+    border-color: #f58220; /* Naranja */
+}
+
+.btn-primary:hover {
+    background-color: #e0620d; /* Naranja más oscuro */
+    border-color: #e0620d; /* Naranja más oscuro */
+}
+
+.btn-outline-light {
+    color: #ffffff; /* Blanco */
+    border-color: #ffffff; /* Blanco */
+}
+
+.btn-outline-light:hover {
+    color: #343a40; /* Gris oscuro */
+    background-color: #ffffff; /* Blanco */
+    border-color: #ffffff; /* Blanco */
+}
+
+/* Estilos para la Animación de Desplazamiento de Logos */
+@keyframes slideLeft {
+    0% {
+        transform: translateX(0); /* Sin desplazamiento inicial */
     }
+    100% {
+        transform: translateX(-100%); /* Desplazamiento completo hacia la izquierda */
+    }
+}
+
+/* Aplicar la Animación a los Logos de Discotecas */
+.logos-container {
+    display: flex;
+    overflow: hidden; /* Oculta los logos que desbordan */
+}
+
+.logo-item {
+    flex: 0 0 auto; /* Ancho automático según el contenido */
+    animation: slideLeft 10s linear infinite; /* Configura la animación de desplazamiento */
 }

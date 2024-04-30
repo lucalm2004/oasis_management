@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('valoraciones', function (Blueprint $table) {
             $table->id();
-            $table->decimal('rating', 2);
-            $table->longText('reseña')->nullable();
+            $table->decimal('rating', 3, 1);
+            $table->longText('descripcion')->nullable();
             $table->foreignId('id_evento')->constrained('eventos');
             $table->foreignId('id_user')->constrained('users');
             $table->timestamps();
