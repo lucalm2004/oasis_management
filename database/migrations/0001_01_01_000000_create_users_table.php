@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('DNI', 9)->nullable();
             $table->string('google_id', 45)->nullable();
             $table->boolean('habilitado')->default("0");
+            $table->boolean('verificado')->default("0");
             $table->integer('puntos')->nullable();
             $table->foreignId('id_rol')->default("2")->constrained('roles');
             $table->rememberToken();

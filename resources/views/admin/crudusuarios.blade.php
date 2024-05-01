@@ -66,7 +66,30 @@
             <tbody id="resultado">
             </tbody>
           </table>
+          <div>
+          
+            <h3 class="text-center" id="h3solicitud" style="display: none">SOLICITUDES</h3>
+                      
+                     
+            <table class="table table-hover table-responsive" id="tablaSolicitudes" style="display: none">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Email</th>
+                        <th>DNI</th>
+                        <th>Discoteca</th>
+                        <th>Aceptar</th>
+                        <th>Rechazar</th>
+                    </tr>
+                </thead>
+                <tbody id="solicitudes">
+                </tbody>
+            </table>
+  
+          </div>
         </div>
+
+      
       </div>
     </div>
   </div> 

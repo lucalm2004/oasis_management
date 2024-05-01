@@ -195,12 +195,16 @@ function Editar(id) {
     fetch(`admin/crudusuarios/modadmin/${id}`)
         .then(response => response.json())
         .then(data => {
+
+                var displayStyle = (data.id_rol === 3 || data.id_rol === 4) ? "block" : "none";
+
+                console.log(data.id_discoteca);
                 // Crear el formulario con los datos recuperados
                 Swal.fire({
-                            title: "Modify User",
+                            title: "Modificar Usuario",
                             confirmButtonColor: "#0052CC",
-                            confirmButtonText: "Save Changes",
-                            cancelButtonText: "Cancel",
+                            confirmButtonText: "Guardar Cambios",
+                            cancelButtonText: "Cancelar",
                             cancelButtonColor: "transparent",
                             showCancelButton: true,
                             animation: false,
@@ -254,6 +258,14 @@ function Editar(id) {
                         </select>
                     </div>
                 </div>
+                <div class="col-3" id="discotecasFieldMod" style="display: ${displayStyle}">
+                <label class="estiloslabel" for="discotecaModificar" >Discoteca</label>
+                <div class="col-9">
+                    <span class="form-error-label" id="discotecaErrorModificar"></span>
+                    <select name="discoteca" id="discotecaModificar" class="estilosinput">
+                    
+                    </select>
+                </div>
                 </form>
                 <style>.swal2-cancel {color: black !important;}</style>
                 `,
@@ -272,6 +284,9 @@ function Editar(id) {
             // Agregar evento keyup al formulario después de crearlo
             document.getElementById('ModificarForm').addEventListener('keyup', validarFormularioMod);
             document.getElementById('ModificarForm').addEventListener('change', validarFormularioMod);
+            document.getElementById('rolModificar').addEventListener('change', mostrarDiscotecaMod);
+            obtenerDiscotecasMod(data.id_discoteca);
+            
 
         })
         .catch((error) => {
@@ -282,6 +297,55 @@ function Editar(id) {
             });
         });
 }
+
+
+function mostrarDiscotecaMod(){
+    var selectedRol = document.getElementById("rolModificar").value;
+    var discotecasField = document.getElementById("discotecasFieldMod");
+
+    if (selectedRol === "4") {
+        discotecasField.style.display = "block";
+
+    } else if(selectedRol === "3"){
+        discotecasField.style.display = "block";
+
+    }else{
+        discotecasField.style.display = "none";
+    
+
+    }
+    obtenerDiscotecasMod('');
+
+}
+function obtenerDiscotecasMod(idDiscotecaSeleccionado){
+    fetch(`admin/crudusuarios/discotecas`)
+    .then(response => response.json())
+    .then(data => {
+        var selectMarcador = document.getElementById('discotecaModificar');
+        selectMarcador.innerHTML = '';
+
+        var blankOption = document.createElement('option');
+        blankOption.value = ''; // Valor vacío
+        blankOption.text = ''; // Texto descriptivo
+        selectMarcador.appendChild(blankOption);
+
+
+        data.forEach(discoteca => {
+            var option = document.createElement('option');
+            option.value = discoteca.id;
+            option.text = discoteca.name;
+            if (discoteca.id === idDiscotecaSeleccionado) {
+                option.selected = true; // Seleccionar el rol correspondiente al usuario
+            }
+            selectMarcador.appendChild(option);
+        });
+    })
+    .catch(error => console.error('Error al obtener los marcadores:', error));
+
+}
+
+
+
 
 /* se cargen los roles form modificar del usuario y se seleccione el correcto */
 function obtenerRolesModificar(idRolSeleccionado) {
@@ -314,6 +378,10 @@ function validarFormularioMod() {
     var passwordError = document.getElementById('passwordErrorModificar');
     var dniError = document.getElementById('dniErrorModificar');
     var dni = document.getElementById('dniModificar');
+    var discoteca = document.getElementById("discotecaModificar");
+   
+    
+    var discotecaValue = discoteca ? discoteca.value : null;
     var dniValue = dni ? dni.value : null;
 
     // Validar nombre
@@ -386,8 +454,7 @@ function validarFormularioMod() {
         var resto = numerosDNI % 23;
         return letras.charAt(resto);
     }
-    
-
+  
      
 
     return {
@@ -395,6 +462,7 @@ function validarFormularioMod() {
         email: email,
         password: password,
         dni: dniValue,
+        discoteca: discotecaValue,
         rol: rol
     };
 }
@@ -406,11 +474,13 @@ function enviarFormularioModificado(id, formData) {
     var password = formData.password;
     var rol = formData.rol;
     var dni = formData.dni;
+    var discoteca = formData.discoteca;
     var bodyData = {
         nombre: nombre,
         email: email,
         password: password,
         dni: dni,
+        discoteca: discoteca,
         rol: rol
     };
 
@@ -467,11 +537,11 @@ crearUser.addEventListener("click", function() {
 function mostrarFormulario() {
     obtenerRolesCrear('');
     Swal.fire({
-        title: "Create User",
+        title: "Crear Usuario",
         confirmButtonColor: "#0052CC",
-        confirmButtonText: "Create",
+        confirmButtonText: "Crear",
         html: `
-        <form id="CrearForm">
+        <form id="CrearForm" enctype="multipart/form-data">
         <div class="rownew">
             <div class="col-3">
                 <label class="estiloslabel" for="nombreCrear">Name</label>
@@ -519,6 +589,17 @@ function mostrarFormulario() {
                 <input type="text" id="dniCrear" name="dni">
             </div>
         </div>
+        <div class="col-3" id="discotecasField" style="display: none">
+        <label class="estiloslabel" for="discotecaCrear" >Discoteca</label>
+        <div class="col-9">
+            <span class="form-error-label" id="discotecaErrorCrear"></span>
+            <select name="discoteca" id="discotecaCrear" class="estilosinput">
+            
+            </select>
+        </div>
+        </div>
+       
+        
         </form>
 
         `,
@@ -534,6 +615,7 @@ function mostrarFormulario() {
     document.getElementById('CrearForm').addEventListener('keyup', validarFormulario);
     document.getElementById('CrearForm').addEventListener('change', validarFormulario);
     document.getElementById("rolCrear").addEventListener("change", mostrarDNI);
+    document.getElementById("rolCrear").addEventListener("change", mostrarDiscoteca);
 }
 
 function mostrarDNI() {
@@ -547,6 +629,52 @@ function mostrarDNI() {
         dniField.style.display = "none";
     }
 }
+
+function mostrarDiscoteca(){
+    var selectedRol = document.getElementById("rolCrear").value;
+    var discotecasField = document.getElementById("discotecasField");
+
+    if (selectedRol === "4") {
+        discotecasField.style.display = "block";
+
+    } else if(selectedRol === "3"){
+        discotecasField.style.display = "block";
+
+    }else{
+        discotecasField.style.display = "none";
+    
+
+    }
+    obtenerDiscotecas('');
+    obtenerciudades('');
+
+}
+
+function obtenerDiscotecas(){
+    fetch(`admin/crudusuarios/discotecas`)
+    .then(response => response.json())
+    .then(data => {
+        var selectMarcador = document.getElementById('discotecaCrear');
+        selectMarcador.innerHTML = '';
+
+        var blankOption = document.createElement('option');
+        blankOption.value = ''; // Valor vacío
+        blankOption.text = ''; // Texto descriptivo
+        selectMarcador.appendChild(blankOption);
+
+
+        data.forEach(discoteca => {
+            var option = document.createElement('option');
+            option.value = discoteca.id;
+            option.text = discoteca.name;
+            selectMarcador.appendChild(option);
+        });
+    })
+    .catch(error => console.error('Error al obtener los marcadores:', error));
+
+}
+
+
 
 
 function obtenerRolesCrear() {
@@ -579,14 +707,21 @@ function validarFormulario() {
     var password = document.getElementById('passwordCrear').value;
     var rol = document.getElementById('rolCrear').value;
     var dni = document.getElementById('dniCrear');
+    var discoteca = document.getElementById('discotecaCrear');
+    var discotecaValue = discoteca ? discoteca.value : null;
     var dniValue = dni ? dni.value : null;
+
+
     // Validar campos según tus criterios de validación
     var nombreError = document.getElementById('nombreErrorCrear');
     var emailError = document.getElementById('emailErrorCrear');
     var passwordError = document.getElementById('passwordErrorCrear');
     var rolError = document.getElementById('rolErrorCrear');
     var dniError = document.getElementById('dniErrorCrear');
+    var discotecaError = document.getElementById('discotecaErrorCrear');
 
+    
+   
     // Validar nombre
     if (nombre === "") {
         nombreError.innerText = 'Por favor introduce un nombre';
@@ -637,6 +772,9 @@ function validarFormulario() {
     } else {
         rolError.innerText = '';
     }
+
+ 
+
     if (document.getElementById('dniField').style.display === 'block') {
         if (dniValue === "") {
             dniError.innerText = 'Por favor introduce un DNI';
@@ -654,7 +792,13 @@ function validarFormulario() {
                 }
             }
         }
+
+        
     }
+
+     
+
+
     // Función para calcular la letra del DNI
     function calcularLetraDNI(numerosDNI) {
         var letras = "TRWAGMYFPDXBNJZSQVHLCKE";
@@ -663,7 +807,7 @@ function validarFormulario() {
     }
     // Habilitar o deshabilitar el botón de enviar según la validez del formulario
     /* var enviarBtn = document.getElementById('btnEnviar'); */
-    var formularioValido = !nombreError.innerText && !emailError.innerText && !passwordError.innerText && !rolError.innerText && !dniError.innerText;
+    var formularioValido = !nombreError.innerText && !emailError.innerText && !passwordError.innerText && !rolError.innerText && !dniError.innerText && !discotecaError.innerText;
     /*  enviarBtn.disabled = !formularioValido; */
 
     return formularioValido;
@@ -675,14 +819,21 @@ function enviarFormulario() {
     var password = document.getElementById('passwordCrear').value;
     var rol = document.getElementById('rolCrear').value;
     var dni = document.getElementById('dniCrear').value;
+    var discoteca = document.getElementById('discotecaCrear').value;
+
+   
     // Si el campo DNI está vacío, establecerlo como null
     dni = dni === '' ? null : dni;
+    discoteca = discoteca === '' ? null : discoteca;
+  
 
     console.log(nombre);
     console.log(email);
     console.log(password);
     console.log(rol);
     console.log(dni);
+    console.log(discoteca);
+   
     
 
 
@@ -690,7 +841,8 @@ function enviarFormulario() {
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     var rol2 = document.getElementById("rol").value;
 
-
+    console.log(nombre);
+  
     fetch('admin/crudusuarios/insertuser', {
             method: 'POST',
             headers: {
@@ -698,12 +850,16 @@ function enviarFormulario() {
                 'X-CSRF-TOKEN': csrfToken
             },
             body: JSON.stringify({
-                nombre: nombre,
+                nombres: nombre,
                 email: email,
                 password: password,
                 dni: dni,
-                rol: rol
+                discoteca: discoteca,
+                rol: rol,
+                
+        
             })
+         
         })
         .then(response => {
             if (!response.ok) {
@@ -712,19 +868,206 @@ function enviarFormulario() {
             return response.json();
         })
         .then(data => {
-
+                Swal.fire({
+                    title: "Creado",
+                    text: "Usuario creado correctamente",
+                    icon: "success"
+                }).then(() => {
+                    ListarUsuarios('', rol2);
+                });
            
-            Swal.fire({
-                title: "Creado",
-                text: "Usuario creado correctamente",
-                icon: "success"
-            }).then(() => {
-                ListarUsuarios('', rol2);
-
-            });
         })
         .catch(error => {
             console.error('Error:', error);
             Swal.fire('Error', 'Error al crear el usuario', 'error');
         });
+}
+
+
+/* ver si hay alguna solicitud */
+//ver solicitudes 
+//actualizar lista solicitudes casa segundo
+setInterval(function() {
+    mostrarSolicitud(); //actualizar mostrarSolictud()
+
+
+
+
+}, 1000);
+
+// MOSTRAR SOLICITUD 
+mostrarSolicitud('');
+//funcion para mostarr las solcitudes
+// Función para mostrar las solicitudes
+function mostrarSolicitud() {
+    var solicitudes = document.getElementById('solicitudes'); // Obtener elemento con el id "solicitudes"
+    var tabla = document.getElementById('tablaSolicitudes'); // Obtener elemento con el id "tablaSolicitudes"
+    var h3Solicitud = document.getElementById('h3solicitud'); // Obtener elemento con el id "h3solicitud"
+
+    // Creamos ajax
+    var ajax = new XMLHttpRequest();
+    // Definimos el método y la URL
+    ajax.open('GET', 'admin/crudusuarios/solcitudes', true);
+    ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4) {
+            if (ajax.status == 200) {
+                try {
+                    var json = JSON.parse(ajax.responseText);
+                    if (json.error) {
+                        // Manejar el error, por ejemplo, mostrando un mensaje al usuario
+                        console.error('Error en la respuesta del servidor:', json.error);
+                    } else {
+                        // Resto del código para manejar la respuesta exitosa
+                        if (json.length === 0) {
+                            solicitudes.innerHTML = "<p>Actualmente no hay solicitudes.</p>";
+                            // Oculta la tabla y el encabezado si no hay solicitudes
+                            tabla.style.display = 'none';
+                            h3Solicitud.style.display = 'none';
+                        } else {
+                            var tablaHTML = "";
+                            json.forEach(function(item) {
+                                // Construye una fila de la tabla con los datos del elemento actual
+                                var str = "<tr><td>" + item.id+ "</td>";
+                                str += "<td>" + item.email + "</td>";
+                                str += "<td>" + item.DNI + "</td>";
+                                str += "<td>" + item.nombre_discoteca + "</td>";
+                                str += "<td><button type='button' id='aceptar' onclick='aceptarSolicitud(" + item.id + ")'>Aceptar</button></td>";
+                                str += "<td><button type='button' id='rechazar' onclick='rechazarSolicitud(" + item.id + ")'>Rechazar</button></td>";
+                                str += "</tr>";
+                                tablaHTML += str;
+                            });
+                            solicitudes.innerHTML = tablaHTML;
+                            // Muestra la tabla y el encabezado si hay solicitudes
+                            tabla.style.display = 'block';
+                            h3Solicitud.style.display = 'block';
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error al parsear JSON:', e);
+                }
+            } else {
+                console.error('Error en la solicitud HTTP:', ajax.status);
+            }
+        }
+    };
+    ajax.send(); // Envía la solicitud HTTP al servidor 
+}
+
+/* aceptar la solicitud del gestor */
+function aceptarSolicitud(id) {
+    var rol = document.getElementById("rol").value;
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    Swal.fire({
+        title: "Aceptar gestor",
+        text: `¿Seguro que desea aceptar el gestor?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#0052CC",
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`admin/crudusuarios/solcitudesaceptar/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+
+                        Swal.fire({
+                            title: "Ha ocurrido un error",
+                            text: "Error al aceptar el usuario",
+                            icon: "error"
+                        });
+                        return;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+
+                    if (data.success == true) {
+                        Swal.fire({
+                            title: "Aceptado",
+                            text: "Gestor aceptado correctamente",
+                            icon: "success"
+                        }).then(() => {
+                            ListarUsuarios('', rol);
+                            mostrarSolicitud();
+
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error al eliminar el usuario",
+                            text: data.message,
+                            icon: "error"
+                        });
+                    }
+                })
+                .catch(error => console.error('Error al aceptar el gestor:', error));
+        }
+    });
+}
+
+/* rechazar la solicitud del gestor */
+function rechazarSolicitud(id) {
+    var rol = document.getElementById("rol").value;
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    Swal.fire({
+        title: "Rechazar gestor",
+        text: `¿Seguro que desea rechazar el gestor?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#0052CC",
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`admin/crudusuarios/solcitudrechazar/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+
+                        Swal.fire({
+                            title: "Ha ocurrido un error",
+                            text: "Error al aceptar el usuario",
+                            icon: "error"
+                        });
+                        return;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+
+                    if (data.success == true) {
+                        Swal.fire({
+                            title: "Rechazado",
+                            text: "Gestor rechazado correctamente",
+                            icon: "success"
+                        }).then(() => {
+                            ListarUsuarios('', rol);
+                            mostrarSolicitud();
+
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error al rechazar el usuario",
+                            text: data.message,
+                            icon: "error"
+                        });
+                    }
+                })
+                .catch(error => console.error('Error al aceptar el gestor:', error));
+        }
+    });
 }

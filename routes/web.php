@@ -6,6 +6,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AdminController;
+use Illuminate\Support\Facades\Session;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,7 +29,7 @@ Route::get('/google-auth/callback-url', function () {
     ]);
     Auth::login($user);
     $rol = $user->rol; // Acceder al campo "rol" del usuario
-    // dd($rol);
+    Session::put("usuarioId", $user->id);
     return redirect('/dashboard');
 });
 
@@ -60,9 +61,14 @@ Route::middleware('auth')->group(function () {
         Route::get('admin/crudusuarios/roles', 'showRoles')->name('crud.showRoles');
         Route::get('admin/crudusuarios/modadmin/{id}', 'editUsers')->name('crud.editUsers');
         Route::post('admin/crudusuarios/actualizar/{id}', 'actualizarUsers')->name('crud.actualizarUsers');
+        Route::get('admin/crudusuarios/actualizar/{id}', 'actualizarUsers')->name('crud.actualizarUsers');
         Route::post('admin/crudusuarios/cambiarestado/{id}', 'cambiarEstado')->name('crud.cambiarEstado');
         Route::post('admin/crudusuarios/insertuser', 'storeUser')->name('crud.storeUser');
-       
+        Route::get('admin/crudusuarios/insertuser', 'storeUser')->name('crud.storeUser');
+        Route::get('admin/crudusuarios/discotecas', 'showDiscotecas')->name('crud.showDiscotecas');
+        Route::get('admin/crudusuarios/solcitudes', 'showSolicitudes')->name('crud.showSolicitudes');
+        Route::post('admin/crudusuarios/solcitudesaceptar/{id}', 'AceptarSolicitudes')->name('crud.AceptarSolicitudes');
+        Route::post('admin/crudusuarios/solcitudrechazar/{id}', 'RechazarSolicitudes')->name('crud.RechazarSolicitudes');
 
         /* CRUD DISCOTECAS */
         Route::post('admin2/cruddiscotecas', 'showCrudDiscotecas')->name('crud.showCrudDiscotecas');

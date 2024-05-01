@@ -23,34 +23,46 @@ class AdminController extends Controller
     /* CRUD DISCOTECAS */
 
     /* ver usuarios */
+   
     public function showCrudUsers(Request $request)
     {
-        $query = User::query();
-
-        // Verificar si se proporcionó un filtro de búsqueda
-        if ($request->input('busqueda')) {
-            $data = $request->input('busqueda');
-            $query->where('name', 'like', "%$data%")
-                ->orWhere('email', 'like', "%$data%");
-        }
-
-        // Verificar si se proporcionó un filtro de rol
-        if ($request->input('rol')) {
-            $rolId = $request->input('rol');
-            $query->where('id_rol', $rolId);
-        }
-
-        // Obtener los usuarios con la relación de rol cargada
-        $users = $query->with('rol')->get();
-
-        return response()->json($users);
+          $query = User::query();
+  
+          // Verificar si se proporcionó un filtro de búsqueda
+          if ($request->input('busqueda')) {
+              $data = $request->input('busqueda');
+              $query->where('name', 'like', "%$data%")
+                  ->orWhere('email', 'like', "%$data%");
+          }
+  
+          // Verificar si se proporcionó un filtro de rol
+          if ($request->input('rol')) {
+              $rolId = $request->input('rol');
+              $query->where('id_rol', $rolId);
+          }
+           // Excluir los usuarios con verificado = 0
+            $query->where('verificado', '=', 1);
+          // Obtener los usuarios con la relación de rol cargada
+          $users = $query->with('rol')->get();
+  
+          return response()->json($users);
     }
+
     /* obtener roles */
     public function showRoles()
     {
         $roles = Rol::all();
         return response()->json($roles);
     }
+
+    /* obtener discotecas*/
+
+    public function showDiscotecas(){
+        $discotecas = Discoteca::all();
+        return response()->json($discotecas);
+
+    }
+
     /* cambiar estado del usuario */
     public function cambiarEstado($id)
     {
@@ -77,7 +89,10 @@ class AdminController extends Controller
     /* obetener datos editar usuario */
 
     public function editUsers($id){
-        $users = User::findOrFail($id);
+        $users = User::select('users.*', 'users_discotecas.id_discoteca')
+            ->leftJoin('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
+            ->where('users.id', $id)
+            ->first();
         return response()->json($users);
     }
 
@@ -119,6 +134,62 @@ class AdminController extends Controller
 
         // Guardar los cambios en la base de datos
         $user->save();
+        
+        
+
+        $discotecaID = $request->input("discoteca");
+
+        
+        
+        
+        if ($discotecaID !== null) {
+            if ($request->input('rol') == 3) {
+                // Buscar un gestor diferente al usuario que se está actualizando en la misma discoteca
+                $existingGestor = UserDiscoteca::where('id_discoteca', $discotecaID)
+                                                ->where('id_users', '!=', $id) // Excluir el usuario actual
+                                                ->whereHas('user', function ($query) {
+                                                    $query->where('id_rol', 3); // Filtrar por usuarios con rol de gestor
+                                                })
+                                                ->first();
+
+                // Si existe un gestor diferente, no se permite la asignación
+                if ($existingGestor) {
+                    return response()->json(['error' => 'Ya existe un gestor diferente en esta discoteca'], 422);
+                }
+                
+                $Usersdiscoteca = UserDiscoteca::where('id_users', '=', $id)->first();
+                if ($Usersdiscoteca) {
+                    $Usersdiscoteca->id_discoteca = $discotecaID;
+                    $Usersdiscoteca->save();
+                }else {
+                    $UsersdiscotecaNueva = new UserDiscoteca();
+                    $UsersdiscotecaNueva->id_users = $id;
+                    $UsersdiscotecaNueva->id_discoteca = $discotecaID;
+                    $UsersdiscotecaNueva->save();
+                }
+          
+                
+            }elseif ($request->input('rol') == 4) {
+                
+                
+                $Usersdiscoteca = UserDiscoteca::where('id_users', '=', $id)->first();
+                
+                if ($Usersdiscoteca) {
+                    $Usersdiscoteca->id_discoteca = $discotecaID;
+                    $Usersdiscoteca->save();
+                }else {
+                    $UsersdiscotecaNueva = new UserDiscoteca();
+                    $UsersdiscotecaNueva->id_users = $id;
+                    $UsersdiscotecaNueva->id_discoteca = $discotecaID;
+                    $UsersdiscotecaNueva->save();
+                }
+          
+            }
+        }else {
+            DB::table('users_discotecas')->where('id_users', $id)->delete();
+          
+            
+        }
 
         // Confirmar la transacción
         DB::commit();
@@ -186,12 +257,11 @@ class AdminController extends Controller
     /* crear un usuario nuevo */
 
     public function storeUser(Request $request){
-        $name = $request->input('nombre');
+        $names = $request->input('nombres');
         $email = $request->input('email');
         $password = $request->input('password');
         $dni = $request->input('dni');
         $rol = $request->input('rol');
-
         try {
             DB::beginTransaction();
     
@@ -212,13 +282,72 @@ class AdminController extends Controller
     
             // Si el usuario no existe, procede con la creación del nuevo usuario
             $user = new User();
-            $user->name = $name;
+            $user->name = $names;
             $user->email = $email;
             $user->password = Hash::make($password);
             $user->DNI = $dni;
             $user->id_rol = $rol;
             $user->habilitado= 1;
+            $user->verificado= 1;
             $user->save();
+
+            $discoteca = $request->input('discoteca');
+            if ($discoteca !== null) {
+                $gestorExistente = UserDiscoteca::where('id_discoteca', $discoteca)
+                ->whereHas('user', function ($query) {
+                    $query->where('id_rol', 3); // 3 representa el ID del rol de gestor
+                })
+                ->exists();
+
+                if ($gestorExistente) {
+                    return response()->json(['error' => 'La discoteca ya tiene un gestor asignado'], 422);
+                }
+
+              
+                $userdiscoteca =  new UserDiscoteca();
+                $userdiscoteca->id_users = $user ->id;
+                $userdiscoteca->id_discoteca = $discoteca;
+                $userdiscoteca->save();
+            }
+           
+
+           /*  $discotecaNuevaName = $request->input('nombreDiscoteca');
+            if ($discotecaNuevaName !== null) {
+                $discotecaNueva = new Discoteca();
+                $discotecaNueva->name = $discotecaNuevaName;
+                $discotecaNueva->direccion = $request->input('direccion');
+      
+            
+                $imagen = $request->file('imagen');
+                $originalName = $imagen->getClientOriginalName();
+                $imageName = time() . '_' . $originalName;
+                $imagePath = 'img/discotecas';
+                // Almacenar la imagen en la carpeta 'public/img'
+                $imagen->move(public_path($imagePath), $imageName);
+
+                // Guardar el nombre de la imagen en la base de datos
+                $discotecaNueva->image = $imageName;
+                
+                $discotecaNueva->lat = $request->input('latitud');
+                $discotecaNueva->long = $request->input('longitud');
+                $discotecaNueva->capacidad = $request->input('capacidad');
+                $discotecaNueva->id_ciudad = $request->input('ciudad');
+                $discotecaNueva->save();
+
+                // Obtener el ID de la discoteca recién creada
+                $newDiscotecaId = $discotecaNueva->id;
+
+                // Asignar al usuario gestor a la discoteca recién creada
+                $discotecaGestor = new UserDiscoteca();
+                $discotecaGestor->id_users = $user->id; // Usar el ID del usuario recién creado
+                $discotecaGestor->id_discoteca = $newDiscotecaId; // Usar el ID de la discoteca recién creada
+                $discotecaGestor->save();
+
+                
+
+            } */
+
+
     
             DB::commit();
     
@@ -227,6 +356,75 @@ class AdminController extends Controller
             DB::rollBack();
     
             return response()->json(['error' => 'Error al crear usuario: ' . $e->getMessage()], 500);
+        }
+
+    }
+
+    /* Ver Solicitudes  */
+    public function showSolicitudes(){
+        $solicitudes = DB::table('users')
+        ->select('users.*', 'users_discotecas.id_discoteca', 'discotecas.name AS nombre_discoteca')
+        ->leftJoin('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
+        ->leftJoin('discotecas', 'users_discotecas.id_discoteca', '=', 'discotecas.id')
+        ->where('users.verificado', '=', 0)
+        ->get();
+        return response()->json($solicitudes);
+
+    }
+
+    /* aceptar solicitudes */
+
+    public function AceptarSolicitudes($id){
+       
+        try {
+            DB::beginTransaction();
+    
+  
+            // Eliminar el usuario principal si existe
+            $user = User::findOrFail($id);
+            $user-> verificado = 1;
+            $user->save();
+            
+            // Confirmar la transacción
+            DB::commit();
+    
+            return response()->json(['success' => true, 'message' => 'Gestor aceptado correctamente']);
+        } catch (\Exception $e) {
+         
+            DB::rollBack();
+    
+            return response()->json(['success' => false, 'error' => 'Error al aceptar gestor: ' . $e->getMessage()], 500);
+        }
+
+
+    }
+
+    /* rechazar al gestor */
+
+    public function RechazarSolicitudes($id){
+        try {
+            DB::beginTransaction();
+    
+            // Eliminar registros relacionados de la tabla UserDiscoteca si existen
+            $UserDiscotecas = UserDiscoteca::where('id_users', $id)->first();
+            $UserDiscotecas->delete();
+
+            Discoteca::where('id', $UserDiscotecas->id_discoteca)->delete();
+             
+
+            // Eliminar el usuario principal si existe
+            $user = User::findOrFail($id);
+            $user->delete();
+            
+            // Confirmar la transacción
+            DB::commit();
+    
+            return response()->json(['success' => true, 'message' => 'Gestor rechazado correctamente']);
+        } catch (\Exception $e) {
+         
+            DB::rollBack();
+    
+            return response()->json(['success' => false, 'error' => 'Error al aceptar gestor: ' . $e->getMessage()], 500);
         }
 
     }
