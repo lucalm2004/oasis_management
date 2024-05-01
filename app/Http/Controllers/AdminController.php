@@ -309,46 +309,7 @@ class AdminController extends Controller
                 $userdiscoteca->id_discoteca = $discoteca;
                 $userdiscoteca->save();
             }
-           
-
-           /*  $discotecaNuevaName = $request->input('nombreDiscoteca');
-            if ($discotecaNuevaName !== null) {
-                $discotecaNueva = new Discoteca();
-                $discotecaNueva->name = $discotecaNuevaName;
-                $discotecaNueva->direccion = $request->input('direccion');
-      
-            
-                $imagen = $request->file('imagen');
-                $originalName = $imagen->getClientOriginalName();
-                $imageName = time() . '_' . $originalName;
-                $imagePath = 'img/discotecas';
-                // Almacenar la imagen en la carpeta 'public/img'
-                $imagen->move(public_path($imagePath), $imageName);
-
-                // Guardar el nombre de la imagen en la base de datos
-                $discotecaNueva->image = $imageName;
-                
-                $discotecaNueva->lat = $request->input('latitud');
-                $discotecaNueva->long = $request->input('longitud');
-                $discotecaNueva->capacidad = $request->input('capacidad');
-                $discotecaNueva->id_ciudad = $request->input('ciudad');
-                $discotecaNueva->save();
-
-                // Obtener el ID de la discoteca recién creada
-                $newDiscotecaId = $discotecaNueva->id;
-
-                // Asignar al usuario gestor a la discoteca recién creada
-                $discotecaGestor = new UserDiscoteca();
-                $discotecaGestor->id_users = $user->id; // Usar el ID del usuario recién creado
-                $discotecaGestor->id_discoteca = $newDiscotecaId; // Usar el ID de la discoteca recién creada
-                $discotecaGestor->save();
-
-                
-
-            } */
-
-
-    
+               
             DB::commit();
     
             return response()->json(['success' => 'Usuario creado correctamente.']);
@@ -433,25 +394,32 @@ class AdminController extends Controller
 
     /* ver discotecas con filtros*/
     public function showCrudDiscotecas(Request $request){
-        $query = Discoteca::query();
-
+        $query = DB::table('discotecas as d')
+            ->join('users_discotecas as du', 'd.id', '=', 'du.id_discoteca')
+            ->join('users as u', 'du.id_users', '=', 'u.id')
+            ->join('roles as r', 'u.id_rol', '=', 'r.id')
+            ->join('ciudades as c', 'd.id_ciudad', '=', 'c.id')
+            ->select('d.*', 'u.name as nombre_usuario', 'c.name as nombre_ciudad')
+            ->where('r.id', '=', 3);
+    
         // Verificar si se proporcionó un filtro de búsqueda
         if ($request->input('busqueda')) {
             $data = $request->input('busqueda');
-            $query->where('name', 'like', "%$data%");
+            $query->where('d.name', 'like', "%$data%");
         }
-
-        // Verificar si se proporcionó un filtro de rol
+    
+        // Verificar si se proporcionó un filtro de ciudad
         if ($request->input('ciudad')) {
             $ciudadId = $request->input('ciudad');
-            $query->where('id_ciudad', $ciudadId);
+            $query->where('d.id_ciudad', $ciudadId);
         }
-
-      
-        $discotecas = $query->with('ciudad')->get();
-
+    
+        // Ordenar por el ID de la discoteca
+        $query->orderBy('d.id');
+    
+        $discotecas = $query->get();
+    
         return response()->json($discotecas);
-
     }
 
     /* obtener lista ciudades para desplegables */
@@ -522,6 +490,137 @@ class AdminController extends Controller
     
             return response()->json(['success' => false, 'error' => 'Error al eliminar discoteca: ' . $e->getMessage()], 500);
         }
+    }
+
+    /* insertar una nueva discoteca */
+
+    public function storeDiscoteca(Request $request){
+        try {
+            DB::beginTransaction();
+    
+            $discotecaNuevaName = $request->input('nombre');
+         /*    dd($discotecaNuevaName);  */
+    
+            // Validar si la discoteca ya existe
+            $discotecaExistente = Discoteca::where('name', $discotecaNuevaName)->where('name', $request->input('ciudad'))->first();
+            if ($discotecaExistente) {
+                return response()->json(['error' => 'Ya existe esta discoteca'], 422);
+            }
+    
+            // Obtener y guardar la imagen
+          
+                $imagen = $request->file('imagen');
+             /*    dd($imagen); */
+                $originalName = $imagen->getClientOriginalName();
+               /*  dd($originalName);  */
+                $imageName = time() . '_' . $originalName;
+                $imagePath = 'img/discotecas';
+                $imagen->move(public_path($imagePath), $imageName);
+           
+            $ciudad = $request->input('ciudad');
+            $ciudadEncontrada = DB::table('ciudades')->where('id', $ciudad)->first();
+            // Obtener latitud y longitud
+            $apiKey = 'AIzaSyBHnWvq4QKI7BwTKqm5vXGxLxNz01jSyiY';
+            $formattedAddress = urlencode($request->input('direccion') . ', ' . $ciudadEncontrada->name);
+          /*   dd($formattedAddress); */
+            $url = "https://maps.googleapis.com/maps/api/geocode/json?address={$formattedAddress}&key={$apiKey}";
+            $response = file_get_contents($url);
+            $json = json_decode($response);
+            $latitud = $json->results[0]->geometry->location->lat;
+            $longitud = $json->results[0]->geometry->location->lng; 
+    
+            // Crear nueva discoteca
+            $discotecaNueva = new Discoteca();
+            $discotecaNueva->name = $discotecaNuevaName;
+            $discotecaNueva->direccion = $request->input('direccion');
+            $discotecaNueva->image = $imageName;
+            $discotecaNueva->lat = $latitud;
+            $discotecaNueva->long = $longitud;
+            $discotecaNueva->capacidad = $request->input('capacidad');
+            $discotecaNueva->id_ciudad = $request->input('ciudad');
+            $discotecaNueva->save();
+    
+            DB::commit();
+    
+            return response()->json(['success' => 'Discoteca creada correctamente.']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Error al crear discoteca: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function editDiscoteca($id){
+        $discoteca = Discoteca::findOrFail($id);
+        return response()->json($discoteca);
+
+    }
+
+    /* Actualizar discoteca */
+
+    public function actualizarDiscoteca($id, Request $request){
+        try {
+            DB::beginTransaction();
+
+            $discotecaNueva = Discoteca::findOrFail($id);
+            $discotecaNuevaName = $request->input('nombre');
+            // Verificar si existe una discoteca con el mismo nombre en la misma ciudad
+                $discotecaExistente = Discoteca::where('name', $discotecaNuevaName)
+                ->where('id_ciudad', $request->input('ciudad'))
+                ->where('id', '!=', $id)
+                ->first();
+
+            if ($discotecaExistente) {
+                return response()->json(['error' => 'Ya existe una discoteca con el mismo nombre en esta ciudad'], 422);
+            }
+    
+         
+           /*  dd($request->hasFile('imagen')); */
+            if($request->file('imagen')){
+                $imagen = $request->file('imagen');
+                $originalName = $imagen->getClientOriginalName();
+            
+                $imageName = time() . '_' . $originalName;
+                $imagePath = 'img/discotecas';
+                $imagen->move(public_path($imagePath), $imageName);
+
+            }else {
+                $imageName = $discotecaNueva -> image;
+            }
+            
+             
+            
+           
+            $ciudad = $request->input('ciudad');
+            $ciudadEncontrada = DB::table('ciudades')->where('id', $ciudad)->first();
+            // Obtener latitud y longitud
+            $apiKey = 'AIzaSyBHnWvq4QKI7BwTKqm5vXGxLxNz01jSyiY';
+            $formattedAddress = urlencode($request->input('direccion') . ', ' . $ciudadEncontrada->name);
+          /*   dd($formattedAddress); */
+            $url = "https://maps.googleapis.com/maps/api/geocode/json?address={$formattedAddress}&key={$apiKey}";
+            $response = file_get_contents($url);
+            $json = json_decode($response);
+            $latitud = $json->results[0]->geometry->location->lat;
+            $longitud = $json->results[0]->geometry->location->lng; 
+    
+            // Crear nueva discoteca
+           
+            $discotecaNueva->name = $discotecaNuevaName;
+            $discotecaNueva->direccion = $request->input('direccion');
+            $discotecaNueva->image = $imageName;
+            $discotecaNueva->lat = $latitud;
+            $discotecaNueva->long = $longitud;
+            $discotecaNueva->capacidad = $request->input('capacidad');
+            $discotecaNueva->id_ciudad = $request->input('ciudad');
+            $discotecaNueva->save();
+    
+            DB::commit();
+    
+            return response()->json(['success' => 'Discoteca creada correctamente.']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Error al crear discoteca: ' . $e->getMessage()], 500);
+        }
+
     }
 
 

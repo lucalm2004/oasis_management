@@ -9,6 +9,9 @@
   <!-- Se ha de añadir el token para poder usarlo en el formdata de AJAX -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 
 
@@ -61,6 +64,7 @@
                   <th>Imagen</th>
                   <th>Ciudad</th>
                   <th>Dirección</th>
+                  <th>Gestor</th>
                   <th>Editar</th>
                   <th>Eliminar</th>
                 </tr>

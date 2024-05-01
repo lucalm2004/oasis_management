@@ -35,9 +35,10 @@ function ListarDiscotecas(valor, ciudad) {
                 str += "<tr>";
                 str += "<td>" + item.id + "</td>";
                 str += "<td>" + item.name + "</td>";
-                str += "<td>" + item.image + "</td>";
-                str += "<td>" + item.ciudad.name + "</td>";
+                str += "<td><img id='imageP' src='../img/discotecas/" + item.image + "'" + " alt='Imagen' class='imgtamaño'></td>";
+                str += "<td>" + item.nombre_ciudad + "</td>";
                 str += "<td>" + item.direccion + "</td>";
+                str += "<td>" + item.nombre_usuario + "</td>";
                 str += "<td><button onclick='Editar(" + item.id + ")'>Editar</button></td>";
                 str += "<td><button onclick='Eliminar(" + item.id + ")'>Eliminar</button></td>";
                 str += "</tr>";
@@ -135,4 +136,506 @@ function Eliminar(id) {
                 .catch(error => console.error('Error al eliminar la discoteca:', error));
         }
     });
+}
+
+/* crear discoteca */
+
+/* Crear usurio */
+var crearDiscoteca = document.getElementById("CrearDiscoteca");
+crearDiscoteca.addEventListener("click", function() {
+    mostrarFormulario();
+
+});
+
+
+function mostrarFormulario() {
+    obtenerCiudadesCrear('');
+    Swal.fire({
+        title: "Crear Discoteca",
+        confirmButtonColor: "#0052CC",
+        confirmButtonText: "Crear",
+        html: `
+        <form id="CrearForm" enctype="multipart/form-data">
+        <div class="rownew">
+            <div class="col-3">
+                <label class="estiloslabel" for="nombreCrear">Nombre</label>
+            </div>
+            <div class="col-9">
+                <span class="form-error-label" id="nombreErrorCrear"></span>
+                <input type="text" name="nombre" id="nombreCrear" class="estilosinput">
+            </div>
+        </div>
+        <div class="rownew">
+            <div class="col-3">
+                <label class="estiloslabel" for="direccionCrear">Dirección</label>
+            </div>
+            <div class="col-9">
+                <span class="form-error-label" id="direccionErrorCrear"></span>
+                <input type="text" name="direccion" id="direccionCrear" class="estilosinput">
+            </div>
+        </div>
+        
+        <div class="rownew">
+            <div class="col-3">
+                <label class="estiloslabel" for="ciudadCrear">Ciudad</label>
+            </div>
+            <div class="col-9">
+                <span class="form-error-label" id="ciudadErrorCrear"></span>
+                <select name="ciudad" id="ciudadCrear" class="estilosinput">
+                
+                </select>
+            </div>
+            
+        </div>
+        <div class="rownew">
+            <div class="col-3">
+                <label class="estiloslabel" for="capacidadCrear">Capacidad</label>
+            </div>
+            <div class="col-9">
+                <span class="form-error-label" id="capacidadErrorCrear"></span>
+                <input type="number" name="capacidad" id="capacidadCrear" class="estilosinput">
+            </div>
+            
+        </div>
+        <div class="rownew">
+            <div class="col-3">
+                <label class="estiloslabel" for="imagenCrear">Imagen</label>
+            </div>
+            <div class="col">
+                <span clas-9s="form-error-label" id="imagenErrorCrear"></span>
+                <input type="file" name="imagen" id="imagenCrear" class="estilosinput">
+            </div>
+        </div>
+        
+        </div>
+       
+        
+        </form>
+
+        `,
+        preConfirm: () => {
+            return validarFormulario(); // Llama a la función validarFormulario antes de cerrar la ventana modal
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // El formulario es válido, puedes enviarlo
+            enviarFormulario();
+        }
+    });
+    document.getElementById('CrearForm').addEventListener('keyup', validarFormulario);
+    document.getElementById('CrearForm').addEventListener('change', validarFormulario);
+
+
+}
+
+function obtenerCiudadesCrear() {
+    fetch(`admin2/cruddiscotecas/ciudades`)
+        .then(response => response.json())
+        .then(data => {
+            var selectMarcador = document.getElementById('ciudadCrear');
+            selectMarcador.innerHTML = '';
+
+            var blankOption = document.createElement('option');
+            blankOption.value = ''; // Valor vacío
+            blankOption.text = ''; // Texto descriptivo
+            selectMarcador.appendChild(blankOption);
+
+
+            data.forEach(rol => {
+                var option = document.createElement('option');
+                option.value = rol.id;
+                option.text = rol.name;
+                selectMarcador.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error al obtener los marcadores:', error));
+}
+
+function validarFormulario() {
+
+    var nombre = document.getElementById('nombreCrear').value;
+    var direccion = document.getElementById('direccionCrear').value;
+    var ciudad = document.getElementById('ciudadCrear').value;
+    var capacidad = document.getElementById('capacidadCrear').value;
+    var imagen = document.getElementById('imagenCrear').value;
+
+
+
+
+    // Validar campos según tus criterios de validación
+    var nombreError = document.getElementById('nombreErrorCrear');
+    var direccionError = document.getElementById('direccionErrorCrear');
+    var ciudadError = document.getElementById('ciudadErrorCrear');
+    var capacidadError = document.getElementById('capacidadErrorCrear');
+    var imagenError = document.getElementById('imagenErrorCrear');
+
+
+
+
+    // Validar nombre
+    if (nombre === "") {
+        nombreError.innerText = 'Por favor introduce un nombre';
+        nombreError.style.display = 'block';
+    } else if (nombre.length < 3) {
+        nombreError.innerText = 'Formato Incorrecto';
+        nombreError.style.display = 'block';
+    } else {
+        nombreError.innerText = '';
+    }
+
+
+
+    if (direccion === "") {
+        direccionError.innerText = 'Por favor introduce una dirección';
+        direccionError.style.display = 'block';
+    } else if (direccion.length < 8) {
+        direccionError.innerText = 'Introduce una dirección que sea válida';
+        direccionError.style.display = 'block';
+    } else {
+        direccionError.innerText = '';
+        direccionError.style.display = 'none';
+    }
+
+    // Validar contraseña
+    if (ciudad === "") {
+        ciudadError.innerText = 'Por favor selecciona una ciudad';
+        ciudadError.style.display = 'block';
+
+
+    } else {
+        ciudadError.innerText = '';
+        ciudadError.style.display = 'none';
+
+
+    }
+
+    // Validar puntos
+    if (capacidad === "" || isNaN(capacidad) || capacidad.length > 4) {
+        capacidadError.innerText = 'Por favor introduce un valor numérico válido';
+        capacidadError.style.display = 'block';
+    } else {
+        capacidadError.innerText = '';
+        capacidadError.style.display = 'none';
+    }
+
+    var extensionesValidas = ['jpg', 'jpeg', 'png', 'gif'];
+    var extension = imagen.split('.').pop().toLowerCase();
+    if (imagen === "") {
+        imagenError.innerText = 'Please select an image';
+        imagenError.style.display = 'block';
+    } else if (!extensionesValidas.includes(extension)) {
+        imagenError.innerText = 'The image must have a valid format (jpg, jpeg, png, gif).';
+        imagenError.style.display = 'block';
+    } else {
+        imagenError.innerText = '';
+        imagenError.style.display = 'none';
+    }
+
+
+    // Habilitar o deshabilitar el botón de enviar según la validez del formulario
+    /* var enviarBtn = document.getElementById('btnEnviar'); */
+    var formularioValido = !nombreError.innerText && !direccionError.innerText && !capacidadError.innerText && !ciudadError.innerText && !imagenError.innerText;
+    /*  enviarBtn.disabled = !formularioValido; */
+
+    return formularioValido;
+}
+
+function enviarFormulario() {
+    var nombre = document.getElementById('nombreCrear').value;
+    var direccion = document.getElementById('direccionCrear').value;
+    var ciudad = document.getElementById('ciudadCrear').value;
+    var capacidad = document.getElementById('capacidadCrear').value;
+    var imageInput = document.getElementById('imagenCrear');
+    var imagen = imageInput.files[0]; // Obtener el archivo de imagen seleccionado
+    /* var imagen = document.getElementById('imagenCrear').files[0]; */ // Obtenemos el archivo de imagen
+
+    var formData = new FormData(); // Creamos un objeto FormData
+    formData.append('nombre', nombre);
+    formData.append('direccion', direccion);
+    formData.append('ciudad', ciudad);
+    formData.append('capacidad', capacidad);
+    formData.append('imagen', imagen); // Agregamos el archivo de imagen al FormData
+
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    fetch('admin2/cruddiscotecas/insertdiscoteca', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            body: formData // Utilizamos el FormData en lugar de JSON.stringify()
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error al crear el usuario: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            Swal.fire({
+                title: "Creado",
+                text: "Discoteca creada correctamente",
+                icon: "success"
+            }).then(() => {
+                ListarDiscotecas('', '');
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire('Error', 'Error al crear el usuario', 'error');
+        });
+}
+
+function Editar(id) {
+    // Obtener los datos de la usuario a partir del ID
+    fetch(`admin2/cruddiscotecas/modadmin/${id}`)
+        .then(response => response.json())
+        .then(data => {
+            // Crear el formulario con los datos recuperados
+            Swal.fire({
+                title: "Modificar Discoteca",
+                confirmButtonColor: "#0052CC",
+                confirmButtonText: "Guardar Cambios",
+                cancelButtonText: "Cancelar",
+                cancelButtonColor: "transparent",
+                showCancelButton: true,
+                animation: false,
+                html: `
+                        <form id="ModificarForm" enctype="multipart/form-data">
+                        <div class="rownew">
+                            <div class="col-3">
+                                <label class="estiloslabel" for="nombreModificar">Nombre</label>
+                            </div>
+                            <div class="col-9">
+                                <span class="form-error-label" id="nombreErrorModificar"></span>
+                                <input type="text" name="nombre" id="nombreModificar" class="estilosinput" value="${data.name}">
+                            </div>
+                        </div>
+                        <div class="rownew">
+                            <div class="col-3">
+                                <label class="estiloslabel" for="direccionModificar">Dirección</label>
+                            </div>
+                            <div class="col-9">
+                                <span class="form-error-label" id="direccionErrorModificar"></span>
+                                <input type="text" name="direccion" id="direccionModificar" class="estilosinput" value="${data.direccion}">
+                            </div>
+                        </div>
+                        
+                        <div class="rownew">
+                            <div class="col-3">
+                                <label class="estiloslabel" for="ciudadModificar">Ciudad</label>
+                            </div>
+                            <div class="col-9">
+                                <span class="form-error-label" id="ciudadErrorModificar"></span>
+                                <select name="ciudad" id="ciudadModificar" class="estilosinput">
+                                    
+                                </select>
+                            </div>
+                            
+                        </div>
+                        <div class="rownew">
+                            <div class="col-3">
+                                <label class="estiloslabel" for="capacidadModificar">Capacidad</label>
+                            </div>
+                            <div class="col-9">
+                                <span class="form-error-label" id="capacidadErrorModificar"></span>
+                                <input type="number" name="capacidad" id="capacidadModificar" class="estilosinput" value="${data.capacidad}">
+                            </div>
+                            
+                        </div>
+                        <div class="rownew">
+                            <div class="col-3">
+                                <label class="estiloslabel" for="imagenModificar">Imagen</label>
+                            </div>
+                            <div class="col">
+                                <span class="form-error-label" id="imagenErrorModificar"></span>
+                                <input type="file" name="imagen" id="imagenModificar" class="estilosinput">
+                            </div>
+                            <br>
+                            <div class="col">
+                            <!-- Mostrar la imagen -->
+                            <img id="imageP" src="../img/discotecas/${data.image}" alt="Imagen" class="imgtamaño">
+                        </div>
+                            
+                        </div>
+                    </form>
+                <style>.swal2-cancel {color: black !important;}</style>
+                `,
+                preConfirm: () => {
+                    return validarFormularioMod();
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    enviarFormularioModificado(data.id, result.value);
+                }
+            });
+
+
+
+            // Agregar evento keyup al formulario después de crearlo
+            document.getElementById('ModificarForm').addEventListener('keyup', validarFormularioMod);
+            document.getElementById('ModificarForm').addEventListener('change', validarFormularioMod);
+            obtenerCiudadesMod(data.id_ciudad);
+
+
+        })
+        .catch((error) => {
+            Swal.fire({
+                title: "Ha ocurrido un error.",
+                text: error,
+                icon: "error"
+            });
+        });
+}
+
+function obtenerCiudadesMod(idSeleccionado) {
+    fetch(`admin2/cruddiscotecas/ciudades`)
+        .then(response => response.json())
+        .then(data => {
+            var selectMarcador = document.getElementById('ciudadModificar');
+            selectMarcador.innerHTML = '';
+
+            data.forEach(rol => {
+                var option = document.createElement('option');
+                option.value = rol.id;
+                option.text = rol.name;
+                if (rol.id === idSeleccionado) {
+                    option.selected = true; // Seleccionar el rol correspondiente al usuario
+                }
+                selectMarcador.appendChild(option);
+            });
+        })
+        .catch(error => console.error('Error al obtener los marcadores:', error));
+
+}
+
+
+function validarFormularioMod() {
+    var nombre = document.getElementById('nombreModificar').value;
+    var direccion = document.getElementById('direccionModificar').value;
+    var ciudad = document.getElementById('ciudadModificar').value;
+    var capacidad = document.getElementById('capacidadModificar').value;
+    var imagen = document.getElementById('imagenModificar').files[0]
+
+
+
+    // Validar campos según tus criterios de validación
+    var nombreError = document.getElementById('nombreErrorModificar');
+    var direccionError = document.getElementById('direccionErrorModificar');
+    var ciudadError = document.getElementById('ciudadErrorModificar');
+    var capacidadError = document.getElementById('capacidadErrorModificar');
+
+
+    // Validar nombre
+    if (nombre === "") {
+        nombreError.innerText = 'Por favor introduce un nombre';
+        nombreError.style.display = 'block';
+    } else if (nombre.length < 3) {
+        nombreError.innerText = 'Formato Incorrecto';
+        nombreError.style.display = 'block';
+    } else {
+        nombreError.innerText = '';
+    }
+
+
+
+    if (direccion === "") {
+        direccionError.innerText = 'Por favor introduce una dirección';
+        direccionError.style.display = 'block';
+    } else if (direccion.length < 8) {
+        direccionError.innerText = 'Introduce una dirección que sea válida';
+        direccionError.style.display = 'block';
+    } else {
+        direccionError.innerText = '';
+        direccionError.style.display = 'none';
+    }
+
+    // Validar contraseña
+    if (ciudad === "") {
+        ciudadError.innerText = 'Por favor selecciona una ciudad';
+        ciudadError.style.display = 'block';
+
+
+    } else {
+        ciudadError.innerText = '';
+        ciudadError.style.display = 'none';
+
+
+    }
+
+    // Validar puntos
+    if (capacidad === "" || isNaN(capacidad) || capacidad.length > 4) {
+        capacidadError.innerText = 'Por favor introduce un valor numérico válido';
+        capacidadError.style.display = 'block';
+    } else {
+        capacidadError.innerText = '';
+        capacidadError.style.display = 'none';
+    }
+
+
+    return {
+        nombre: nombre,
+        direccion: direccion,
+        ciudad: ciudad,
+        capacidad: capacidad,
+        imagen: imagen,
+
+    };
+}
+
+function enviarFormularioModificado(id, formData) {
+    var ciudad2 = document.getElementById("ciudad").value;
+    var direccion = formData.direccion;
+    var ciudad = formData.ciudad;
+    var capacidad = formData.capacidad;
+    var imagen = formData.imagen;
+    var nombre = formData.nombre;
+
+    // Crear un nuevo objeto FormData
+    var formData = new FormData();
+    formData.append('nombre', nombre);
+    formData.append('direccion', direccion);
+    formData.append('ciudad', ciudad);
+    formData.append('capacidad', capacidad);
+    formData.append('imagen', imagen);
+
+    // Obtener el token CSRF del documento HTML
+    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+    // Incluir el token CSRF en el encabezado de la solicitud
+    var headers = {
+        'X-CSRF-TOKEN': token
+    };
+
+    fetch(`admin2/cruddiscotecas/actualizar/${id}`, {
+            method: 'POST',
+            headers: headers,
+            body: formData, // Usar el objeto FormData aquí
+        })
+        .then(response => {
+            if (response.ok) {
+                Swal.fire({
+                    title: "Success",
+                    text: "Changes saved successfully",
+                    icon: "success"
+                }).then(() => {
+                    Swal.close();
+                    ListarDiscotecas('', ciudad2);
+                });
+            } else {
+                Swal.fire({
+                    title: "Error",
+                    text: "Failed to save changes",
+                    icon: "error"
+                });
+            }
+        })
+        .catch(error => {
+            Swal.fire({
+                title: "Error",
+                text: "An error occurred while processing the request",
+                icon: "error"
+            });
+            console.error('Error:', error);
+        });
 }
