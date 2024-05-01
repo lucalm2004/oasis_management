@@ -665,5 +665,163 @@ class AdminController extends Controller
 
 
     }
+
+    /* CRUD CIUDADES */
+
+    /* que se vean las ciudades */
+    public function showCrudCiudades(Request $request){
+        if ($request->input('busqueda')) {
+            $data = $request->input('busqueda'); 
+            $ciudades = Ciudad::where('name', 'like', "%$data%")->get();
+        } else {
+            $ciudades = Ciudad::all();
+        }
+        return response()->json($ciudades);
+    }
+
+    /* eliminar ciudad */
+    public function EliminarCiudades($id){
+        try {
+            DB::beginTransaction();
+
+            // Obtener las discotecas asociadas a la ciudad
+            $discotecas = Discoteca::where('id_ciudad', $id)->get();
+
+            // Eliminar las discotecas asociadas a la ciudad
+            foreach ($discotecas as $discoteca) {
+                $eventos = Evento::where('id_discoteca', $discoteca->id)->get();
+                foreach($eventos as $evento){
+                    $playlist = PlaylistCancion::where('id_evento', $evento->id);
+                    if ($playlist) {
+                        $playlist->delete();
+                    }
+                    $carritos = Carrito::where('id_evento', $evento->id)->get();
+                    foreach ($carritos as $carrito) {
+                        if ($carrito) {
+                            $carrito->delete();
+                        }
+
+                    }
+
+                    $valoraciones = Valoracion::where('id_evento', $evento->id)->get();
+                    foreach ($valoraciones as $valoracion) {
+                        if ($valoracion) {
+                            $valoracion->delete();
+                        }
+
+                    }
+                    if ($evento) {
+                        $evento->delete();
+                    }
+                   
+
+                }
+                
+
+                // Eliminar registros de users_discoteca asociados a la discoteca
+                $userdiscoteca = UserDiscoteca::where('id_discoteca', $discoteca->id)->get();
+                foreach($userdiscoteca as $userdiscotecas){
+                    if ($userdiscotecas) {
+                        $userdiscotecas->delete();
+                    }
+
+                }
+                
+                if ($discoteca) {
+                    // Eliminar la discoteca
+                    $discoteca->delete();
+                }
+               
+            }
+
+
+    
+            // Eliminar la ciudad principal si existe
+            $ciudades = Ciudad::findOrFail($id);
+            if ($ciudades) {
+                $ciudades->delete();
+            }
+    
+            // Confirmar la transacción
+            DB::commit();
+    
+            return response()->json(['success' => true, 'message' => 'Ciudad eliminada correctamente']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            return response()->json(['success' => false, 'error' => 'Error al eliminar ciudad: ' . $e->getMessage()], 500);
+        }
+
+    }
+
+    /* datos formulario modificar ciudad */
+
+    public function editCiudades($id){
+        $ciudades = Ciudad::findOrFail($id);
+        return response()->json($ciudades);
+
+    }
+
+    public function actualizarCiudades($id, Request $request){
+        try {
+            DB::beginTransaction();
+
+            $ciudad = Ciudad::findOrFail($id);
+    
+            $name = $request->input('nombre');
+       
+
+            $existingName = Ciudad::where('name', $name)->where('id', '!=', $id)->first();
+            if ($existingName) {
+                return response()->json(['error' => 'El nombre ya está en uso '], 422);
+            }
+
+            
+
+            $ciudad->name = $name;
+       
+            $ciudad->save();
+
+            DB::commit();
+
+            return response()->json(['message' => 'Bonificacion actualizada correctamente']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            return response()->json(['error' => 'Error al actualizar bonificacion: ' . $e->getMessage()], 500);
+        }
+
+    }
+
+    public function storeCiudad(Request $request){
+        try {
+            DB::beginTransaction();
+
+            $name = $request->input('nombre');
+           
+
+            $existingName = Ciudad::where('name', $name)->first();
+            if ($existingName) {
+                return response()->json(['error' => 'El nombre ya está en uso '], 422);
+            }
+
+
+            $ciudad = new Ciudad();
+            $ciudad->name = $name;
+            $ciudad->save();
+
+            DB::commit();
+
+            return response()->json(['message' => 'Ciudad creada correctamente']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            return response()->json(['error' => 'Error al crear ciudad: ' . $e->getMessage()], 500);
+        }
+
+
+    }
+
+    
     
 }

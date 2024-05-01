@@ -52,6 +52,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin3', function () {
         return view('admin/crudbonificaciones');
     })->middleware(['auth', 'verified'])->name('admin.crudbonificaciones');
+    Route::get('/admin4', function () {
+        return view('admin/crudciudades');
+    })->middleware(['auth', 'verified'])->name('admin.crudciudades');
 
     Route::controller(AdminController::class)->group(function () {
 
@@ -82,7 +85,13 @@ Route::middleware('auth')->group(function () {
         Route::get('admi3/crudbonificaciones/modadmin/{id}', 'editBonificaciones')->name('crud.editBonificaciones');
         Route::post('admi3/crudbonificaciones/actualizar/{id}', 'actualizarBonificaciones')->name('crud.actualizarBonificaciones');
         Route::post('admi3/crudbonificaciones/insertuser', 'storeBonificacion')->name('crud.storeBonificacion');
-   
+
+        /* CRUD CIUDADES */
+        Route::post('admin4/crudciudades', 'showCrudCiudades')->name('crud.showCrudCiudades');
+        Route::delete('admin4/crudciudades/{id}', 'EliminarCiudades')->name('crud.EliminarCiudades');
+        Route::get('admi4/crudciudades/modadmin/{id}', 'editCiudades')->name('crud.editCiudades');
+        Route::post('admin4/crudciudades/actualizar/{id}', 'actualizarCiudades')->name('crud.actualizarCiudades');
+        Route::post('admin4/crudciudades/insertuser', 'storeCiudad')->name('crud.storeCiudad');
    
     });
 
