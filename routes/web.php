@@ -55,6 +55,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin4', function () {
         return view('admin/crudciudades');
     })->middleware(['auth', 'verified'])->name('admin.crudciudades');
+    Route::get('/admin5', function () {
+        return view('admin/crudeventos');
+    })->middleware(['auth', 'verified'])->name('admin.crudeventos');
 
     Route::controller(AdminController::class)->group(function () {
 
@@ -96,6 +99,10 @@ Route::middleware('auth')->group(function () {
         Route::get('admi4/crudciudades/modadmin/{id}', 'editCiudades')->name('crud.editCiudades');
         Route::post('admin4/crudciudades/actualizar/{id}', 'actualizarCiudades')->name('crud.actualizarCiudades');
         Route::post('admin4/crudciudades/insertuser', 'storeCiudad')->name('crud.storeCiudad');
+
+        /* CRUD EVENTOS */
+        Route::post('admin5/crudeventos', 'showCrudEventos')->name('crud.showCrudEventos');
+        Route::delete('admin5/crudeventos/{id}', 'EliminarEventos')->name('crud.EliminarEventos');
    
     });
 

@@ -22,6 +22,7 @@
     <a href="{{ route('admin.cruddiscotecas') }}">Discotecas</a>
     <a href="{{ route('admin.crudbonificaciones') }}">Bonificaciones</a>
     <a href="{{ route('admin.crudciudades') }}">Ciudades</a>
+    <a href="{{ route('admin.crudeventos') }}">Eventos</a>
   </header>
     <h1 style="text-align: center">DISCOTECAS</h1>
 <div class="container" >

@@ -921,6 +921,57 @@ class AdminController extends Controller
 
     }
 
+    /* CRUD EVENTOS */
+
+    /* Que se muestren los datos en el crud */
+    public function showCrudEventos(Request $request){
+        $query = DB::table('eventos')
+            ->select('eventos.*', 'discotecas.name as nombre_discoteca')
+            ->join('discotecas', 'eventos.id_discoteca', '=', 'discotecas.id');
+        
+        // Verificar si se proporcionó un filtro de búsqueda
+        if ($request->input('busqueda')) {
+            $data = $request->input('busqueda');
+            $query->where('eventos.name', 'like', "%$data%");
+        }
+        
+        // Verificar si se proporcionó un filtro de discoteca
+        if ($request->input('discoteca')) {
+            $discotecaId = $request->input('discoteca');
+            $query->where('discotecas.id', $discotecaId);
+        }
+
+        // Ordenar por el ID de la discoteca por defecto si no se especifica otro criterio de orden
+        $query->orderBy('eventos.id');
+        
+        $discotecas = $query->get();
+        
+        return response()->json($discotecas);
+    }
+
+    public function EliminarEventos($id){
+        try {
+            DB::beginTransaction();
+
+            // Obtener las discotecas asociadas a la ciudad
+            $playlist = PlaylistCancion::where('id_evento', $id)->first();
+            if ($playlist) {
+                $playlist->delete();
+            }
+           
+            Evento::findOrFail($id)->delete();
+    
+            // Confirmar la transacción
+            DB::commit();
+    
+            return response()->json(['success' => true, 'message' => 'Ciudad eliminada correctamente']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            return response()->json(['success' => false, 'error' => 'Error al eliminar ciudad: ' . $e->getMessage()], 500);
+        }
+
+    }
     
     
 }
