@@ -1,7 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,88 +7,71 @@
   <!-- Se ha de añadir el token para poder usarlo en el formdata de AJAX -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+  <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
+  <script src="https://kit.fontawesome.com/e2c3124098.js" crossorigin="anonymous"></script>
 </head>
-
-
 <body>
-
-  <header>
-    <a href="{{ route('admin.crudusuarios') }}">Usuarios</a>
-    <a href="{{ route('admin.cruddiscotecas') }}">Discotecas</a>
-    <a href="{{ route('admin.crudbonificaciones') }}">Bonificaciones</a>
-    <a href="{{ route('admin.crudciudades') }}">Ciudades</a>
-    <a href="{{ route('admin.crudeventos') }}">Eventos</a>
-  </header>
-    <h1 style="text-align: center">Eventos</h1>
-<div class="container" >
-  <div class="row">
-    <!-- Formulario de la izquierda (4 de las 12 columnas de bootstrap)
-    Lo usaremos tanto para registrar un nuevo producto como para actualizar uno existente.
-    Modificaremos su contenido y el botón por AJAX.
-    -->
-    <div class="col-lg-12" style="border:1px solid">
-        
-
- <!-- Zona de la derecha usando 8 de las 12 columnas de Bootstrap -->
-    <div class="col-lg-12" style="border:1px solid">
-      <!-- Primero (zona superior) un DIV con el formulario de búsqueda -->
-      <div class="row">
-        <div class="col-lg-12 ml-auto" style="border:1px solid">
-          <form action="" method="post" id="frmbusqueda">
-            <div class="form-group">
-              <label for="buscar">Buscar:</label>
-              <input type="text" name="buscar" id="buscar" placeholder="Buscar..." class="form-control">
-            </div>
-           
-          </form>
-          <label for="discoteca">Discoteca</label>
-            <select name="discoteca" id="discoteca" class="button-40">
-              <option value=""></option>
-              
-          </select>
+  <header class="header">
+    <div class="logo">
+      <a href="{{ asset('principal') }}"><img src="{{ asset('img/logoHeader.png') }}" alt="Imagen de logo"></a>
+      <div class="nav-container">
+        <ul class="nav-list" style="padding-top: 15px;">
+          <a href="{{ route('admin.crudusuarios') }}">Usuarios | </a>
+          <a href="{{ route('admin.cruddiscotecas') }}">Discotecas | </a>
+          <a href="{{ route('admin.crudbonificaciones') }}">Bonificaciones | </a>
+          <a href="{{ route('admin.crudciudades') }}">Ciudades | </a>
+          <a href="{{ route('admin.crudeventos') }}">Eventos</a>
+          <form method="POST" action="{{ route('logout') }}" id="logout" style="float: right; padding-left: 300px;">
+            @csrf
+  
+            <x-dropdown-link :href="route('logout')"
+                    onclick="event.preventDefault();
+                                this.closest('form').submit();">
+                {{ __('Log Out') }}
+            </x-dropdown-link>
+        </form>
           
-         
-        </div>
-        <br>
-
-
-
-        <!-- Segundo una tabla con los datos del CRUD a mostrar -->
-        <div class="col-lg-12 ml-auto" style="border:1px solid">
-          <table class="table table-hover table-responsive">
-            <thead class="thead-dark">
-                <tr>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Descripción</th>
-                  <th>Flyer</th>
-                  <th>Fecha Inicio</th>
-                  <th>Fecha Inicio</th>
-                  <th>Playlist</th>
-                  <th>DJ</th>
-                  <th>Discoteca</th>
-                  
-                  <th>Eliminar</th>
-                </tr>
-            </thead>
-            <tbody id="resultado">
-            </tbody>
-            
-          </table>
-        </div>
+        </ul>
+       
       </div>
     </div>
-  </div> 
-</div> 
+  </header>
 
+  <h1 style="text-align: center">Eventos</h1>
+  <div class="container">
+    <!-- Formulario de búsqueda -->
+    <form action="" method="post" id="frmbusqueda">
+      <div class="form-group">
+        <i id="icono_buscar" class="fa-solid fa-magnifying-glass" style="color: #F5763B;"></i>
+        <input type="text" name="buscar" id="buscar" placeholder="Buscar..." class="form-control">
+      </div>
+      {{-- <label for="discoteca">Discoteca</label> --}}
+      <i class="fa-solid fa-compact-disc" style="color: #F5763B;" id="icono_discoteca"></i>
+      <select name="discoteca" id="discoteca" class="button-40">
+        <option value=""></option>
+      </select>
+    </form>
+    
+    <!-- Tabla con los datos del CRUD a mostrar -->
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Flyer</th>
+          <th>Fecha Inicio/Final</th>
+          <th>Discoteca</th>
+          <th>Eliminar</th>
+        </tr>
+      </thead>
+      <tbody id="resultado">
+      </tbody>
+    </table>
+  </div>
 
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-   
-
-<script src="{{ asset('js/adminEvento.js') }}"></script>
-   
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="{{ asset('js/adminEvento.js') }}"></script>
 </body>
-
-
 </html>

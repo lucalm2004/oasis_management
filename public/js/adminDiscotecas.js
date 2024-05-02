@@ -39,8 +39,8 @@ function ListarDiscotecas(valor, ciudad) {
                 str += "<td>" + item.nombre_ciudad + "</td>";
                 str += "<td>" + item.direccion + "</td>";
                 str += "<td>" + item.nombre_usuario + "</td>";
-                str += "<td><button onclick='Editar(" + item.id + ")'>Editar</button></td>";
-                str += "<td><button onclick='Eliminar(" + item.id + ")'>Eliminar</button></td>";
+                str += "<td><button onclick='Editar(" + item.id + ")'><i class='fa-solid fa-pen-to-square' style='color: #320aa9;'></i></button></td>";
+                str += "<td><button onclick='Eliminar(" + item.id + ")'><i class='fa-regular fa-trash-can' style='color: #ff0000;'></i></button></td>";
                 str += "</tr>";
             });
             tabla += str;
@@ -156,59 +156,37 @@ function mostrarFormulario() {
         confirmButtonText: "Crear",
         html: `
         <form id="CrearForm" enctype="multipart/form-data">
-        <div class="rownew">
-            <div class="col-3">
+       
                 <label class="estiloslabel" for="nombreCrear">Nombre</label>
-            </div>
-            <div class="col-9">
-                <span class="form-error-label" id="nombreErrorCrear"></span>
-                <input type="text" name="nombre" id="nombreCrear" class="estilosinput">
-            </div>
-        </div>
-        <div class="rownew">
-            <div class="col-3">
-                <label class="estiloslabel" for="direccionCrear">Dirección</label>
-            </div>
-            <div class="col-9">
-                <span class="form-error-label" id="direccionErrorCrear"></span>
-                <input type="text" name="direccion" id="direccionCrear" class="estilosinput">
-            </div>
-        </div>
         
-        <div class="rownew">
-            <div class="col-3">
+                <span class="error" id="nombreErrorCrear"></span>
+                <input type="text" name="nombre" id="nombreCrear" class="estilosinput">
+        
+                <label class="estiloslabel" for="direccionCrear">Dirección</label>
+          
+                <span class="error" id="direccionErrorCrear"></span>
+                <input type="text" name="direccion" id="direccionCrear" class="estilosinput">
+           
                 <label class="estiloslabel" for="ciudadCrear">Ciudad</label>
-            </div>
-            <div class="col-9">
-                <span class="form-error-label" id="ciudadErrorCrear"></span>
+            
+                <span class="error" id="ciudadErrorCrear"></span>
                 <select name="ciudad" id="ciudadCrear" class="estilosinput">
                 
                 </select>
-            </div>
-            
-        </div>
-        <div class="rownew">
-            <div class="col-3">
+                <br>
+                <br>
+         
                 <label class="estiloslabel" for="capacidadCrear">Capacidad</label>
-            </div>
-            <div class="col-9">
-                <span class="form-error-label" id="capacidadErrorCrear"></span>
+           
+                <span class="error" id="capacidadErrorCrear"></span>
                 <input type="number" name="capacidad" id="capacidadCrear" class="estilosinput">
-            </div>
+      
             
-        </div>
-        <div class="rownew">
-            <div class="col-3">
                 <label class="estiloslabel" for="imagenCrear">Imagen</label>
-            </div>
-            <div class="col">
-                <span clas-9s="form-error-label" id="imagenErrorCrear"></span>
-                <input type="file" name="imagen" id="imagenCrear" class="estilosinput">
-            </div>
-        </div>
+          
+                <span class="error" id="imagenErrorCrear"></span>
+                <label class='custom-file-upload'><input type="file" name="imagen" id="imagenCrear" class="estilosinput">Subir Archivo</label>
         
-        </div>
-       
         
         </form>
 
@@ -402,62 +380,38 @@ function Editar(id) {
                 animation: false,
                 html: `
                         <form id="ModificarForm" enctype="multipart/form-data">
-                        <div class="rownew">
-                            <div class="col-3">
-                                <label class="estiloslabel" for="nombreModificar">Nombre</label>
-                            </div>
-                            <div class="col-9">
-                                <span class="form-error-label" id="nombreErrorModificar"></span>
+                            <label class="estiloslabel" for="nombreModificar">Nombre</label>
+                                <span class="error" id="nombreErrorModificar"></span>
                                 <input type="text" name="nombre" id="nombreModificar" class="estilosinput" value="${data.name}">
-                            </div>
-                        </div>
-                        <div class="rownew">
-                            <div class="col-3">
+                            
                                 <label class="estiloslabel" for="direccionModificar">Dirección</label>
-                            </div>
-                            <div class="col-9">
-                                <span class="form-error-label" id="direccionErrorModificar"></span>
+                          
+                                <span class="error" id="direccionErrorModificar"></span>
                                 <input type="text" name="direccion" id="direccionModificar" class="estilosinput" value="${data.direccion}">
-                            </div>
-                        </div>
-                        
-                        <div class="rownew">
-                            <div class="col-3">
+                          
                                 <label class="estiloslabel" for="ciudadModificar">Ciudad</label>
-                            </div>
-                            <div class="col-9">
-                                <span class="form-error-label" id="ciudadErrorModificar"></span>
+                          
+                                <span class="error" id="ciudadErrorModificar"></span>
                                 <select name="ciudad" id="ciudadModificar" class="estilosinput">
                                     
                                 </select>
-                            </div>
-                            
-                        </div>
-                        <div class="rownew">
-                            <div class="col-3">
+                                <br>
+                                <br>
                                 <label class="estiloslabel" for="capacidadModificar">Capacidad</label>
-                            </div>
-                            <div class="col-9">
-                                <span class="form-error-label" id="capacidadErrorModificar"></span>
+                        
+                                <span class="error" id="capacidadErrorModificar"></span>
                                 <input type="number" name="capacidad" id="capacidadModificar" class="estilosinput" value="${data.capacidad}">
-                            </div>
-                            
-                        </div>
-                        <div class="rownew">
-                            <div class="col-3">
+                           
                                 <label class="estiloslabel" for="imagenModificar">Imagen</label>
-                            </div>
-                            <div class="col">
-                                <span class="form-error-label" id="imagenErrorModificar"></span>
-                                <input type="file" name="imagen" id="imagenModificar" class="estilosinput">
-                            </div>
-                            <br>
-                            <div class="col">
-                            <!-- Mostrar la imagen -->
-                            <img id="imageP" src="../img/discotecas/${data.image}" alt="Imagen" class="imgtamaño">
-                        </div>
                             
-                        </div>
+                                <span class="form-error-label" id="imagenErrorModificar"></span>
+                                <label class='custom-file-upload'><input type="file" name="imagen" id="imagenModificar" class="estilosinput">Subir Archivo</label>
+                            
+                            <!-- Mostrar la imagen -->
+                            <br>
+                        
+                            <img id="imageP" src="../img/discotecas/${data.image}" alt="Imagen" class="imgtamaño">
+                       
                     </form>
                 <style>.swal2-cancel {color: black !important;}</style>
                 `,

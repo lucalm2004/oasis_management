@@ -37,13 +37,10 @@ function listarEventos(valor, discoteca) {
                 str += "<td>" + item.id + "</td>";
                 str += "<td>" + item.name + "</td>";
                 str += "<td>" + item.descripcion + "</td>";
-                str += "<td><img id='imageP' src='../img/discotecas/" + item.flyer + "'" + " alt='Imagen' class='imgtamaño'></td>";
-                str += "<td>" + item.fecha_inicio + "</td>";
-                str += "<td>" + item.fecha_final + "</td>";
-                str += "<td>" + item.name_playlist + "</td>";
-                str += "<td>" + item.dj + "</td>";
+                str += "<td><img id='imageP' src='../img/flyer/" + item.flyer + "'" + " alt='Imagen' class='imgtamaño'></td>";
+                str += "<td>" + item.fecha_inicio + " " + item.fecha_final + "</td>";
                 str += "<td>" + item.nombre_discoteca + "</td>";
-                str += "<td><button onclick='Eliminar(" + item.id + ")'>Eliminar</button></td>";
+                str += "<td><button onclick='Eliminar(" + item.id + ")'><i class='fa-regular fa-trash-can' style='color: #ff0000;'></i></button></td>";
                 str += "</tr>";
             });
             tabla += str;

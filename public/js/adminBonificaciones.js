@@ -32,8 +32,8 @@ function listarBonificaciones(valor) {
                 str += "<td>" + item.name + "</td>";
                 str += "<td>" + item.descripcion + "</td>";
                 str += "<td>" + item.puntos + "</td>";
-                str += "<td><button onclick='Editar(" + item.id + ")'>Editar</button></td>";
-                str += "<td><button onclick='Eliminar(" + item.id + ")'>Eliminar</button></td>";
+                str += "<td><button onclick='Editar(" + item.id + ")'><i class='fa-solid fa-pen-to-square' style='color: #320aa9;'></i></button></td>";
+                str += "<td><button onclick='Eliminar(" + item.id + ")'><i class='fa-regular fa-trash-can' style='color: #ff0000;'></i></button></td>";
                 str += "</tr>";
             });
             tabla += str;
@@ -122,34 +122,23 @@ function Editar(id) {
                 html: `
                 <form id="ModificarForm">
                 <input type="hidden" name="id" value="${data.id}">
-                <div class="rownew">
-                    <div class="col-3">
+               
                         <label class="estiloslabel" for="nombreModificar">Nombre</label>
-                    </div>
-                    <div class="col-9">
-                        <span class="form-error-label" id="nombreErrorModificar"></span>
+                   
+                        <span class="error" id="nombreErrorModificar"></span>
                         <input type="text" name="nombre" value="${data.name}" id="nombreModificar" class="estilosinput">
-                    </div>
-                </div>
-                <div class="rownew">
-                    <div class="col-3">
+                 
                         <label class="estiloslabel" for="descripcionModificar">Descripción</label>
-                    </div>
-                    <div class="col-9">
-                        <span class="form-error-label" id="descripcionModificarError"></span>
+                  
+                        <span class="error" id="descripcionModificarError"></span>
                         <input type="text" name="descripcion" value="${data.descripcion}" id="descripcionModificar" class="estilosinput">
-                    </div>
-                </div>
-                <div class="rownew">
-                    <div class="col-3">
+                
+               
                         <label class="estiloslabel" for="puntosModificar">Puntos</label>
-                    </div>
-                    <div class="col">
-                        <span clas-9s="form-error-label" id="puntosModificarError"></span>
+                    
+                        <span class="error" id="puntosModificarError"></span>
                         <input type="number" name="puntos" id="puntosModificar" class="estilosinput" value="${data.puntos}">
-                    </div>
-                </div>
-            
+                  
                 </form>
                 <style>.swal2-cancel {color: black !important;}</style>
                 `,
@@ -298,34 +287,22 @@ function mostrarFormulario() {
         confirmButtonText: "Create",
         html: `
         <form id="CrearForm">
-        <div class="rownew">
-            <div class="col-3">
+       
                 <label class="estiloslabel" for="nombreCrear">Nombre</label>
-            </div>
-            <div class="col-9">
-                <span class="form-error-label" id="nombreErrorCrear"></span>
+            
+                <span class="error" id="nombreErrorCrear"></span>
                 <input type="text" name="nombre" id="nombreCrear" class="estilosinput">
-            </div>
-        </div>
-        <div class="rownew">
-            <div class="col-3">
+           
                 <label class="estiloslabel" for="descripcionCrear">Descripción</label>
-            </div>
-            <div class="col-9">
-                <span class="form-error-label" id="descripcionCrearError"></span>
+         
+                <span class="error" id="descripcionCrearError"></span>
                 <input type="text" name="email" id="descripcionCrear" class="estilosinput">
-            </div>
-        </div>
-        <div class="rownew">
-            <div class="col-3">
+          
                 <label class="estiloslabel" for="puntosCrear">Puntos</label>
-            </div>
-            <div class="col">
-                <span clas-9s="form-error-label" id="puntosCrearError"></span>
+          
+                <span class="error" id="puntosCrearError"></span>
                 <input type="number" name="puntos" id="puntosCrear" class="estilosinput">
-            </div>
-        </div>
-        </div>
+           
         </form>
 
         `,
