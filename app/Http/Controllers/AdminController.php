@@ -27,7 +27,8 @@ class AdminController extends Controller
     public function showCrudUsers(Request $request)
     {
           $query = User::query();
-  
+          $user = Auth::user();
+          $userID = $user->id;
           // Verificar si se proporcionó un filtro de búsqueda
           if ($request->input('busqueda')) {
               $data = $request->input('busqueda');
@@ -42,6 +43,8 @@ class AdminController extends Controller
           }
            // Excluir los usuarios con verificado = 0
             $query->where('verificado', '=', 1);
+            $query->where('id', '!=', $userID);
+            
           // Obtener los usuarios con la relación de rol cargada
           $users = $query->with('rol')->get();
   
