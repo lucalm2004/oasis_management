@@ -21,8 +21,9 @@ class User extends Authenticatable
     
     public function rol()
     {
-        return $this->belongsTo(Rol::class, 'id');
+        return $this->belongsTo(Rol::class, 'id_rol');
     }
+    
     public function users_discoteca()
     {
         return $this->belongsToMany(UserDiscoteca::class, 'id_users');
@@ -59,4 +60,5 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    
 }

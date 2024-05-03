@@ -38,11 +38,11 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             @auth
                                 <a class="dropdown-item" href="{{ route('perfil') }}">Ver Perfil</a>
-                                                                <!-- Enlace para cerrar sesión -->
-                                                                <form id="logoutForm" action="{{ route('logout') }}" method="POST">
-                                                                    @csrf
-                                                                    <button type="submit" class="dropdown-item">Cerrar Sesión</button>
-                                                                </form>
+                                <!-- Enlace para cerrar sesión -->
+                                <form id="logoutForm" action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                                </form>
                             @else
                                 <a class="dropdown-item" href="{{ route('login') }}">Iniciar Sesión</a>
                                 <a class="dropdown-item" href="{{ route('register') }}">Registrarse</a>
@@ -50,6 +50,7 @@
                         </div>
                     </li>
                     <!-- Fin del botón de perfil -->
+
                     <!-- Enlace de contacto con emoticono -->
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('contacto') }}">
@@ -62,11 +63,13 @@
                         @auth
                         @else
                             <li class="nav-item">
-                                <a href="/google-auth/redirect" class="nav-link"><i class="fab fa-google"></i> Login Google</a>
+                                <a href="/google-auth/redirect" class="nav-link"><i class="fab fa-google"></i> Login
+                                    Google</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a href="{{ route('register') }}" class="nav-link"><i class="fas fa-user-plus"></i> Registrarse</a>
+                                    <a href="{{ route('register') }}" class="nav-link"><i
+                                            class="fas fa-user-plus"></i> Registrarse</a>
                                 </li>
                             @endif
                         @endauth
@@ -75,25 +78,25 @@
             </div>
         </div>
     </nav>
-    <!-- Contenido principal -->
-    <div class="container mt-4">
+     <!-- Contenido principal -->
+     <div class="container mt-4">
         <div class="card">
             <div class="card-body">
                 <h2 class="card-title mb-4">Perfil de Usuario</h2>
-                <!-- Puntos -->
-                <div class="puntos-section">
-                    <h4 class="text-center mb-4">Puntos</h4>
-                    <div class="puntos">
-                        <span>{{ $user->puntos ?? '0' }}</span>
-                    </div>
-                </div>
+<!-- Monedas -->
+<div class="puntos-section">
+    <h4 class="text-center mb-4">Monedas</h4>
+    <div class="monedas">
+        <span>{{ $user->puntos ?? '0' }}</span>
+    </div>
+</div>
 
-                <!-- Rol -->
-                <div class="form-group">
-                    <label for="rol">Rol:</label>
-                    <input type="text" class="form-control" id="rol" value="{{ $user->rol->name ?? 'Sin Rol' }}"
-                        readonly>
-                </div>
+<!-- Rol -->
+<div class="form-group">
+    <label for="rol">Rol:</label>
+    <input type="text" class="form-control" id="rol" value="{{ $user->rol->name ?? 'Sin Rol' }}" readonly>
+</div>
+
 
                 <form id="profileForm" method="POST" action="{{ route('profile.update') }}">
                     @csrf

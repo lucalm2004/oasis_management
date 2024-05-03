@@ -1,28 +1,31 @@
-        /* Estilos para el fondo en movimiento */
-        body {
-            background: linear-gradient(135deg, #000000, #000000);
-            background-size: 200% 200%;
-            animation: gradientAnimation 10s infinite alternate;
-            font-family: 'Roboto Slab', serif;
-        }
-        @keyframes gradientAnimation {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 100% 50%;
-            }
-        }
-        .error-message{
-            color: red;
-        }
+/* Estilos para el fondo en movimiento */
+body {
+    background: linear-gradient(135deg, #000, #000);
+    background-size: 400% 400%;
+    animation: gradientAnimation 10s infinite alternate;
+    font-family: 'Roboto Slab', serif;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Estilos para los mensajes de error */
+.error-message {
+    color: red;
+}
+
 /* Estilos para la Navbar */
 .navbar {
-    background-color: #000000; /* Fondo blanco */
-    color: #000000; /* Letras negras */
-    /* Ajusta el tamaño y la posición del fondo según sea necesario */
-    background-size: cover;
-    background-position: top;
+    background-color: #000;
+    color: #fff;
+    padding: 15px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .navbar-brand {
@@ -32,191 +35,172 @@
 }
 
 .navbar-brand img {
-    max-width: 40px;
+    width: 40px;
     margin-right: 10px;
 }
-        
-        .navbar-brand .logo {
-            width: 40px;
-            height: 40px;
-        }
 
+/* Contenido principal */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
 
-        /* Contenido principal */
-        .container {
-            max-width: 800px;
-            
-        }
+.card {
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: transform 0.3s ease;
+    margin-bottom: 40px;
+}
 
-        .card {
-            border: none;
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            background-color: #fff;
-            transition: transform 0.3s ease;
-        }
+.card:hover {
+    transform: translateY(-10px);
+}
 
-        .card:hover {
-            transform: translateY(-10px);
-        }
+.card-body {
+    padding: 40px;
+}
 
-        .card-body {
-            padding: 40px;
-        }
+.card-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
 
-        .card-title {
-            font-size: 2.5rem;
-            color: #333;
-            margin-bottom: 20px;
-        }
+.form-group label {
+    font-weight: bold;
+    color: #555;
+}
 
-        .form-group label {
-            font-weight: bold;
-            color: #555;
-        }
+.form-control {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+}
 
-        .form-control {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 10px;
-        }
+.btn-primary {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    padding: 10px 20px;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
 
-        .btn-primary {
-            background-color: #ffc107;
-            border-color: #ffc107;
-            padding: 10px 20px;
-            font-size: 1rem;
-            transition: background-color 0.3s ease;
-        }
+.btn-primary:hover {
+    background-color: #ff9800;
+}
 
-        .btn-primary:hover {
-            background-color: #ff9800;
-        }
+/* Estilos para el footer */
+.footer {
+    background-image: url('/img/oasisn2.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 60px 0;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
 
-        .footer {
-            background-image: url('/img/oasisn2.jpg');
-            /* Ajusta el tamaño y la posición del fondo según sea necesario */
-            background-size: cover;
-            background-position: center;
-            padding: 60px 0; /* Padding superior e inferior para el footer */
-            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil en la parte superior del footer */
-        }
+.footer a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
 
-        .footer a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 1.1rem;
-            transition: color 0.3s ease;
-        }
+.footer a:hover {
+    color: #ffc107;
+}
 
-        .footer a:hover {
-            color: #ffc107;
-        }
-
-/* Puntos section */
+/* Estilos para la sección de puntos */
 .puntos-section {
     margin-top: 30px;
+    text-align: center;
 }
 
-.puntos {
-    font-size: 36px; /* Aumentar el tamaño de la fuente */
+.monedas {
+    font-size: 2rem;
     font-weight: bold;
-    color: #007bff;
-    border: 2px solid #007bff;
-    border-radius: 20px; /* Redondear más los bordes */
-    padding: 20px;
-    text-align: center;
-    margin-bottom: 40px; /* Aumentar el espacio inferior */
-    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2); /* Sombra suave */
-    transition: transform 0.3s ease; /* Añadir transición */
+    color: #ffc107; /* Color amarillo para simular monedas */
+    border: 2px solid #ffc107; /* Borde amarillo */
+    border-radius: 20px;
+    padding: 20px 30px; /* Ajuste del padding para un mejor equilibrio */
+    display: inline-block;
+    transition: all 0.3s ease; /* Transición para todos los cambios */
+    cursor: pointer; /* Cambiar el cursor al pasar por encima */
+    box-shadow: 0 4px 10px rgba(255, 193, 7, 0.2); /* Sombra suave */
 }
+
+/* Efecto de escala al pasar el ratón */
+.monedas:hover {
+    transform: scale(1.05); /* Escala ligeramente menor para un efecto más suave */
+    box-shadow: 0 6px 15px rgba(255, 193, 7, 0.3); /* Sombra más pronunciada */
+}
+
 
 .puntos:hover {
-    transform: scale(1.05); /* Efecto de escala al pasar el ratón */
+    transform: scale(1.1);
 }
+
 .orange-text {
     color: orange;
 }
-/* Animación de pulso */
-@keyframes pulse {
-    from {
-        transform: scale(1);
+
+/* Estilos para el slider */
+#slider {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.slide-track {
+    display: flex;
+    animation: scroll 40s linear infinite;
+}
+
+.slide {
+    flex: 0 0 200px;
+    margin-right: 20px;
+}
+
+.slide img {
+    width: 100%;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
     }
-    to {
-        transform: scale(1.08);
+    100% {
+        transform: translateX(-100%);
     }
 }
 
-        /* Slider */
-        #slider {
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .slide-track {
-            display: flex;
-            animation: scroll 40s linear infinite;
-        }
-
-        .slide {
-            flex: 0 0 200px; /* Ancho fijo de cada slide */
-            margin-right: 20px; /* Espacio entre slides */
-        }
-
-        .slide img {
-            width: 100%;
-        }
-
-        /* Animación de desplazamiento infinito */
-        @keyframes scroll {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(-100%);
-            }
-        }
-        /* Estilos para el slider en dispositivos móviles */
-@media (max-width: 414px) {
-    .slide {
-        flex: 0 0 calc(100% - 10px); /* Ajustar el tamaño de cada slide */
-        margin-right: 10px; /* Espacio entre slides */
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .card-title {
+        font-size: 1.5rem;
     }
-
-    .slide img {
-        width: 100%; /* Ajustar el ancho de la imagen al contenedor del slide */
-        height: auto; /* Altura automática para mantener la proporción */
+    .btn-primary {
+        padding: 8px 16px;
     }
 }
-/* Consulta de medios para dispositivos móviles */
 @media (max-width: 414px) {
     .navbar-brand {
-        padding: 0 10px; /* Ajustar espacio interno a los lados */
+        padding: 0 10px;
     }
-
     .navbar-nav .nav-link {
-        padding: 10px; /* Reducir espacio interno */
+        padding: 10px;
     }
-
     .card-img-top {
-        height: 150px; /* Reducir aún más la altura de la imagen */
+        height: 150px;
     }
-
     .card-title {
-        font-size: 1rem; /* Reducir tamaño del título */
+        font-size: 1rem;
     }
-
     .btn-primary {
-        padding: 8px 16px; /* Reducir el tamaño del botón */
+        padding: 8px 16px;
     }
-
     .slide img {
-        height: 120px; /* Reducir aún más la altura de las imágenes en el slider */
-    }
-
-    .rating i {
-        font-size: 1rem; /* Reducir tamaño de las estrellas de valoración */
+        height: 120px;
     }
 }
-/* Es
