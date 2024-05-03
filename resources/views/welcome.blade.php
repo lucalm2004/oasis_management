@@ -19,8 +19,11 @@
         <div class="container">
             <a class="navbar-brand" href="{{ route('welcome') }}">
                 <img src="/img/logonegro.png" class="logo mr-2" alt="Logo">
-                <span class="font-weight-bold text-uppercase">Oasis Management</span>
+                <span class="font-weight-bold text-uppercase">
+                    Oasis <span class="orange-text">Management</span>
+                </span>
             </a>
+            
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -97,9 +100,7 @@
             <div class="row">
                 <div class="col-md-12 animated">
                     <div class="content-box text-center">
-                        <!-- Imagen con tamaño ajustado -->
-                        <img src="/img/gente.avif" class="img-fluid mb-4" alt="Imagen 4" style="max-width: 400px;"> <!-- Ajusta el valor de max-width según lo necesites -->
-                        <!-- Texto con tamaños de fuente más grandes -->
+                        <img src="/img/gente.avif" class="img-fluid mb-4" alt="Imagen 4" style="max-width: 400px;"> 
                         <h2 style="font-size: 2.5rem;"><i class="fas fa-glass-cheers"></i> Descubre el mejor entretenimiento nocturno</h2>
                         <p style="font-size: 1.2rem;">Explora los eventos nocturnos más destacados cerca de ti.</p>
                         <p style="font-size: 1.2rem;">Reserva fácilmente entradas, interactúa con otros asistentes a través del chat y disfruta de bonificaciones exclusivas.</p>

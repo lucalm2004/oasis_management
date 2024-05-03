@@ -134,7 +134,9 @@
 .puntos:hover {
     transform: scale(1.05); /* Efecto de escala al pasar el ratón */
 }
-
+.orange-text {
+    color: orange;
+}
 /* Animación de pulso */
 @keyframes pulse {
     from {

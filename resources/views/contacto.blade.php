@@ -19,7 +19,9 @@
         <div class="container">
             <a class="navbar-brand" href="{{ route('welcome') }}">
                 <img src="/img/logonegro.png" class="logo mr-2" alt="Logo">
-                <span class="font-weight-bold text-uppercase">Oasis Management</span>
+                <span class="font-weight-bold text-uppercase">
+                    Oasis <span class="orange-text">Management</span>
+                </span>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,7 +86,7 @@
                         <div class="rounded border p-3"> <!-- Agregar recuadro al textarea con padding -->
                             <textarea class="form-control bg-light" id="mensaje" rows="5" style="font-size: 16px;" placeholder="Escribe tu mensaje aquí"></textarea>
                         </div>
-                        <button class="btn btn-primary mt-3" onclick="showContactMessage()"onclick="copyMessageToClipboard()">Copiar Mensaje</button>
+                        <button class="btn btn-primary mt-3" onclick="showContactMessage()">Copiar Mensaje</button>
                     </div>
                     <div class="mt-4">
                         <button class="btn btn-outline-light animate__animated animate__fadeInUp" onclick="sendEmail()">

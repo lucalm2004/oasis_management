@@ -1,27 +1,3 @@
-       // Función para copiar el mensaje al portapapeles y redirigir a la sección de contacto
-       function copyMessageToClipboard() {
-        var mensaje = document.getElementById("mensaje").value;
-        navigator.clipboard.writeText(mensaje)
-            .then(function() {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Mensaje Copiado',
-                    text: 'Ahora serás redirigido automáticamente a la sección de contacto.',
-                    showConfirmButton: false,
-                    timer: 3000  // Cambiado el tiempo de visualización del SweetAlert a 3 segundos
-                }).then(function() {
-                    window.location.href = "{{ route('contacto') }}";
-                });
-            })
-            .catch(function(err) {
-                console.error('Error al copiar el mensaje: ', err);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Hubo un problema al copiar el mensaje',
-                });
-            });
-    }
     // Función para mostrar SweetAlert al hacer clic en "Contacta con nosotros"
     function showContactMessage() {
         Swal.fire({

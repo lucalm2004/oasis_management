@@ -45,10 +45,12 @@ require __DIR__.'/auth.php';
 
 
 
+////////////////////////David//////////////////////////
 
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\ValoracionController;
 use App\Http\Controllers\DiscotecaController;
+use App\Http\Controllers\ContactoController;
 
 // Ruta para cerrar sesión
 Route::post('/logout', function () {
@@ -70,18 +72,11 @@ Route::get('/valoracion/top-rated-users', [ValoracionController::class, 'showTop
 Route::get('/discotecas/{id}/eventos', [DiscotecaController::class, 'getEventosByDiscoteca'])->name('discotecas.eventos');
 
 // Ruta para cargar la vista de contacto
-use App\Http\Controllers\ContactoController;
-
 Route::get('/contacto', [ContactoController::class, 'index'])->name('contacto');
 
 // Rutas protegidas con autenticación
 Route::middleware('auth')->group(function () {
-    // Ruta para mostrar y editar el perfil
-    Route::get('/perfil', [ProfileController::class, 'edit'])->name('perfil');
-// Mantén solo una de estas rutas y elimina la otra
+// Ruta para mostrar y editar el perfil
+Route::get('/perfil', [ProfileController::class, 'edit'])->name('perfil');
 Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
-
-// Si quieres mantener una ruta con POST, puedes cambiar su nombre
-Route::post('/perfil/update', [ProfileController::class, 'update'])->name('perfil.update');
-
 });

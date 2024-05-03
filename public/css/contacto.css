@@ -160,7 +160,9 @@ body {
         transform: translateX(-100%);
     }
 }
-
+.orange-text {
+    color: orange;
+}
 /* Estilos para el slider en dispositivos móviles */
 @media (max-width: 414px) {
     .slide {

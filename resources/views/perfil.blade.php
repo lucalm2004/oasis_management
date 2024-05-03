@@ -19,7 +19,9 @@
         <div class="container">
             <a class="navbar-brand" href="{{ route('welcome') }}">
                 <img src="/img/logonegro.png" class="logo mr-2" alt="Logo">
-                <span class="font-weight-bold text-uppercase">Oasis Management</span>
+                <span class="font-weight-bold text-uppercase">
+                    Oasis <span class="orange-text">Management</span>
+                </span>
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

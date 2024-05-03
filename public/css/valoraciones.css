@@ -279,7 +279,9 @@ body {
     font-size: 14px;
     margin-bottom: 12px;
 }
-
+.orange-text {
+    color: orange;
+}
 /* Estilos para el contenedor de estrellas */
 .stars-container {
     display: flex;

@@ -284,7 +284,9 @@
 .text-center {
     text-align: center !important;
 }
-
+.orange-text {
+    color: orange;
+}
 /* Estilos específicos para Botones */
 .btn-lg {
     padding: 10px 20px;
