@@ -1,103 +1,126 @@
-/* Estilos generales */
 body {
-    font-family: Arial, sans-serif;
-    background-color: #ffffff; /* Blanco */
-    color: #333; /* Texto principal */
-    padding-top: 70px; /* Ajuste para compensar la altura de la barra de navegación */
+    background: linear-gradient(135deg, #000000, #000000);
+    background-size: 200% 200%;
+    animation: gradientAnimation 10s infinite alternate;
+    font-family: 'Roboto Slab', serif;
 }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
 
 .container {
     max-width: 1200px;
 }
+/* Estilos para la sección de Valoración de Eventos */
 
-/* Estilos para la barra de navegación superior */
+
+.container h1 {
+    color: #f58220; /* Color naranja */
+    font-size: 2.5rem; /* Tamaño grande para el título */
+    margin-bottom: 1.5rem; /* Margen inferior */
+}
+
+.container h3 {
+    color: #fbc557; /* Color gris oscuro */
+    font-size: 1.5rem; /* Tamaño mediano para el subtítulo */
+    font-weight: normal; /* Peso de fuente normal */
+    margin-bottom: 3rem; /* Margen inferior más grande */
+}
+
+/* Estilos para la Navbar */
 .navbar {
-    background-color: #f58220; /* Naranja */
-    position: fixed; /* Fija la barra en la parte superior */
-    width: 100%; /* Ocupa todo el ancho disponible */
-    top: 0; /* Alinea la barra en la parte superior */
-    z-index: 1000; /* Asegura que esté por encima de otros elementos */
-    transition: top 0.3s; /* Agrega transición suave al cambio de posición */
+    background-color: #000000; /* Fondo negro */
+    color: #000000; /* Texto negro */
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
-
-.navbar.hidden {
-    top: -70px; /* Mueve la barra fuera de la pantalla */
+.navbar.scrolled {
+    background-color: #000000; /* Color de fondo al hacer scroll */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra al hacer scroll */
 }
-
 .navbar-brand {
     display: flex;
     align-items: center;
-    color: #ffffff; /* Blanco */
-    text-decoration: none;
+    font-size: 1.2rem;
 }
 
-.navbar-brand .logo {
-    width: 40px;
-    height: 40px;
+.navbar-brand img {
+    max-width: 40px;
+    margin-right: 10px;
 }
 
-.navbar-nav .nav-link {
-    color: #ffffff; /* Blanco */
+.nav-link {
+    color: #000000 !important; /* Texto negro */
 }
 
-.navbar-nav .nav-link:hover {
-    color: #ffd54f; /* Amarillo */
+.nav-link:hover {
+    color: #ffd54f !important; /* Amarillo al hacer hover */
 }
 
-/* Estilos para las tarjetas de discotecas */
+
+/* Estilos para las tarjetas de eventos */
 .card {
-    background-color: #ffa200; /* Color de fondo */
-    border: 1px solid #dee2e6; /* Borde */
-    border-radius: 10px; /* Esquinas redondeadas */
-    transition: transform 0.3s; /* Transición al hacer hover */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    background-color: #ffa200;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s; /* Transición suave en la transformación y la sombra */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
 }
 
 .card:hover {
-    transform: translateY(-5px); /* Efecto de levantamiento al hacer hover */
+    transform: translateY(-5px); /* Levantar la tarjeta al pasar el cursor */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Añadir sombra más pronunciada al pasar el cursor */
 }
 
 .card-img-top {
-    height: 250px; /* Altura de la imagen */
-    object-fit: cover; /* Ajuste de la imagen */
-    border-top-left-radius: 10px; /* Esquina redondeada superior izquierda */
-    border-top-right-radius: 10px; /* Esquina redondeada superior derecha */
+    height: 250px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .card-title {
-    font-size: 1.5rem; /* Tamaño del título */
-    font-weight: bold; /* Texto en negrita */
-    color: #212529; /* Color del texto del título */
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #212529;
 }
 
 .card-text {
-    font-size: 1rem; /* Tamaño del texto */
-    color: #6c757d; /* Color del texto */
+    font-size: 1rem;
+    color: #6c757d;
 }
 
 .btn-primary {
-    background-color: #f58220; /* Naranja */
+    background-color: #f58220;
     border: none;
 }
 
 .btn-primary:hover {
-    background-color: #e0620d; /* Naranja más oscuro */
+    background-color: #e0620d;
 }
 
 /* Estilos para el footer */
 .footer {
-    background-color: #343a40; /* Gris oscuro */
-    color: #ffffff; /* Blanco */
-    padding-bottom: 50px; /* Ajuste para evitar que el contenido del footer se solape */
-    position: relative; /* Ajuste para mantener el espacio para la animación */
+    background-image: url('/img/oasisn2.jpg');
+    /* Ajusta el tamaño y la posición del fondo según sea necesario */
+    background-size: cover;
+    background-position: center;
+    padding: 60px 0; /* Padding superior e inferior para el footer */
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil en la parte superior del footer */
 }
 
 .footer a {
-    color: #ffffff; /* Blanco */
+    color: #ffffff;
 }
 
 .footer a:hover {
-    color: #ffd54f; /* Amarillo */
+    color: #ffd54f;
 }
 
 /* Estilos para el slider */
@@ -113,45 +136,84 @@ body {
 }
 
 .slide {
-    flex: 0 0 200px; /* Ancho fijo de cada slide */
-    margin-right: 20px; /* Espacio entre slides */
+    flex: 0 0 200px;
+    margin-right: 20px;
 }
 
 .slide img {
     width: 100%;
 }
+
+/* Consulta de medios para dispositivos móviles */
+@media (max-width: 414px) {
+    .navbar-brand {
+        padding: 0 10px; /* Ajustar espacio interno a los lados */
+    }
+
+    .navbar-nav .nav-link {
+        padding: 10px; /* Reducir espacio interno */
+    }
+
+    .card-img-top {
+        height: 150px; /* Reducir aún más la altura de la imagen */
+    }
+
+    .card-title {
+        font-size: 1rem; /* Reducir tamaño del título */
+    }
+
+    .btn-primary {
+        padding: 8px 16px; /* Reducir el tamaño del botón */
+    }
+
+    .slide {
+        flex: 0 0 calc(100% - 10px); /* Ajustar el tamaño de cada slide */
+        margin-right: 10px; /* Espacio entre slides */
+    }
+
+    .slide img {
+        width: 100%; /* Ajustar el ancho de la imagen al contenedor del slide */
+        height: auto; /* Altura automática para mantener la proporción */
+    }
+
+    .rating i {
+        font-size: 1rem; /* Reducir tamaño de las estrellas de valoración */
+    }
+}
+
 /* Estilos para las estrellas de valoración */
 .rating {
-    display: flex; /* Contenedor en línea */
-    align-items: center; /* Alineación vertical al centro */
-    margin-top: 10px; /* Margen superior */
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
 }
 
 .rating-num {
-    font-size: 1.2rem; /* Tamaño del número de valoración */
-    font-weight: bold; /* Texto en negrita */
-    margin-right: 10px; /* Margen derecho */
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-right: 10px;
 }
-
-/* Estilos para las estrellas de valoración */
+.no-reviews {
+    font-size: 1rem;
+    color: #666;
+    text-align: center;
+    margin-top: 20px;
+}
 .rating i {
-    color: #f58220; /* Color de las estrellas (naranja) */
-    font-size: 1.5rem; /* Tamaño de las estrellas */
+    color: #f58220;
+    font-size: 1.5rem;
 }
 
-/* Estilos para las estrellas llenas */
 .rating .fas.fa-star {
-    color: #ffdd00; /* Naranja */
+    color: #ffdd00;
 }
 
-/* Estilos para las medias estrellas */
 .rating .fas.fa-star-half-alt {
-    color: #fff200; /* Naranja */
+    color: #fff200;
 }
 
-/* Estilos para las estrellas vacías */
 .rating .far.fa-star {
-    color: #e0e0e0; /* Gris claro */
+    color: #e0e0e0;
 }
 
 /* Animación de desplazamiento infinito */
@@ -161,5 +223,85 @@ body {
     }
     100% {
         transform: translateX(-100%);
+    }
+}
+/* Estilos CSS para el contenedor principal de usuarios mejor valorados */
+#top-rated-users {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+/* Estilos CSS para cada tarjeta de usuario */
+.user-card {
+    width: 30%; /* Ancho inicial de la tarjeta (ajustará automáticamente en pantallas más pequeñas) */
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    background-color: #f9f9f9; /* Color de fondo */
+    border: 1px solid #ddd; /* Borde suave */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Efecto hover para la tarjeta */
+.user-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para la información del usuario */
+.user-info {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+/* Estilos para el nombre del evento */
+.evento-info {
+    font-size: 14px;
+    font-style: italic;
+    margin-bottom: 8px;
+    color: #666; /* Color gris oscuro */
+}
+
+/* Estilos para la valoración */
+.rating-info {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+/* Estilos para la descripción */
+.description-info {
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+/* Estilos para el contenedor de estrellas */
+.stars-container {
+    display: flex;
+    align-items: center;
+}
+
+/* Estilos para las estrellas */
+.star {
+    color: gold;
+    font-size: 20px;
+    margin-right: 4px;
+}
+
+/* Estilos para hacer la tarjeta responsive */
+@media (max-width: 768px) {
+    .user-card {
+        width: 45%; /* Reducir el ancho en pantallas más pequeñas */
+    }
+}
+
+@media (max-width: 576px) {
+    .user-card {
+        width: 100%; /* Ancho completo en pantallas muy pequeñas */
     }
 }

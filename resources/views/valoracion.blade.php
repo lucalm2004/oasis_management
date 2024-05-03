@@ -4,44 +4,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valoración de Discotecas - Oasis Management</title>
+    <title>Oasis Management</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="css/valoraciones.css">
+    <script src="js/valoracion.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- SweetAlert CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{{ route('welcome') }}">
                 <img src="/img/logonegro.png" class="logo mr-2" alt="Logo">
                 <span class="font-weight-bold text-uppercase">Oasis Management</span>
             </a>
-            <!-- Authentication Logic with Laravel -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
+                    <!-- Botón de perfil -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i> Mi Perfil
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            @auth
+                                <a class="dropdown-item" href="{{ route('perfil') }}">Ver Perfil</a>
+                                                               <!-- Enlace para cerrar sesión -->
+                                                               <form id="logoutForm" action="{{ route('logout') }}" method="POST">
+                                                                @csrf
+                                                                <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                                                            </form>
+                            @else
+                                <a class="dropdown-item" href="{{ route('login') }}">Iniciar Sesión</a>
+                                <a class="dropdown-item" href="{{ route('register') }}">Registrarse</a>
+                            @endauth
+                        </div>
+                    </li>
+                    <!-- Fin del botón de perfil -->
+    
+                    <!-- Enlace de contacto con emoticono -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('contacto') }}">
+                            <i class="fas fa-envelope"></i> Contacto
+                        </a>
+                    </li>
+    
+                    <!-- Otros elementos del navbar -->
                     @if (Route::has('login'))
                         @auth
-                            <li class="nav-item">
-                                <a href="{{ url('/dashboard') }}" class="nav-link"><i
-                                        class="fas fa-chart-line"></i> Dashboard</a>
-                            </li>
                         @else
                             <li class="nav-item">
-                                <a href="{{ route('login') }}" class="nav-link"><i class="fas fa-sign-in-alt"></i> Log
-                                    in</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/google-auth/redirect" class="nav-link"><i class="fab fa-google"></i> Login
-                                    Google</a>
+                                <a href="/google-auth/redirect" class="nav-link"><i class="fab fa-google"></i> Login Google</a>
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a href="{{ route('register') }}" class="nav-link"><i class="fas fa-user-plus"></i>
-                                        Register</a>
+                                    <a href="{{ route('register') }}" class="nav-link"><i class="fas fa-user-plus"></i> Registrarse</a>
                                 </li>
                             @endif
                         @endauth
@@ -50,9 +74,25 @@
             </div>
         </div>
     </nav>
-
+    
     <div class="container mt-5">
-        <h1>Valoración de Discotecas</h1>
+        <h1>Valoración de Eventos</h1>
+        <h3>¡Valora los eventos de tus discotecas favoritas y comparte tus experiencias!</h3>
+            <!-- Contenedor principal -->
+            <div class="container mt-5">
+                <h1>Usuarios con Mejor Valoración</h1>
+                <button onclick="toggleTopRatedUsers()" class="btn btn-info mt-3">
+                    Ver Usuarios Mejor Valorados
+                </button>
+                <div id="top-rated-users" class="mt-4">
+                    <!-- Aquí se mostrarán los usuarios con mejor valoración -->
+                </div>
+            </div>
+            
+
+        <div id="top-rated-users" class="mt-5">
+            <!-- Aquí se mostrarán los usuarios con mejor valoración -->
+        </div>
         <div class="row mt-4">
             @foreach ($discotecas as $discoteca)
                 <div class="col-md-6 mb-4">
@@ -76,7 +116,7 @@
                             </div>
                             <button onclick="showEventsAndRate({{ $discoteca->id }})" class="btn btn-primary mt-3">Valorar</button>
                             <button onclick="showReviews({{ $discoteca->id }})" class="btn btn-secondary mt-3">Ver Reseñas del Evento</button>
-                        </div>
+                             </div>
                     </div>
                 </div>
             @endforeach
@@ -88,7 +128,7 @@
         </div>
     </div>
     <!-- Footer Section -->
-    <footer class="footer mt-auto py-5 bg-dark" id="contact">
+    <footer class="footer mt-auto py-5 bg-dark" id="contact" style="background-image: url('/img/oasisn2.jpg');">
         <div class="container text-center">
             <span class="text-white animate__animated animate__fadeInUp">¿Listo para empezar?</span>
             <div class="mt-4">
@@ -105,203 +145,67 @@
                     Instagram</a>
             </div>
             <!-- Logos de Discotecas -->
-            <div id="slider">
+            <div id="slider" class="slider">
                 <div class="slide-track">
                     @foreach ($discotecas as $discoteca)
                         <div class="slide">
-                            <img src="{{ asset('img/' . $discoteca->image) }}" alt="{{ $discoteca->name }}"
-                                class="img-fluid">
+                            <img src="{{ asset('img/' . $discoteca->image) }}" alt="{{ $discoteca->name }}" class="img-fluid">
                         </div>
                     @endforeach
                 </div>
             </div>
+            
         </div>
     </footer>
-    <!-- Bootstrap JS -->
+   
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
     <script>
-        // Funciones JavaScript para interacción con eventos y valoración
-        function showEventsAndRate(idDiscoteca) {
-            fetch(`/discotecas/${idDiscoteca}/eventos`)
-                .then(response => response.json())
-                .then(data => {
-                    const eventos = data.eventos;
-                    // Mostrar los eventos y permitir valorar cada uno
-                    showEventRatings(eventos);
-                })
-                .catch(error => {
-                    console.error('Error al obtener eventos:', error);
-                    alert('Hubo un problema al cargar los eventos. Por favor, inténtalo nuevamente.');
-                });
-        }
-        function showEventRatings(eventos) {
-    const eventsContainer = document.getElementById('eventos-container');
-    eventsContainer.innerHTML = '';
-
-    if (Array.isArray(eventos) && eventos.length > 0) {
-        eventos.forEach(evento => {
-            const eventHtml = `
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">${evento.name}</h5>
-                        <p class="card-text">${evento.descripcion}</p>
-                        <div class="rating" id="rating-${evento.id}">
-                            <!-- Iconos de estrella para valoración -->
-                            <i class="far fa-star star" data-value="1"></i>
-                            <i class="far fa-star star" data-value="2"></i>
-                            <i class="far fa-star star" data-value="3"></i>
-                            <i class="far fa-star star" data-value="4"></i>
-                            <i class="far fa-star star" data-value="5"></i>
-                        </div>
-                        <br>
-                        <div class="form-group">
-                            <label for="descripcion-${evento.id}">Descripción:</label>
-                            <textarea class="form-control" id="descripcion-${evento.id}" rows="3"></textarea>
-                        </div>
-                        <button onclick="submitRating(${evento.id}, ${evento.id_discoteca})"
-                            class="btn btn-primary">Valorar</button>
-                    </div>
-                </div>
-            `;
-            eventsContainer.innerHTML += eventHtml;
-
-            // Agregar evento de clic a los iconos de estrella
-            const stars = document.querySelectorAll(`#rating-${evento.id} .star`);
-            stars.forEach(star => {
-                star.addEventListener('click', () => {
-                    const value = parseInt(star.getAttribute('data-value'));
-                    // Cambiar la visualización de las estrellas
-                    setStarRating(evento.id, value);
-                });
-            });
-        });
-    } else {
-        eventsContainer.innerHTML = '<p>No hay eventos disponibles en este momento.</p>';
-    }
-}
-
-function setStarRating(eventId, rating) {
-    const stars = document.querySelectorAll(`#rating-${eventId} .star`);
-    stars.forEach(star => {
-        const starValue = parseInt(star.getAttribute('data-value'));
-        if (starValue <= rating) {
-            star.classList.remove('far');
-            star.classList.add('fas');
-        } else {
-            star.classList.remove('fas');
-            star.classList.add('far');
-        }
-    });
-
-    // Actualizar el valor del campo de valoración oculto (si es necesario)
-    const hiddenInput = document.getElementById(`rating-${eventId}`);
-    if (hiddenInput) {
-        hiddenInput.value = rating;
-    }
-}
 
 
 
-        function submitRating(eventId, discotecaId) {
-            const rating = document.getElementById(`rating-${eventId}`).value;
-            const descripcion = document.getElementById(`descripcion-${eventId}`).value;
+function submitRating(eventId, discotecaId) {
+        const rating = document.getElementById(`rating-${eventId}`).value;
+        const descripcion = document.getElementById(`descripcion-${eventId}`).value;
 
-            fetch('/valoracion/store', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                },
-                body: JSON.stringify({ eventId, rating, descripcion })
-            })
-            .then(response => {
-                if (response.ok) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Valoración enviada',
-                        text: '¡Gracias por tu valoración!',
-                        timer: 2000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    });
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
-                } else {
-                    throw new Error('Hubo un problema al enviar la valoración.');
-                }
-            })
-            .catch(error => {
-                console.error('Error al enviar la valoración:', error);
+        fetch('/valoracion/store', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            },
+            body: JSON.stringify({ eventId, rating, descripcion })
+        })
+        .then(response => {
+            if (response.ok) {
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Hubo un problema al enviar la valoración. Por favor, inténtalo nuevamente.',
-                    timer: 3000,
+                    icon: 'success',
+                    title: 'Valoración enviada',
+                    text: '¡Gracias por tu valoración!',
+                    timer: 2000,
                     timerProgressBar: true,
                     showConfirmButton: false
                 });
-            });
-        }
-        function showReviews(eventId) {
-    fetch(`/eventos/${eventId}/resenas`)
-        .then(response => response.json())
-        .then(data => {
-            const reviews = data.resenas;
-            const reviewsContainer = document.getElementById('eventos-container');
-            reviewsContainer.innerHTML = '';
-
-            if (Array.isArray(reviews) && reviews.length > 0) {
-                reviews.forEach(review => {
-                    const userName = review.user ? review.user.name : 'Usuario desconocido';
-
-                    const reviewHtml = `
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Reseña de ${userName}</h5>
-                                <div class="rating">
-                                    <!-- Generar las estrellas según la valoración -->
-                                    ${generateStarRating(review.rating)}
-                                </div>
-                                    <p class="card-text">${review.descripcion}</p>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    reviewsContainer.innerHTML += reviewHtml;
-                });
+                setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
             } else {
-                reviewsContainer.innerHTML = '<p>No hay reseñas disponibles para este evento.</p>';
+                throw new Error('Hubo un problema al enviar la valoración.');
             }
         })
         .catch(error => {
-            console.error('Error al obtener reseñas del evento:', error);
-            const reviewsContainer = document.getElementById('eventos-container');
-            reviewsContainer.innerHTML = '<p>Hubo un problema al cargar las reseñas del evento.</p>';
+            console.error('Error al enviar la valoración:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un problema al enviar la valoración. Por favor, inténtalo nuevamente.',
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
         });
-}
-function generateStarRating(rating) {
-    const fullStars = Math.floor(rating); // Número de estrellas completas
-    const halfStar = rating - fullStars >= 0.5; // Determinar si hay una estrella media
-
-    let starsHtml = '';
-    for (let i = 0; i < fullStars; i++) {
-        starsHtml += '<i class="fas fa-star"></i>'; // Estrella completa
     }
-    if (halfStar) {
-        starsHtml += '<i class="fas fa-star-half-alt"></i>'; // Estrella media
-    }
-    const emptyStars = 5 - Math.ceil(rating); // Número de estrellas vacías
-    for (let i = 0; i < emptyStars; i++) {
-        starsHtml += '<i class="far fa-star"></i>'; // Estrella vacía
-    }
-
-    return starsHtml;
-}
-
     </script>
 </body>
 

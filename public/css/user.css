@@ -1,43 +1,51 @@
-        /* Estilos generales */
+        /* Estilos para el fondo en movimiento */
         body {
-            font-family: 'Roboto', Arial, sans-serif;
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.6;
+            background: linear-gradient(135deg, #000000, #000000);
+            background-size: 200% 200%;
+            animation: gradientAnimation 10s infinite alternate;
+            font-family: 'Roboto Slab', serif;
         }
-
-        /* Navbar */
-        .navbar {
-            background-color: #343a40;
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
         }
-
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            font-size: 1.8rem;
-            color: #fff;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        .error-message{
+            color: red;
         }
+/* Estilos para la Navbar */
+.navbar {
+    background-color: #000000; /* Fondo blanco */
+    color: #000000; /* Letras negras */
+    /* Ajusta el tamaño y la posición del fondo según sea necesario */
+    background-size: cover;
+    background-position: top;
+}
 
-        .navbar-brand img {
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+.navbar-brand img {
+    max-width: 40px;
+    margin-right: 10px;
+}
+        
+        .navbar-brand .logo {
+            width: 40px;
             height: 40px;
-            margin-right: 10px;
         }
 
-        .navbar-nav .nav-link {
-            color: #fff;
-            font-size: 1.1rem;
-            transition: color 0.3s ease;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #ffc107;
-        }
 
         /* Contenido principal */
         .container {
             max-width: 800px;
-            margin-top: 40px;
+            
         }
 
         .card {
@@ -85,12 +93,13 @@
             background-color: #ff9800;
         }
 
-        /* Footer */
         .footer {
-            background-color: #343a40;
-            color: #fff;
-            padding: 60px 0;
-            text-align: center;
+            background-image: url('/img/oasisn2.jpg');
+            /* Ajusta el tamaño y la posición del fondo según sea necesario */
+            background-size: cover;
+            background-position: center;
+            padding: 60px 0; /* Padding superior e inferior para el footer */
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil en la parte superior del footer */
         }
 
         .footer a {
@@ -166,3 +175,46 @@
                 transform: translateX(-100%);
             }
         }
+        /* Estilos para el slider en dispositivos móviles */
+@media (max-width: 414px) {
+    .slide {
+        flex: 0 0 calc(100% - 10px); /* Ajustar el tamaño de cada slide */
+        margin-right: 10px; /* Espacio entre slides */
+    }
+
+    .slide img {
+        width: 100%; /* Ajustar el ancho de la imagen al contenedor del slide */
+        height: auto; /* Altura automática para mantener la proporción */
+    }
+}
+/* Consulta de medios para dispositivos móviles */
+@media (max-width: 414px) {
+    .navbar-brand {
+        padding: 0 10px; /* Ajustar espacio interno a los lados */
+    }
+
+    .navbar-nav .nav-link {
+        padding: 10px; /* Reducir espacio interno */
+    }
+
+    .card-img-top {
+        height: 150px; /* Reducir aún más la altura de la imagen */
+    }
+
+    .card-title {
+        font-size: 1rem; /* Reducir tamaño del título */
+    }
+
+    .btn-primary {
+        padding: 8px 16px; /* Reducir el tamaño del botón */
+    }
+
+    .slide img {
+        height: 120px; /* Reducir aún más la altura de las imágenes en el slider */
+    }
+
+    .rating i {
+        font-size: 1rem; /* Reducir tamaño de las estrellas de valoración */
+    }
+}
+/* Es

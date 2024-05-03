@@ -7,6 +7,8 @@ use App\Models\Valoraciones;
 use App\Models\Discoteca;
 use App\Models\Evento;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 
 class ValoracionController extends Controller
 {
@@ -120,6 +122,23 @@ public function showValoracionPage()
     } catch (\Exception $e) {
         // Capturar cualquier error y manejarlo adecuadamente
         return response()->json(['error' => 'Error al cargar la página de valoración: ' . $e->getMessage()], 500);
+    }
+}
+public function showTopRatedUsers()
+{
+    try {
+        $topRatedUsers = DB::table('valoraciones')
+            ->select('users.name', 'valoraciones.rating', 'valoraciones.descripcion', 'eventos.name AS evento_nombre')
+            ->join('users', 'users.id', '=', 'valoraciones.id_user')
+            ->join('eventos', 'eventos.id', '=', 'valoraciones.id_evento')
+            ->orderBy('eventos.name') // Ordenar por nombre del evento
+            ->orderByDesc('valoraciones.rating') // Ordenar por rating descendente
+            ->limit(10) // Limitar a 10 usuarios por evento
+            ->get();
+
+        return response()->json(['topRatedUsers' => $topRatedUsers]);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Error al obtener los usuarios con mejor valoración: ' . $e->getMessage()], 500);
     }
 }
 

@@ -1,12 +1,156 @@
+        /* Estilos para el fondo en movimiento */
+        body {
+            background: linear-gradient(135deg, #000000, #070606);
+            background-size: 200% 200%;
+            animation: gradientAnimation 10s infinite alternate;
+            font-family: 'Roboto Slab', serif;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+        /* Estilos adicionales para la sección de inicio */
+.text-orange {
+    color: #f58220; /* Color naranja */
+}
+
+.text-white {
+    color: #ffffff; /* Color blanco */
+}
+
+.inicio-section {
+    color: #ffffff; /* Color blanco para todo el texto en la sección */
+}
+
+
+                /* Contenedor de sección con animación de aparición */
+                .section {
+                    padding: 80px 0;
+                    position: relative;
+                }
+        
+                .section > .content-box {
+                    background-color: #ffffff;
+                    padding: 30px;
+                    border-radius: 5px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                    animation: fadeInUp 0.75s ease-out; /* Animación de aparición */
+                }
+        
+                @keyframes fadeInUp {
+                    from {
+                        opacity: 0;
+                        transform: translateY(20px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+                .inicio-section h1,
+                .inicio-section h2 {
+                    animation: fadeInLeft 1s forwards;
+                }
+                
+                .inicio-section p,
+                .inicio-section a.btn {
+                    animation: fadeInLeft 1s forwards;
+                    margin-top: 20px;
+                }
+                
+                .logo-img {
+                    max-width: 80%;
+                    height: auto;
+                    animation: fadeInRight 1s forwards;
+                }
+                
+                /* Animaciones */
+                @keyframes fadeInLeft {
+                    from {
+                        opacity: 0;
+                        transform: translateX(-50px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
+                
+                @keyframes fadeInRight {
+                    from {
+                        opacity: 0;
+                        transform: translateX(50px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateX(0);
+                    }
+                }
+                
+                /* Ajustes responsivos */
+                @media (max-width: 768px) {
+                    .inicio-section {
+                        padding: 80px 0;
+                    }
+                
+                    .navbar-brand {
+                        padding: 0 10px;
+                    }
+                }
+                
+                @media (max-width: 414px) {
+                    .slide img {
+                        height: 120px;
+                    }
+                }
+/* Estilos para las secciones con imágenes y texto juntos */
+.content-box {
+    background-color: #ffffff; /* Fondo blanco para el cuadro de contenido */
+    padding: 30px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Sombra suave */
+}
+
+/* Estilos para las imágenes dentro de las secciones */
+.img-fluid {
+    max-width: 100%; /* Ancho máximo para imágenes fluidas */
+    height: auto; /* Altura automática para mantener la proporción */
+}
+
+
+
+    /* Estilo para las secciones animadas */
+    .animated {
+        visibility: hidden;
+        opacity: 0;
+        transform: translateY(50px); /* Empezar oculto bajo la página */
+        transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    /* Animación para mostrar cuando entra en el viewport */
+    .animate-fadeInUp {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0);
+    }
+                
 /* Estilos para la Navbar */
 .navbar {
-    background-color: #f58220; /* Naranja */
+    background-color: #000000; /* Fondo blanco */
+    color: #000000; /* Letras negras */
+    /* Ajusta el tamaño y la posición del fondo según sea necesario */
+    background-size: cover;
+    background-position: top;
 }
 
 .navbar-brand {
     display: flex;
     align-items: center;
-    color: #ffffff; /* Blanco */
     font-size: 1.2rem;
 }
 
@@ -16,17 +160,29 @@
 }
 
 .nav-link {
-    color: #ffffff !important; /* Blanco */
+    color: #000000 !important; /* Letras negras */
 }
 
 .nav-link:hover {
     color: #ffd54f !important; /* Amarillo */
+}
+.font-weight-bold {
+    font-weight: bold; /* Hace que el texto sea negrita */
+    color: #000000; /* Color del texto en negro */
+    text-transform: uppercase; /* Convierte el texto a mayúsculas */
 }
 
 /* Estilos para el Slider */
 .parallax {
     position: relative;
     overflow: hidden;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.carousel {
+    width: 100%;
 }
 
 .carousel-item img {
@@ -34,20 +190,40 @@
     object-fit: cover;
 }
 
+/* Estilos para los controles del Carousel */
+.carousel-control-prev, .carousel-control-next {
+    width: 5%;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    height: 100%;
+    width: 100%;
+}
+
+/* Ajuste para dispositivos móviles */
+@media (max-width: 768px) {
+    .carousel-item img {
+        height: 300px;
+    }
+}
+
+
 /* Estilos para el Contenido */
 .content-box {
     background-color: #ffffff; /* Blanco */
     padding: 30px;
     border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada para separar las secciones */
+    margin-bottom: 50px; /* Espacio inferior entre secciones */
 }
+
 
 .content-box h2 {
     color: #f58220; /* Naranja */
 }
 
 .content-box p {
-    color: #757575; /* Gris oscuro */
+    color: #000000; /* Gris oscuro */
 }
 
 /* Estilos para el Botón de Valorar */
@@ -57,8 +233,12 @@
 
 /* Estilos para el Footer */
 .footer {
-    background-color: #343a40;
-    color: #ffffff; /* Blanco */
+    background-image: url('/img/oasisn2.jpg');
+    /* Ajusta el tamaño y la posición del fondo según sea necesario */
+    background-size: cover;
+    background-position: center;
+    padding: 60px 0; /* Padding superior e inferior para el footer */
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil en la parte superior del footer */
 }
 
 .footer a {
@@ -116,14 +296,24 @@
     background-color: #f58220; /* Naranja */
     border-color: #f58220; /* Naranja */
 }
-
-.btn-primary:hover {
-    background-color: #e0620d; /* Naranja más oscuro */
-    border-color: #e0620d; /* Naranja más oscuro */
+/* Estilos para la sección de valoración de discotecas */
+.rating-section {
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semi-transparente */
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
+
+/* Ejemplo de animación al hacer hover */
+.btn-primary:hover {
+    transform: scale(1.1); /* Hace que el botón crezca ligeramente al hacer hover */
+    transition: transform 0.3s ease; /* Agrega una transición suave */
+}
+
+
 .btn-outline-light {
-    color: #ffffff; /* Blanco */
+    color: #fafafa; /* Blanco */
     border-color: #ffffff; /* Blanco */
 }
 
@@ -133,23 +323,53 @@
     border-color: #ffffff; /* Blanco */
 }
 
-/* Estilos para la Animación de Desplazamiento de Logos */
-@keyframes slideLeft {
+/* Estilos para el slider */
+.slider {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.slide-track {
+    display: flex;
+    animation: scroll 40s linear infinite;
+}
+
+.slide {
+    flex: 0 0 200px;
+    margin-right: 20px;
+}
+
+.slide img {
+    width: 100%;
+}
+
+
+
+/* Animación de desplazamiento infinito */
+@keyframes scroll {
     0% {
-        transform: translateX(0); /* Sin desplazamiento inicial */
+        transform: translateX(0);
     }
     100% {
-        transform: translateX(-100%); /* Desplazamiento completo hacia la izquierda */
+        transform: translateX(-100%);
     }
 }
 
-/* Aplicar la Animación a los Logos de Discotecas */
-.logos-container {
-    display: flex;
-    overflow: hidden; /* Oculta los logos que desbordan */
-}
+/* Estilos para el slider en dispositivos móviles */
+@media (max-width: 414px) {
+    .slide {
+        flex: 0 0 calc(100% - 10px); /* Ajustar el tamaño de cada slide */
+        margin-right: 10px; /* Espacio entre slides */
+    }
 
-.logo-item {
-    flex: 0 0 auto; /* Ancho automático según el contenido */
-    animation: slideLeft 10s linear infinite; /* Configura la animación de desplazamiento */
+    .slide img {
+        width: 100%; /* Ajustar el ancho de la imagen al contenedor del slide */
+        height: auto; /* Altura automática para mantener la proporción */
+    }
+}
+@media (min-width: 768px) {
+    .my-5 {
+        margin-bottom: 50px;
+    }
 }

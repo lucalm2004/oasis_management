@@ -50,6 +50,12 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\ValoracionController;
 use App\Http\Controllers\DiscotecaController;
 
+// Ruta para cerrar sesión
+Route::post('/logout', function () {
+    Auth::logout(); // Cerrar sesión del usuario
+    return redirect('/'); // Redireccionar a la página de inicio u otra página
+})->name('logout');
+
 // Rutas públicas
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
@@ -58,9 +64,15 @@ Route::get('/valoracion', [ValoracionController::class, 'showValoracionPage'])->
 Route::get('/valoracion/form/{idEvento}', [ValoracionController::class, 'create'])->name('valoracion.create');
 Route::post('/valoracion/store', [ValoracionController::class, 'store'])->name('valoracion.store');
 Route::get('/eventos/{idEvento}/resenas', [ValoracionController::class, 'showResenas'])->name('eventos.resenas');
+Route::get('/valoracion/top-rated-users', [ValoracionController::class, 'showTopRatedUsers'])->name('valoracion.topRatedUsers');
 
 // Rutas para discotecas y eventos
 Route::get('/discotecas/{id}/eventos', [DiscotecaController::class, 'getEventosByDiscoteca'])->name('discotecas.eventos');
+
+// Ruta para cargar la vista de contacto
+use App\Http\Controllers\ContactoController;
+
+Route::get('/contacto', [ContactoController::class, 'index'])->name('contacto');
 
 // Rutas protegidas con autenticación
 Route::middleware('auth')->group(function () {
