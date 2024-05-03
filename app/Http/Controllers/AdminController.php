@@ -333,7 +333,19 @@ class AdminController extends Controller
         ->where('users.verificado', '=', 0)
         ->where('users.habilitado', '=', 0)
         ->get();
-        return response()->json($solicitudes);
+        $count = DB::table('users')
+        ->leftJoin('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
+        ->leftJoin('discotecas', 'users_discotecas.id_discoteca', '=', 'discotecas.id')
+        ->where('users.verificado', '=', 0)
+        ->where('users.habilitado', '=', 0)
+        ->count();
+        /* dd($count); */
+
+        return response()->json([
+            'solicitudes' => $solicitudes,
+            'count' => $count,
+        ]);
+       /*  return response()->json($solicitudes); */
 
     }
 

@@ -22,9 +22,10 @@
           <a href="{{ route('admin.crudbonificaciones') }}">Bonificaciones | </a>
           <a href="{{ route('admin.crudciudades') }}">Ciudades | </a>
           <a href="{{ route('admin.crudeventos') }}">Eventos</a>
-          <form method="POST" action="{{ route('logout') }}" id="logout" style="float: right; padding-left: 300px;">
+          <i class="fa-regular fa-bell" style="color: #F5763B; cursor: pointer;" id="campana"></i>
+          <a id="notificacion">0</a>
+          <form method="POST" action="{{ route('logout') }}" id="logout" style="float: right; padding-left: 300px">
             @csrf
-  
             <x-dropdown-link :href="route('logout')"
                     onclick="event.preventDefault();
                                 this.closest('form').submit();">
@@ -38,6 +39,23 @@
     </div>
   </header>
 
+  <div>
+    
+    <table id="tablaSolicitudes" style="display: none">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Email</th>
+          <th>DNI</th>
+          <th>Discoteca</th>
+          <th>Aceptar</th>
+          <th>Rechazar</th>
+        </tr>
+      </thead>
+      <tbody id="solicitudes">
+      </tbody>
+    </table>
+  </div>
   <h1 style="text-align: center">Eventos</h1>
   <div class="container">
     <!-- Formulario de búsqueda -->

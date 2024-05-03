@@ -11,9 +11,7 @@
   <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
   <script src="https://kit.fontawesome.com/e2c3124098.js" crossorigin="anonymous"></script>
 </head>
-
 <body>
-
   <header class="header">
     <div class="logo">
       <a href="{{ asset('principal') }}"><img src="{{ asset('img/logoHeader.png') }}" alt="Imagen de logo"></a>
@@ -24,19 +22,40 @@
           <a href="{{ route('admin.crudbonificaciones') }}">Bonificaciones | </a>
           <a href="{{ route('admin.crudciudades') }}">Ciudades | </a>
           <a href="{{ route('admin.crudeventos') }}">Eventos</a>
-          <form method="POST" action="{{ route('logout') }}" id="logout" style="float: right; padding-left: 300px;">
+          <i class="fa-regular fa-bell" style="color: #F5763B; cursor: pointer;" id="campana"></i>
+          <a id="notificacion">0</a>
+          <form method="POST" action="{{ route('logout') }}" id="logout" style="float: right; padding-left: 300px">
             @csrf
-
             <x-dropdown-link :href="route('logout')"
-              onclick="event.preventDefault();
+                    onclick="event.preventDefault();
                                 this.closest('form').submit();">
-              {{ __('Log Out') }}
+                {{ __('Log Out') }}
             </x-dropdown-link>
-          </form>
+        </form>
+          
         </ul>
+       
       </div>
     </div>
   </header>
+
+  <div>
+    
+    <table id="tablaSolicitudes" style="display: none">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Email</th>
+          <th>DNI</th>
+          <th>Discoteca</th>
+          <th>Aceptar</th>
+          <th>Rechazar</th>
+        </tr>
+      </thead>
+      <tbody id="solicitudes">
+      </tbody>
+    </table>
+  </div>
     <h1 style="text-align: center">Bonificaciones</h1>
 <div class="container" >
  

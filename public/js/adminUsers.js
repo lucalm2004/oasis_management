@@ -889,14 +889,15 @@ function mostrarSolicitud() {
                         console.error('Error en la respuesta del servidor:', json.error);
                     } else {
                         // Resto del código para manejar la respuesta exitosa
-                        if (json.length === 0) {
+                        if (json.solicitudes.length === 0) {
+                            document.getElementById("notificacion").innerHTML = "0";
                             solicitudes.innerHTML = "<p>Actualmente no hay solicitudes.</p>";
                             // Oculta la tabla y el encabezado si no hay solicitudes
                             tabla.style.display = 'none';
                             h3Solicitud.style.display = 'none';
                         } else {
                             var tablaHTML = "";
-                            json.forEach(function(item) {
+                            json.solicitudes.forEach(function(item) {
                                 // Construye una fila de la tabla con los datos del elemento actual
                                 var str = "<tr><td>" + item.id+ "</td>";
                                 str += "<td>" + item.email + "</td>";
@@ -908,9 +909,19 @@ function mostrarSolicitud() {
                                 tablaHTML += str;
                             });
                             solicitudes.innerHTML = tablaHTML;
+                            console.log(json.count)
+                            console.log("entra")
+                            if (json.count === undefined || json.count === null) {
+                                document.getElementById("notificacion").innerHTML = "0";
+                                mostrarSolicitud();
+                            } else {
+                                document.getElementById("notificacion").innerHTML = json.count;
+                            }
+                            
+                    
                             // Muestra la tabla y el encabezado si hay solicitudes
-                            tabla.style.display = 'block';
-                            h3Solicitud.style.display = 'block';
+                       /*      tabla.style.display = 'block';
+                            h3Solicitud.style.display = 'block'; */
                         }
                     }
                 } catch (e) {
@@ -923,6 +934,24 @@ function mostrarSolicitud() {
     };
     ajax.send(); // Envía la solicitud HTTP al servidor 
 }
+
+var notificacion = document.getElementById("campana");
+notificacion.addEventListener("click", function() {
+    var solicitudes = document.getElementById('tablaSolicitudes');
+ /*    var viewPlaylist = document.getElementById('playlist');
+ */
+    if (solicitudes.style.display === 'none') {
+       /*  viewPlaylist.style.display = 'none'; */
+        solicitudes.style.display = 'block';
+        
+       
+    } else {
+       /*  viewPlaylist.style.display = 'block'; */
+        solicitudes.style.display = 'none';
+
+      
+    }
+});
 
 /* aceptar la solicitud del gestor */
 function aceptarSolicitud(id) {
