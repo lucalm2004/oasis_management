@@ -172,6 +172,7 @@ label {
     display: block;
     padding-left: 32px;
     padding-right: 32px;
+    padding-bottom: 10px;
     width: 100%;
     /* max-width: 1272px; */
     margin: 0 auto;
@@ -191,7 +192,7 @@ img {
 }
 
 body {
-    background-color: #F5763B;
+    background-color: #10101a;
 }
 
 .nav-list-link,
@@ -337,6 +338,12 @@ a:focus {
     padding-top: 5px;
 }
 
+#icono_user {
+    padding-left: 30px;
+    padding-right: 10px;
+    padding-top: 5px;
+}
+
 
 /* Estilo para el placeholder del input de búsqueda */
 
@@ -412,6 +419,11 @@ button {
 }
 
 #CrearDiscoteca {
+    float: right;
+    margin-right: 20px;
+}
+
+#CrearUser {
     float: right;
     margin-right: 20px;
 }

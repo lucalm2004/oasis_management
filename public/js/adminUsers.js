@@ -36,9 +36,9 @@ function ListarUsuarios(valor, rol) {
                 str += "<td>" + item.name + "</td>";
                 str += "<td>" + item.email + "</td>";
                 str += "<td>" + item.rol.name + "</td>";
-                str += "<td><button onclick='CambiarEstado(" + item.id + ")'>" + (item.habilitado == 1 ? "Habilitado" : "Deshabilitado") + "</button></td>";
-                str += "<td><button onclick='Editar(" + item.id + ")'>Editar</button></td>";
-                str += "<td><button onclick='Eliminar(" + item.id + ")'>Eliminar</button></td>";
+                str += "<td><button onclick='CambiarEstado(" + item.id + ")'>" + (item.habilitado == 1 ? "<i class='fa-solid fa-check' style='color: #45d408;'></i>" : "<i class='fa-solid fa-xmark' style='color: #d90d35;'></i>") + "</button></td>";
+                str += "<td><button onclick='Editar(" + item.id + ")'><i class='fa-solid fa-pen-to-square' style='color: #320aa9;'></i></button></td>";
+                str += "<td><button onclick='Eliminar(" + item.id + ")'><i class='fa-regular fa-trash-can' style='color: #ff0000;'></i></button></td>";
                 str += "</tr>";
             });
             tabla += str;
@@ -211,61 +211,47 @@ function Editar(id) {
                             html: `
                 <form id="ModificarForm">
                 <input type="hidden" name="id" value="${data.id}">
-                <div class="rownew">
-                    <div class="col-3">
+               
                         <label class="estiloslabel" for="nombreModificar">Nombre</label>
-                    </div>
-                    <div class="col-9">
-                        <span class="form-error-label" id="nombreErrorModificar"></span>
+                  
+                        <span class="error" id="nombreErrorModificar"></span>
                         <input type="text" name="nombre" value="${data.name}" id="nombreModificar" class="estilosinput">
-                    </div>
-                </div>
-                <div class="rownew">
-                    <div class="col-3">
+                 
                         <label class="estiloslabel" for="emailModificar">Email</label>
-                    </div>
-                    <div class="col-9">
-                        <span class="form-error-label" id="emailErrorModificar"></span>
+                  
+                        <span class="error" id="emailErrorModificar"></span>
                         <input type="text" name="email" value="${data.email }" id="emailModificar" class="estilosinput">
-                    </div>
-                </div>
-                <div class="rownew">
-                    <div class="col-3">
+                    
                         <label class="estiloslabel" for="passwordModificar">Contraseña</label>
-                    </div>
-                    <div class="col">
-                        <span clas-9s="form-error-label" id="passwordErrorModificar"></span>
+                    
+                        <span class="error" id="passwordErrorModificar"></span>
                         <input type="password" name="password" id="passwordModificar" class="estilosinput">
-                    </div>
-                </div>
+                    
                 ${data.DNI ? `
-                <div class="rownew">
-                    <div class="col-3">
+                
                         <label class="estiloslabel" for="dniModificar">DNI</label>
-                    </div>
-                    <div class="col-9">
-                    <span clas-9s="form-error-label" id="dniErrorModificar"></span>
+                    
+                    <span class="error" id="dniErrorModificar"></span>
                         <input type="text" name="dni" value="${data.DNI}" id="dniModificar" class="estilosinput">
-                    </div>
-                </div>` : ''}
-                <div class="rownew">
-                    <div class="col-3">
+                    
+                ` : ''}
+                
                         <label class="estiloslabel" for="rolModificar">Rol</label>
-                    </div>
-                    <div class="col-9">
+                    
                         <select name="rol" id="rolModificar" class="estilosinput">
                         
                         </select>
-                    </div>
-                </div>
-                <div class="col-3" id="discotecasFieldMod" style="display: ${displayStyle}">
+                        <br>
+                        <br>
+                    
+                <div id="discotecasFieldMod" style="display: ${displayStyle}">
                 <label class="estiloslabel" for="discotecaModificar" >Discoteca</label>
-                <div class="col-9">
-                    <span class="form-error-label" id="discotecaErrorModificar"></span>
+                
+                    <span class="error" id="discotecaErrorModificar"></span>
                     <select name="discoteca" id="discotecaModificar" class="estilosinput">
                     
                     </select>
-                </div>
+               
                 </form>
                 <style>.swal2-cancel {color: black !important;}</style>
                 `,
@@ -542,61 +528,45 @@ function mostrarFormulario() {
         confirmButtonText: "Crear",
         html: `
         <form id="CrearForm" enctype="multipart/form-data">
-        <div class="rownew">
-            <div class="col-3">
+        
                 <label class="estiloslabel" for="nombreCrear">Name</label>
-            </div>
-            <div class="col-9">
-                <span class="form-error-label" id="nombreErrorCrear"></span>
+            
+                <span class="error" id="nombreErrorCrear"></span>
                 <input type="text" name="nombre" id="nombreCrear" class="estilosinput">
-            </div>
-        </div>
-        <div class="rownew">
-            <div class="col-3">
+           
                 <label class="estiloslabel" for="emailCrear">Email</label>
-            </div>
-            <div class="col-9">
-                <span class="form-error-label" id="emailErrorCrear"></span>
+          
+                <span class="error" id="emailErrorCrear"></span>
                 <input type="text" name="email" id="emailCrear" class="estilosinput">
-            </div>
-        </div>
-        <div class="rownew">
-            <div class="col-3">
+          
                 <label class="estiloslabel" for="passwordCrear">Pwd</label>
-            </div>
-            <div class="col">
-                <span clas-9s="form-error-label" id="passwordErrorCrear"></span>
+          
+                <span class="error" id="passwordErrorCrear"></span>
                 <input type="password" name="password" id="passwordCrear" class="estilosinput">
-            </div>
-        </div>
-        <div class="rownew">
-            <div class="col-3">
+       
                 <label class="estiloslabel" for="rolCrear">Rol</label>
-            </div>
-            <div class="col-9">
-                <span class="form-error-label" id="rolErrorCrear"></span>
+          
+                <span class="error" id="rolErrorCrear"></span>
                 <select name="rol" id="rolCrear" class="estilosinput">
                 
                 </select>
-            </div>
-            
-        </div>
-        <div class="rownew">
+                <br>
+                <br>
+           
             <div id="dniField" style="display: none;">
                 <label for="dniCrear">DNI:</label>
-                <br>
-                <span class="form-error-label" id="dniErrorCrear"></span>
+                <span class="error" id="dniErrorCrear"></span>
                 <input type="text" id="dniCrear" name="dni">
             </div>
-        </div>
-        <div class="col-3" id="discotecasField" style="display: none">
+        
+        <div  id="discotecasField" style="display: none">
         <label class="estiloslabel" for="discotecaCrear" >Discoteca</label>
-        <div class="col-9">
-            <span class="form-error-label" id="discotecaErrorCrear"></span>
+       
+            <span class="error" id="discotecaErrorCrear"></span>
             <select name="discoteca" id="discotecaCrear" class="estilosinput">
             
             </select>
-        </div>
+        
         </div>
        
         
@@ -932,8 +902,8 @@ function mostrarSolicitud() {
                                 str += "<td>" + item.email + "</td>";
                                 str += "<td>" + item.DNI + "</td>";
                                 str += "<td>" + item.nombre_discoteca + "</td>";
-                                str += "<td><button type='button' id='aceptar' onclick='aceptarSolicitud(" + item.id + ")'>Aceptar</button></td>";
-                                str += "<td><button type='button' id='rechazar' onclick='rechazarSolicitud(" + item.id + ")'>Rechazar</button></td>";
+                                str += "<td><button type='button' id='aceptar' onclick='aceptarSolicitud(" + item.id + ")'><i class='fa-solid fa-circle-check' style='color: #45d408;'></i></button></td>";
+                                str += "<td><button type='button' id='rechazar' onclick='rechazarSolicitud(" + item.id + ")'><i class='fa-solid fa-circle-xmark' style='color: #ff0000;'></i></button></td>";
                                 str += "</tr>";
                                 tablaHTML += str;
                             });

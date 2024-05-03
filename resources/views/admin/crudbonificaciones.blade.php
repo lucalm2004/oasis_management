@@ -12,7 +12,7 @@
   <script src="https://kit.fontawesome.com/e2c3124098.js" crossorigin="anonymous"></script>
 </head>
 
-<body style=" background-color: #F5763B;">
+<body>
 
   <header class="header">
     <div class="logo">

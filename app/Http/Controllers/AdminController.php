@@ -331,6 +331,7 @@ class AdminController extends Controller
         ->leftJoin('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
         ->leftJoin('discotecas', 'users_discotecas.id_discoteca', '=', 'discotecas.id')
         ->where('users.verificado', '=', 0)
+        ->where('users.habilitado', '=', 0)
         ->get();
         return response()->json($solicitudes);
 
@@ -346,6 +347,7 @@ class AdminController extends Controller
   
             // Eliminar el usuario principal si existe
             $user = User::findOrFail($id);
+            $user-> habilitado = 1;
             $user-> verificado = 1;
             $user->save();
             
