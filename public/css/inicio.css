@@ -1,0 +1,482 @@
+/* Estilos para el fondo en movimiento */
+
+body {
+    background: linear-gradient(135deg, #000000, #070606);
+    background-size: 200% 200%;
+    animation: gradientAnimation 10s infinite alternate;
+    font-family: 'Roboto Slab', serif;
+}
+
+
+/* Estilos adicionales para la sección de inicio */
+
+.text-orange {
+    color: #f58220;
+}
+
+.text-white {
+    color: #ffffff;
+}
+
+.inicio-section {
+    color: #ffffff;
+}
+
+
+/* Contenedor de sección con animación de aparición */
+
+.section {
+    padding: 80px 0;
+    position: relative;
+}
+
+.section>.content-box {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    animation: fadeInUp 0.75s ease-out;
+}
+
+.inicio-section h1,
+.inicio-section h2 {
+    animation: fadeInLeft 1s forwards;
+}
+
+.inicio-section p,
+.inicio-section a.btn {
+    animation: fadeInLeft 1s forwards;
+    margin-top: 20px;
+}
+
+.logo-img {
+    max-width: 80%;
+    height: auto;
+    animation: fadeInRight 1s forwards;
+}
+
+
+/* Estilos para las secciones con imágenes y texto juntos */
+
+.content-box {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Estilos para las imágenes dentro de las secciones */
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+.slide img {
+    width: 100%;
+    height: auto;
+}
+
+.animated {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.animate-fadeInUp {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* Estilos para la Navbar */
+
+.navbar {
+    background-color: #000000;
+    color: #000000;
+    background-size: cover;
+    background-position: top;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+.navbar-brand img {
+    max-width: 40px;
+    margin-right: 10px;
+}
+
+.nav-link {
+    color: #000000 !important;
+}
+
+.nav-link:hover {
+    color: #ffd54f !important;
+}
+
+.font-weight-bold {
+    font-weight: bold;
+    color: #000000;
+    text-transform: uppercase;
+}
+
+
+/* Estilos para el Slider */
+
+.parallax {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.carousel {
+    width: 100%;
+}
+
+.carousel-item img {
+    height: 400px;
+    object-fit: cover;
+}
+
+
+/* Estilos para los controles del Carousel */
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 5%;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    height: 100%;
+    width: 100%;
+}
+
+
+/* Estilos para el Contenido */
+
+.content-box {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    margin-bottom: 50px;
+}
+
+.content-box h2 {
+    color: #f58220;
+}
+
+.content-box p {
+    color: #000000;
+}
+
+
+/* Estilos para el Botón de Valorar */
+
+.rating-button {
+    margin-top: 20px;
+}
+
+
+/* Estilos para el Footer */
+
+.footer {
+    background-image: url('/img/oasisn2.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 60px 0;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.footer a {
+    color: #ffffff;
+}
+
+.footer a:hover {
+    color: #ffd54f;
+}
+
+
+/* Animaciones */
+
+.animate__animated {
+    animation-duration: 1s;
+}
+
+.animate__fadeInLeft {
+    animation-name: fadeInLeft;
+}
+
+.animate__fadeInRight {
+    animation-name: fadeInRight;
+}
+
+.animate__fadeInUp {
+    animation-name: fadeInUp;
+}
+
+
+/* Estilos adicionales */
+
+.my-5 {
+    margin-top: 5rem !important;
+    margin-bottom: 5rem !important;
+}
+
+.mt-auto {
+    margin-top: auto !important;
+}
+
+.py-5 {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.orange-text {
+    color: orange;
+}
+
+
+/* Estilos específicos para Botones */
+
+.btn-lg {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border-radius: 5px;
+}
+
+.btn-primary {
+    background-color: #f58220;
+    border-color: #f58220;
+}
+
+
+/* Estilos para la sección de valoración de discotecas */
+
+.rating-section {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Ejemplo de animación al hacer hover */
+
+.btn-primary:hover {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+.btn-outline-light {
+    color: #fafafa;
+    border-color: #ffffff;
+}
+
+.btn-outline-light:hover {
+    color: #343a40;
+    background-color: #ffffff;
+    border-color: #ffffff;
+}
+
+
+/* Estilos para el slider */
+
+.slider {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.slide-track {
+    display: flex;
+    animation: scroll 40s linear infinite;
+}
+
+.slide {
+    flex: 0 0 200px;
+    margin-right: 20px;
+}
+
+.slide img {
+    width: 100%;
+}
+
+#cookieBanner {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #343a40;
+    padding: 15px 0;
+    text-align: center;
+    color: white;
+    z-index: 9999;
+}
+
+#cookieAcceptButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+
+/* Animaciones */
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+
+/* Animación de desplazamiento infinito */
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+
+/* Ajustes responsivos */
+
+@media (max-width: 992px) {
+    .col-md-8 {
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .my-5 {
+        margin-bottom: 50px;
+    }
+    .inicio-section {
+        padding: 80px 0;
+    }
+    .navbar-brand {
+        padding: 0 10px;
+    }
+    .col-lg-6 {
+        max-width: 100%;
+    }
+    .logo-img {
+        max-width: 80%;
+    }
+    .content-box {
+        padding: 20px;
+    }
+    .carousel-item img {
+        height: 300px;
+    }
+}
+
+@media (max-width: 576px) {
+    .col-md-6 {
+        text-align: center;
+    }
+}
+
+@media (max-width: 454px) {
+    .logo-img {
+        max-width: 85%;
+    }
+    .inicio-section {
+        padding: 2rem 0;
+    }
+    .inicio-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    .inicio-section h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    .inicio-section p {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+    }
+    .inicio-section .btn {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+
+/* Estilos para el slider en dispositivos móviles */
+
+@media (max-width: 414px) {
+    .slide {
+        flex: 0 0 calc(100% - 10px);
+        margin-right: 10px;
+    }
+    .slide img {
+        width: 100%;
+        height: auto;
+    }
+    .carousel-item img {
+        height: 250px;
+    }
+    .slide img {
+        height: 120px;
+    }
+    .slide {
+        flex: 0 0 calc(100% - 10px);
+        margin-right: 10px;
+    }
+}

@@ -11,7 +11,7 @@ class PlaylistCancion extends Model
 
     public function evento()
     {
-        return $this->belongsTo(Evento::class, 'id');
+        return $this->belongsTo(Evento::class, 'id_evento');
     }
 
     public function cancion()

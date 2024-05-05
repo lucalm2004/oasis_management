@@ -10,7 +10,14 @@
     <link rel='stylesheet'
         href='https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap'>
     <link rel="stylesheet" href="{{ asset('css/login.css') }}">
-    <script src="https://kit.fontawesome.com/a7409f463b.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://kit.fontawesome.com/8e6d3dccce.js" crossorigin="anonymous"></script>
+    {{-- <script src="https://kit.fontawesome.com/a7409f463b.js" crossorigin="anonymous"></script> --}}
     <style>
         #password {
             width: 85%;
@@ -40,72 +47,29 @@
         #eye_show2 {
             cursor: pointer;
         }
+
+        #animatedModal {
+            background-color: rgba(57, 190, 185, 0.0) !important
+        }
+        .toast-message{
+            margin-left: 5%!important;
+        }
+        #help{
+            position: absolute;
+    top: 95vh;
+    left: 95vw;
+    font-size: 30px;
+    /* background-color: white; */
+    /* padding: 2%; */
+    /* border-radius: 50%; */
+        }
     </style>
 </head>
 
 <body>
-    <div class="modal">
-        <div class="container">
-            <div class="text">
-                Contact us Form
-            </div>
-            <form action="#">
-                <div class="form-row">
-                    <div class="input-data">
-                        <input type="text" required>
-                        <div class="underline"></div>
-                        <label for="">Nombre completo</label>
-                    </div>
-                    <div class="input-data">
-                        <input type="text" required>
-                        <div class="underline"></div>
-                        <label for="">DNI/NIE</label>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="input-data">
-                        <input type="text" required>
-                        <div class="underline"></div>
-                        <label for="">Email</label>
-                    </div>
-                    <div class="input-data">
-                        <input type="text" required>
-                        <div class="underline"></div>
-                        <label for="">Passoword</label>
-                    </div>
-                    <div class="input-data">
-                        <input type="text" required>
-                        <div class="underline"></div>
-                        <label for="">Repet Passoword</label>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="input-data">
-                        <input type="text" required>
-                        <div class="underline"></div>
-                        <label for="">Discoteca</label>
-                    </div>
-                    <div class="input-data">
-                        <input type="text" required>
-                        <div class="underline"></div>
-                        <label for="">Dirección</label>
-                    </div>
-                    <div class="input-data">
-                        <input type="text" required>
-                        <div class="underline"></div>
-                        <label for="">Repet Passoword</label>
-                    </div>
-                </div>
-                <div class="form-row submit-btn">
-                    <div class="input-data">
-                        <div class="inner"></div>
-                        <input type="submit" value="submit">
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    
+
+    <i id="help" class="fa-sharp fa-solid fa-circle-question"></i>
+
 
     <div class="screen-1">
         <h2>Oasis | Register</h2>
@@ -187,38 +151,181 @@
             </div>
             </button>
             <div class="footer"><span onclick="window.location.href='{{ route('login') }}'">Already
-                    Registred?</span><span>Tienes una discoteca?</span></div>
+                    Registred?</span><span id="demo01" href="#animatedModal">¿Tienes una discoteca?</span></div>
     </div>
     </form>
 
-   
+    <!--Call your modal-->
+
+    <!--DEMO01-->
+    <div id="animatedModal">
+        <!--THIS IS IMPORTANT! to close the modal, the class name has to match the name given on the ID  class="close-animatedModal" -->
+        <div class="modal-content">
+            <div id="modal" class="modal">
+                <div class="container">
+                    <div class="close-animatedModal" style="margin-left:95%;/* margin-top:2%; */"><svg id="cerrar"
+                            width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" class="ltr-4z3qvp e1svuwfo1" data-name="X"
+                            aria-labelledby="preview-modal-81266975" data-uia="previewModal-closebtn" role="button"
+                            aria-label="close" tabindex="0"
+                            style="
+                        /* position: absolute; */
+                    ">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M10.5858 12L2.29291 3.70706L3.70712 2.29285L12 10.5857L20.2929 2.29285L21.7071 3.70706L13.4142 12L21.7071 20.2928L20.2929 21.7071L12 13.4142L3.70712 21.7071L2.29291 20.2928L10.5858 12Z"
+                                fill="currentColor"></path>
+                        </svg></div>
+                    <div class="text">
+
+                        Unete a Oasis | Management </div>
+                    <form id="registerForm" action="{{ route('registerGestor') }}" method="POST">
+                        @csrf
+
+                        <div class="form-row">
+                            <div class="input-data">
+                                <input type="text" name="nombre_completo" required>
+                                <div class="underline"></div>
+                                <label for="">Nombre completo</label>
+                            </div>
+                            <div class="input-data">
+                                <input type="text" name="dni_nie" required>
+                                <div class="underline"></div>
+                                <label for="">DNI/NIE</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-data">
+                                <input type="text" name="email" required>
+                                <div class="underline"></div>
+                                <label for="">Email</label>
+                            </div>
+                            <div class="input-data">
+                                <input type="password" name="password" required>
+                                <div class="underline"></div>
+                                <label for="">Password</label>
+                            </div>
+                            <div class="input-data">
+                                <input type="password" name="password_confirmation" required>
+                                <div class="underline"></div>
+                                <label for="">Repetir Password</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-data">
+                                <input type="text" name="discoteca" required>
+                                <div class="underline"></div>
+                                <label for="">Discoteca</label>
+                            </div>
+                            <div class="input-data">
+                                <input type="text" name="direccion" required>
+                                <div class="underline"></div>
+                                <label for="">Dirección</label>
+                            </div>
+                            <div class="input-data">
+                                <div class="dropdown">
+                                    <div class="select">
+                                        <span id="ciudadSpan">Ciudad</span>
+                                        <i class="fa fa-chevron-left"></i>
+                                    </div>
+                                    <input type="hidden" id="ciudadInput" name="ciudad" value="">
+                                    <input type="hidden" name="gender">
+                                    <input type="hidden" name="ciudad_id" id="ciudad_id_input">
+                                    <ul id="ciudadesSelect" class="dropdown-menu">
+                                        <?php
+                                            use App\Models\Ciudad;
+                                            $ciudades = Ciudad::all();
+                                            foreach ($ciudades as $ciudad): ?>
+                                        <li value="<?php echo $ciudad->id; ?>"><?php echo $ciudad->name; ?></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row submit-btn">
+                            <div class="input-data">
+                                <div class="inner"></div>
+                                <input id="submits" type="submit" value="submit">
+                            </div>
+                        </div>
+                    </form>
 
 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="animaciones/animatedModal.min.js"></script>
 </body>
 
 <script>
-     /*Dropdown Menu*/
-$('.dropdown').click(function () {
+    // document.getElementById('submits').onclick = function(){
+
+    // }
+    $(document).ready(function() {
+        $('#registerForm').submit(function(event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: "POST",
+                data: $(this).serialize(),
+                success: function(response) {
+                    toastr.success('¡Registro exitoso!');
+                    // Aquí puedes redirigir al usuario a otra página si es necesario
+                },
+                error: function(xhr) {
+                    var errors = xhr.responseJSON.errors;
+                    var errorList = '<ul>';
+                    $.each(errors, function(index, error) {
+                        errorList += '<li>' + error + '</li>';
+                    });
+                    errorList += '</ul>';
+                    toastr.error(errorList, 'Errores', {
+                        positionClass: 'toast-top-right',
+                        timeOut: 5000 // Duración del mensaje en milisegundos (por ejemplo, 5000 = 5 segundos)
+                    });
+                }
+            });
+        });
+    });
+
+    $("#demo01").animatedModal();
+
+
+    // var cerrar = document.getElementById('cerrar');
+
+    // cerrar.onclick = function() {
+    //     document.getElementById('modal').style.display = 'none'; 
+    // };
+
+
+    /*Dropdown Menu*/
+    $('.dropdown').click(function() {
         $(this).attr('tabindex', 1).focus();
         $(this).toggleClass('active');
         $(this).find('.dropdown-menu').slideToggle(300);
+        var ciudadSpan = document.getElementById("ciudadSpan").innerText;
+        // Asignar el valor del span al input
+        document.getElementById("ciudadInput").value = ciudadSpan;
     });
-    $('.dropdown').focusout(function () {
+    $('.dropdown').focusout(function() {
         $(this).removeClass('active');
         $(this).find('.dropdown-menu').slideUp(300);
     });
-    $('.dropdown .dropdown-menu li').click(function () {
+    $('.dropdown .dropdown-menu li').click(function() {
         $(this).parents('.dropdown').find('span').text($(this).text());
         $(this).parents('.dropdown').find('input').attr('value', $(this).attr('id'));
     });
-/*End Dropdown Menu*/
+    /*End Dropdown Menu*/
 
 
-$('.dropdown-menu li').click(function () {
-  var input = '<strong>' + $(this).parents('.dropdown').find('input').val() + '</strong>',
-      msg = '<span class="msg">Hidden input value: ';
-  $('.msg').html(msg + input + '</span>');
-}); 
+    $('.dropdown-menu li').click(function() {
+        var input = '<strong>' + $(this).parents('.dropdown').find('input').val() + '</strong>',
+            msg = '<span class="msg">Hidden input value: ';
+        $('.msg').html(msg + input + '</span>');
+    });
 
     var eye_show1 = document.getElementById('eye_show1');
     var password = document.getElementById('password');
