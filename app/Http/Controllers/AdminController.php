@@ -26,29 +26,30 @@ class AdminController extends Controller
    
     public function showCrudUsers(Request $request)
     {
-          $query = User::query();
-          $user = Auth::user();
-          $userID = $user->id;
-          // Verificar si se proporcionó un filtro de búsqueda
-          if ($request->input('busqueda')) {
-              $data = $request->input('busqueda');
-              $query->where('name', 'like', "%$data%")
-                  ->orWhere('email', 'like', "%$data%");
-          }
-  
-          // Verificar si se proporcionó un filtro de rol
-          if ($request->input('rol')) {
-              $rolId = $request->input('rol');
-              $query->where('id_rol', $rolId);
-          }
-           // Excluir los usuarios con verificado = 0
-            $query->where('verificado', '=', 1);
-            $query->where('id', '!=', $userID);
-            
-          // Obtener los usuarios con la relación de rol cargada
-          $users = $query->with('rol')->get();
-  
-          return response()->json($users);
+        $query = User::query();
+        $user = Auth::user();
+        $userID = $user->id;
+
+        // Verificar si se proporcionó un filtro de búsqueda
+        if ($request->input('busqueda')) {
+            $data = $request->input('busqueda');
+            $query->where('email', 'like', "%$data%");
+        }
+
+        // Verificar si se proporcionó un filtro de rol
+        if ($request->input('rol')) {
+            $rolId = $request->input('rol');
+            $query->where('id_rol', $rolId);
+        }
+
+        // Excluir los usuarios con verificado = 0
+        $query->where('verificado', '=', 1);
+        $query->where('id', '!=', $userID);
+
+        // Obtener los usuarios con la relación de rol cargada
+        $users = $query->with('rol')->get();
+
+        return response()->json($users);
     }
 
     /* obtener roles */
