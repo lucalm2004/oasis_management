@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Entradas Disponibles</title>
+    <title>Oasis Managament - Entradas Disponibles</title>
     <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
 
     <meta name="csrf-token" content="{{ csrf_token() }}">

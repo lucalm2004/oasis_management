@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Eventos de {{ $discoteca->name }}</title>
+    <title>Oasis Managament - Eventos de {{ $discoteca->name }}</title>
     <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
