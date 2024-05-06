@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => '77d6026d75bc69bc4efcdecd1cfc1c5af3b2ea7f',
+        'reference' => '306add4b51d4734395d330e831c93cd9d0cb2f52',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -400,6 +400,15 @@
                 0 => 'v11.4.0',
             ),
         ),
+        'kamona/kui-laravel-breeze' => array(
+            'pretty_version' => 'v0.5.1',
+            'version' => '0.5.1.0',
+            'reference' => '1dd9b3ff220cc863eb45b87a9feec5510888077f',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../kamona/kui-laravel-breeze',
+            'aliases' => array(),
+            'dev_requirement' => true,
+        ),
         'kodova/hamcrest-php' => array(
             'dev_requirement' => true,
             'replaced' => array(
@@ -427,7 +436,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => '77d6026d75bc69bc4efcdecd1cfc1c5af3b2ea7f',
+            'reference' => '306add4b51d4734395d330e831c93cd9d0cb2f52',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -470,9 +479,9 @@
             'dev_requirement' => false,
         ),
         'laravel/socialite' => array(
-            'pretty_version' => 'v5.13.0',
-            'version' => '5.13.0.0',
-            'reference' => 'a03e9b2f63d8125f61952fe4f5b75d70fd7c8286',
+            'pretty_version' => 'v5.13.2',
+            'version' => '5.13.2.0',
+            'reference' => '278d4615f68205722b3a129135774b3764b28a90',
             'type' => 'library',
             'install_path' => __DIR__ . '/../laravel/socialite',
             'aliases' => array(),

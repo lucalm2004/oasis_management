@@ -1521,6 +1521,68 @@
             "install-path": "../hamcrest/hamcrest-php"
         },
         {
+            "name": "kamona/kui-laravel-breeze",
+            "version": "v0.5.1",
+            "version_normalized": "0.5.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Kamona-WD/kui-laravel-breeze.git",
+                "reference": "1dd9b3ff220cc863eb45b87a9feec5510888077f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Kamona-WD/kui-laravel-breeze/zipball/1dd9b3ff220cc863eb45b87a9feec5510888077f",
+                "reference": "1dd9b3ff220cc863eb45b87a9feec5510888077f",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1.0"
+            },
+            "time": "2023-05-23T22:40:18+00:00",
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "KUI\\Breeze\\KUIBreezeServiceProvider"
+                    ]
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "KUI\\Breeze\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kamona-WD",
+                    "email": "ak3849909@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Different UI for laravel/breeze",
+            "homepage": "https://github.com/Kamona-WD/kui-laravel-breeze",
+            "keywords": [
+                "alpinejs",
+                "breeze",
+                "dashboard",
+                "laravel",
+                "react",
+                "tailwindcss",
+                "ui",
+                "vuejs"
+            ],
+            "support": {
+                "issues": "https://github.com/Kamona-WD/kui-laravel-breeze/issues",
+                "source": "https://github.com/Kamona-WD/kui-laravel-breeze/tree/v0.5.1"
+            },
+            "install-path": "../kamona/kui-laravel-breeze"
+        },
+        {
             "name": "laravel/breeze",
             "version": "v2.0.2",
             "version_normalized": "2.0.2.0",
@@ -2051,17 +2113,17 @@
         },
         {
             "name": "laravel/socialite",
-            "version": "v5.13.0",
-            "version_normalized": "5.13.0.0",
+            "version": "v5.13.2",
+            "version_normalized": "5.13.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/socialite.git",
-                "reference": "a03e9b2f63d8125f61952fe4f5b75d70fd7c8286"
+                "reference": "278d4615f68205722b3a129135774b3764b28a90"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/socialite/zipball/a03e9b2f63d8125f61952fe4f5b75d70fd7c8286",
-                "reference": "a03e9b2f63d8125f61952fe4f5b75d70fd7c8286",
+                "url": "https://api.github.com/repos/laravel/socialite/zipball/278d4615f68205722b3a129135774b3764b28a90",
+                "reference": "278d4615f68205722b3a129135774b3764b28a90",
                 "shasum": ""
             },
             "require": {
@@ -2081,7 +2143,7 @@
                 "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^8.0|^9.3|^10.4"
             },
-            "time": "2024-04-15T18:09:46+00:00",
+            "time": "2024-04-26T13:48:16+00:00",
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -9462,6 +9524,7 @@
         "fakerphp/faker",
         "filp/whoops",
         "hamcrest/hamcrest-php",
+        "kamona/kui-laravel-breeze",
         "laravel/breeze",
         "laravel/pint",
         "laravel/sail",

@@ -1,30 +1,4 @@
-<?php
-if (Auth::check()) {
-    $users = Auth::user();
 
-    $rol = $users->id_rol;
-    if ($rol == '3'){
-        echo "<script>window.location.href = '/gestor';</script>";
-        exit; 
-    }elseif($rol == '1'){
-        echo "<script>window.location.href = '/admin';</script>";
-        exit; 
-    }elseif($rol == '2'){
-        echo "<script>window.location.href = '/cliente';</script>";
-        exit; 
-    }elseif($rol == '4'){
-        echo "<script>window.location.href = '/camarero';</script>";
-        exit; 
-    }else{
-        echo "<script>window.location.href = '/login';</script>";
-        exit; 
-    }
-
-} else {
-    echo "<script>window.location.href = '/';</script>";
-    exit;
-}
-?>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -479,9 +453,19 @@ if (Auth::check()) {
             xhr.open("GET", "/cliente/mostrarpuntos", true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
-                    var puntosUsuario = JSON.parse(xhr.responseText);
-                    // Actualizar el contenido del elemento HTML con el número de puntos
-                    document.getElementById("puntosUsuario").textContent = puntosUsuario;
+                    console.log(xhr.responseText);
+                    // Verificar si la respuesta es un objeto vacío
+                    if (xhr.responseText === '{}' || xhr.responseText === 'null') {
+                        document.getElementById("puntosUsuario").textContent = "0";
+                    } else {
+                        var puntosUsuario = JSON.parse(xhr.responseText);
+                        // Actualizar el contenido del elemento HTML con el número de puntos
+                        if (puntosUsuario < 0) {
+                            document.getElementById("puntosUsuario").textContent = "0";
+                        } else {
+                            document.getElementById("puntosUsuario").textContent = puntosUsuario;
+                        }
+                    }
                 }
             };
             xhr.send();

@@ -17,6 +17,10 @@ use App\Http\Controllers\DiscotecaController;
 use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\CamareroController;
 
+use App\Http\Middleware\AdminOnly;
+use App\Http\Middleware\ClientOnly;
+use App\Http\Middleware\GestorOnly;
+use App\Http\Middleware\CamareroOnly;
 
 
 
@@ -24,9 +28,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::post('/registerGestor', [registerGestorController::class, 'index'])->name('registerGestor');
-Route::get('/gestor', function (){
-    return view('gestor');
-});
+
 Route::get('/google-auth/redirect', function () {
     return Socialite::driver('google')->redirect();
 })->name('login.google');
@@ -39,6 +41,8 @@ Route::get('/google-auth/callback-url', function () {
         'name' => $user_google->name,
         'email' => $user_google->email,
         'google_id' => $user_google->id,
+        'habilitado'=> "1",
+        'habilitado'=> "1",
     ]);
     Auth::login($user);
     return redirect('/dashboard');
@@ -67,6 +71,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 require __DIR__.'/auth.php';
+
+
+Route::middleware(GestorOnly::class)->group(function () {
+    Route::get('/gestor', function (){
+        return view('gestor');
+    });
 Route::post('/eventosView', [eventosController::class, 'index'])->name('eventosView');
 Route::post('/borrarEvento', [eventosController::class, 'borrar'])->name('borrarEvento');
 Route::post('/eventoNew', [eventosController::class, 'new'])->name('eventoNew');
@@ -74,81 +84,87 @@ Route::post('/eventoUpdate', [eventosController::class, 'update'])->name('evento
 Route::post('/cancionesView', [eventosController::class, 'canciones'])->name('cancionesView');
 Route::post('/playlistView', [eventosController::class, 'playlist'])->name('playlistView');
 Route::post('/cancionUpdate', [eventosController::class, 'cancionUpdate'])->name('cancionUpdate');
+});
 
 
 // Sergi
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/admin', function () {
-        return view('admin/crudusuarios');
-    })->middleware(['auth', 'verified'])->name('admin.crudusuarios');
-    Route::get('/admin2', function () {
-        return view('admin/cruddiscotecas');
-    })->middleware(['auth', 'verified'])->name('admin.cruddiscotecas');
-    Route::get('/admin3', function () {
-        return view('admin/crudbonificaciones');
-    })->middleware(['auth', 'verified'])->name('admin.crudbonificaciones');
-    Route::get('/admin4', function () {
-        return view('admin/crudciudades');
-    })->middleware(['auth', 'verified'])->name('admin.crudciudades');
-    Route::get('/admin5', function () {
-        return view('admin/crudeventos');
-    })->middleware(['auth', 'verified'])->name('admin.crudeventos');
 
-    Route::controller(AdminController::class)->group(function () {
 
-        /* CRUD DE USUARIOS */
-        Route::post('admin/crudusuarios', 'showCrudUsers')->name('crud.showCrudUsers');
-        Route::delete('admin/crudusuarios/{id}', 'EliminarUsers')->name('crud.EliminarUsers');
-        Route::get('admin/crudusuarios/roles', 'showRoles')->name('crud.showRoles');
-        Route::get('admin/crudusuarios/modadmin/{id}', 'editUsers')->name('crud.editUsers');
-        Route::post('admin/crudusuarios/actualizar/{id}', 'actualizarUsers')->name('crud.actualizarUsers');
-        Route::get('admin/crudusuarios/actualizar/{id}', 'actualizarUsers')->name('crud.actualizarUsers');
-        Route::post('admin/crudusuarios/cambiarestado/{id}', 'cambiarEstado')->name('crud.cambiarEstado');
-        Route::post('admin/crudusuarios/insertuser', 'storeUser')->name('crud.storeUser');
-        Route::get('admin/crudusuarios/insertuser', 'storeUser')->name('crud.storeUser');
-        Route::get('admin/crudusuarios/discotecas', 'showDiscotecas')->name('crud.showDiscotecas');
-        Route::get('admin/crudusuarios/solcitudes', 'showSolicitudes')->name('crud.showSolicitudes');
-        Route::post('admin/crudusuarios/solcitudesaceptar/{id}', 'AceptarSolicitudes')->name('crud.AceptarSolicitudes');
-        Route::post('admin/crudusuarios/solcitudrechazar/{id}', 'RechazarSolicitudes')->name('crud.RechazarSolicitudes');
-
-        /* CRUD DISCOTECAS */
-        Route::post('admin2/cruddiscotecas', 'showCrudDiscotecas')->name('crud.showCrudDiscotecas');
-        Route::delete('admin2/cruddiscotecas/{id}', 'EliminarDiscotecas')->name('crud.EliminarDiscotecas');
-        Route::get('admin2/cruddiscotecas/ciudades', 'showCiudades')->name('crud.showCiudades');
-        Route::post('admin2/cruddiscotecas/insertdiscoteca', 'storeDiscoteca')->name('crud.storeDiscoteca');
-        Route::get('admin2/cruddiscotecas/modadmin/{id}', 'editDiscoteca')->name('crud.editDiscoteca');
-        Route::post('admin2/cruddiscotecas/actualizar/{id}', 'actualizarDiscoteca')->name('crud.actualizarDiscoteca');
+Route::middleware(AdminOnly::class)->group(function () {
+    Route::middleware('auth')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::get('/admin', function () {
+            return view('admin/crudusuarios');
+        })->middleware(['auth', 'verified'])->name('admin.crudusuarios');
+        Route::get('/admin2', function () {
+            return view('admin/cruddiscotecas');
+        })->middleware(['auth', 'verified'])->name('admin.cruddiscotecas');
+        Route::get('/admin3', function () {
+            return view('admin/crudbonificaciones');
+        })->middleware(['auth', 'verified'])->name('admin.crudbonificaciones');
+        Route::get('/admin4', function () {
+            return view('admin/crudciudades');
+        })->middleware(['auth', 'verified'])->name('admin.crudciudades');
+        Route::get('/admin5', function () {
+            return view('admin/crudeventos');
+        })->middleware(['auth', 'verified'])->name('admin.crudeventos');
     
-
-        /* CRUD BONIFICACIONES */
-        Route::post('admi3/crudbonificaciones', 'showCrudBonificaciones')->name('crud.showCrudBonificaciones');
-        Route::delete('admi3/crudbonificaciones/{id}', 'EliminarBonificaciones')->name('crud.EliminarBonificaciones');
-        Route::get('admi3/crudbonificaciones/modadmin/{id}', 'editBonificaciones')->name('crud.editBonificaciones');
-        Route::post('admi3/crudbonificaciones/actualizar/{id}', 'actualizarBonificaciones')->name('crud.actualizarBonificaciones');
-        Route::post('admi3/crudbonificaciones/insertuser', 'storeBonificacion')->name('crud.storeBonificacion');
-   
-
-        /* CRUD CIUDADES */
-        Route::post('admin4/crudciudades', 'showCrudCiudades')->name('crud.showCrudCiudades');
-        Route::delete('admin4/crudciudades/{id}', 'EliminarCiudades')->name('crud.EliminarCiudades');
-        Route::get('admi4/crudciudades/modadmin/{id}', 'editCiudades')->name('crud.editCiudades');
-        Route::post('admin4/crudciudades/actualizar/{id}', 'actualizarCiudades')->name('crud.actualizarCiudades');
-        Route::post('admin4/crudciudades/insertuser', 'storeCiudad')->name('crud.storeCiudad');
-
-        /* CRUD EVENTOS */
-        Route::post('admin5/crudeventos', 'showCrudEventos')->name('crud.showCrudEventos');
-        Route::delete('admin5/crudeventos/{id}', 'EliminarEventos')->name('crud.EliminarEventos');
-   
+       
+        Route::controller(AdminController::class)->group(function () {
+    
+            /* CRUD DE USUARIOS */
+            Route::post('admin/crudusuarios', 'showCrudUsers')->name('crud.showCrudUsers');
+            Route::delete('admin/crudusuarios/{id}', 'EliminarUsers')->name('crud.EliminarUsers');
+            Route::get('admin/crudusuarios/roles', 'showRoles')->name('crud.showRoles');
+            Route::get('admin/crudusuarios/modadmin/{id}', 'editUsers')->name('crud.editUsers');
+            Route::post('admin/crudusuarios/actualizar/{id}', 'actualizarUsers')->name('crud.actualizarUsers');
+            Route::get('admin/crudusuarios/actualizar/{id}', 'actualizarUsers')->name('crud.actualizarUsers');
+            Route::post('admin/crudusuarios/cambiarestado/{id}', 'cambiarEstado')->name('crud.cambiarEstado');
+            Route::post('admin/crudusuarios/insertuser', 'storeUser')->name('crud.storeUser');
+            Route::get('admin/crudusuarios/insertuser', 'storeUser')->name('crud.storeUser');
+            Route::get('admin/crudusuarios/discotecas', 'showDiscotecas')->name('crud.showDiscotecas');
+            Route::get('admin/crudusuarios/solcitudes', 'showSolicitudes')->name('crud.showSolicitudes');
+            Route::post('admin/crudusuarios/solcitudesaceptar/{id}', 'AceptarSolicitudes')->name('crud.AceptarSolicitudes');
+            Route::post('admin/crudusuarios/solcitudrechazar/{id}', 'RechazarSolicitudes')->name('crud.RechazarSolicitudes');
+    
+            /* CRUD DISCOTECAS */
+            Route::post('admin2/cruddiscotecas', 'showCrudDiscotecas')->name('crud.showCrudDiscotecas');
+            Route::delete('admin2/cruddiscotecas/{id}', 'EliminarDiscotecas')->name('crud.EliminarDiscotecas');
+            Route::get('admin2/cruddiscotecas/ciudades', 'showCiudades')->name('crud.showCiudades');
+            Route::post('admin2/cruddiscotecas/insertdiscoteca', 'storeDiscoteca')->name('crud.storeDiscoteca');
+            Route::get('admin2/cruddiscotecas/modadmin/{id}', 'editDiscoteca')->name('crud.editDiscoteca');
+            Route::post('admin2/cruddiscotecas/actualizar/{id}', 'actualizarDiscoteca')->name('crud.actualizarDiscoteca');
+        
+    
+            /* CRUD BONIFICACIONES */
+            Route::post('admi3/crudbonificaciones', 'showCrudBonificaciones')->name('crud.showCrudBonificaciones');
+            Route::delete('admi3/crudbonificaciones/{id}', 'EliminarBonificaciones')->name('crud.EliminarBonificaciones');
+            Route::get('admi3/crudbonificaciones/modadmin/{id}', 'editBonificaciones')->name('crud.editBonificaciones');
+            Route::post('admi3/crudbonificaciones/actualizar/{id}', 'actualizarBonificaciones')->name('crud.actualizarBonificaciones');
+            Route::post('admi3/crudbonificaciones/insertuser', 'storeBonificacion')->name('crud.storeBonificacion');
+       
+    
+            /* CRUD CIUDADES */
+            Route::post('admin4/crudciudades', 'showCrudCiudades')->name('crud.showCrudCiudades');
+            Route::delete('admin4/crudciudades/{id}', 'EliminarCiudades')->name('crud.EliminarCiudades');
+            Route::get('admi4/crudciudades/modadmin/{id}', 'editCiudades')->name('crud.editCiudades');
+            Route::post('admin4/crudciudades/actualizar/{id}', 'actualizarCiudades')->name('crud.actualizarCiudades');
+            Route::post('admin4/crudciudades/insertuser', 'storeCiudad')->name('crud.storeCiudad');
+    
+            /* CRUD EVENTOS */
+            Route::post('admin5/crudeventos', 'showCrudEventos')->name('crud.showCrudEventos');
+            Route::delete('admin5/crudeventos/{id}', 'EliminarEventos')->name('crud.EliminarEventos');
+       
+        });
+    
+    
+        
+    
     });
 
-
-    
-
 });
-
 // require __DIR__.'/auth.php';
 // DAVID
 // Ruta para cerrar sesión
@@ -181,7 +197,7 @@ Route::put('/profile/update', [perfilController::class, 'update'])->name('profil
 });
 
 
-
+Route::middleware(ClientOnly::class)->group(function () {
 Route::get('/cliente', [ClienteController::class, 'index'])->name('cliente.discoteca');
 Route::get('/cliente/{id}/eventos', [ClienteController::class, 'eventos'])->name('cliente.eventos');
 Route::get('/cliente/entradas/{id}', [ClienteController::class, 'mostrar'])->name('cliente.entradas');
@@ -202,8 +218,12 @@ Route::get('/cliente/carrito', [ClienteController::class, 'obtenerCarrito'])->na
 Route::delete('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProductoCarrito'])->name('cliente.eliminarProductoCarrito');
 Route::get('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProductoCarrito'])->name('cliente.eliminarProductoCarrito');
 
-
+});
 //  Ian
+
+
+Route::middleware(CamareroOnly::class)->group(function () {
 Route::get('/camarero', [CamareroController::class, 'camarero']);
 Route::post('/eventos', [CamareroController::class, 'listar_eventos']) ->name('eventos');
+});
 

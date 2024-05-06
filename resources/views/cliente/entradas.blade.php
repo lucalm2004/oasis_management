@@ -1,30 +1,4 @@
-<?php
-if (Auth::check()) {
-    $users = Auth::user();
 
-    $rol = $users->id_rol;
-    if ($rol == '3'){
-        echo "<script>window.location.href = '/gestor';</script>";
-        exit; 
-    }elseif($rol == '1'){
-        echo "<script>window.location.href = '/admin';</script>";
-        exit; 
-    }elseif($rol == '2'){
-        echo "<script>window.location.href = '/cliente';</script>";
-        exit; 
-    }elseif($rol == '4'){
-        echo "<script>window.location.href = '/camarero';</script>";
-        exit; 
-    }else{
-        echo "<script>window.location.href = '/login';</script>";
-        exit; 
-    }
-
-} else {
-    echo "<script>window.location.href = '/';</script>";
-    exit;
-}
-?>
 <!DOCTYPE html>
 <html>
 
@@ -214,7 +188,7 @@ if (Auth::check()) {
         </div>
 
 
-        <div id="carritoContainer" style="position: fixed; top: 20%; right: -100px; margin-right: 1.3%;" class="hidden">
+        <div id="carritoContainer" style="position: fixed; top: 22%; right: -100px; margin-right: 1.3%;" class="hidden">
             <!-- Aquí se mostrarán los productos en el carrito -->
         </div>
 

@@ -48,7 +48,7 @@
   var eye_show1 = document.getElementById('eye_show1');
 var password = document.getElementById('password');
 
-// Manejador de evento para cambiar el tipo de contraseña
+// Manejador de evento para cambiar el tipo de contraseÃ±a
 eye_show1.addEventListener('click', function() {
   if (password.type === 'password') {
       password.type = 'text';

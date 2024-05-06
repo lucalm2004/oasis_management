@@ -66,7 +66,7 @@
             <button class="login">Update Discoteca </button>
         </div>
         <div class="imagenini">
-            <img src='img/<?php echo $discoteca->image; ?>' alt="">
+            <img src='img/discotecas/<?php echo $discoteca->image; ?>' alt="">
         </div>
     </section>
     {{-- Reproductor --}}

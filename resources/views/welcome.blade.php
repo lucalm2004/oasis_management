@@ -150,7 +150,7 @@
                     <img src="/img/foto2.jpg" class="img-fluid mb-4" alt="Imagen 7">
                     <h2><i class="fas fa-hand-holding-heart"></i> Lo que nos destaca</h2>
                     <p>Destacamos por nuestra atención personalizada y capacidad para adaptarnos a las necesidades específicas de cada cliente.</p>
-                    <p>Además, ofrecemos una amplia gama de servicios adicionales para garantizar una experiencia inolvidable en cada evento.</p>
+                    <p>Además, ofrecemos una amplia gama de servicios adicionales para garantizar una experiencia inolvidable en cada evento.</p><br><br>
                 </div>
             </div>
             <div class="col-md-6 animated">

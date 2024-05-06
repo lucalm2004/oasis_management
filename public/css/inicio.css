@@ -1,5 +1,17 @@
 /* Estilos para el fondo en movimiento */
 
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Rubik', sans-serif;
+    text-decoration: none;
+    list-style: none;
+    scroll-behavior: smooth;
+    scroll-padding-top: 2rem;
+}
+
 body {
     background: linear-gradient(135deg, #000000, #070606);
     background-size: 200% 200%;

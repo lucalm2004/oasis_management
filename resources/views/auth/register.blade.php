@@ -17,6 +17,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://kit.fontawesome.com/8e6d3dccce.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
     {{-- <script src="https://kit.fontawesome.com/a7409f463b.js" crossorigin="anonymous"></script> --}}
     <style>
         #password {

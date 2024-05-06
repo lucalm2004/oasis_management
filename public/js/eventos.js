@@ -54,7 +54,7 @@ function ListarEventos(buscar, fecha_inc) {
 
                 str += "<td>" + item.nombre_evento + "</td>";
                 str += "<td>" + item.descripcion_evento + "</td>";
-                str += "<td><img src='" + item.flyer + "' alt='Flyer del evento'></td>";
+                str += "<td><img id='imageP' src='../img/flyer/" + item.flyer + "'" + " alt='Imagen' class='imgtamaño'></td>";
                 str += "<td>" + item.fecha_inicio + "</td>";
                 str += "<td>" + item.fecha_final + "</td>";
                 str += "<td>" + item.dj + "</td>";
