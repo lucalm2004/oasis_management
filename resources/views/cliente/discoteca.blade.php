@@ -417,7 +417,7 @@
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <script>
-        var map = L.map('mapid').setView([40.505, -100.09], 4); // Define la posición inicial del mapa y el nivel de zoom
+        var map = L.map('mapid').setView([40.025868, -3.055922], 4); // Define la posición inicial del mapa y el nivel de zoom
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
