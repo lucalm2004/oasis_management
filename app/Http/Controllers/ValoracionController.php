@@ -93,23 +93,21 @@ public function showEventos($idDiscoteca)
 }
 public function showResenas($idEvento)
 {
-    // dd($idEvento);
     try {
-        $eventos = DB::table('eventos')->where('id_discoteca', $idEvento)->get();
-
-foreach ($eventos as $evento) {
-    // Acceder al atributo 'id' de cada evento
-    $idEvento = $evento->id;
-}
-
-
-        $reviews =  DB::table('valoraciones')->where('id_evento',    $idEvento)->get(); // Obtener las reseñas del evento
+        // Obtener todas las reseñas para los eventos de la discoteca
+        $reviews = DB::table('valoraciones')
+            ->join('users', 'valoraciones.id_user', '=', 'users.id')
+            ->select('valoraciones.*', 'users.name as user_name')
+            ->whereIn('valoraciones.id_evento', function($query) use ($idEvento) {
+                // Subconsulta para obtener todos los eventos de la discoteca
+                $query->select('id')->from('eventos')->where('id_discoteca', $idEvento);
+            })
+            ->get();
 
         // Devolver las reseñas como respuesta JSON
         return response()->json(['resenas' => $reviews]);
     } catch (\Exception $e) {
         // Capturar cualquier error y manejarlo adecuadamente
-        dd($e->getMessage());
         return response()->json(['error' => 'Error al obtener las reseñas del evento: ' . $e->getMessage()], 500);
     }
 }

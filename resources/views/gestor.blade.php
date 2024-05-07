@@ -23,7 +23,10 @@
 
     {{-- Head1 --}}
     <header class="logo">
+       
+       
         <div class="textlogo">
+          
             Bienvenido <span><?php
             use Illuminate\Support\Facades\DB;
             use Illuminate\Support\Facades\Auth;
@@ -57,6 +60,7 @@
     </header>
 
     <section class="inicio" id="discoteca">
+   
 
         <div class="inicio-texto">
             <h5>Gestiona tu discoteca:</h5>
@@ -72,6 +76,7 @@
     {{-- Reproductor --}}
     <div class='reproductor'>
         <nav>
+            
             <img class="logos" draggable="false" src="img/oasisfy.svg" alt="Spotify">
             <hr class="hr1">
             <div>
@@ -101,6 +106,7 @@
          
         </nav>
     </div>
+    
 
     {{-- eventos --}}
     <section class="quese" id="quese">
@@ -220,7 +226,7 @@ function oasisfy() {
 }
 
 
-    function listarCanciones() {
+async function listarCanciones() {
     var resultado = document.getElementById('canciones');
     var formdata = new FormData();
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -228,33 +234,41 @@ function oasisfy() {
 
     var ajax = new XMLHttpRequest();
     ajax.open('POST', '/cancionesView');
-    ajax.onload = function() {
+    ajax.onload = async function() {
         var str = "";
         if (ajax.status == 200) {
             var data = JSON.parse(ajax.responseText);
             var tabla = "";
-            
-            // Mostrar canciones
+
+            // Array para almacenar todas las promesas de obtener carátulas
+            var promesasCaratulas = [];
+
+            // Construir todas las promesas para obtener las carátulas
             data.canciones.forEach(function(cancion) {
-                str = "<div id='viewCanciones'>";
-                    str += "<select class='select' onchange='agregarCancionPlayList("+cancion.id+", this.value);'> <option>Playlist</option>";
-
-                    for (var i = 0; i < data.eventos.length; i++) {
-            str += "<option value="+data.eventos[i].id+">" + data.eventos[i].name_playlist + "</option>";
-        }
-        str += "</select>"
-                    // str += "<select class='select'> <option>Playlist</option> <option>Option1</option> <option>Option2</option> <option>Option3</option> </select>"
-                    str += "<img src='https://upload.wikimedia.org/wikipedia/tr/4/47/Darmaduman.jpg' alt=''>";
-                    str += "<p>"+cancion.name+"</p>";
-                    str += "<a>Duracion: "+cancion.duracion+"</a>";
-                    str += "</div>";
-                    tabla += str;
-
+                promesasCaratulas.push(obtenerCaratula(cancion.name, cancion.artista));
             });
-            
-            // Mostrar eventos de la discoteca
-           
 
+            // Esperar a que todas las promesas se completen
+            const urlsCaratulas = await Promise.all(promesasCaratulas);
+
+            // Mostrar canciones con sus carátulas
+            data.canciones.forEach(function(cancion, index) {
+                str = "<div id='viewCanciones'>";
+                str += "<select class='select' onchange='agregarCancionPlayList("+cancion.id+", this.value);'> <option>Playlist</option>";
+
+                for (var i = 0; i < data.eventos.length; i++) {
+                    str += "<option value="+data.eventos[i].id+">" + data.eventos[i].name_playlist + "</option>";
+                }
+
+                str += "</select>";
+                str += "<img src='"+urlsCaratulas[index]+"' alt=''>";
+                str += "<p>"+cancion.name+" | "+cancion.artista+"</p>";
+                str += "<a>Duracion: "+cancion.duracion+"</a>";
+                str += "</div>";
+                tabla += str;
+            });
+
+            // Mostrar eventos de la discoteca
             resultado.innerHTML = tabla;
 
         } else {
@@ -612,6 +626,31 @@ buscar.addEventListener("keyup", () => {
             });
         };
         ajax.send(formdata);
+    }
+
+    async function obtenerCaratula(cancion, artista) {
+    try {
+        const apiKey = 'ed420dfe24230d66234f98cdc646d658';
+        const url = `http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=${apiKey}&artist=${encodeURIComponent(artista)}&track=${encodeURIComponent(cancion)}&format=json`;
+        // console.log(url);
+        
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.error) {
+            throw new Error(data.message);
+        }
+        
+        const { album } = data.track;
+        const imageUrl = album.image.find(img => img.size === 'extralarge')['#text'];
+        
+        return imageUrl;
+    } catch (error) {
+        console.error('Error al obtener la carÃ¡tula:', error);
+        return null;
+    }
+    
+    
     }
 </script>
 

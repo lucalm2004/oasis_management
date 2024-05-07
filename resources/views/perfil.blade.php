@@ -163,7 +163,7 @@
             <div class="slide-track d-flex justify-content-center align-items-center">
                 @foreach ($discotecas as $discoteca)
                     <div class="slide mr-3">
-                        <img src="{{ asset('img/' . $discoteca->image) }}" alt="{{ $discoteca->name }}" class="img-fluid">
+                        <img src="{{ asset('img/discotecas/' . $discoteca->image) }}" alt="{{ $discoteca->name }}" class="img-fluid">
                     </div>
                 @endforeach
             </div>

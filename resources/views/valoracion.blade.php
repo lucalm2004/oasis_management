@@ -101,7 +101,7 @@
             @foreach ($discotecas as $discoteca)
                 <div class="col-md-6 mb-4">
                     <div class="card">
-                        <img src="{{ asset('img/' . $discoteca->image) }}" class="card-img-top" alt="{{ $discoteca->name }}">
+                        <img src="{{ asset('img/discotecas/' . $discoteca->image) }}" class="card-img-top" alt="{{ $discoteca->name }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ $discoteca->name }}</h5>
                             <p class="card-text">{{ $discoteca->direccion }}</p>
@@ -154,7 +154,7 @@
             <div class="slide-track d-flex justify-content-center align-items-center">
                 @foreach ($discotecas as $discoteca)
                     <div class="slide mr-3">
-                        <img src="{{ asset('img/' . $discoteca->image) }}" alt="{{ $discoteca->name }}" class="img-fluid">
+                        <img src="{{ asset('img/discotecas/' . $discoteca->image) }}" alt="{{ $discoteca->name }}" class="img-fluid">
                     </div>
                 @endforeach
             </div>

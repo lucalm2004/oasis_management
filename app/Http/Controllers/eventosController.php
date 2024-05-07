@@ -124,7 +124,7 @@ class EventosController extends Controller
         ->where('id_users', $idUsuario)
         ->value('id_discoteca');
 
-    $canciones = DB::table('canciones')->get();
+    $canciones = DB::table('cancion')->get();
     
     $eventos = DB::table('eventos')->where('id_discoteca', $idDiscoteca)->get();
     // dd($eventos);
