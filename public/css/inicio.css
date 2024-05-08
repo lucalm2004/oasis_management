@@ -1,149 +1,112 @@
-        /* Estilos para el fondo en movimiento */
-        body {
-            background: linear-gradient(135deg, #000000, #070606);
-            background-size: 200% 200%;
-            animation: gradientAnimation 10s infinite alternate;
-            font-family: 'Roboto Slab', serif;
-        }
+/* Estilos para el fondo en movimiento */
 
-        @keyframes gradientAnimation {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 100% 50%;
-            }
-        }
-        /* Estilos adicionales para la sección de inicio */
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Rubik', sans-serif;
+    text-decoration: none;
+    list-style: none;
+    scroll-behavior: smooth;
+    scroll-padding-top: 2rem;
+}
+
+body {
+    background: linear-gradient(135deg, #000000, #070606);
+    background-size: 200% 200%;
+    animation: gradientAnimation 10s infinite alternate;
+    font-family: 'Roboto Slab', serif;
+}
+
+
+/* Estilos adicionales para la sección de inicio */
+
 .text-orange {
-    color: #f58220; /* Color naranja */
+    color: #f58220;
 }
 
 .text-white {
-    color: #ffffff; /* Color blanco */
+    color: #ffffff;
 }
 
 .inicio-section {
-    color: #ffffff; /* Color blanco para todo el texto en la sección */
+    color: #ffffff;
 }
 
 
-                /* Contenedor de sección con animación de aparición */
-                .section {
-                    padding: 80px 0;
-                    position: relative;
-                }
-        
-                .section > .content-box {
-                    background-color: #ffffff;
-                    padding: 30px;
-                    border-radius: 5px;
-                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-                    animation: fadeInUp 0.75s ease-out; /* Animación de aparición */
-                }
-        
-                @keyframes fadeInUp {
-                    from {
-                        opacity: 0;
-                        transform: translateY(20px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-                .inicio-section h1,
-                .inicio-section h2 {
-                    animation: fadeInLeft 1s forwards;
-                }
-                
-                .inicio-section p,
-                .inicio-section a.btn {
-                    animation: fadeInLeft 1s forwards;
-                    margin-top: 20px;
-                }
-                
-                .logo-img {
-                    max-width: 80%;
-                    height: auto;
-                    animation: fadeInRight 1s forwards;
-                }
-                
-                /* Animaciones */
-                @keyframes fadeInLeft {
-                    from {
-                        opacity: 0;
-                        transform: translateX(-50px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateX(0);
-                    }
-                }
-                
-                @keyframes fadeInRight {
-                    from {
-                        opacity: 0;
-                        transform: translateX(50px);
-                    }
-                    to {
-                        opacity: 1;
-                        transform: translateX(0);
-                    }
-                }
-                
-                /* Ajustes responsivos */
-                @media (max-width: 768px) {
-                    .inicio-section {
-                        padding: 80px 0;
-                    }
-                
-                    .navbar-brand {
-                        padding: 0 10px;
-                    }
-                }
-                
-                @media (max-width: 414px) {
-                    .slide img {
-                        height: 120px;
-                    }
-                }
+/* Contenedor de sección con animación de aparición */
+
+.section {
+    padding: 80px 0;
+    position: relative;
+}
+
+.section>.content-box {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    animation: fadeInUp 0.75s ease-out;
+}
+
+.inicio-section h1,
+.inicio-section h2 {
+    animation: fadeInLeft 1s forwards;
+}
+
+.inicio-section p,
+.inicio-section a.btn {
+    animation: fadeInLeft 1s forwards;
+    margin-top: 20px;
+}
+
+.logo-img {
+    max-width: 80%;
+    height: auto;
+    animation: fadeInRight 1s forwards;
+}
+
+
 /* Estilos para las secciones con imágenes y texto juntos */
+
 .content-box {
-    background-color: #ffffff; /* Fondo blanco para el cuadro de contenido */
-    padding: 30px; /* Espaciado interno */
-    border-radius: 5px; /* Bordes redondeados */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
+
 
 /* Estilos para las imágenes dentro de las secciones */
+
 .img-fluid {
-    max-width: 100%; /* Ancho máximo para imágenes fluidas */
-    height: auto; /* Altura automática para mantener la proporción */
+    max-width: 100%;
+    height: auto;
+}
+
+.slide img {
+    width: 100%;
+    height: auto;
+}
+
+.animated {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.animate-fadeInUp {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 
-
-    /* Estilo para las secciones animadas */
-    .animated {
-        visibility: hidden;
-        opacity: 0;
-        transform: translateY(50px); /* Empezar oculto bajo la página */
-        transition: opacity 0.5s ease, transform 0.5s ease;
-    }
-
-    /* Animación para mostrar cuando entra en el viewport */
-    .animate-fadeInUp {
-        visibility: visible;
-        opacity: 1;
-        transform: translateY(0);
-    }
-                
 /* Estilos para la Navbar */
+
 .navbar {
-    background-color: #000000; /* Fondo blanco */
-    color: #000000; /* Letras negras */
-    /* Ajusta el tamaño y la posición del fondo según sea necesario */
+    background-color: #000000;
+    color: #000000;
     background-size: cover;
     background-position: top;
 }
@@ -160,19 +123,22 @@
 }
 
 .nav-link {
-    color: #000000 !important; /* Letras negras */
+    color: #000000 !important;
 }
 
 .nav-link:hover {
-    color: #ffd54f !important; /* Amarillo */
-}
-.font-weight-bold {
-    font-weight: bold; /* Hace que el texto sea negrita */
-    color: #000000; /* Color del texto en negro */
-    text-transform: uppercase; /* Convierte el texto a mayúsculas */
+    color: #ffd54f !important;
 }
 
+.font-weight-bold {
+    font-weight: bold;
+    color: #000000;
+    text-transform: uppercase;
+}
+
+
 /* Estilos para el Slider */
+
 .parallax {
     position: relative;
     overflow: hidden;
@@ -190,66 +156,68 @@
     object-fit: cover;
 }
 
+
 /* Estilos para los controles del Carousel */
-.carousel-control-prev, .carousel-control-next {
+
+.carousel-control-prev,
+.carousel-control-next {
     width: 5%;
 }
 
-.carousel-control-prev-icon, .carousel-control-next-icon {
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
     height: 100%;
     width: 100%;
 }
 
-/* Ajuste para dispositivos móviles */
-@media (max-width: 768px) {
-    .carousel-item img {
-        height: 300px;
-    }
-}
-
 
 /* Estilos para el Contenido */
+
 .content-box {
-    background-color: #ffffff; /* Blanco */
+    background-color: #ffffff;
     padding: 30px;
     border-radius: 5px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada para separar las secciones */
-    margin-bottom: 50px; /* Espacio inferior entre secciones */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    margin-bottom: 50px;
 }
 
-
 .content-box h2 {
-    color: #f58220; /* Naranja */
+    color: #f58220;
 }
 
 .content-box p {
-    color: #000000; /* Gris oscuro */
+    color: #000000;
 }
 
+
 /* Estilos para el Botón de Valorar */
+
 .rating-button {
     margin-top: 20px;
 }
 
+
 /* Estilos para el Footer */
+
 .footer {
     background-image: url('/img/oasisn2.jpg');
-    /* Ajusta el tamaño y la posición del fondo según sea necesario */
     background-size: cover;
     background-position: center;
-    padding: 60px 0; /* Padding superior e inferior para el footer */
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil en la parte superior del footer */
+    padding: 60px 0;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .footer a {
-    color: #ffffff; /* Blanco */
+    color: #ffffff;
 }
 
 .footer a:hover {
-    color: #ffd54f; /* Amarillo */
+    color: #ffd54f;
 }
 
+
 /* Animaciones */
+
 .animate__animated {
     animation-duration: 1s;
 }
@@ -266,7 +234,9 @@
     animation-name: fadeInUp;
 }
 
+
 /* Estilos adicionales */
+
 .my-5 {
     margin-top: 5rem !important;
     margin-bottom: 5rem !important;
@@ -284,10 +254,14 @@
 .text-center {
     text-align: center !important;
 }
+
 .orange-text {
     color: orange;
 }
+
+
 /* Estilos específicos para Botones */
+
 .btn-lg {
     padding: 10px 20px;
     font-size: 1.2rem;
@@ -295,12 +269,15 @@
 }
 
 .btn-primary {
-    background-color: #f58220; /* Naranja */
-    border-color: #f58220; /* Naranja */
+    background-color: #f58220;
+    border-color: #f58220;
 }
+
+
 /* Estilos para la sección de valoración de discotecas */
+
 .rating-section {
-    background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco semi-transparente */
+    background-color: rgba(255, 255, 255, 0.9);
     padding: 30px;
     border-radius: 5px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -308,24 +285,26 @@
 
 
 /* Ejemplo de animación al hacer hover */
+
 .btn-primary:hover {
-    transform: scale(1.1); /* Hace que el botón crezca ligeramente al hacer hover */
-    transition: transform 0.3s ease; /* Agrega una transición suave */
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
 }
 
-
 .btn-outline-light {
-    color: #fafafa; /* Blanco */
-    border-color: #ffffff; /* Blanco */
+    color: #fafafa;
+    border-color: #ffffff;
 }
 
 .btn-outline-light:hover {
-    color: #343a40; /* Gris oscuro */
-    background-color: #ffffff; /* Blanco */
-    border-color: #ffffff; /* Blanco */
+    color: #343a40;
+    background-color: #ffffff;
+    border-color: #ffffff;
 }
 
+
 /* Estilos para el slider */
+
 .slider {
     width: 100%;
     overflow: hidden;
@@ -346,9 +325,77 @@
     width: 100%;
 }
 
+#cookieBanner {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #343a40;
+    padding: 15px 0;
+    text-align: center;
+    color: white;
+    z-index: 9999;
+}
+
+#cookieAcceptButton {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+
+/* Animaciones */
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
 
 
 /* Animación de desplazamiento infinito */
+
 @keyframes scroll {
     0% {
         transform: translateX(0);
@@ -358,20 +405,90 @@
     }
 }
 
-/* Estilos para el slider en dispositivos móviles */
-@media (max-width: 414px) {
-    .slide {
-        flex: 0 0 calc(100% - 10px); /* Ajustar el tamaño de cada slide */
-        margin-right: 10px; /* Espacio entre slides */
-    }
 
-    .slide img {
-        width: 100%; /* Ajustar el ancho de la imagen al contenedor del slide */
-        height: auto; /* Altura automática para mantener la proporción */
+/* Ajustes responsivos */
+
+@media (max-width: 992px) {
+    .col-md-8 {
+        max-width: 100%;
     }
 }
+
 @media (min-width: 768px) {
     .my-5 {
         margin-bottom: 50px;
+    }
+    .inicio-section {
+        padding: 80px 0;
+    }
+    .navbar-brand {
+        padding: 0 10px;
+    }
+    .col-lg-6 {
+        max-width: 100%;
+    }
+    .logo-img {
+        max-width: 80%;
+    }
+    .content-box {
+        padding: 20px;
+    }
+    .carousel-item img {
+        height: 300px;
+    }
+}
+
+@media (max-width: 576px) {
+    .col-md-6 {
+        text-align: center;
+    }
+}
+
+@media (max-width: 454px) {
+    .logo-img {
+        max-width: 85%;
+    }
+    .inicio-section {
+        padding: 2rem 0;
+    }
+    .inicio-section h2 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    .inicio-section h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    .inicio-section p {
+        font-size: 1.8rem;
+        margin-bottom: 1.5rem;
+    }
+    .inicio-section .btn {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+
+/* Estilos para el slider en dispositivos móviles */
+
+@media (max-width: 414px) {
+    .slide {
+        flex: 0 0 calc(100% - 10px);
+        margin-right: 10px;
+    }
+    .slide img {
+        width: 100%;
+        height: auto;
+    }
+    .carousel-item img {
+        height: 250px;
+    }
+    .slide img {
+        height: 120px;
+    }
+    .slide {
+        flex: 0 0 calc(100% - 10px);
+        margin-right: 10px;
     }
 }

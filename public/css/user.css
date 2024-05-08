@@ -1,4 +1,5 @@
 /* Estilos para el fondo en movimiento */
+
 body {
     background: linear-gradient(135deg, #000, #000);
     background-size: 400% 400%;
@@ -15,12 +16,16 @@ body {
     }
 }
 
+
 /* Estilos para los mensajes de error */
+
 .error-message {
     color: red;
 }
 
+
 /* Estilos para la Navbar */
+
 .navbar {
     background-color: #000;
     color: #fff;
@@ -39,7 +44,9 @@ body {
     margin-right: 10px;
 }
 
+
 /* Contenido principal */
+
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -91,7 +98,9 @@ body {
     background-color: #ff9800;
 }
 
+
 /* Estilos para el footer */
+
 .footer {
     background-image: url('/img/oasisn2.jpg');
     background-size: cover;
@@ -111,7 +120,9 @@ body {
     color: #ffc107;
 }
 
+
 /* Estilos para la sección de puntos */
+
 .puntos-section {
     margin-top: 30px;
     text-align: center;
@@ -120,22 +131,31 @@ body {
 .monedas {
     font-size: 2rem;
     font-weight: bold;
-    color: #ffc107; /* Color amarillo para simular monedas */
-    border: 2px solid #ffc107; /* Borde amarillo */
+    color: #ffc107;
+    /* Color amarillo para simular monedas */
+    border: 2px solid #ffc107;
+    /* Borde amarillo */
     border-radius: 20px;
-    padding: 20px 30px; /* Ajuste del padding para un mejor equilibrio */
+    padding: 20px 30px;
+    /* Ajuste del padding para un mejor equilibrio */
     display: inline-block;
-    transition: all 0.3s ease; /* Transición para todos los cambios */
-    cursor: pointer; /* Cambiar el cursor al pasar por encima */
-    box-shadow: 0 4px 10px rgba(255, 193, 7, 0.2); /* Sombra suave */
+    transition: all 0.3s ease;
+    /* Transición para todos los cambios */
+    cursor: pointer;
+    /* Cambiar el cursor al pasar por encima */
+    box-shadow: 0 4px 10px rgba(255, 193, 7, 0.2);
+    /* Sombra suave */
 }
+
 
 /* Efecto de escala al pasar el ratón */
-.monedas:hover {
-    transform: scale(1.05); /* Escala ligeramente menor para un efecto más suave */
-    box-shadow: 0 6px 15px rgba(255, 193, 7, 0.3); /* Sombra más pronunciada */
-}
 
+.monedas:hover {
+    transform: scale(1.05);
+    /* Escala ligeramente menor para un efecto más suave */
+    box-shadow: 0 6px 15px rgba(255, 193, 7, 0.3);
+    /* Sombra más pronunciada */
+}
 
 .puntos:hover {
     transform: scale(1.1);
@@ -145,7 +165,9 @@ body {
     color: orange;
 }
 
+
 /* Estilos para el slider */
+
 #slider {
     width: 100%;
     overflow: hidden;
@@ -175,7 +197,9 @@ body {
     }
 }
 
+
 /* Estilos responsivos */
+
 @media (max-width: 768px) {
     .card-title {
         font-size: 1.5rem;
@@ -184,6 +208,7 @@ body {
         padding: 8px 16px;
     }
 }
+
 @media (max-width: 414px) {
     .navbar-brand {
         padding: 0 10px;

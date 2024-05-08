@@ -47,6 +47,8 @@ public function store(Request $request)
 
         return back()->with('success', 'Valoración enviada correctamente.');
     } catch (\Exception $e) {
+        dd($e->getMessage());
+
         return back()->with('error', 'Error al enviar la valoración: ' . $e->getMessage());
     }
 }
@@ -92,8 +94,15 @@ public function showEventos($idDiscoteca)
 public function showResenas($idEvento)
 {
     try {
-        $event = Evento::findOrFail($idEvento); // Buscar el evento por su ID
-        $reviews = $event->valoraciones()->with('user')->get(); // Obtener las reseñas del evento
+        // Obtener todas las reseñas para los eventos de la discoteca
+        $reviews = DB::table('valoraciones')
+            ->join('users', 'valoraciones.id_user', '=', 'users.id')
+            ->select('valoraciones.*', 'users.name as user_name')
+            ->whereIn('valoraciones.id_evento', function($query) use ($idEvento) {
+                // Subconsulta para obtener todos los eventos de la discoteca
+                $query->select('id')->from('eventos')->where('id_discoteca', $idEvento);
+            })
+            ->get();
 
         // Devolver las reseñas como respuesta JSON
         return response()->json(['resenas' => $reviews]);

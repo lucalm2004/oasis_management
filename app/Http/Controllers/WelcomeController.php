@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Discoteca; // Importa el modelo de Discoteca
+use App\Models\Discoteca;
 
 class WelcomeController extends Controller
 {

@@ -1,10 +1,12 @@
 /* Estilos para el fondo en movimiento */
+
 body {
     background: linear-gradient(135deg, #000000, #000000);
     background-size: 200% 200%;
     animation: gradientAnimation 10s infinite alternate;
     font-family: 'Roboto Slab', serif;
-    color: #ffffff; /* Color de texto blanco */
+    color: #ffffff;
+    /* Color de texto blanco */
 }
 
 @keyframes gradientAnimation {
@@ -16,16 +18,24 @@ body {
     }
 }
 
+
 /* Estilos para la Navbar */
+
 .navbar {
-    background-color: #000000; /* Fondo negro */
-    color: #000000; /* Texto negro */
+    background-color: #000000;
+    /* Fondo negro */
+    color: #000000;
+    /* Texto negro */
     transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
+
 .navbar.scrolled {
-    background-color: #000000; /* Color de fondo al hacer scroll */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra al hacer scroll */
+    background-color: #000000;
+    /* Color de fondo al hacer scroll */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Sombra al hacer scroll */
 }
+
 .navbar-brand {
     display: flex;
     align-items: center;
@@ -38,67 +48,92 @@ body {
 }
 
 .nav-link {
-    color: #000000 !important; /* Texto negro */
+    color: #000000 !important;
+    /* Texto negro */
 }
 
 .nav-link:hover {
-    color: #ffd54f !important; /* Amarillo al hacer hover */
+    color: #ffd54f !important;
+    /* Amarillo al hacer hover */
 }
 
+
 /* Efecto de crecimiento en botón al hacer hover */
+
 .btn-outline-light {
     transition: transform 0.3s ease-in-out;
 }
 
 .btn-outline-light:hover {
-    transform: scale(1.1); /* Escala el botón al hacer hover */
+    transform: scale(1.1);
+    /* Escala el botón al hacer hover */
 }
 
-        /* Estilos para la sección de Contacto */
-        .contacto-section {
-            padding: 80px 0;
-            color: #ffffff; /* Texto blanco */
-            text-align: center;
-        }
 
-        .contacto-section h2 {
-            color: #f58220; /* Naranja */
-        }
+/* Estilos para la sección de Contacto */
 
-        .form-control {
-            background-color: rgba(255, 255, 255, 0.1); /* Fondo semi-transparente */
-            color: #ffffff; /* Texto blanco */
-            margin-bottom: 20px;
-        }
+.contacto-section {
+    padding: 80px 0;
+    color: #ffffff;
+    /* Texto blanco */
+    text-align: center;
+}
 
-        .btn-primary {
-            background-color: #f58220; /* Naranja */
-            border-color: #f58220; /* Borde naranja */
-        }
+.contacto-section h2 {
+    color: #f58220;
+    /* Naranja */
+}
 
-        .btn-primary:hover {
-            background-color: #e66e00; /* Naranja más oscuro al hacer hover */
-            border-color: #e66e00; /* Borde naranja más oscuro al hacer hover */
-        }
+.form-control {
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Fondo semi-transparente */
+    color: #ffffff;
+    /* Texto blanco */
+    margin-bottom: 20px;
+}
+
+.btn-primary {
+    background-color: #f58220;
+    /* Naranja */
+    border-color: #f58220;
+    /* Borde naranja */
+}
+
+.btn-primary:hover {
+    background-color: #e66e00;
+    /* Naranja más oscuro al hacer hover */
+    border-color: #e66e00;
+    /* Borde naranja más oscuro al hacer hover */
+}
+
+
 /* Estilos para el Footer */
+
 .footer {
     background-image: url('/img/oasisn2.jpg');
     background-size: cover;
     background-position: center;
-    color: #ffffff; /* Texto blanco */
-    padding: 60px 0; /* Padding superior e inferior */
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil en la parte superior */
+    color: #ffffff;
+    /* Texto blanco */
+    padding: 60px 0;
+    /* Padding superior e inferior */
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    /* Sombra sutil en la parte superior */
 }
 
 .footer a {
-    color: #ffffff; /* Texto blanco */
+    color: #ffffff;
+    /* Texto blanco */
 }
 
 .footer a:hover {
-    color: #ffd54f; /* Amarillo al hacer hover */
+    color: #ffd54f;
+    /* Amarillo al hacer hover */
 }
 
+
 /* Estilos adicionales */
+
 .my-5 {
     margin-top: 5rem !important;
     margin-bottom: 5rem !important;
@@ -117,7 +152,9 @@ body {
     text-align: center !important;
 }
 
+
 /* Estilos específicos para Botones */
+
 .btn-lg {
     padding: 10px 20px;
     font-size: 1.2rem;
@@ -125,11 +162,15 @@ body {
 }
 
 .btn-primary {
-    background-color: #f58220; /* Naranja */
-    border-color: #f58220; /* Naranja */
+    background-color: #f58220;
+    /* Naranja */
+    border-color: #f58220;
+    /* Naranja */
 }
 
+
 /* Estilos para el slider */
+
 .slider {
     width: 100%;
     overflow: hidden;
@@ -152,6 +193,7 @@ body {
 
 
 /* Animación de desplazamiento infinito */
+
 @keyframes scroll {
     0% {
         transform: translateX(0);
@@ -160,18 +202,25 @@ body {
         transform: translateX(-100%);
     }
 }
+
 .orange-text {
     color: orange;
 }
+
+
 /* Estilos para el slider en dispositivos móviles */
+
 @media (max-width: 414px) {
     .slide {
-        flex: 0 0 calc(100% - 10px); /* Ajustar el tamaño de cada slide */
-        margin-right: 10px; /* Espacio entre slides */
+        flex: 0 0 calc(100% - 10px);
+        /* Ajustar el tamaño de cada slide */
+        margin-right: 10px;
+        /* Espacio entre slides */
     }
-
     .slide img {
-        width: 100%; /* Ajustar el ancho de la imagen al contenedor del slide */
-        height: auto; /* Altura automática para mantener la proporción */
+        width: 100%;
+        /* Ajustar el ancho de la imagen al contenedor del slide */
+        height: auto;
+        /* Altura automática para mantener la proporción */
     }
 }

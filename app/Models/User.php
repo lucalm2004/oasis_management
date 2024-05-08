@@ -17,13 +17,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $table = "users";
-    protected $fillable = ['name', 'email', 'password', 'google_id', 'habilitado', 'puntos', 'id_rol'];
+    protected $fillable = ['name', 'email', 'password', 'google_id', 'habilitado', 'puntos', 'id_rol', 'verificado'];
     
     public function rol()
     {
         return $this->belongsTo(Rol::class, 'id_rol');
     }
-    
     public function users_discoteca()
     {
         return $this->belongsToMany(UserDiscoteca::class, 'id_users');
@@ -60,5 +59,4 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    
 }

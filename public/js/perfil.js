@@ -1,4 +1,4 @@
- document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     const nameInput = document.getElementById('name');
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
@@ -14,7 +14,7 @@
         });
     }
 
-    nameInput.addEventListener('keyup', function () {
+    nameInput.addEventListener('keyup', function() {
         const nameError = document.getElementById('nameError');
         nameError.textContent = '';
 
@@ -26,7 +26,7 @@
         }
     });
 
-    emailInput.addEventListener('keyup', function () {
+    emailInput.addEventListener('keyup', function() {
         const emailError = document.getElementById('emailError');
         emailError.textContent = '';
 
@@ -41,7 +41,7 @@
         }
     });
 
-    passwordInput.addEventListener('keyup', function () {
+    passwordInput.addEventListener('keyup', function() {
         const passwordError = document.getElementById('passwordError');
         passwordError.textContent = '';
 
@@ -50,7 +50,7 @@
         }
     });
 
-    passwordConfirmationInput.addEventListener('keyup', function () {
+    passwordConfirmationInput.addEventListener('keyup', function() {
         const passwordConfirmationError = document.getElementById('passwordConfirmationError');
         passwordConfirmationError.textContent = '';
 
@@ -61,7 +61,7 @@
 
     const profileForm = document.getElementById('profileForm');
 
-    profileForm.addEventListener('submit', function (event) {
+    profileForm.addEventListener('submit', function(event) {
         const nameError = document.getElementById('nameError');
         const emailError = document.getElementById('emailError');
         const passwordError = document.getElementById('passwordError');

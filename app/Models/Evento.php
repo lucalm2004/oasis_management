@@ -12,7 +12,7 @@ class Evento extends Model
 
     public function discoteca()
     {
-        return $this->belongsTo(Discoteca::class, 'id_discoteca');
+        return $this->belongsTo(Discoteca::class, 'id');
     }
 
     public function valoraciones()
