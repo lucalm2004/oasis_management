@@ -18,10 +18,11 @@ Route::get('/', function () {
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
 
-Route::get('/camarero', function () {
-    return view('listar_eventos/camarero');
-})->name('camarero.listar_eventos');
-Route::get('camarero/eventos', [CamareroController::class, 'listar_eventos']) ->name('listar_eventos');
+// Route::get('/camarero', function () {
+//     return view('listar_eventos/camarero');
+// })->name('camarero.listar_eventos');
+Route::get('/camarero', [CamareroController::class, 'camarero']);
+Route::post('/eventos', [CamareroController::class, 'listar_eventos']) ->name('eventos');
 
 
 require __DIR__.'/auth.php';
