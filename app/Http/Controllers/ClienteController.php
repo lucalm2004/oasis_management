@@ -206,7 +206,6 @@ class ClienteController extends Controller
         foreach ($entradasSeleccionadas as $tipoEntradaId) {
             // Consultar el producto asociado al tipo de entrada
             $producto = Producto::find($tipoEntradaId);
-;
             if ($producto) {
                 // dd($tipoEntradaId);
 
@@ -244,15 +243,23 @@ class ClienteController extends Controller
     {
         // Obtener el ID del usuario autenticado
         $idUsuario = auth()->user()->id;
-      /*   dd($idUsuario); */
 
         // Obtener los productos en el carrito del usuario con la información del producto
         $carrito = Carrito::where('id_user', $idUsuario)
-        ->join('productos', 'carrito.id_producto', '=', 'productos.id')
-        ->join('eventos', 'carrito.id_evento', '=', 'eventos.id') // Realizar un join con la tabla de eventos
-        ->select('carrito.*', 'productos.name', 'eventos.name') // Seleccionar el nombre del evento
-        ->get();
-    
+            ->join('productos', 'carrito.id_producto', '=', 'productos.id')
+            ->join('eventos', 'carrito.id_evento', '=', 'eventos.id') // Realizar un join con la tabla de eventos
+            ->select('carrito.*', 'productos.name', 'eventos.name') // Seleccionar el nombre del evento
+            ->get();
+
+
+        // // Obtener los productos en el carrito del usuario con la información del producto
+        // $carrito = Carrito::where('id_user', $idUsuario)
+        //     ->join('productos', 'carrito.id_producto', '=', 'productos.id')
+        //     ->leftJoin('canciones', 'productos.id', '=', 'canciones.id_producto') // Realizar un left join con la tabla de canciones
+        //     ->join('eventos', 'carrito.id_evento', '=', 'eventos.id')
+        //     ->select('carrito.*', 'productos.name', 'eventos.name', 'canciones.name', 'canciones.precio') // Seleccionar el nombre del evento
+        //     ->get();
+
 
         // Devolver los productos en formato JSON
         return response()->json($carrito);
@@ -260,23 +267,76 @@ class ClienteController extends Controller
 
     public function eliminarProductoCarrito($id)
     {
-     /*    dd($id); */
+        /*    dd($id); */
         // Buscar el producto en el carrito por su ID
         /* $productoEnCarrito = Carrito::find($id); */
-       /*  dd($productoEnCarrito); */
+        /*  dd($productoEnCarrito); */
 
-       $productoEnCarrito = DB::table('carrito')
-       ->where('id', $id)->delete();
+        $productoEnCarrito = DB::table('carrito')
+            ->where('id', $id)->delete();
 
         if (!$productoEnCarrito) {
             // Si el producto no se encuentra en el carrito, devolver un error
             return response()->json(['error' => 'El producto no se encuentra en el carrito'], 404);
         }
 
-       /*  // Eliminar el producto del carrito
+        /*  // Eliminar el producto del carrito
         $productoEnCarrito->delete(); */
 
         // Devolver una respuesta exitosa
         return response()->json(['success' => true], 200);
+    }
+
+    public function insertarCancion(Request $request)
+    {
+        // Iniciar una transacción
+        DB::beginTransaction();
+
+        try {
+            // Obtener el último ID insertado en la tabla de canciones
+            $ultimoId = Cancion::max('id');
+            $idUsuario = auth()->user()->id;
+
+            // Sumar uno al último ID para obtener el nuevo ID de la canción
+            $nuevoId = $ultimoId + 1;
+
+
+            // Si la canción se ha insertado correctamente, insertar el producto
+            $producto = new Producto();
+            $producto->name = $request->nombreCancion;
+            $producto->tipo = "Cancion";
+            $producto->save();
+
+
+            // Crear una nueva instancia del modelo de Cancion y asignar el nombre de la canción
+            $cancion = new Cancion();
+            $cancion->id = $nuevoId;
+            $cancion->name = $request->nombreCancion;
+            $cancion->duracion = null;
+            $cancion->precio = 3.00;
+            $cancion->artista = $request->nombreArtista;
+
+            // Guardar la canción en la base de datos
+            $cancion->save();
+
+            // $carrito = new Carrito();
+            // $carrito->precio_total = 3;
+            // $carrito->id_user = $idUsuario;
+            // //Añadir evento en que sonará la canción
+            // $carrito->id_producto = $nuevoId;
+            // $carrito->save();
+
+            // Confirmar la transacción si todo ha ido bien
+            DB::commit();
+
+            // Devolver una respuesta JSON con un indicador de éxito y un mensaje
+            return response()->json(['success' => true, 'message' => 'Canción insertada correctamente en la base de datos']);
+        } catch (\Exception $e) {
+            // Revertir la transacción si hay un error
+            DB::rollback();
+
+            // Devolver una respuesta JSON con un indicador de éxito falso y un mensaje de error
+            return response()->json(['success' => false, 'message' => 'Hubo un problema al intentar insertar la canción en la base de datos'], 500);
+        }
     }
 }

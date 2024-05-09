@@ -1,23 +1,25 @@
+<!-- entradas/disponibles.blade.php -->
 
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Oasis Managament - Entradas Disponibles</title>
-    <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
-
+    <title>Entradas Disponibles</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
     <style>
         /* Estilos generales */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
             margin: 0;
             padding: 0;
+            background-color: #10101A;
+            color: white;
         }
 
         header {
@@ -91,7 +93,7 @@
         #detallesEvento,
         #tiposEntradaContainer,
         #carritoContainer {
-            background-color: #10102a;
+            background-color: #161624;
             color: #f8f8f8;
             border-radius: 5px;
             padding: 20px;
@@ -158,6 +160,106 @@
         .header-content button i {
             margin-right: 5px;
         }
+
+        /* Estilos personalizados para Sweet Alert */
+        .personalizado-swal-container {
+            font-family: Arial, sans-serif;
+            border-radius: 10px;
+        }
+
+        .personalizado-swal-title {
+            color: orange;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .personalizado-swal-html-container {
+            color: black;
+            font-size: 18px;
+        }
+
+        .personalizado-swal-confirm-button {
+            background-color: orange;
+            border-color: orange;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            padding: 10px 20px;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+
+        .personalizado-swal-confirm-button:hover {
+            background-color: darkorange;
+            border-color: darkorange;
+        }
+
+        .personalizado-swal-confirm-button:focus {
+            outline: none;
+        }
+
+        /* .slideThree */
+        .slideThree {
+            width: 80px;
+            height: 26px;
+            background: #fff;
+            /* Cambiado a blanco */
+            margin: 20px auto;
+            position: relative;
+            border-radius: 50px;
+            box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), 0px 1px 0px rgba(255, 255, 255, 0.2);
+            transition: background-color 0.4s ease;
+            /* Transición para cambiar el color de fondo */
+        }
+
+        .slideThree:after {
+            color: #000;
+            position: absolute;
+            right: 10px;
+            z-index: 0;
+            font: 12px/26px Arial, sans-serif;
+            font-weight: bold;
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, .15);
+        }
+
+        .slideThree:before {
+            color: #db9a17;
+            position: absolute;
+            left: 10px;
+            z-index: 0;
+            font: 12px/26px Arial, sans-serif;
+            font-weight: bold;
+        }
+
+        label {
+            display: block;
+            width: 34px;
+            height: 20px;
+            cursor: pointer;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            z-index: 1;
+            background: #000;
+            background: linear-gradient(top, #db9a17 0%, #b36b00 40%, #e6bf5f 100%);
+            border-radius: 50px;
+            transition: all 0.4s ease;
+            box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+        }
+
+        input[type=checkbox] {
+            visibility: hidden;
+
+            &:checked+label {
+                left: 43px;
+                background: #db9a17;
+                /* Cambiar el color de fondo cuando se activa */
+            }
+        }
+
+        hr {
+            margin-top: 10%;
+            margin-bottom: 10%;
+        }
     </style>
 
 </head>
@@ -188,7 +290,7 @@
         </div>
 
 
-        <div id="carritoContainer" style="position: fixed; top: 22%; right: -100px; margin-right: 1.3%;" class="hidden">
+        <div id="carritoContainer" style="position: fixed; top: 25%; right: -100px; margin-right: 1.3%;" class="hidden">
             <!-- Aquí se mostrarán los productos en el carrito -->
         </div>
 
@@ -210,8 +312,6 @@
         <button onclick="enviarEntradasACarrito()"><i class="fas fa-shopping-cart"></i></button>
 
 
-
-
     </div>
 
     <br>
@@ -225,6 +325,8 @@
             cargarTiposEntrada();
             cargarCarrito();
         });
+
+
 
         function toggleCart() {
             var cart = document.getElementById('carritoContainer');
@@ -281,9 +383,8 @@
             detallesEvento.innerHTML += '<p>Fecha de Inicio: ' + detalles.fecha_inicio + '</p>';
             detallesEvento.innerHTML += '<p>Fecha final: ' + detalles.fecha_final + '</p>';
             detallesEvento.innerHTML += '<p>DJ: ' + detalles.dj + '</p>';
-            detallesEvento.innerHTML += '<p>Playlist: <a href="#" onclick="mostrarPlaylistAlert(' + detalles.id + ')">' +
-                detalles.name_playlist +
-                '</a></p>';
+            detallesEvento.innerHTML += '<p>Playlist:<a href="#" style="color: orange;" onclick="mostrarPlaylistAlert(' +
+                detalles.id + ')">' + detalles.name_playlist + '</a></p>';
             // Agrega más detalles según sea necesario
         }
 
@@ -317,13 +418,40 @@
                 playlistHTML = '<p>No hay canciones en esta playlist.</p>';
             }
 
+            // Sweet Alert personalizado
             Swal.fire({
                 title: 'Playlist',
                 html: playlistHTML,
                 icon: 'info',
-                confirmButtonText: 'Aceptar'
+                confirmButtonText: 'Aceptar',
+                customClass: {
+                    // Clase para el contenedor del Sweet Alert
+                    container: 'personalizado-swal-container',
+                    // Clase para el título del Sweet Alert
+                    title: 'personalizado-swal-title',
+                    // Clase para el contenido HTML del Sweet Alert
+                    htmlContainer: 'personalizado-swal-html-container',
+                    // Clase para el botón de confirmación del Sweet Alert
+                    confirmButton: 'personalizado-swal-confirm-button'
+                },
+                // Estilo personalizado para el botón de confirmación
+                buttonsStyling: false,
+                // Color de fondo personalizado para el botón de confirmación
+                customClass: {
+                    confirmButton: 'btn-naranja'
+                }
             });
         }
+
+        // Estilo CSS personalizado para el botón de confirmación
+        const style = document.createElement('style');
+        style.innerHTML = `
+        .btn-naranja {
+            background-color: orange !important;
+            border-color: orange !important;
+        }
+    `;
+        document.head.appendChild(style);
 
 
         function cargarTiposEntrada() {
@@ -528,11 +656,115 @@
                 var precioTotalElement = document.createElement('div');
                 precioTotalElement.textContent = 'Precio Total: ' + precioTotal.toFixed(2);
                 carritoContainer.appendChild(precioTotalElement);
+
+                // Crear una división para actuar como espacio en blanco
+                var espacioBlanco = document.createElement('div');
+                carritoContainer.appendChild(espacioBlanco);
+
+                // Agregar una línea de separación antes del texto "¿Quieres elegir una canción?"
+                var lineaSeparacion = document.createElement('hr');
+                carritoContainer.appendChild(lineaSeparacion);
+
+                // Agregar el texto "¿Quieres elegir una canción?" al lado del section
+                var textoCancion = document.createElement('p');
+                textoCancion.textContent = '¿Quieres elegir una canción?';
+                carritoContainer.appendChild(textoCancion);
+
+                // Agregar el section al final del carrito
+                var sectionElement = document.createElement('section');
+                sectionElement.setAttribute('title', '.slideThree');
+                sectionElement.innerHTML =
+                    '<div class="slideThree"><input type="checkbox" value="None" id="slideThree" name="check" /><label for="slideThree"></label></div>';
+                carritoContainer.appendChild(sectionElement);
+
+                // Obtener el checkbox
+                var checkbox = document.getElementById('slideThree');
+
+                // Escuchar el evento de cambio en el checkbox
+                checkbox.addEventListener('change', function() {
+                    if (checkbox.checked) {
+                        // Mostrar SweetAlert con inputs para ingresar el nombre de la canción y del artista
+                        Swal.fire({
+                            title: 'Ingrese el nombre de la canción y del artista',
+                            html: '<input id="nombreCancion" class="swal2-input" placeholder="Nombre de la canción">' +
+                                '<input id="nombreArtista" class="swal2-input" placeholder="Nombre del artista">',
+                            showCancelButton: true,
+                            confirmButtonText: 'Guardar',
+                            cancelButtonText: 'Cancelar',
+                            preConfirm: () => {
+                                const nombreCancion = Swal.getPopup().querySelector('#nombreCancion')
+                                    .value;
+                                const nombreArtista = Swal.getPopup().querySelector('#nombreArtista')
+                                    .value;
+                                if (!nombreCancion || !nombreArtista) {
+                                    Swal.showValidationMessage(
+                                        'Debe ingresar el nombre de la canción y del artista');
+                                }
+                                return {
+                                    nombreCancion: nombreCancion,
+                                    nombreArtista: nombreArtista
+                                };
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Guardar el nombre de la canción y del artista en la base de datos
+                                var nombreCancion = result.value.nombreCancion;
+                                var nombreArtista = result.value.nombreArtista;
+                                insertarCancionEnBaseDeDatos(nombreCancion,
+                                    nombreArtista
+                                    ); // Llamar a la función para insertar la canción en la base de datos
+                            } else {
+                                // Desmarcar el checkbox si se cancela la operación
+                                checkbox.checked = false;
+                            }
+                        });
+                    }
+
+                });
             } else {
                 // Si el carrito está vacío, mostrar un mensaje indicando que está vacío
                 carritoContainer.textContent = 'El carrito está vacío';
             }
         }
+
+        // Función para insertar la canción en la base de datos
+        function insertarCancionEnBaseDeDatos(nombreCancion, nombreArtista) {
+            // Obtener el token CSRF de la etiqueta meta en el HTML
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            // Realizar una solicitud HTTP POST para insertar la canción en la base de datos
+            fetch('/cliente/insertarCancion', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken // Añadir el token CSRF como encabezado
+                    },
+                    body: JSON.stringify({
+                        nombreCancion: nombreCancion,
+                        nombreArtista: nombreArtista
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Si la inserción es exitosa, muestra un mensaje de éxito
+                        Swal.fire('¡Canción guardada!', data.message, 'success');
+                    } else {
+                        // Si hay un error, muestra un mensaje de error
+                        Swal.fire('Error', data.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Si hay un error, muestra un mensaje de error
+                    Swal.fire('Error', 'Hubo un problema al intentar guardar la canción en la base de datos.', 'error');
+                });
+        }
+
+
+
+
+
 
 
 

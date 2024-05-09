@@ -217,6 +217,7 @@ Route::post('/cliente/insertarEnCarrito', [ClienteController::class, 'insertarEn
 Route::get('/cliente/carrito', [ClienteController::class, 'obtenerCarrito'])->name('cliente.obtenerCarrito');
 Route::delete('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProductoCarrito'])->name('cliente.eliminarProductoCarrito');
 Route::get('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProductoCarrito'])->name('cliente.eliminarProductoCarrito');
+Route::post('/cliente/insertarCancion', [ClienteController::class, 'insertarCancion'])->name('cliente.insertarCancion');
 
 });
 //  Ian
