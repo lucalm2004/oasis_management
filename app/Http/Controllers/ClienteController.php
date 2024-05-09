@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
+// use Illuminate\Support\Facades\Session;
 
 use App\Models\Discoteca;
 use App\Models\Evento;
@@ -12,8 +12,10 @@ use App\Models\Ciudad;
 use App\Models\Bonificacion;
 use App\Models\Cancion;
 use App\Models\Carrito;
+use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 
 class ClienteController extends Controller
 {
@@ -52,6 +54,7 @@ class ClienteController extends Controller
     public function mostrarDetallesEvento($id)
     {
         $evento = Evento::findOrFail($id);
+        // $id = $evento->id;
 
         return response()->json($evento);
     }
@@ -194,30 +197,86 @@ class ClienteController extends Controller
 
     public function insertarEnCarrito(Request $request)
     {
-        // Obtener los datos de la solicitud
-        $data = $request->json()->all();
-        $entradasSeleccionadas = $data['entradas'];
-        $idUsuario = $request->user()->id; // Suponiendo que estés utilizando autenticación y el usuario esté autenticado
-        $idEvento = $request->input('id_evento'); // Obtener el ID del evento de la solicitud
-    
-        // Decodificar las entradas JSON
-        $entradasJSON = json_decode($entradasSeleccionadas, true);
-    
-        // Iterar sobre las entradas seleccionadas e insertarlas en la tabla carrito
-        foreach ($entradasJSON as $tipoEntradaId => $cantidad) {
-            $carrito = new Carrito();
-            $carrito->tipo_entrada_id = $tipoEntradaId;
-            $carrito->cantidad = $cantidad;
-            $carrito->bonificacion = $request-> null; // Obtener bonificación de la solicitud
-            $carrito->precio_total = $request-> null; // Obtener precio total de la solicitud
-            $carrito->id_user = $idUsuario;
-            $carrito->id_evento = $idEvento;
-            $carrito->id_producto = $request->input('id_producto'); // Obtener ID del producto de la solicitud
-            $carrito->save();
+        // Obtener las entradas seleccionadas del formulario
+        $entradasSeleccionadas = $request->input('entradas');
+        $idUsuario = $request->user()->id;
+        $idEvento = $request->input('id_evento');
+
+        // Recorrer las entradas seleccionadas
+        foreach ($entradasSeleccionadas as $tipoEntradaId) {
+            // Consultar el producto asociado al tipo de entrada
+            $producto = Producto::find($tipoEntradaId);
+;
+            if ($producto) {
+                // dd($tipoEntradaId);
+
+                // Establecer el precio total según el ID del producto
+                $precioTotal = 0;
+                if ($tipoEntradaId === '1') {
+                    $precioTotal = 10;
+                } elseif ($tipoEntradaId === '2') {
+                    $precioTotal = 15;
+                } elseif ($tipoEntradaId === '3') {
+                    $precioTotal = 125;
+                }
+
+                // Crear una nueva entrada en el carrito para cada tipo de entrada seleccionada
+                $carrito = new Carrito();
+                // Aquí puedes obtener la bonificación y el precio total de alguna manera
+                $carrito->bonificacion = null;
+                $carrito->precio_total = $precioTotal;
+                $carrito->id_user = $idUsuario;
+                $carrito->id_evento = $idEvento;
+                $carrito->id_producto = $producto->id;
+                $carrito->save();
+            } else {
+                // Si no se encuentra el producto asociado, devuelve un error
+                return Response::json(['error' => 'No se encontró el producto asociado a la entrada'], 404);
+            }
         }
-    
-        // Puedes retornar una respuesta de éxito si lo deseas
-        return response()->json(['message' => 'Entradas insertadas en el carrito con éxito'], 200);
+
+        // Devolver una respuesta con un mensaje de éxito para SweetAlert
+        return Response::json(['success' => true], 200);
     }
+
+
+    public function obtenerCarrito()
+    {
+        // Obtener el ID del usuario autenticado
+        $idUsuario = auth()->user()->id;
+      /*   dd($idUsuario); */
+
+        // Obtener los productos en el carrito del usuario con la información del producto
+        $carrito = Carrito::where('id_user', $idUsuario)
+        ->join('productos', 'carrito.id_producto', '=', 'productos.id')
+        ->join('eventos', 'carrito.id_evento', '=', 'eventos.id') // Realizar un join con la tabla de eventos
+        ->select('carrito.*', 'productos.name', 'eventos.name') // Seleccionar el nombre del evento
+        ->get();
     
+
+        // Devolver los productos en formato JSON
+        return response()->json($carrito);
+    }
+
+    public function eliminarProductoCarrito($id)
+    {
+     /*    dd($id); */
+        // Buscar el producto en el carrito por su ID
+        /* $productoEnCarrito = Carrito::find($id); */
+       /*  dd($productoEnCarrito); */
+
+       $productoEnCarrito = DB::table('carrito')
+       ->where('id', $id)->delete();
+
+        if (!$productoEnCarrito) {
+            // Si el producto no se encuentra en el carrito, devolver un error
+            return response()->json(['error' => 'El producto no se encuentra en el carrito'], 404);
+        }
+
+       /*  // Eliminar el producto del carrito
+        $productoEnCarrito->delete(); */
+
+        // Devolver una respuesta exitosa
+        return response()->json(['success' => true], 200);
+    }
 }

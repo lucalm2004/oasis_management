@@ -24,6 +24,22 @@ class Discoteca extends Model
         return $this->belongsToMany(UserDiscoteca::class, 'id_discoteca');
     }
 
+    public function eventos()
+    {
+        return $this->hasMany(Evento::class, 'id_discoteca');
+    }
 
+    public function valoracionMedia()
+    {
+        // Obtener todas las valoraciones de los eventos de esta discoteca
+        $valoraciones = $this->eventos()->with('valoraciones')->get()->flatMap->valoraciones;
+
+        // Calcular la valoraciÃ³n media
+        if ($valoraciones->isNotEmpty()) {
+            return $valoraciones->avg('rating');
+        } else {
+            return 0; // Manejo de casos donde no hay valoraciones
+        }
+    }
   
 }

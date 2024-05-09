@@ -1,13 +1,17 @@
+
+
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Discotecas</title>
+    <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
+
+    <title>Oasis Managament - Lista de Discotecas</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-        integrity="sha512-RZ72P5XENRmoZH/4/ZFVk1WF+IgPtA7O8WzW+Fl0oBn7y0J5dzb65B1J3fnu7zPQZz4BB5t3IZ5hjTVv9yQjsg=="
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
@@ -19,6 +23,7 @@
             font-family: Arial, Helvetica, sans-serif;
             margin: 0;
             padding: 0;
+            background-color: #f8f8f8;
         }
 
         /* Nuevo estilo para el header */
@@ -39,6 +44,7 @@
         .welcome-message {
             flex: 1;
             text-align: center;
+            margin-left: 260px;
             /* Para centrar el texto horizontalmente */
         }
 
@@ -55,7 +61,7 @@
 
         /* Ajustes para el botón de cerrar sesión */
         #logout-btn {
-            background-color: #f44336;
+            background-color: #007bff;
             border: none;
             color: white;
             padding: 10px 20px;
@@ -85,13 +91,13 @@
         }
 
         /* Style the footer */
-        footer {
+        /* footer {
             background-color: #777;
             padding: 10px;
             text-align: center;
             color: white;
             width: 100%;
-        }
+        } */
 
         /* Style the rest of the content */
         h1,
@@ -111,21 +117,29 @@
             width: 100%;
             padding: 10px;
             margin-top: 10px;
-            background-color: #666;
+            background-color: #ffffff;
             color: white;
             border: none;
             cursor: pointer;
         }
 
+        /* Estilos para el popup */
         #popup {
             display: none;
+            /* Inicialmente oculto */
             position: fixed;
             top: 50%;
+            /* Centrado verticalmente */
             left: 50%;
+            /* Centrado horizontalmente */
             transform: translate(-50%, -50%);
-            background-color: #f9f9f9;
+            /* Centrado absoluto */
+            background-color: white;
             padding: 20px;
+            border: 1px solid black;
             border-radius: 5px;
+            z-index: 1000;
+            /* Valor alto para que esté por encima de otros elementos */
         }
 
         #mapid {
@@ -212,30 +226,6 @@
             color: white;
         }
 
-        /* .logout-form {
-            text-align: center;
-            margin-top: 10px;
-        } */
-
-        /* .logout-form button {
-            background-color: #f44336;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.4s;
-            cursor: pointer;
-            border-radius: 8px;
-        }
-
-        .logout-form button:hover {
-            background-color: #d32f2f;
-        } */
-
         .points {
             text-align: center;
             margin-top: 20px;
@@ -268,6 +258,60 @@
             border-radius: 5px;
             font-size: 16px;
             box-sizing: border-box;
+        }
+
+        /* Estilos para el botón de enviar */
+        button[type="submit"] {
+            background-color: #4CAF50;
+            /* Color de fondo */
+            color: white;
+            /* Color del texto */
+            padding: 10px 20px;
+            /* Espaciado interno */
+            border: none;
+            /* Sin borde */
+            border-radius: 5px;
+            /* Borde redondeado */
+            cursor: pointer;
+            /* Cambio de cursor al pasar el ratón */
+            font-size: 16px;
+            /* Tamaño de la fuente */
+        }
+
+        /* Estilos para el botón de cerrar */
+        button[type="button"] {
+            background-color: #f44336;
+            /* Color de fondo */
+            color: white;
+            /* Color del texto */
+            padding: 10px 20px;
+            /* Espaciado interno */
+            border: none;
+            /* Sin borde */
+            border-radius: 5px;
+            /* Borde redondeado */
+            cursor: pointer;
+            /* Cambio de cursor al pasar el ratón */
+            font-size: 16px;
+            /* Tamaño de la fuente */
+            margin-top: 10px;
+            /* Espacio superior */
+        }
+
+        .footer {
+            background-image: url('/img/oasisn2.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 60px 0;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer a {
+            color: #ffffff;
+        }
+
+        .footer a:hover {
+            color: #ffd54f;
         }
     </style>
 </head>
@@ -313,6 +357,7 @@
         </div>
 
         <!-- Popup -->
+        {{-- <dialog id='alert-dialog'> --}}
         <div id="popup">
             <h2>Introducir Código</h2>
             <form action="" method="POST">
@@ -323,6 +368,7 @@
             </form>
             <button onclick="cerrarPopup()">Cerrar</button>
         </div>
+        {{-- </dialog> --}}
 
         <br>
         <br>
@@ -331,14 +377,47 @@
 
     </div>
 
-    <footer>
+    <footer class="footer mt-auto py-5 bg-dark" id="contact" style="background-image: url('/img/oasisn2.jpg');">
+        {{-- <div class="container text-center">
+            <h2 class="text-white mb-4 animateanimated animatefadeInUp">¿Listo para llevar tu negocio al siguiente
+                nivel?</h2>
+            <p class="text-white mb-4 animateanimated animatefadeInUp">Contáctanos para conocer cómo podemos colaborar
+                juntos.</p>
+            <div class="mt-4">
+                <a href="mailto:oasis.management.daw@gmail.com"
+                    class="btn btn-outline-light btn-lg animateanimated animatefadeInUp">
+                    <i class="fas fa-envelope"></i> ¡Contáctanos ahora!
+                </a>
+            </div>
+            <div class="mt-4">
+                <a href="https://www.tiktok.com/@oasis_management2024?lang=es"
+                    class="text-white mr-3 animateanimated animatefadeInUp">
+                    <i class="fab fa-tiktok"></i> TikTok
+                </a>
+                <a href="https://www.instagram.com/oasis_management2024/"
+                    class="text-white mr-3 animateanimated animatefadeInUp">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+            </div>
+            <!-- Logos de Discotecas -->
+            <div id="slider" class="slider mt-5">
+                <div class="slide-track d-flex justify-content-center align-items-center">
+                    @foreach ($discotecas as $discoteca)
+                        <div class="slide mr-3">
+                            <img src="{{ asset('img/' . $discoteca->image) }}" alt="{{ $discoteca->name }}"
+                                class="img-fluid">
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div> --}}
         <p>Footer</p>
     </footer>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
     <script>
-        var map = L.map('mapid').setView([40.505, -100.09], 4); // Define la posición inicial del mapa y el nivel de zoom
+        var map = L.map('mapid').setView([40.025868, -3.055922], 4); // Define la posición inicial del mapa y el nivel de zoom
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -374,9 +453,19 @@
             xhr.open("GET", "/cliente/mostrarpuntos", true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
-                    var puntosUsuario = JSON.parse(xhr.responseText);
-                    // Actualizar el contenido del elemento HTML con el número de puntos
-                    document.getElementById("puntosUsuario").textContent = puntosUsuario;
+                    console.log(xhr.responseText);
+                    // Verificar si la respuesta es un objeto vacío
+                    if (xhr.responseText === '{}' || xhr.responseText === 'null') {
+                        document.getElementById("puntosUsuario").textContent = "0";
+                    } else {
+                        var puntosUsuario = JSON.parse(xhr.responseText);
+                        // Actualizar el contenido del elemento HTML con el número de puntos
+                        if (puntosUsuario < 0) {
+                            document.getElementById("puntosUsuario").textContent = "0";
+                        } else {
+                            document.getElementById("puntosUsuario").textContent = puntosUsuario;
+                        }
+                    }
                 }
             };
             xhr.send();
@@ -460,7 +549,7 @@
                 var cardLink = document.createElement('a');
                 cardLink.classList.add('card-link'); // Agregar clase para el enlace
                 cardLink.href = '/cliente/' + discoteca.id + '/eventos';
-                cardLink.textContent = 'Ver eventos';
+                cardLink.innerHTML = 'Ver eventos <i class="fas fa-glass-cheers"></i>';
 
                 // Agregar el encabezado, información y enlace a la tarjeta
                 cardDiv.appendChild(cardHeader);

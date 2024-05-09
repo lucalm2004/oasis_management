@@ -38,28 +38,6 @@ class EventoSeeder extends Seeder
             'id_discoteca' => 2, // Suponiendo que esta es la ID de otra discoteca existente
         ]);
 
-        Evento::create([
-            'name' => 'Noche de Rock',
-            'descripcion' => '¡Una noche llena de energía y buen rock!',
-            'flyer' => 'imagen_noche_rock.jpg',
-            'fecha_inicio' => '2024-06-10 21:00:00',
-            'fecha_final' => '2024-06-11 04:00:00',
-            'dj' => 'DJ Rockero',
-            'name_playlist' => 'Rock Playlist',
-            'id_discoteca' => 1, // Suponiendo que esta es la ID de otra discoteca existente
-        ]);
-
-        Evento::create([
-            'name' => 'Fiesta electrónica',
-            'descripcion' => '¡Una fiesta llena de música electrónica y diversión!',
-            'flyer' => 'imagen_fiesta_electronica.jpg',
-            'fecha_inicio' => '2024-06-25 22:00:00',
-            'fecha_final' => '2024-06-26 05:00:00',
-            'dj' => 'DJ Electronico',
-            'name_playlist' => 'Electro Playlist',
-            'id_discoteca' => 2, // Suponiendo que esta es la ID de otra discoteca existente
-        ]);
-
         // Puedes agregar más eventos según sea necesario
     }
 
@@ -69,11 +47,11 @@ class EventoSeeder extends Seeder
      * @param string $fileName
      * @return string
      */
-    // private function storeFlyer($fileName)
-    // {
-    //     $fileContent = file_get_contents(public_path('images/' . $fileName)); // Suponiendo que las imágenes están en la carpeta 'images' en la carpeta 'public'
-    //     $filePath = 'flyers/' . $fileName;
-    //     Storage::disk('public')->put($filePath, $fileContent);
-    //     return $filePath;
-    // }
+    private function storeFlyer($fileName)
+    {
+        $fileContent = file_get_contents(public_path('images/' . $fileName)); // Suponiendo que las imágenes están en la carpeta 'images' en la carpeta 'public'
+        $filePath = 'flyers/' . $fileName;
+        Storage::disk('public')->put($filePath, $fileContent);
+        return $filePath;
+    }
 }

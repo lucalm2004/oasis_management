@@ -1,29 +1,33 @@
+
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Eventos de {{ $discoteca->name }}</title>
+    <title>Oasis Managament - Eventos de {{ $discoteca->name }}</title>
+    <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
+            font-family: Arial, Helvetica, sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #090921;
-            color: white;
-            font-family: sans-serif;
+            background-color: #f8f8f8;
         }
 
+        /* Estilos para el botón "Ver Entradas" */
+
+
         .content-container {
-            max-width: 800px;
             width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
-            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         h2 {
@@ -68,7 +72,6 @@
         }
 
         .clientImage {
-            display: flex;
             flex-direction: row;
             align-items: center;
         }
@@ -122,42 +125,52 @@
 
         /* Estilos del header */
         header {
-            background-color: #090921;
+            background-color: #666;
+            padding-bottom: 20px;
+            padding-top: 20px;
             color: white;
-            padding: 20px 0;
         }
 
         .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
         }
 
-        .header-buttons .button,
-        .header-buttons #logout-btn {
+        .header-buttons a,
+        .header-buttons button {
             background-color: transparent;
             border: none;
             color: white;
             font-size: 1rem;
             cursor: pointer;
-            margin-left: 20px;
+            text-decoration: none;
             transition: color 0.3s ease;
         }
 
-        .header-buttons .button:hover,
-        .header-buttons #logout-btn:hover {
-            color: aqua;
+        /* Estilos para el icono de flecha */
+        .header-buttons a i {
+            margin-right: 5px;
+        }
+
+        /* Estilos para el icono de cerrar sesión */
+        .header-buttons button i {
+            margin-right: 5px;
+        }
+
+        /* Alineación del texto en el header */
+        h1 {
+            margin: 0;
+            /* Eliminar el margen por defecto del h1 */
         }
 
         /* Estilos para el contenedor de detalles de la discoteca */
         #detallesDiscoteca {
             margin-bottom: 20px;
             padding: 20px;
-            background-color: #1a1a1a;
+            background-color: #10102a;
             border-radius: 10px;
+            color: white;
         }
 
         /* Estilos para los filtros */
@@ -169,51 +182,96 @@
 
         input[type="text"],
         input[type="date"] {
-            width: 100%;
+            display: inline-block;
+            /* Cambio a display inline-block */
+            width: auto;
+            /* Eliminamos el width 100% */
             padding: 8px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            background-color: #f4f4f4;
+            background-color: #ffffff;
+            float: left;
+            /* Alineamos los inputs horizontalmente */
+        }
+
+        input[type="text"] {
+            margin-right: 10px;
+            /* Agregamos margen derecho para separar los inputs */
         }
 
         /* Estilos para el botón de volver */
         a {
             display: inline-block;
-            padding: 10px 20px;
+            padding: 10px 15px;
             margin-top: 20px;
-            background-color: #007bff;
+            /* background-color: #007bff; */
             color: #fff;
             text-decoration: none;
             border-radius: 5px;
             transition: background-color 0.3s ease;
         }
 
-        a:hover {
-            background-color: #0056b3;
+        /* Style the footer */
+        .footer {
+            background-image: url('/img/oasisn2.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 60px 0;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
         }
 
+        .footer a {
+            color: #ffffff;
+        }
+
+        .footer a:hover {
+            color: #ffd54f;
+        }
+
+        #logout-btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 20px;
+        }
+
+        h1,
+        p {
+            text-align: center;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 
 <body>
-    <div class="content-container">
-        <header>
-            <div class="header-container">
-                <div class="header-buttons">
-                    <!-- Botón de cerrar sesión -->
-                    <form class="logout-form" action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" id="logout-btn">Cerrar Sesión</button>
-                    </form>
-                </div>
+
+    <header>
+        <div class="header-container">
+            <div class="header-buttons">
+                <a href="{{ route('cliente.discoteca') }}"><i class="fas fa-arrow-left"></i> Volver a la lista de
+                    discotecas</a>
             </div>
-        </header>
+            <h1>Eventos de {{ $discoteca->name }}</h1>
+            <div class="header-buttons">
+                <!-- Botón de cerrar sesión -->
+                <form class="logout-form" action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+                </form>
+            </div>
+        </div>
+    </header>
+    <div class="content-container">
         <!-- Detalles de la discoteca -->
         <h2>Detalles de la Discoteca</h2>
         <div id="detallesDiscoteca">
             <!-- Aquí se cargarán los eventos -->
         </div>
+
 
         <!-- Filtro por nombre de evento -->
         <label for="nombre">Filtrar por nombre del evento:</label>
@@ -235,13 +293,53 @@
         <!-- Botón de volver -->
         <br>
         <br>
-        <a href="{{ route('cliente.discoteca') }}">Volver a la lista de discotecas</a>
+
 
 
         <div class="reviewSection">
 
         </div>
+
+
     </div>
+
+    <footer class="footer mt-auto py-5 bg-dark" id="contact" style="background-image: url('/img/oasisn2.jpg');">
+        {{-- <div class="container text-center">
+            <h2 class="text-white mb-4 animateanimated animatefadeInUp">¿Listo para llevar tu negocio al siguiente
+                nivel?</h2>
+            <p class="text-white mb-4 animateanimated animatefadeInUp">Contáctanos para conocer cómo podemos colaborar
+                juntos.</p>
+            <div class="mt-4">
+                <a href="mailto:oasis.management.daw@gmail.com"
+                    class="btn btn-outline-light btn-lg animateanimated animatefadeInUp">
+                    <i class="fas fa-envelope"></i> ¡Contáctanos ahora!
+                </a>
+            </div>
+            <div class="mt-4">
+                <a href="https://www.tiktok.com/@oasis_management2024?lang=es"
+                    class="text-white mr-3 animateanimated animatefadeInUp">
+                    <i class="fab fa-tiktok"></i> TikTok
+                </a>
+                <a href="https://www.instagram.com/oasis_management2024/"
+                    class="text-white mr-3 animateanimated animatefadeInUp">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+            </div>
+            <!-- Logos de Discotecas -->
+            <div id="slider" class="slider mt-5">
+                <div class="slide-track d-flex justify-content-center align-items-center">
+                    @foreach ($discotecas as $discoteca)
+                        <div class="slide mr-3">
+                            <img src="{{ asset('img/' . $discoteca->image) }}" alt="{{ $discoteca->name }}"
+                                class="img-fluid">
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div> --}}
+        <p>Footer</p>
+    </footer>
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -337,10 +435,10 @@
                     var contenido = `
                 <div class="top">
                     <div class="clientImage">
-                        <button onclick="mostrarEntradas(${evento.id})">Ver Entradas</button>
                         <img src="./client.png" alt="">
                         <span>${evento.name}</span>
                     </div>
+                    <button onclick="mostrarEntradas(${evento.id})"><img src="{{ asset('img/entradas.png') }}" alt="Entradas" width="40px" height="40px"></button>
                 </div>
                 <article>
                     <p class="review">${evento.descripcion}</p>
