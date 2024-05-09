@@ -1,0 +1,377 @@
+body {
+    background: linear-gradient(135deg, #000000, #000000);
+    background-size: 200% 200%;
+    animation: gradientAnimation 10s infinite alternate;
+    font-family: 'Roboto Slab', serif;
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+.container {
+    max-width: 1200px;
+}
+
+
+/* Estilos para la sección de Valoración de Eventos */
+
+.container h1 {
+    color: #f58220;
+    /* Color naranja */
+    font-size: 2.5rem;
+    /* Tamaño grande para el título */
+    margin-bottom: 1.5rem;
+    /* Margen inferior */
+}
+
+.container h3 {
+    color: #fbc557;
+    /* Color gris oscuro */
+    font-size: 1.5rem;
+    /* Tamaño mediano para el subtítulo */
+    font-weight: normal;
+    /* Peso de fuente normal */
+    margin-bottom: 3rem;
+    /* Margen inferior más grande */
+}
+
+
+/* Estilos para la Navbar */
+
+.navbar {
+    background-color: #000000;
+    /* Fondo negro */
+    color: #000000;
+    /* Texto negro */
+    transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.navbar.scrolled {
+    background-color: #000000;
+    /* Color de fondo al hacer scroll */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Sombra al hacer scroll */
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+.navbar-brand img {
+    max-width: 40px;
+    margin-right: 10px;
+}
+
+.nav-link {
+    color: #000000 !important;
+    /* Texto negro */
+}
+
+.nav-link:hover {
+    color: #ffd54f !important;
+    /* Amarillo al hacer hover */
+}
+
+
+/* Estilos para las tarjetas de eventos */
+
+.card {
+    background-color: #ffa200;
+    border: 1px solid #dee2e6;
+    border-radius: 10px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    /* Transición suave en la transformación y la sombra */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    /* Levantar la tarjeta al pasar el cursor */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    /* Añadir sombra más pronunciada al pasar el cursor */
+}
+
+.card-img-top {
+    height: 250px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #212529;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #6c757d;
+}
+
+.btn-primary {
+    background-color: #f58220;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #e0620d;
+}
+
+
+/* Estilos para el footer */
+
+.footer {
+    background-image: url('/img/oasisn2.jpg');
+    /* Ajusta el tamaño y la posición del fondo según sea necesario */
+    background-size: cover;
+    background-position: center;
+    padding: 60px 0;
+    /* Padding superior e inferior para el footer */
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    /* Sombra sutil en la parte superior del footer */
+}
+
+.footer a {
+    color: #ffffff;
+}
+
+.footer a:hover {
+    color: #ffd54f;
+}
+
+
+/* Estilos para el slider */
+
+.slider {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.slide-track {
+    display: flex;
+    animation: scroll 40s linear infinite;
+}
+
+.slide {
+    flex: 0 0 200px;
+    margin-right: 20px;
+}
+
+.slide img {
+    width: 100%;
+}
+
+
+/* Consulta de medios para dispositivos móviles */
+
+@media (max-width: 414px) {
+    .navbar-brand {
+        padding: 0 10px;
+        /* Ajustar espacio interno a los lados */
+    }
+    .navbar-nav .nav-link {
+        padding: 10px;
+        /* Reducir espacio interno */
+    }
+    .card-img-top {
+        height: 150px;
+        /* Reducir aún más la altura de la imagen */
+    }
+    .card-title {
+        font-size: 1rem;
+        /* Reducir tamaño del título */
+    }
+    .btn-primary {
+        padding: 8px 16px;
+        /* Reducir el tamaño del botón */
+    }
+    .slide {
+        flex: 0 0 calc(100% - 10px);
+        /* Ajustar el tamaño de cada slide */
+        margin-right: 10px;
+        /* Espacio entre slides */
+    }
+    .slide img {
+        width: 100%;
+        /* Ajustar el ancho de la imagen al contenedor del slide */
+        height: auto;
+        /* Altura automática para mantener la proporción */
+    }
+    .rating i {
+        font-size: 1rem;
+        /* Reducir tamaño de las estrellas de valoración */
+    }
+}
+
+
+/* Estilos para las estrellas de valoración */
+
+.rating {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.rating-num {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.no-reviews {
+    font-size: 1rem;
+    color: #666;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.rating i {
+    color: #f58220;
+    font-size: 1.5rem;
+}
+
+.rating .fas.fa-star {
+    color: #ffdd00;
+}
+
+.rating .fas.fa-star-half-alt {
+    color: #fff200;
+}
+
+.rating .far.fa-star {
+    color: #e0e0e0;
+}
+
+
+/* Animación de desplazamiento infinito */
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+
+/* Estilos CSS para el contenedor principal de usuarios mejor valorados */
+
+#top-rated-users {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+
+/* Estilos CSS para cada tarjeta de usuario */
+
+.user-card {
+    width: 30%;
+    /* Ancho inicial de la tarjeta (ajustará automáticamente en pantallas más pequeñas) */
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    background-color: #f9f9f9;
+    /* Color de fondo */
+    border: 1px solid #ddd;
+    /* Borde suave */
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Efecto hover para la tarjeta */
+
+.user-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Estilos para la información del usuario */
+
+.user-info {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+
+/* Estilos para el nombre del evento */
+
+.evento-info {
+    font-size: 14px;
+    font-style: italic;
+    margin-bottom: 8px;
+    color: #666;
+    /* Color gris oscuro */
+}
+
+
+/* Estilos para la valoración */
+
+.rating-info {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+
+/* Estilos para la descripción */
+
+.description-info {
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.orange-text {
+    color: orange;
+}
+
+
+/* Estilos para el contenedor de estrellas */
+
+.stars-container {
+    display: flex;
+    align-items: center;
+}
+
+
+/* Estilos para las estrellas */
+
+.star {
+    color: gold;
+    font-size: 20px;
+    margin-right: 4px;
+}
+
+
+/* Estilos para hacer la tarjeta responsive */
+
+@media (max-width: 768px) {
+    .user-card {
+        width: 45%;
+        /* Reducir el ancho en pantallas más pequeñas */
+    }
+}
+
+@media (max-width: 576px) {
+    .user-card {
+        width: 100%;
+        /* Ancho completo en pantallas muy pequeñas */
+    }
+}
