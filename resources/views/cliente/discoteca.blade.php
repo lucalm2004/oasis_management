@@ -1,434 +1,202 @@
-
-
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
-
-    <title>Oasis Managament - Lista de Discotecas</title>
+    <title>Lista de Discotecas - Oasis Management</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f8f8;
-        }
-
-        /* Nuevo estilo para el header */
-        header {
-            background-color: #666;
-            padding: 20px;
-            color: white;
-        }
-
-        /* Estilo para el contenedor del header */
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        /* Estilo para el mensaje de bienvenida */
-        .welcome-message {
-            flex: 1;
-            text-align: center;
-            margin-left: 260px;
-            /* Para centrar el texto horizontalmente */
-        }
-
-        /* Estilo para los botones del header */
-        .header-buttons {
-            display: flex;
-            align-items: center;
-        }
-
-        /* Estilo para el botón de cerrar sesión */
-        .header-buttons form {
-            margin-left: 20px;
-        }
-
-        /* Ajustes para el botón de cerrar sesión */
-        #logout-btn {
-            background-color: #007bff;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.4s;
-            cursor: pointer;
-            border-radius: 8px;
-        }
-
-        #logout-btn:hover {
-            color: #ddd;
-        }
-
-        /* Create two columns/boxes that floats next to each other */
-        #container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* Style the footer */
-        /* footer {
-            background-color: #777;
-            padding: 10px;
-            text-align: center;
-            color: white;
-            width: 100%;
-        } */
-
-        /* Style the rest of the content */
-        h1,
-        p {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        input[type="text"],
-        select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-
-        button[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #ffffff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-
-        /* Estilos para el popup */
-        #popup {
-            display: none;
-            /* Inicialmente oculto */
-            position: fixed;
-            top: 50%;
-            /* Centrado verticalmente */
-            left: 50%;
-            /* Centrado horizontalmente */
-            transform: translate(-50%, -50%);
-            /* Centrado absoluto */
-            background-color: white;
-            padding: 20px;
-            border: 1px solid black;
-            border-radius: 5px;
-            z-index: 1000;
-            /* Valor alto para que esté por encima de otros elementos */
-        }
-
-        #mapid {
-            width: 100%;
-            height: 400px;
-            /* Altura deseada para el mapa */
-        }
-
-        /* Estilos para las tarjetas */
-        .card {
-            width: 300px;
-            padding: 10px;
-            margin: 0.25rem;
-            /* Ajusta el margen para reducir la separación */
-            cursor: pointer;
-            border-radius: 10px;
-            background-color: #10102a;
-            border: 1px solid #10102a;
-            transition: all .2s linear;
-            color: white;
-            /* Establecer el color del texto en blanco */
-        }
-
-        .card:hover {
-            border-color: aqua;
-            transform: scale(1.01);
-            background-color: rgba(235, 152, 78);
-            box-shadow: 0 0px 5px 0px #cbc0c0;
-        }
-
-        .card h2 {
-            color: #fff;
-            font-size: 20px;
-            margin: 0;
-            padding: 10px;
-        }
-
-        .card p {
-            padding: 15px;
-            margin: 0;
-            color: #333;
-        }
-
-        .card a {
-            display: block;
-            text-align: center;
-            color: #fff;
-            text-decoration: none;
-            padding: 10px;
-        }
-
-        /* Estilos para el contenedor de las tarjetas */
-        #discotecasContainer {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            /* Alinear los items al centro */
-            gap: 20px;
-            /* Espacio entre las tarjetas */
-        }
-
-        h1 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        .button {
-            background-color: #4CAF50;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.4s;
-            cursor: pointer;
-            border-radius: 8px;
-        }
-
-        .button:hover {
-            background-color: #45a049;
-            color: white;
-        }
-
-        .points {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .points a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        .points a:hover {
-            text-decoration: underline;
-        }
-
-        #filtroNombre {
-            width: 100%;
-            padding: 10px;
-            margin-top: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-
-        #selectCiudad {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-
-        /* Estilos para el botón de enviar */
-        button[type="submit"] {
-            background-color: #4CAF50;
-            /* Color de fondo */
-            color: white;
-            /* Color del texto */
-            padding: 10px 20px;
-            /* Espaciado interno */
-            border: none;
-            /* Sin borde */
-            border-radius: 5px;
-            /* Borde redondeado */
-            cursor: pointer;
-            /* Cambio de cursor al pasar el ratón */
-            font-size: 16px;
-            /* Tamaño de la fuente */
-        }
-
-        /* Estilos para el botón de cerrar */
-        button[type="button"] {
-            background-color: #f44336;
-            /* Color de fondo */
-            color: white;
-            /* Color del texto */
-            padding: 10px 20px;
-            /* Espaciado interno */
-            border: none;
-            /* Sin borde */
-            border-radius: 5px;
-            /* Borde redondeado */
-            cursor: pointer;
-            /* Cambio de cursor al pasar el ratón */
-            font-size: 16px;
-            /* Tamaño de la fuente */
-            margin-top: 10px;
-            /* Espacio superior */
-        }
-
-        .footer {
-            background-image: url('/img/oasisn2.jpg');
-            background-size: cover;
-            background-position: center;
-            padding: 60px 0;
-            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .footer a {
-            color: #ffffff;
-        }
-
-        .footer a:hover {
-            color: #ffd54f;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.6/leaflet.awesome-markers.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/discoteca.css') }}">
 </head>
 
 <body>
 
-    <header>
-        <div class="header-container">
-            <div class="welcome-message">
-                <h1>Bienvenido, {{ $nombreUsuario }}</h1>
-                <p>¡Esperamos que disfrutes explorando nuestras discotecas!</p>
-            </div>
-            <div class="header-buttons">
-                <!-- Botón para introducir código -->
-                <button class="button" onclick="mostrarPopup()">Chat</button>
-                <!-- Botón de cerrar sesión -->
-                <form class="logout-form" action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" id="logout-btn">Cerrar Sesión</button>
-                </form>
-            </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <div class="container">
+        <a class="navbar-brand" href="{{ route('welcome') }}">
+            <img src="/img/logonegro.png" class="logo mr-2" alt="Logo">
+            <span class="font-weight-bold text-uppercase">
+                Oasis <span class="orange-text">Management</span>
+            </span>
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <!-- Botón de perfil -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-user"></i> Mi Perfil
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        @auth
+                            <a class="dropdown-item" href="{{ route('perfil') }}">Ver Perfil</a>
+                            <!-- Enlace para cerrar sesión -->
+                            <form id="logoutForm" action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                            </form>
+                        @else
+                            <a class="dropdown-item" href="{{ route('login') }}">Iniciar Sesión</a>
+                            <a class="dropdown-item" href="{{ route('register') }}">Registrarse</a>
+                        @endauth
+                    </div>
+                </li>
+                <!-- Fin del botón de perfil -->
+                <!-- Enlace de contacto con emoticono -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('contacto') }}">
+                        <i class="fas fa-envelope"></i> Contacto
+                    </a>
+                </li>
+
+                <!-- Otros elementos del navbar -->
+                @if (Route::has('login'))
+                    @auth
+                    @else
+                        <li class="nav-item">
+                            <a href="/google-auth/redirect" class="nav-link"><i class="fab fa-google"></i> Login Google</a>
+                        </li>
+                        @if (Route::has('register'))
+                            <li class="nav-item">
+                                <a href="{{ route('register') }}" class="nav-link"><i class="fas fa-user-plus"></i> Registrarse</a>
+                            </li>
+                        @endif
+                    @endauth
+                @endif
+            </ul>
         </div>
-    </header>
+    </div>
+</nav>
 
-    <div id="container">
 
-        <!-- Marcador de puntos del usuario -->
-        <p class="points">Tienes <a href="#" id="puntosLink"><span id="puntosUsuario"></span> puntos.</a></p>
-
+<!-- Contenido Principal -->
+<div id="container">
+    <!-- Puntos del Usuario -->
+    <p class="points">Tienes <a href="#" id="puntosLink"><span id="puntosUsuario"></span></a> puntos.</p>
+    
+    <div class="contenedor-input">
+        <i class="fas fa-search lupa-naranja"></i>
         <input type="text" id="filtroNombre" placeholder="Filtrar por nombre...">
-
         <select id="selectCiudad">
             <option value="">Todas las ciudades</option>
-            <!-- Las opciones de ciudades se cargarán dinámicamente aquí -->
+            <!-- Opciones de ciudades se cargarán dinámicamente aquí -->
         </select>
-
-        <br>
-        <br>
-
-        <!-- Contenedor para mostrar las discotecas -->
-        <div id="discotecasContainer">
-            <!-- Aquí se mostrarán las discotecas -->
-        </div>
-
-        <!-- Popup -->
-        {{-- <dialog id='alert-dialog'> --}}
-        <div id="popup">
-            <h2>Introducir Código</h2>
-            <form action="" method="POST">
-                @csrf
-                <label for="codigo">Código:</label><br>
-                <input type="text" id="codigo" name="codigo"><br><br>
-                <button type="submit">Enviar</button>
-            </form>
-            <button onclick="cerrarPopup()">Cerrar</button>
-        </div>
-        {{-- </dialog> --}}
-
-        <br>
-        <br>
-
-        <div id="mapid"></div>
-
     </div>
 
-    <footer class="footer mt-auto py-5 bg-dark" id="contact" style="background-image: url('/img/oasisn2.jpg');">
-        {{-- <div class="container text-center">
-            <h2 class="text-white mb-4 animateanimated animatefadeInUp">¿Listo para llevar tu negocio al siguiente
-                nivel?</h2>
-            <p class="text-white mb-4 animateanimated animatefadeInUp">Contáctanos para conocer cómo podemos colaborar
-                juntos.</p>
-            <div class="mt-4">
-                <a href="mailto:oasis.management.daw@gmail.com"
-                    class="btn btn-outline-light btn-lg animateanimated animatefadeInUp">
-                    <i class="fas fa-envelope"></i> ¡Contáctanos ahora!
-                </a>
+    <!-- Contenedor de Discotecas -->
+    <div id="discotecasContainer">
+        <!-- Las discotecas se mostrarán aquí -->
+    </div>
+
+    <!-- Mapa -->
+    <div id="mapid" style="width: 100%; height: 400px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></div>
+</div>
+
+<!-- Popup -->
+<div id="popup">
+    <h2>Introducir Código</h2>
+    <form action="" method="POST">
+        @csrf
+        <label for="codigo">Código:</label><br>
+        <input type="text" id="codigo" name="codigo"><br><br>
+        <button type="submit">Enviar</button>
+    </form>
+    <br>
+    <button onclick="cerrarPopup()" id="cerrarpop">Cerrar</button>
+</div>
+
+<!-- Footer Section -->
+<footer class="footer mt-auto py-5 bg-dark" id="contact" style="background-image: url('/img/oasisn2.jpg');">
+    <div class="container text-center">
+        <h2 class="text-white mb-4 animate__animated animate__fadeInUp">¿Listo para llevar tu negocio al siguiente nivel?</h2>
+        <p class="text-white mb-4 animate__animated animate__fadeInUp">Contáctanos para conocer cómo podemos colaborar juntos.</p>
+        <div class="mt-4">
+            <a href="mailto:oasis.management.daw@gmail.com" class="btn btn-outline-light btn-lg animate__animated animate__fadeInUp">
+                <i class="fas fa-envelope"></i> ¡Contáctanos ahora!
+            </a>
+        </div>
+        <div class="mt-4">
+            <a href="https://www.tiktok.com/@oasis_management2024?lang=es" class="text-white mr-3 animate__animated animate__fadeInUp">
+                <i class="fab fa-tiktok"></i> TikTok
+            </a>
+            <a href="https://www.instagram.com/oasis_management2024/" class="text-white mr-3 animate__animated animate__fadeInUp">
+                <i class="fab fa-instagram"></i> Instagram
+            </a>
+        </div>
+        <!-- Logos de Discotecas -->
+        <div id="slider" class="slider mt-5">
+            <div class="slide-track d-flex justify-content-center align-items-center">
+                @foreach ($todasdiscotecas as $discoteca)
+                    <div class="slide mr-3">
+                        <img src="{{ asset('img/discotecas/' . $discoteca->image) }}" alt="{{ $discoteca->name }}" class="img-fluid">
+                    </div>
+                @endforeach
             </div>
-            <div class="mt-4">
-                <a href="https://www.tiktok.com/@oasis_management2024?lang=es"
-                    class="text-white mr-3 animateanimated animatefadeInUp">
-                    <i class="fab fa-tiktok"></i> TikTok
-                </a>
-                <a href="https://www.instagram.com/oasis_management2024/"
-                    class="text-white mr-3 animateanimated animatefadeInUp">
-                    <i class="fab fa-instagram"></i> Instagram
-                </a>
-            </div>
-            <!-- Logos de Discotecas -->
-            <div id="slider" class="slider mt-5">
-                <div class="slide-track d-flex justify-content-center align-items-center">
-                    @foreach ($discotecas as $discoteca)
-                        <div class="slide mr-3">
-                            <img src="{{ asset('img/' . $discoteca->image) }}" alt="{{ $discoteca->name }}"
-                                class="img-fluid">
-                        </div>
-                    @endforeach
+        </div>
+    </div>
+</footer>
+
+<!-- JavaScript al final del cuerpo del documento para optimización de carga -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.6/leaflet.awesome-markers.js"></script>
+
+<script>
+// Inicialización del mapa
+    var map = L.map('mapid').setView([40.505, -100.09], 4);
+
+    // Capa base del mapa (OpenStreetMap)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    // Iterar sobre las discotecas y agregar marcadores con ventanas emergentes personalizadas
+    @foreach ($todasdiscotecas as $discoteca)
+        var marker = L.marker([{{ $discoteca->lat }}, {{ $discoteca->long }}]).addTo(map);
+
+        var popupContent = `
+            <div style="max-width: 300px; padding: 15px;">
+                <img src="{{ asset('img/discotecas/' . $discoteca->image) }}" alt="{{ $discoteca->name }}" style="width: 100%; border-radius: 5px; margin-bottom: 10px;">
+                <p style="color: grey; margin-bottom: 10px;">{{ $discoteca->description }}</p>
+                <hr>
+                <p style="margin-top: 10px;">{{ $discoteca->direccion }}</p>
+                <div style="display: flex; justify-content: space-around; margin-top: 10px;">
+                    <button type="button" class="btn btn-primary rounded-circle custom-btn" onclick="darFavorito({{ $discoteca->id }})">
+                        <i class="fas fa-star"></i>
+                    </button>
+                    <button type="button" class="btn btn-info rounded-circle custom-btn" onclick="comoLlegar('{{ $discoteca->lat }}', '{{ $discoteca->long }}')">
+                        <i class="fas fa-directions"></i>
+                    </button>
                 </div>
             </div>
-        </div> --}}
-        <p>Footer</p>
-    </footer>
+        `;
 
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        // Asigna el contenido de la ventana emergente al marcador y deshabilita el cierre automático
+        marker.bindPopup(popupContent, { autoClose: false });
+    @endforeach
 
-    <script>
-        var map = L.map('mapid').setView([40.025868, -3.055922], 4); // Define la posición inicial del mapa y el nivel de zoom
+    // Función para marcar como favorito
+    function darFavorito(id) {
+        console.log("Marcado como favorito: " + id);
+        // Lógica para marcar como favorito con el ID del lugar
+    }
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map); // Añade una capa de mapa base
+    // Función para obtener direcciones de cómo llegar
+    function comoLlegar(lat, long) {
+        console.log("Obtener direcciones para: Latitud " + lat + ", Longitud " + long);
+        // Lógica para obtener direcciones de cómo llegar usando latitud y longitud
+    }
+</script>
 
-        // Itera sobre las discotecas y agrega marcadores al mapa
-        @foreach ($todasdiscotecas as $discoteca)
-            L.marker([{{ $discoteca->lat }}, {{ $discoteca->long }}]).addTo(map)
-                .bindPopup('{{ $discoteca->name }}');
-        @endforeach
-    </script>
+
 
     <script>
         function mostrarPopup() {
@@ -453,23 +221,19 @@
             xhr.open("GET", "/cliente/mostrarpuntos", true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log(xhr.responseText);
-                    // Verificar si la respuesta es un objeto vacío
-                    if (xhr.responseText === '{}' || xhr.responseText === 'null') {
-                        document.getElementById("puntosUsuario").textContent = "0";
-                    } else {
-                        var puntosUsuario = JSON.parse(xhr.responseText);
-                        // Actualizar el contenido del elemento HTML con el número de puntos
-                        if (puntosUsuario < 0) {
-                            document.getElementById("puntosUsuario").textContent = "0";
-                        } else {
-                            document.getElementById("puntosUsuario").textContent = puntosUsuario;
-                        }
+                    var puntosUsuario = JSON.parse(xhr.responseText);
+                    // Verificar si puntosUsuario es un objeto y mostrar 0 en su lugar
+                    if (typeof puntosUsuario === 'object' || puntosUsuario === null) {
+                        puntosUsuario = 0;
                     }
+                    // Actualizar el contenido del elemento HTML con el número de puntos
+                    document.getElementById("puntosUsuario").textContent = puntosUsuario;
                 }
             };
             xhr.send();
         }
+
+
 
         document.addEventListener("DOMContentLoaded", function() {
             cargarDatos();
@@ -525,41 +289,62 @@
             xhr.send();
         }
 
-        // Función para mostrar las discotecas en tarjetas con los nuevos estilos
-        function mostrarDiscotecas(discotecas) {
-            var discotecasContainer = document.getElementById('discotecasContainer');
-            discotecasContainer.innerHTML = ''; // Limpiar el contenido anterior
+    function mostrarDiscotecas(discotecas) {
+        var discotecasContainer = document.getElementById('discotecasContainer');
+        discotecasContainer.innerHTML = ''; // Limpiar el contenido anterior
 
-            discotecas.forEach(function(discoteca) {
-                // Crear un div para la tarjeta
-                var cardDiv = document.createElement('div');
-                cardDiv.classList.add('card');
+        discotecas.forEach(function(discoteca) {
+        // Crear un div para la tarjeta
+        var cardDiv = document.createElement('div');
+        cardDiv.classList.add('card');
 
-                // Crear un encabezado para el nombre de la discoteca con los nuevos estilos
-                var cardHeader = document.createElement('h2');
-                cardHeader.classList.add('card-header'); // Agregar clase para el encabezado
-                cardHeader.textContent = discoteca.name;
+        // Establecer estilos para la tarjeta
+        cardDiv.style.width = '300px';
+        cardDiv.style.border = '1px solid #ddd';
+        cardDiv.style.borderRadius = '8px';
+        cardDiv.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+        cardDiv.style.marginBottom = '40px'; // Aumentar el margen inferior
+        cardDiv.style.overflow = 'hidden';
+        cardDiv.style.backgroundColor = 'black'; // Fondo negro
 
-                // Crear un párrafo para la información adicional con los nuevos estilos
-                var cardInfo = document.createElement('p');
-                cardInfo.classList.add('card-info'); // Agregar clase para la información
-                cardInfo.textContent = 'Dirección: ' + discoteca.direccion;
+        // Crear una imagen para la foto de la discoteca
+        var cardImage = document.createElement('img');
+        cardImage.classList.add('card-image'); // Agregar clase para la imagen
+        cardImage.src = '{{ asset("img/discotecas/") }}' + '/' + discoteca.image; // Establecer la ruta completa de la imagen
+        cardImage.alt = discoteca.name; // Establecer el texto alternativo de la imagen
 
-                // Crear un enlace para más detalles con los nuevos estilos
-                var cardLink = document.createElement('a');
-                cardLink.classList.add('card-link'); // Agregar clase para el enlace
-                cardLink.href = '/cliente/' + discoteca.id + '/eventos';
-                cardLink.innerHTML = 'Ver eventos <i class="fas fa-glass-cheers"></i>';
+        // Establecer estilos para la imagen
+        cardImage.style.width = '100%';
+        cardImage.style.height = '200px';
+        cardImage.style.objectFit = 'cover';
 
-                // Agregar el encabezado, información y enlace a la tarjeta
-                cardDiv.appendChild(cardHeader);
-                cardDiv.appendChild(cardInfo);
-                cardDiv.appendChild(cardLink);
+        // Crear un encabezado para el nombre de la discoteca con los nuevos estilos
+        var cardHeader = document.createElement('h2');
+        cardHeader.classList.add('card-header'); // Agregar clase para el encabezado
+        cardHeader.textContent = discoteca.name;
 
-                // Agregar la tarjeta al contenedor de discotecas
-                discotecasContainer.appendChild(cardDiv);
-            });
-        }
+        // Establecer estilos para el encabezado
+        cardHeader.style.fontSize = '20px';
+        cardHeader.style.padding = '10px';
+        cardHeader.style.backgroundColor = 'orange'; // Fondo naranja
+        cardHeader.style.color = 'white'; // Texto blanco
+        cardHeader.style.textAlign = 'center';
+        cardHeader.style.borderBottom = '1px solid #ddd';
+        cardHeader.style.cursor = 'pointer'; // Cambiar el cursor al puntero al pasar sobre el encabezado
+
+        // Agregar un evento de clic al encabezado para redirigir a la página de eventos
+        cardHeader.addEventListener('click', function() {
+            window.location.href = '/cliente/' + discoteca.id + '/eventos';
+        });
+
+        // Agregar la imagen y el encabezado a la tarjeta
+        cardDiv.appendChild(cardImage);
+        cardDiv.appendChild(cardHeader);
+
+        // Agregar la tarjeta al contenedor de discotecas
+        discotecasContainer.appendChild(cardDiv);
+    });
+}
 
 
         // Función para cargar las ciudades disponibles
@@ -605,6 +390,36 @@
         setInterval(cargarPuntosUsuario, 2000);
         cargarPuntosUsuario();
     </script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Obtener el elemento del nombre de usuario en el menú
+        var userDropdown = document.querySelector('.nav-link.dropdown-toggle');
+
+        // Obtener el menú desplegable
+        var dropdownMenu = document.querySelector('.dropdown-menu');
+
+        // Función para alternar la visibilidad del menú desplegable
+        function toggleDropdown() {
+            dropdownMenu.classList.toggle('show');
+        }
+
+        // Manejar el evento de clic en el nombre de usuario
+        userDropdown.addEventListener("click", function(event) {
+            // Evitar el comportamiento predeterminado del enlace
+            event.preventDefault();
+            // Alternar la visibilidad del menú desplegable al hacer clic en el nombre de usuario
+            toggleDropdown();
+        });
+
+        // Manejar clics fuera del menú desplegable para cerrarlo
+        document.addEventListener("click", function(event) {
+            if (!dropdownMenu.contains(event.target) && !userDropdown.contains(event.target)) {
+                // Si el clic no está dentro del menú desplegable ni en el nombre de usuario, ocultar el menú desplegable
+                dropdownMenu.classList.remove('show');
+            }
+        });
+    });
+</script>
 
 </body>
 

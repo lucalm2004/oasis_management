@@ -1,0 +1,302 @@
+/* Estilos globales */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #10101A;
+    color: white;
+}
+
+/* Estilos del header */
+header {
+    background-color: #666;
+    padding: 20px;
+    color: white;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-buttons a,
+.header-buttons button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.header-buttons a i,
+.header-buttons button i {
+    margin-right: 5px;
+}
+
+/* Estilos para el contenedor principal */
+.content-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Estilos para los títulos */
+h1, h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+/* Estilos para la sección de eventos */
+.reviewSection {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.reviewItem {
+    width: 300px;
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #161624;
+    border: 1px solid #161624;
+    transition: all .2s linear;
+    color: white;
+}
+
+.reviewItem:hover {
+    border-color: aqua;
+    transform: scale(1.05);
+    background-color: rgba(235, 152, 78, 0.8);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.clientImage {
+    display: flex;
+    align-items: center;
+}
+
+.clientImage img {
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.clientImage span {
+    font-size: 16px;
+}
+
+article p {
+    font-size: 15px;
+    margin-bottom: 1rem;
+}
+
+#eventosContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+/* Estilos para el footer */
+.footer {
+    background-image: url('/img/oasisn2.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 60px 0;
+    text-align: center;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.footer a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #ffd54f;
+}
+
+/* Estilos para los filtros */
+.contenedor-input {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.contenedor-input i {
+    color: orange;
+    margin-right: 10px;
+}
+
+input[type="text"],
+input[type="date"] {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Media queries para ajustes responsivos */
+@media screen and (max-width: 700px) {
+    .contenedor-input {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .reviewSection {
+        padding: 0;
+    }
+
+    .reviewItem {
+        width: 100%;
+    }
+
+    .clientImage {
+        margin-bottom: 0.6rem;
+    }
+
+    .top {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+/* Slider de logos */
+.slider {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.slide-track {
+    display: flex;
+    animation: scroll 40s linear infinite;
+}
+
+.slide {
+    flex: 0 0 200px;
+    margin-right: 20px;
+}
+
+.slide img {
+    width: 100%;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+/* Estilos para el footer */
+.footer {
+    background-image: url('/img/oasisn2.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 60px 0;
+    text-align: center;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 50px; /* Agrega margen superior */
+    color: #ffffff; /* Color del texto */
+}
+
+.footer a {
+    color: #ffffff;
+    text-decoration: none;
+    margin-right: 20px; /* Añade espacio entre enlaces */
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: #ffd54f; /* Cambia el color al pasar el cursor */
+}
+
+/* Estilos para el contenedor del footer */
+.container.text-center {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Estilo para el título del footer */
+.footer h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* Estilo para el párrafo del footer */
+.footer p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+}
+
+/* Estilos para los botones del footer */
+.footer .btn-lg {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: orange;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.footer .btn-lg:hover {
+    background-color: #ff9900; /* Cambia el color al pasar el cursor */
+}
+
+/* Estilos para los iconos en el footer */
+.footer .fab {
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+
+/* Estilos para el slider de logos en el footer */
+.slider {
+    width: 100%;
+    overflow: hidden;
+    margin-top: 30px;
+}
+
+.slide-track {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.slide {
+    margin-right: 20px;
+}
+
+.slide img {
+    width: 100px;
+    height: auto;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.slide img:hover {
+    transform: scale(1.1); /* Agrandar la imagen al pasar el cursor */
+}

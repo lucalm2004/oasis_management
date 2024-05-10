@@ -1,0 +1,183 @@
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #10101A;
+            color: white;
+        }
+
+        header {
+            background-color: #666;
+            padding: 20px;
+            color: white;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* Estilos para el botón de cerrar sesión */
+        #logout-btn {
+            padding: 10px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .content-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        button {
+            padding: 10px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        a {
+            display: inline-block;
+            padding: 10px 15px;
+            margin-top: 20px;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Estilos específicos para la página */
+        #detallesEvento,
+        #tiposEntradaContainer,
+        #carritoContainer {
+            background-color: #161624;
+            color: #f8f8f8;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            flex-basis: calc(33.33% - 20px);
+            box-sizing: border-box;
+        }
+
+        #tiposEntradaContainer {
+            list-style-type: none;
+            padding: 20px;
+        }
+
+        #tiposEntradaContainer li {
+            margin-bottom: 10px;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 5px;
+        }
+
+        /* Estilos para el modal de la playlist */
+        .swal2-title {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .swal2-content {
+            font-size: 16px;
+        }
+
+        .tipo-entrada-container {
+            margin-bottom: 10px;
+        }
+
+        /* Clase para ocultar el carrito */
+        .hidden {
+            position: fixed;
+            top: 0;
+            right: -1000%;
+            transition: transform 0.5s ease, right 0.5s ease;
+            background-color: #fff;
+            padding: 20px;
+            z-index: 1000;
+            overflow-y: auto;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-right: 100px;
+            transform: translateX(100%);
+        }
+
+        .show-cart {
+            right: 0;
+            transition: transform 0.5s ease, left 0.5s ease;
+            transform: translateX(0);
+        }
+
+        .header-content a i {
+            margin-right: 5px;
+        }
+
+        /* Estilos para el icono de cerrar sesión */
+        .header-content button i {
+            margin-right: 5px;
+        }
+
+        /* Estilos personalizados para Sweet Alert */
+        .personalizado-swal-container {
+            font-family: Arial, sans-serif;
+            border-radius: 10px;
+        }
+
+        .personalizado-swal-title {
+            color: orange;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .personalizado-swal-html-container {
+            color: black;
+            font-size: 18px;
+        }
+
+        .personalizado-swal-confirm-button {
+            background-color: orange;
+            border-color: orange;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            padding: 10px 20px;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+
+        .personalizado-swal-confirm-button:hover {
+            background-color: darkorange;
+            border-color: darkorange;
+        }
+
+        .personalizado-swal-confirm-button:focus {
+            outline: none;
+        }

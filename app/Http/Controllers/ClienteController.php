@@ -35,9 +35,11 @@ class ClienteController extends Controller
     public function eventos($id)
     {
         $discoteca = Discoteca::findOrFail($id);
+        $todasdiscotecas = Discoteca::all(); // Assuming this retrieves all discotecas
         $eventos = Evento::where('id_discoteca', $id)->get();
-        return view('cliente.eventos', compact('discoteca', 'eventos'));
+        return view('cliente.eventos', compact('discoteca', 'eventos', 'todasdiscotecas'));
     }
+    
 
     public function mostrar($id)
     {
