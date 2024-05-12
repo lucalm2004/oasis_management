@@ -611,6 +611,21 @@
             xhr.send(new FormData(form));
         }
 
+        document.getElementById('infoIcon').addEventListener('click', function() {
+            // Llama a la función para mostrar el Sweet Alert
+            mostrarAlerta();
+        });
+
+        // Define la función para mostrar el Sweet Alert
+        function mostrarAlerta() {
+            Swal.fire({
+                title: 'Información Importante',
+                text: 'La canción se mandará a revisar, si no es apropiada no se añadirá a la playlist del evento. La decisión será mandada por correo. Grácias por la atención.',
+                icon: 'info',
+                confirmButtonText: 'Aceptar'
+            });
+        }
+
         function mostrarCarrito(carrito) {
             var carritoContainer = document.getElementById('carritoContainer');
             var precioTotal = 0; // Inicializar el precio total
@@ -626,14 +641,19 @@
                 // Si hay productos en el carrito, mostrar cada producto y sumar el precio total
                 carrito.forEach(function(item) {
                     var productoElement = document.createElement('div');
-                    var productName = item.name;
+                    var productName = item.nombre_producto;
                     var precio = parseFloat(item.precio_total); // Convertir el precio a un número decimal
-
-                    // Obtener el nombre del evento
                     var eventoName = item.nombre_evento;
 
-                    // Mostrar el nombre del producto y su precio
-                    productoElement.textContent = productName + ' - Precio: ' + precio.toFixed(2) + ' ';
+                    // Si el ID del producto es menor de 3, mostrar también el nombre del evento
+                    if (item.id_producto < 3) {
+                        productoElement.textContent = productName + ' de ' + eventoName + ' - ' +
+                            precio.toFixed(2) + ' ';
+                    } else {
+                        // Si el ID del producto es mayor o igual a 3, solo mostrar el nombre del producto y el precio
+                        productoElement.textContent = productName + ' de ' + eventoName + ' - ' + precio.toFixed(
+                            2) + ' ';
+                    }
 
                     // Agregar un botón de eliminación para cada producto
                     var eliminarButton = document.createElement('button');
@@ -652,6 +672,7 @@
                     precioTotal += precio; // Sumar el precio al precio total
                 });
 
+
                 // Mostrar el precio total al final del carrito
                 var precioTotalElement = document.createElement('div');
                 precioTotalElement.textContent = 'Precio Total: ' + precioTotal.toFixed(2);
@@ -667,7 +688,8 @@
 
                 // Agregar el texto "¿Quieres elegir una canción?" al lado del section
                 var textoCancion = document.createElement('p');
-                textoCancion.textContent = '¿Quieres elegir una canción?';
+                textoCancion.innerHTML =
+                    '<p>¿Quieres elegir una canción?</p> <i id="infoIcon" class="fas fa-info-circle" style="cursor: pointer;"></i>';
                 carritoContainer.appendChild(textoCancion);
 
                 // Agregar el section al final del carrito
@@ -680,6 +702,33 @@
                 // Obtener el checkbox
                 var checkbox = document.getElementById('slideThree');
 
+                // Crear un div con fondo blanco y tamaño fijo
+                var infoDiv = document.createElement('div');
+                infoDiv.style.backgroundColor = 'white';
+                infoDiv.style.padding = '10px'; // Ajusta el relleno según sea necesario
+                infoDiv.style.width = '300px'; // Establecer el ancho fijo 
+                infoDiv.style.border = '1px solid #ccc'; // Añadir borde
+                infoDiv.style.borderRadius = '5px'; // Añadir bordes redondeados
+                infoDiv.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)'; // Añadir sombra
+                infoDiv.style.marginTop = '20px'; // Añadir margen superior
+                infoDiv.style.display = 'flex'; // Cambiar la visualización a flexbox
+                infoDiv.style.alignItems = 'center'; // Centrar verticalmente los elementos hijos
+                infoDiv.style.justifyContent = 'space-between'; // Espaciar uniformemente los elementos hijos
+
+                // Agregar texto informativo
+                var infoText = document.createElement('p');
+                infoText.textContent = 'La canción se añadirá a la playlist del último evento del que compres entrada.';
+                infoText.style.margin = '0'; // Elimina el margen predeterminado si lo hay
+                infoText.style.color = '#b36b00'; // Cambia el color del texto a azul
+
+                // Establecer estilos para el texto
+                infoText.style.flex = '1'; // Estirar el texto para ocupar el espacio restante
+
+                // Agregar el texto al div
+                infoDiv.appendChild(infoText);
+
+                // Agregar el div al final del contenedor del carrito
+                carritoContainer.appendChild(infoDiv);
                 // Escuchar el evento de cambio en el checkbox
                 checkbox.addEventListener('change', function() {
                     if (checkbox.checked) {
@@ -712,7 +761,7 @@
                                 var nombreArtista = result.value.nombreArtista;
                                 insertarCancionEnBaseDeDatos(nombreCancion,
                                     nombreArtista
-                                    ); // Llamar a la función para insertar la canción en la base de datos
+                                ); // Llamar a la función para insertar la canción en la base de datos
                             } else {
                                 // Desmarcar el checkbox si se cancela la operación
                                 checkbox.checked = false;
@@ -749,6 +798,7 @@
                     if (data.success) {
                         // Si la inserción es exitosa, muestra un mensaje de éxito
                         Swal.fire('¡Canción guardada!', data.message, 'success');
+                        cargarCarrito();
                     } else {
                         // Si hay un error, muestra un mensaje de error
                         Swal.fire('Error', data.message, 'error');

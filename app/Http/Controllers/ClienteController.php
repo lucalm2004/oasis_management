@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Artista;
 use Illuminate\Support\Facades\DB;
 // use Illuminate\Support\Facades\Session;
 
@@ -13,6 +14,8 @@ use App\Models\Bonificacion;
 use App\Models\Cancion;
 use App\Models\Carrito;
 use App\Models\Producto;
+use App\Models\PlaylistCancion;
+use App\Models\ArtistaCancion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
@@ -248,7 +251,8 @@ class ClienteController extends Controller
         $carrito = Carrito::where('id_user', $idUsuario)
             ->join('productos', 'carrito.id_producto', '=', 'productos.id')
             ->join('eventos', 'carrito.id_evento', '=', 'eventos.id') // Realizar un join con la tabla de eventos
-            ->select('carrito.*', 'productos.name', 'eventos.name') // Seleccionar el nombre del evento
+            ->leftJoin('canciones', 'productos.id', '=', 'canciones.id') // Realizar un left join con la tabla de canciones
+            ->select('carrito.*', 'productos.name as nombre_producto', 'eventos.name as nombre_evento', 'canciones.name as nombre_cancion') // Seleccionar el nombre del evento y el nombre de la canción
             ->get();
 
 
@@ -294,37 +298,70 @@ class ClienteController extends Controller
 
         try {
             // Obtener el último ID insertado en la tabla de canciones
-            $ultimoId = Cancion::max('id');
+            // $ultimoId = Cancion::max('id');
             $idUsuario = auth()->user()->id;
 
+            $ultimaEntrada = Carrito::orderBy('created_at', 'desc')->first();
+            // dd($ultimaEntrada);
+
+            if ($ultimaEntrada) {
+                // Si se encontró una última entrada en el carrito, obtén el ID del evento
+                $eventoId = $ultimaEntrada->id_evento;
+                // dd($eventoId);
+            } else {
+                // Si no se encontraron entradas en el carrito, maneja la situación en consecuencia
+                // Aquí puedes lanzar una excepción o manejar de otra manera según tus necesidades
+                return response()->json(['success' => false, 'message' => 'No se encontraron entradas en el carrito.'], 404);
+            }
+
             // Sumar uno al último ID para obtener el nuevo ID de la canción
-            $nuevoId = $ultimoId + 1;
+            // $nuevoId = $ultimoId + 1;
+            // dd($request->nombreArtista);
 
 
-            // Si la canción se ha insertado correctamente, insertar el producto
+            // Producto
             $producto = new Producto();
             $producto->name = $request->nombreCancion;
             $producto->tipo = "Cancion";
             $producto->save();
 
+            $producto_id = $producto->id;
 
-            // Crear una nueva instancia del modelo de Cancion y asignar el nombre de la canción
+            // Cancion
             $cancion = new Cancion();
-            $cancion->id = $nuevoId;
+            $cancion->id = $producto_id;
             $cancion->name = $request->nombreCancion;
             $cancion->duracion = null;
             $cancion->precio = 3.00;
             $cancion->artista = $request->nombreArtista;
-
-            // Guardar la canción en la base de datos
             $cancion->save();
 
-            // $carrito = new Carrito();
-            // $carrito->precio_total = 3;
-            // $carrito->id_user = $idUsuario;
-            // //Añadir evento en que sonará la canción
-            // $carrito->id_producto = $nuevoId;
-            // $carrito->save();
+            //Carrito
+            $carrito = new Carrito();
+            $carrito->precio_total = 3;
+            $carrito->id_user = $idUsuario;
+            $carrito->id_evento = $eventoId;
+            $carrito->id_producto = $producto_id;
+            $carrito->save();
+
+            //Relacion evento canción
+            $relacion = new PlaylistCancion();
+            $relacion->id_canciones = $producto_id;
+            $relacion->id_evento = $eventoId;
+            $relacion->save();
+
+            //Artista
+            $artista = new Artista();
+            $artista->name = $request->nombreArtista;
+            $artista->save();
+
+            $artista_id = $artista->id;
+
+            //Relacion artista canción
+            $cancionartista = new ArtistaCancion();
+            $cancionartista->id_artista = $artista_id;
+            $cancionartista->id_cancion = $producto_id;
+            $cancionartista->save();
 
             // Confirmar la transacción si todo ha ido bien
             DB::commit();
