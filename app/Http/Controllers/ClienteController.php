@@ -13,31 +13,35 @@ use App\Models\Bonificacion;
 use App\Models\Cancion;
 use App\Models\Carrito;
 use App\Models\Producto;
+use App\Models\PlaylistCancion;
+use App\Models\ArtistaCancion;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use App\Http\Controllers\Carbon;
 
 class ClienteController extends Controller
 {
 
     public function index()
     {
-        $todasdiscotecas = Discoteca::all();
+        $discotecas = Discoteca::all();
         $user = Auth::user();
 
         // Verificar si hay un usuario autenticado
         $nombreUsuario = $user ? $user->name : null;
 
         // Pasar la variable 'nombreUsuario' a la vista
-        return view('cliente.discoteca', compact('todasdiscotecas', 'nombreUsuario'));
+        return view('cliente.discoteca', compact('discotecas', 'nombreUsuario'));
     }
 
     public function eventos($id)
     {
-        $discoteca = Discoteca::findOrFail($id);
-        $todasdiscotecas = Discoteca::all(); // Assuming this retrieves all discotecas
+        $discotecas = Discoteca::findOrFail($id);
+        $discoteca = Discoteca::all(); // Assuming this retrieves all discotecas
         $eventos = Evento::where('id_discoteca', $id)->get();
-        return view('cliente.eventos', compact('discoteca', 'eventos', 'todasdiscotecas'));
+        return view('cliente.eventos', compact('discoteca', 'eventos', 'discotecas'));
     }
     
 
@@ -133,10 +137,11 @@ class ClienteController extends Controller
 
     public function mostrarDetallesDiscoteca($id)
     {
-        $discoteca = Discoteca::findOrFail($id);
-
+        $discoteca = Discoteca::with('ciudad')->findOrFail($id);
+    
         return response()->json($discoteca);
     }
+    
 
 
 

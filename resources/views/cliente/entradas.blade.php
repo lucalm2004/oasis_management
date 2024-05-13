@@ -1,259 +1,117 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entradas Disponibles</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- Estilos y Librerías -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.6/leaflet.awesome-markers.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/entradas.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        /* Estilos generales */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #10101A;
-            color: white;
-        }
-
-        header {
-            background-color: #666;
-            padding: 20px;
-            color: white;
-        }
-
-        .header-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            max-width: 1200px;
-        }
-
-        /* Estilos para el botón de cerrar sesión */
-        #logout-btn {
-            padding: 10px 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .content-container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-
-        button {
-            padding: 10px 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
-
-        a {
-            display: inline-block;
-            padding: 10px 15px;
-            margin-top: 20px;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        /* Estilos específicos para la página */
-        #detallesEvento,
-        #tiposEntradaContainer,
-        #carritoContainer {
-            background-color: #161624;
-            color: #f8f8f8;
-            border-radius: 5px;
-            padding: 20px;
-            margin-bottom: 20px;
-            flex-basis: calc(33.33% - 20px);
-            box-sizing: border-box;
-        }
-
-        #tiposEntradaContainer {
-            list-style-type: none;
-            padding: 20px;
-        }
-
-        #tiposEntradaContainer li {
-            margin-bottom: 10px;
-        }
-
-        input[type="number"] {
-            width: 60px;
-            padding: 5px;
-        }
-
-        /* Estilos para el modal de la playlist */
-        .swal2-title {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        .swal2-content {
-            font-size: 16px;
-        }
-
-        .tipo-entrada-container {
-            margin-bottom: 10px;
-        }
-
-        /* Clase para ocultar el carrito */
-        .hidden {
-            position: fixed;
-            top: 0;
-            right: -1000%;
-            transition: transform 0.5s ease, right 0.5s ease;
-            background-color: #fff;
-            padding: 20px;
-            z-index: 1000;
-            overflow-y: auto;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            margin-right: 100px;
-            transform: translateX(100%);
-        }
-
-        .show-cart {
-            right: 0;
-            transition: transform 0.5s ease, left 0.5s ease;
-            transform: translateX(0);
-        }
-
-        .header-content a i {
-            margin-right: 5px;
-        }
-
-        /* Estilos para el icono de cerrar sesión */
-        .header-content button i {
-            margin-right: 5px;
-        }
-
-        /* Estilos personalizados para Sweet Alert */
-        .personalizado-swal-container {
-            font-family: Arial, sans-serif;
-            border-radius: 10px;
-        }
-
-        .personalizado-swal-title {
-            color: orange;
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
-
-        .personalizado-swal-html-container {
-            color: black;
-            font-size: 18px;
-        }
-
-        .personalizado-swal-confirm-button {
-            background-color: orange;
-            border-color: orange;
-            color: white;
-            font-size: 16px;
-            border-radius: 5px;
-            padding: 10px 20px;
-            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-        }
-
-        .personalizado-swal-confirm-button:hover {
-            background-color: darkorange;
-            border-color: darkorange;
-        }
-
-        .personalizado-swal-confirm-button:focus {
-            outline: none;
-        }
-    </style>
-
 </head>
 
 <body>
-    <header>
-        <div class="header-container">
 
-            <!-- Contenido del header -->
-            <div class="header-content">
-                <!-- Botón de volver -->
-                <a href="{{ route('cliente.eventos', $evento->id_discoteca) }}"> <i class="fas fa-arrow-left"></i>
-                    Volver
-                    a los eventos</a>
-                <h1>Entradas Disponibles</h1>
-                <!-- Botón de cerrar sesión -->
-                <form class="logout-form" action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" id="logout-btn">Cerrar Sesión <i class="fas fa-sign-out-alt"></i></button>
-                </form>
+    <!-- Barra de Navegación -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container">
+            <a class="navbar-brand" href="{{ route('welcome') }}">
+                <img src="/img/logonegro.png" class="logo mr-2" alt="Logo">
+                <span class="font-weight-bold text-uppercase">
+                    Oasis <span class="orange-text">Management</span>
+                </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <!-- Elementos del Navbar -->
+                    <!-- Botón de Perfil -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i> Mi Perfil
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            @auth
+                                <a class="dropdown-item" href="{{ route('perfil') }}">Ver Perfil</a>
+                                <form id="logoutForm" action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                                </form>
+                            @else
+                                <a class="dropdown-item" href="{{ route('login') }}">Iniciar Sesión</a>
+                                <a class="dropdown-item" href="{{ route('register') }}">Registrarse</a>
+                            @endauth
+                        </div>
+                    </li>
+                    <!-- Enlace de Contacto -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('contacto') }}">
+                            <i class="fas fa-envelope"></i> Contacto
+                        </a>
+                    </li>
+                    <!-- Otros Elementos -->
+                    @if (Route::has('login'))
+                        @auth
+                        @else
+                            <li class="nav-item">
+                                <a href="/google-auth/redirect" class="nav-link"><i class="fab fa-google"></i> Login Google</a>
+                            </li>
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a href="{{ route('register') }}" class="nav-link"><i class="fas fa-user-plus"></i> Registrarse</a>
+                                </li>
+                            @endif
+                        @endauth
+                    @endif
+                </ul>
             </div>
         </div>
-    </header>
+    </nav>
 
+    <!-- Contenido Principal -->
     <div class="content-container">
         <div style="position: fixed; right: 20px; cursor: pointer;">
             <button id="cart-icon"><i class="fas fa-shopping-cart fa-3x"></i></button>
         </div>
 
-
-        <div id="carritoContainer" style="position: fixed; top: 25%; right: -100px; margin-right: 1.3%;" class="hidden">
+        <div id="carritoContainer" style="position: fixed; top: 25%; right: -100px; margin-right: 1.3%;"
+            class="hidden">
             <!-- Aquí se mostrarán los productos en el carrito -->
         </div>
 
-
-
-        <!-- Detalles del evento -->
+        <!-- Detalles del Evento -->
         <h2>Detalles del Evento</h2>
         <div id="detallesEvento">
             <!-- Aquí se cargarán los detalles del evento -->
         </div>
 
-        <!-- Lista de Tipos de Entrada -->
-        <h2>Tipos de Entrada Disponibles</h2>
-        <ul id="tiposEntradaContainer">
+        <!-- Tipos de Entrada Disponibles -->
+        <div class="section">
+            <h2 class="section-title">Tipos de Entrada Disponibles</h2>
+            <ul id="tiposEntradaContainer" class="entry-types-list">
             <!-- Aquí se cargarán los tipos de entrada -->
         </ul>
 
         <!-- Botón para enviar las entradas seleccionadas -->
-        <button onclick="enviarEntradasACarrito()"><i class="fas fa-shopping-cart"></i></button>
-
-
-
-
+        <button onclick="enviarEntradasACarrito()" class="add-to-cart-button">
+            <i class="fas fa-shopping-cart"></i> Añadir al Carrito
+        </button>
     </div>
 
-    <br>
-    <br>
-
-
-
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             cargarDetallesEvento();
@@ -263,7 +121,8 @@
 
         function toggleCart() {
             var cart = document.getElementById('carritoContainer');
-            var cartIcon = document.getElementById('cart-icon');
+            var cartIcon = document.querySelector('.cart-icon');
+            
 
             // Toggle para mostrar u ocultar el carrito
             if (cart.classList.contains('hidden')) {
@@ -308,18 +167,20 @@
         }
 
         function mostrarDetallesEvento(detalles) {
-            var detallesEvento = document.getElementById('detallesEvento');
-            detallesEvento.innerHTML = '';
+    var detallesEvento = document.getElementById('detallesEvento');
+    detallesEvento.innerHTML = '';
 
-            detallesEvento.innerHTML += '<p>Nombre: ' + detalles.name + '</p>';
-            detallesEvento.innerHTML += '<p>Descripción: ' + detalles.descripcion + '</p>';
-            detallesEvento.innerHTML += '<p>Fecha de Inicio: ' + detalles.fecha_inicio + '</p>';
-            detallesEvento.innerHTML += '<p>Fecha final: ' + detalles.fecha_final + '</p>';
-            detallesEvento.innerHTML += '<p>DJ: ' + detalles.dj + '</p>';
-            detallesEvento.innerHTML += '<p>Playlist:<a href="#" style="color: orange;" onclick="mostrarPlaylistAlert(' +
-                detalles.id + ')">' + detalles.name_playlist + '</a></p>';
-            // Agrega más detalles según sea necesario
-        }
+    detallesEvento.innerHTML += '<p class="animated fadeIn"><i class="fas fa-user"></i> Nombre: ' + detalles.name + '</p>';
+    detallesEvento.innerHTML += '<p class="animated fadeIn"><i class="fas fa-info-circle"></i> Descripción: ' + detalles.descripcion + '</p>';
+    detallesEvento.innerHTML += '<p class="animated fadeIn"><i class="far fa-calendar-alt"></i> Fecha de Inicio: ' + detalles.fecha_inicio + '</p>';
+    detallesEvento.innerHTML += '<p class="animated fadeIn"><i class="far fa-calendar-alt"></i> Fecha final: ' + detalles.fecha_final + '</p>';
+    detallesEvento.innerHTML += '<p class="animated fadeIn"><i class="fas fa-headphones"></i> DJ: ' + detalles.dj + '</p>';
+    detallesEvento.innerHTML += '<p class="animated fadeIn"><i class="fas fa-music"></i> Playlist: <a href="#" style="color: orange;" onclick="mostrarPlaylistAlert(' +
+        detalles.id + ')">' + detalles.name_playlist + '</a></p>';
+    // Agrega más detalles según sea necesario
+}
+
+
 
         function mostrarPlaylistAlert(eventoId) {
             // Realizar una solicitud AJAX para obtener las canciones del evento
@@ -405,47 +266,75 @@
         }
 
         function mostrarTiposEntrada(tiposEntrada) {
-            var tiposEntradaContainer = document.getElementById('tiposEntradaContainer');
-            tiposEntradaContainer.innerHTML = '';
+    var tiposEntradaContainer = document.getElementById('tiposEntradaContainer');
+    tiposEntradaContainer.innerHTML = '';
 
-            if (tiposEntrada.length > 0) {
-                tiposEntrada.forEach(function(tipoEntrada) {
-                    // Crear un contenedor para el tipo de entrada
-                    var tipoEntradaContainer = document.createElement('div');
-                    tipoEntradaContainer.classList.add(
-                        'tipo-entrada-container'); // Agregar una clase para los estilos CSS
+    if (tiposEntrada.length > 0) {
+        tiposEntrada.forEach(function(tipoEntrada) {
+            // Crear un contenedor para el tipo de entrada
+            var tipoEntradaContainer = document.createElement('div');
+            tipoEntradaContainer.classList.add('tipo-entrada-container');
 
-                    // Crear un elemento de contador (input de tipo number)
-                    var contadorElement = document.createElement('input');
-                    contadorElement.type = 'number';
-                    contadorElement.value = 0; // Inicializar el contador en 0
-                    contadorElement.min = 0;
-                    contadorElement.id = 'contadorTipo' + tipoEntrada.id; // Asignar un ID único para el contador
-                    tipoEntradaContainer.appendChild(contadorElement);
+            // Mostrar la descripción y el precio del tipo de entrada
+            var descripcionPrecioElement = document.createElement('div');
+            descripcionPrecioElement.classList.add('descripcion-precio');
+            descripcionPrecioElement.textContent = tipoEntrada.descripcion + ' - ' + tipoEntrada.precio;
+            tipoEntradaContainer.appendChild(descripcionPrecioElement);
 
-                    // Mostrar la descripción y el precio del tipo de entrada
-                    var descripcionPrecioElement = document.createElement('span');
-                    descripcionPrecioElement.textContent = ' - ' + tipoEntrada.descripcion + ' - ' + tipoEntrada
-                        .precio;
-                    tipoEntradaContainer.appendChild(descripcionPrecioElement);
+            // Contenedor para los botones de incremento y decremento
+            var botonContainer = document.createElement('div');
+            botonContainer.classList.add('boton-container');
 
-                    // Agregar un campo oculto para el ID del producto asociado al tipo de entrada
-                    var idProductoInput = document.createElement('input');
-                    idProductoInput.type = 'hidden';
-                    idProductoInput.name = 'productos[' + tipoEntrada.id +
-                        ']'; // Utiliza el ID del tipo de entrada como clave
-                    idProductoInput.value = tipoEntrada.id_producto;
-                    tipoEntradaContainer.appendChild(idProductoInput);
+            // Botón de decremento
+            var decrementButton = document.createElement('button');
+            decrementButton.textContent = '-';
+            decrementButton.classList.add('contador-button');
+            decrementButton.addEventListener('click', function() {
+                var currentValue = parseInt(contadorElement.textContent) || 0;
+                contadorElement.textContent = currentValue > 0 ? currentValue - 1 : 0;
+            });
+            botonContainer.appendChild(decrementButton);
 
-                    // Agregar el contenedor del tipo de entrada al contenedor principal
-                    tiposEntradaContainer.appendChild(tipoEntradaContainer);
+            // Contador de cantidad
+            var contadorElement = document.createElement('div');
+            contadorElement.classList.add('contador');
+            contadorElement.textContent = '0';
+            botonContainer.appendChild(contadorElement);
 
+            // Botón de incremento
+            var incrementButton = document.createElement('button');
+            incrementButton.textContent = '+';
+            incrementButton.classList.add('contador-button');
+            incrementButton.addEventListener('click', function() {
+                var currentValue = parseInt(contadorElement.textContent) || 0;
+                contadorElement.textContent = currentValue + 1;
+            });
+            botonContainer.appendChild(incrementButton);
 
-                });
-            } else {
-                tiposEntradaContainer.innerHTML = '<p>No hay tipos de entrada disponibles para este evento.</p>';
-            }
-        }
+            tipoEntradaContainer.appendChild(botonContainer);
+
+            // Botón "Agregar al Carrito"
+            var addToCartButton = document.createElement('button');
+            addToCartButton.textContent = 'Agregar al Carrito';
+            addToCartButton.classList.add('add-to-cart-button');
+            addToCartButton.addEventListener('click', function() {
+                var cantidad = parseInt(contadorElement.textContent) || 0;
+                if (cantidad > 0) {
+                    alert('Se agregaron ' + cantidad + ' entradas al carrito.');
+                } else {
+                    alert('Por favor selecciona al menos una entrada.');
+                }
+            });
+            tipoEntradaContainer.appendChild(addToCartButton);
+
+            // Agregar el contenedor del tipo de entrada al contenedor principal
+            tiposEntradaContainer.appendChild(tipoEntradaContainer);
+        });
+    } else {
+        tiposEntradaContainer.innerHTML = '<p>No hay tipos de entrada disponibles para este evento.</p>';
+    }
+}
+
 
 
         function enviarEntradasACarrito() {

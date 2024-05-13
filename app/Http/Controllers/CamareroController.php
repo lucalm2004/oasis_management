@@ -4,13 +4,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Evento;
 use Illuminate\Support\Facades\Auth;
-
+use App\Models\Discoteca;
 
 class CamareroController extends Controller
 {
-    public function camarero() {
-           return view('listar_eventos/camarero');
+    
+    public function camarero()
+    {
+        // Obtener todas las discotecas disponibles
+        $discotecas = Discoteca::all();
+    
+        // Retornar la vista 'listar_eventos/camarero' pasando la variable $discotecas
+        return view('listar_eventos.camarero', compact('discotecas'));
     }
+    
     public function listar_eventos(Request $request)
     {
         $filtro = $request->except('_token');

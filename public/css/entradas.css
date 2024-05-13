@@ -1,183 +1,353 @@
-        /* Estilos generales */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #10101A;
-            color: white;
-        }
+/* Estilos globales */
+body {
+    font-family: 'Rubik', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #10101A;
+    color: #FFFFFF; /* Color de texto principal */
+}
 
-        header {
-            background-color: #666;
-            padding: 20px;
-            color: white;
-        }
+/* Estilos de la barra de navegación */
+.navbar {
+    padding: 1rem 0;
+    transition: background-color 0.3s ease;
+    background-color: #161624;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Sombra suave */
+}
 
-        .header-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+.navbar-brand {
+    font-size: 1.5rem;
+    color: #FFFFFF;
+}
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            max-width: 1200px;
-        }
+.navbar-toggler {
+    border: none;
+    transition: box-shadow 0.3s ease;
+}
 
-        /* Estilos para el botón de cerrar sesión */
-        #logout-btn {
-            padding: 10px 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+.navbar-nav .nav-link {
+    padding: 0.5rem 1rem;
+    transition: color 0.3s ease;
+    color: #FFFFFF;
+}
 
-        .content-container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
+.navbar-nav .nav-link:hover {
+    color: orange;
+}
 
-        button {
-            padding: 10px 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
+.dropdown-menu {
+    min-width: 10rem;
+    transition: transform 0.3s ease;
+    background-color: #161624;
+    border: none;
+}
 
-        a {
-            display: inline-block;
-            padding: 10px 15px;
-            margin-top: 20px;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
+.dropdown-item {
+    padding: 0.5rem 1rem;
+    color: #FFFFFF;
+}
 
-        a:hover {
-            text-decoration: underline;
-        }
+.dropdown-item:hover {
+    background-color: #212133; /* Color de fondo más oscuro */
+}
 
-        /* Estilos específicos para la página */
-        #detallesEvento,
-        #tiposEntradaContainer,
-        #carritoContainer {
-            background-color: #161624;
-            color: #f8f8f8;
-            border-radius: 5px;
-            padding: 20px;
-            margin-bottom: 20px;
-            flex-basis: calc(33.33% - 20px);
-            box-sizing: border-box;
-        }
+.orange-text {
+    color: orange;
+}
 
-        #tiposEntradaContainer {
-            list-style-type: none;
-            padding: 20px;
-        }
+.logo {
+    height: 40px;
+}
 
-        #tiposEntradaContainer li {
-            margin-bottom: 10px;
-        }
+/* Estilos para los títulos */
+h1, h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: orange;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra suave para resaltar */
+}
 
-        input[type="number"] {
-            width: 60px;
-            padding: 5px;
-        }
+/* Estilos para el botón de cerrar sesión */
+button,
+#logout-btn {
+    padding: 10px 20px; /* Aumentar el padding para un aspecto más sustancial */
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra suave */
+}
+#logout-btn {
+    margin-bottom: 20px;
+}
 
-        /* Estilos para el modal de la playlist */
-        .swal2-title {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
+/* Estilos para el contenido */
+.content-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
 
-        .swal2-content {
-            font-size: 16px;
-        }
+/* Estilos para los iconos del carrito */
+.cart-icon-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+.cart-icon-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
 
-        .tipo-entrada-container {
-            margin-bottom: 10px;
-        }
+/* Estilos para las secciones */
+.section {
+    margin-bottom: 40px;
+    text-align: left;
+}
 
-        /* Clase para ocultar el carrito */
-        .hidden {
-            position: fixed;
-            top: 0;
-            right: -1000%;
-            transition: transform 0.5s ease, right 0.5s ease;
-            background-color: #fff;
-            padding: 20px;
-            z-index: 1000;
-            overflow-y: auto;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            margin-right: 100px;
-            transform: translateX(100%);
-        }
+/* Estilos para la lista de tipos de entrada */
+.tipos-entrada-container,
+.tipo-entrada-container {
+    list-style: none;
+    padding: 20px;
+}
+.tipos-entrada-container li,
+.tipo-entrada-container {
+    background-color: #1f1f2e;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/* Estilos para el campo de contador */
+.tipo-entrada-container input[type="number"] {
+    width: 50px;
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+/* Estilos para la descripción y el precio */
+.descripcion-precio {
+    flex-grow: 1;
+    font-size: 16px;
+    color: #fff;
+}
+/* Estilos para la descripción y precio del tipo de entrada */
+.tipo-entrada-container span {
+    flex-grow: 1;
+    margin-left: 10px;
+    font-size: 16px;
+}
+/* Estilos para los botones de incremento/decremento */
+.contador-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 0 5px;
+}
 
-        .show-cart {
-            right: 0;
-            transition: transform 0.5s ease, left 0.5s ease;
-            transform: translateX(0);
-        }
+/* Estilos para el contador */
+.contador {
+    font-size: 16px;
+    color: #fff;
+    padding: 8px;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+    width: 40px;
+    text-align: center;
+}
 
-        .header-content a i {
-            margin-right: 5px;
-        }
+/* Estilos para el botón "Agregar al Carrito" */
+.add-to-cart-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-        /* Estilos para el icono de cerrar sesión */
-        .header-content button i {
-            margin-right: 5px;
-        }
+.add-to-cart-button:hover {
+    background-color: #0056b3;
+}
 
-        /* Estilos personalizados para Sweet Alert */
-        .personalizado-swal-container {
-            font-family: Arial, sans-serif;
-            border-radius: 10px;
-        }
+/* Estilos específicos para la página */
+#detallesEvento,
+#tiposEntradaContainer,
+#carritoContainer {
+    background-color: #161624;
+    color: #f8f8f8;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    flex-basis: calc(33.33% - 20px);
+    box-sizing: border-box;
+}
+#tiposEntradaContainer {
+    list-style-type: none;
+}
+input[type="number"] {
+    width: 60px;
+    padding: 5px;
+}
+.boton-container {
+    display: flex;
+    align-items: center;
+}
+/* Estilos para el modal de la playlist */
+.swal2-container {
+    font-family: 'Rubik', sans-serif; /* Utiliza la misma fuente que el resto de la aplicación */
+}
 
-        .personalizado-swal-title {
-            color: orange;
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
+.swal2-popup {
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave para el modal */
+    background-color: #1f1f2e; /* Color de fondo */
+}
 
-        .personalizado-swal-html-container {
-            color: black;
-            font-size: 18px;
-        }
+.swal2-title {
+    color: #FFA500; /* Color naranja para el título */
+    font-size: 28px; /* Tamaño de fuente más grande */
+    margin-bottom: 20px; /* Espaciado inferior adicional */
+    text-align: center; /* Centrar el título */
+}
 
-        .personalizado-swal-confirm-button {
-            background-color: orange;
-            border-color: orange;
-            color: white;
-            font-size: 16px;
-            border-radius: 5px;
-            padding: 10px 20px;
-            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-        }
+.swal2-content {
+    color: #fff; /* Color de texto blanco */
+    font-size: 18px; /* Tamaño de fuente más grande */
+    text-align: center; /* Centrar el contenido */
+    margin-bottom: 20px; /* Espaciado inferior adicional */
+}
 
-        .personalizado-swal-confirm-button:hover {
-            background-color: darkorange;
-            border-color: darkorange;
-        }
+.swal2-actions {
+    display: flex;
+    justify-content: center;
+}
 
-        .personalizado-swal-confirm-button:focus {
-            outline: none;
-        }
+.swal2-button {
+    padding: 10px 20px; /* Aumentar el padding de los botones */
+    margin: 0 10px; /* Espaciado entre los botones */
+    font-size: 16px; /* Tamaño de fuente de los botones */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.swal2-button:hover {
+    background-color: #FFA500; /* Color naranja al pasar el ratón sobre los botones */
+    color: #fff; /* Texto blanco al pasar el ratón sobre los botones */
+}
+
+.swal2-close {
+    color: #FFA500; /* Color naranja para el botón de cerrar */
+}
+
+/* Estilos específicos para el modal de confirmación */
+.swal2-confirm {
+    background-color: #007bff; /* Color azul para el botón de confirmación */
+}
+
+.swal2-cancel {
+    background-color: #dc3545; /* Color rojo para el botón de cancelar */
+}
+
+
+/* Clase para ocultar el carrito */
+.hidden {
+    position: fixed;
+    top: 0;
+    right: -1000%;
+    transition: transform 0.5s ease, right 0.5s ease;
+    background-color: #fff;
+    padding: 20px;
+    z-index: 1000;
+    overflow-y: auto;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    margin-right: 100px;
+    transform: translateX(100%);
+}
+.show-cart {
+    right: 0;
+    transition: transform 0.5s ease, left 0.5s ease;
+    transform: translateX(0);
+}
+
+/* Media queries para hacer la interfaz responsive */
+@media screen and (max-width: 991px) {
+    .navbar-collapse {
+        background-color: #161624;
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+        padding: 1rem;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        overflow-y: auto;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: 999;
+    }
+    .navbar-collapse.show {
+        transform: translateX(0);
+    }
+    .navbar-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+    .navbar-nav .nav-link {
+        padding: 1rem;
+        color: #FFFFFF;
+        text-align: center;
+    }
+    .navbar-toggler {
+        display: block;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        z-index: 1000;
+    }
+    .cart-icon-container {
+        display: none;
+    }
+    .content-container {
+        padding-top: 5rem;
+    }
+}
+@media screen and (max-width: 768px) {
+    .content-container {
+        padding: 10px;
+    }
+    #carritoContainer {
+        right: -250px;
+    }
+    #cart-icon {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
+    #detallesEvento,
+    #tiposEntradaContainer {
+        margin-bottom: 10px;
+    }
+}
+@media screen and (max-width: 576px) {
+    #carritoContainer {
+        width: 100%;
+        right: 0;
+    }
+}

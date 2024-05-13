@@ -135,7 +135,7 @@
         <!-- Logos de Discotecas -->
         <div id="slider" class="slider mt-5">
             <div class="slide-track d-flex justify-content-center align-items-center">
-                @foreach ($todasdiscotecas as $discoteca)
+                @foreach ($discotecas as $discoteca)
                     <div class="slide mr-3">
                         <img src="{{ asset('img/discotecas/' . $discoteca->image) }}" alt="{{ $discoteca->name }}" class="img-fluid">
                     </div>
@@ -159,7 +159,7 @@
     }).addTo(map);
 
     // Iterar sobre las discotecas y agregar marcadores con ventanas emergentes personalizadas
-    @foreach ($todasdiscotecas as $discoteca)
+    @foreach ($discotecas as $discoteca)
         var marker = L.marker([{{ $discoteca->lat }}, {{ $discoteca->long }}]).addTo(map);
 
         var popupContent = `
