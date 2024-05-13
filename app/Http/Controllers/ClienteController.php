@@ -32,6 +32,8 @@ class ClienteController extends Controller
         return view('cliente.discoteca', compact('todasdiscotecas', 'nombreUsuario'));
     }
 
+    
+
     public function eventos($id)
     {
         $discoteca = Discoteca::findOrFail($id);

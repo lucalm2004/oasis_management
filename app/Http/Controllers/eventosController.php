@@ -3,10 +3,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Evento;
 use App\Models\PlaylistCancion;
+use App\Models\UserDiscoteca;
+use App\Models\CVUser;
 use Google\Service\AIPlatformNotebooks\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
+use App\Models\discotecas;
 
 class EventosController extends Controller
 {
@@ -124,7 +128,12 @@ class EventosController extends Controller
         ->where('id_users', $idUsuario)
         ->value('id_discoteca');
 
-    $canciones = DB::table('cancion')->get();
+    $canciones = DB::table('artistas_canciones')
+    ->join('artistas', 'artistas_canciones.id_artista', '=', 'artistas.id')
+    ->join('canciones', 'artistas_canciones.id_cancion', '=', 'canciones.id')
+    ->select('canciones.id AS id_cancion','canciones.name AS nombre_cancion', 'artistas.name AS nombre_artista')
+    ->get();
+;
     
     $eventos = DB::table('eventos')->where('id_discoteca', $idDiscoteca)->get();
     // dd($eventos);
@@ -184,5 +193,106 @@ public function cancionUpdate(Request $request)
         return response()->json(['error' => 'La canción ya está presente en este evento'], 422);
     }
 }
+
+public function showSolicitudes(){
+    $user = Auth::user();
+    $userID = $user->id;
+    $userdiscoteca = UserDiscoteca::where('id_users', $userID)->first(); // Obtener el primer resultado
+    $idDiscoteca = $userdiscoteca->id_discoteca; // Acceder a la propiedad id_discoteca
+
+    $solicitudes = DB::table('users')
+        ->select('users.*', 'users_discotecas.id_discoteca', 'discotecas.name AS nombre_discoteca', 'cv_users.name_pdf AS cv')
+        ->leftJoin('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
+        ->leftJoin('discotecas', 'users_discotecas.id_discoteca', '=', 'discotecas.id')
+        ->leftJoin('cv_users', 'cv_users.id_user', '=', 'users.id')
+        ->where('users.verificado', '=', 0)
+        ->where('users.habilitado', '=', 0)
+        ->where('users.id_rol', '=', 4)
+        ->where('users_discotecas.id_discoteca', '=', $idDiscoteca)
+        ->get(); // Obtener los resultados
+
+    $count = DB::table('users')
+        ->select('users.*', 'users_discotecas.id_discoteca', 'discotecas.name AS nombre_discoteca', 'cv_users.name_pdf AS cv')
+        ->leftJoin('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
+        ->leftJoin('discotecas', 'users_discotecas.id_discoteca', '=', 'discotecas.id')
+        ->leftJoin('cv_users', 'cv_users.id_user', '=', 'users.id')
+        ->where('users.verificado', '=', 0)
+        ->where('users.habilitado', '=', 0)
+        ->where('users.id_rol', '=', 4)
+        ->where('users_discotecas.id_discoteca', '=', $idDiscoteca)
+        ->count();
+
+    return response()->json([
+        'solicitudes' => $solicitudes,
+        'count' => $count,
+    ]);
+   /*  return response()->json($solicitudes); */
+
+}
+
+/* aceptar solicitudes */
+
+public function AceptarSolicitudes($id){
+       
+    try {
+        DB::beginTransaction();
+
+
+        // Eliminar el usuario principal si existe
+        $user = User::findOrFail($id);
+        $user-> habilitado = 1;
+        $user-> verificado = 1;
+        $user->save();
+        
+        // Confirmar la transacción
+        DB::commit();
+
+        return response()->json(['success' => true, 'message' => 'Camarero aceptado correctamente']);
+    } catch (\Exception $e) {
+     
+        DB::rollBack();
+
+        return response()->json(['success' => false, 'error' => 'Error al aceptar camarero: ' . $e->getMessage()], 500);
+    }
+
+
+}
+
+/* rechazar al gestor */
+
+public function RechazarSolicitudes($id){
+    try {
+        DB::beginTransaction();
+
+        // Eliminar registros relacionados de la tabla UserDiscoteca si existen
+        $UserDiscotecas = UserDiscoteca::where('id_users', $id)->first();
+        $UserDiscotecas->delete();
+
+        $cvUsers =  CVUser::where('id_user', $id)->get();
+        foreach($cvUsers as $cvUser){
+            if($cvUser){
+                $cvUser->delete();
+            }
+
+        }
+
+        // Eliminar el usuario principal si existe
+        $user = User::findOrFail($id);
+        $user->delete();
+        
+        // Confirmar la transacción
+        DB::commit();
+
+        return response()->json(['success' => true, 'message' => 'Camarero rechazado correctamente']);
+    } catch (\Exception $e) {
+     
+        DB::rollBack();
+
+        return response()->json(['success' => false, 'error' => 'Error al aceptar camarero: ' . $e->getMessage()], 500);
+    }
+
+}
+
+
        
 }

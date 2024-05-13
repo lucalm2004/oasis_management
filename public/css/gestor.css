@@ -954,3 +954,43 @@ hr,
     margin-bottom: -17px;
     margin-left: 15px;
 }
+
+#notificacion {
+    margin-right: 40px;
+    /*  position: relative; */
+    /* font-size: 10px; */
+    /*    padding: 0.1% 0.2%; */
+    background-color: orange;
+    border-radius: 50px;
+    top: -18px;
+    right: 1%;
+}
+
+#tablaSolicitudes {
+    max-width: 60%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    color: black;
+    background-color: white;
+    /* margin-right: 150px; */
+    margin-left: 20%;
+    position: fixed;
+    float: right;
+    z-index: 99999;
+    margin-top: 5%;
+    /* Establecer la posición */
+    /* Ajustar el z-index */
+}
+
+#aceptar {
+    border: none;
+    background-color: white;
+}
+
+#rechazar {
+    border: none;
+    background-color: white;
+}

@@ -35,6 +35,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Carrito::class, 'id_user');
     }
+    public function CVuser(){
+        return $this->belongsTo(CVUser::class, 'id_user');
+        }
 
 
     /**

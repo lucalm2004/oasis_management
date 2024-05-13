@@ -3,13 +3,13 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Oasis Management - Login</title>
+    <title>Oasis Management - Register</title>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel='stylesheet'
         href='https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap'>
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/registrar.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css">
@@ -152,7 +152,7 @@
             </div>
             </button>
             <div class="footer"><span onclick="window.location.href='{{ route('login') }}'">Already
-                    Registred?</span><span id="demo01" href="#animatedModal">¿Tienes una discoteca?</span></div>
+                    Registred?</span><span id="demo00" href="#animatedModal2">Solicitar trabajo</span><span id="demo01" href="#animatedModal">¿Tienes una discoteca?</span></div>
     </div>
     </form>
 
@@ -241,6 +241,130 @@
                                     </ul>
                                 </div>
                             </div>
+                            <div class="input-data">
+                                <input type="number" name="capacidad" required>
+                                <div class="underline"></div>
+                                <label for="">Capacidad</label>
+                            </div>
+                            
+                        </div>
+                        
+                        <span id="imageSpan">Imagen</span>
+                        <div class="input-data">
+                               
+                            <div class="dropdown">
+                                {{-- <label class='custom-file-upload'> --}}
+                                    <input type="file" name="image" id="image">
+                                 {{--    Seleccionar CV --}}
+                              {{--   </label> --}}
+                            </div>
+                        </div>
+                        <div class="form-row submit-btn">
+                            <div class="input-data">
+                                <div class="inner"></div>
+                                <input id="submits" type="submit" value="submit">
+                            </div>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="animatedModal2">
+        <!--THIS IS IMPORTANT! to close the modal, the class name has to match the name given on the ID  class="close-animatedModal" -->
+        <div class="modal-content">
+            <div id="modal" class="modal">
+                <div class="container">
+                    <div class="close-animatedModal" style="margin-left:95%;/* margin-top:2%; */"><svg id="cerrar2"
+                            width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" class="ltr-4z3qvp e1svuwfo1" data-name="X"
+                            aria-labelledby="preview-modal-81266975" data-uia="previewModal-closebtn" role="button"
+                            aria-label="close" tabindex="0"
+                            style="
+                        /* position: absolute; */
+                    ">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M10.5858 12L2.29291 3.70706L3.70712 2.29285L12 10.5857L20.2929 2.29285L21.7071 3.70706L13.4142 12L21.7071 20.2928L20.2929 21.7071L12 13.4142L3.70712 21.7071L2.29291 20.2928L10.5858 12Z"
+                                fill="currentColor"></path>
+                        </svg></div>
+                    <div class="text">
+
+                        Unete a Oasis | Management </div>
+                    <form id="registerForm2" action="{{ route('registerCamarero') }}" method="POST"enctype="multipart/form-data">
+                        @csrf
+
+                        <div class="form-row">
+                            <div class="input-data">
+                                <input type="text" name="nombre_completo" required>
+                                <div class="underline"></div>
+                                <label for="">Nombre completo</label>
+                            </div>
+                            <div class="input-data">
+                                <input type="text" name="dni_nie" required>
+                                <div class="underline"></div>
+                                <label for="">DNI/NIE</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="input-data">
+                                <input type="text" name="email" required>
+                                <div class="underline"></div>
+                                <label for="">Email</label>
+                            </div>
+                            <div class="input-data">
+                                <input type="password" name="password" required>
+                                <div class="underline"></div>
+                                <label for="">Password</label>
+                            </div>
+                            <div class="input-data">
+                                <input type="password" name="password_confirmation" required>
+                                <div class="underline"></div>
+                                <label for="">Repetir Password</label>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                           
+                            <div class="input-data">
+                               
+                                <div class="dropdown">
+                                    <div class="select">
+                                    <span id="discotecaSpan">Discoteca</span>
+                                        <i class="fa fa-chevron-left"></i>
+                                    </div>
+                                    <input type="hidden" id="discotecaInput" name="discoteca" value="">
+                                    <input type="hidden" name="gender">
+                                    <input type="hidden" name="discoteca_id" id="discoteca_id_input">
+                                    <ul id="discotecasSelect" class="dropdown-menu">
+                                        <?php
+                                            use Illuminate\Support\Facades\DB;
+
+                                            $discotecas = DB::table('discotecas')
+                                                ->select('discotecas.*', 'ciudades.name as nombre_ciudad')
+                                                ->join('ciudades', 'ciudades.id', '=', 'discotecas.id_ciudad')
+                                                ->get();
+
+                                            foreach ($discotecas as $discoteca): ?>
+                                                <li value="<?php echo $discoteca->id; ?>"><?php echo $discoteca->name; ?> - <?php echo $discoteca->nombre_ciudad; ?></li>
+                                            <?php endforeach; ?>
+
+                                </div>
+                            </div>
+                            <span id="cvSpan">CV</span>
+                            <div class="input-data">
+                               
+                                <div class="dropdown">
+                                    
+                                    {{-- <label class='custom-file-upload'> --}}
+                                        <input type="file" name="cv" id="cv">
+                                     {{--    Seleccionar CV --}}
+                                  {{--   </label> --}}
+                                </div>
+                            </div>
+                          
+
+                           
                         </div>
                         <div class="form-row submit-btn">
                             <div class="input-data">
@@ -265,21 +389,62 @@
 
     // }
     $(document).ready(function() {
-        $('#registerForm').submit(function(event) {
+    $('#registerForm').submit(function(event) {
             event.preventDefault();
+
+            // Crear un nuevo objeto FormData
+            var formData = new FormData($(this)[0]);
 
             $.ajax({
                 url: $(this).attr('action'),
                 method: "POST",
-                data: $(this).serialize(),
+                data: formData,
+                // Necesitas configurar la propiedad contentType y processData a false
+                contentType: false,
+                processData: false,
                 success: function(response) {
-                    toastr.success('¡Registro exitoso!');
+                    toastr.success('Solicitud Enviada!');
                     // Aquí puedes redirigir al usuario a otra página si es necesario
                 },
                 error: function(xhr) {
                     var errors = xhr.responseJSON.errors;
                     var errorList = '<ul>';
                     $.each(errors, function(index, error) {
+                        console.log(errors);
+                        errorList += '<li>' + error + '</li>';
+                    });
+                    errorList += '</ul>';
+                    toastr.error(errorList, 'Errores', {
+                        positionClass: 'toast-top-right',
+                        timeOut: 5000 // Duración del mensaje en milisegundos (por ejemplo, 5000 = 5 segundos)
+                    });
+                }
+            });
+        });
+    });
+    $(document).ready(function() {
+    $('#registerForm2').submit(function(event) {
+            event.preventDefault();
+
+            // Crear un nuevo objeto FormData
+            var formData = new FormData($(this)[0]);
+
+            $.ajax({
+                url: $(this).attr('action'),
+                method: "POST",
+                data: formData,
+                // Necesitas configurar la propiedad contentType y processData a false
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    toastr.success('Solicitud Enviada!');
+                    // Aquí puedes redirigir al usuario a otra página si es necesario
+                },
+                error: function(xhr) {
+                    var errors = xhr.responseJSON.errors;
+                    var errorList = '<ul>';
+                    $.each(errors, function(index, error) {
+                        console.log(errors);
                         errorList += '<li>' + error + '</li>';
                     });
                     errorList += '</ul>';
@@ -292,7 +457,16 @@
         });
     });
 
+    $("#demo00").animatedModal();
     $("#demo01").animatedModal();
+
+    $('#cerrar2').click(function() {
+        document.getElementById("animatedModal2").style.display = "none";
+    });
+
+    $('#demo00').click(function() {
+        document.getElementById("animatedModal2").style.display = "block";
+    });
 
 
     // var cerrar = document.getElementById('cerrar');
@@ -310,6 +484,9 @@
         var ciudadSpan = document.getElementById("ciudadSpan").innerText;
         // Asignar el valor del span al input
         document.getElementById("ciudadInput").value = ciudadSpan;
+        var discotecaSpan = $(this).find('#discotecaSpan').text();
+            // Asignar el valor del span al input
+        $(this).find('#discotecaInput').val(discotecaSpan);
     });
     $('.dropdown').focusout(function() {
         $(this).removeClass('active');
@@ -319,7 +496,7 @@
         $(this).parents('.dropdown').find('span').text($(this).text());
         $(this).parents('.dropdown').find('input').attr('value', $(this).attr('id'));
     });
-    /*End Dropdown Menu*/
+
 
 
     $('.dropdown-menu li').click(function() {
@@ -327,6 +504,36 @@
             msg = '<span class="msg">Hidden input value: ';
         $('.msg').html(msg + input + '</span>');
     });
+
+
+    /* seundo modal */
+
+/*     $(document).ready(function() {
+        $('.dropdown').click(function() {
+            $(this).attr('tabindex', 1).focus();
+            $(this).toggleClass('active');
+            $(this).find('.dropdown-menu').slideToggle(300);
+            var discotecaSpan = $(this).find('#discotecaSpan').text();
+            // Asignar el valor del span al input
+            $(this).find('#discotecaInput').val(discotecaSpan);
+        });
+        
+        $('.dropdown').focusout(function() {
+            $(this).removeClass('active');
+            $(this).find('.dropdown-menu').slideUp(300);
+        });
+
+        $('.dropdown .dropdown-menu li').click(function() {
+            $(this).parents('.dropdown').find('span').text($(this).text());
+            $(this).parents('.dropdown').find('input').attr('value', $(this).attr('id'));
+        });
+
+        $('.dropdown-menu li').click(function() {
+            var input = '<strong>' + $(this).parents('.dropdown').find('input').val() + '</strong>',
+                msg = '<span class="msg">Hidden input value: ';
+            $('.msg').html(msg + input + '</span>');
+        });
+    }); */
 
     var eye_show1 = document.getElementById('eye_show1');
     var password = document.getElementById('password');
@@ -352,4 +559,6 @@
             password2.type = 'password';
         }
     });
+
+
 </script>

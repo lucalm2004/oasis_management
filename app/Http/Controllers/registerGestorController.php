@@ -17,11 +17,14 @@ class registerGestorController extends Controller
             'discoteca' => 'required|string|max:255',
             'direccion' => 'required|string|max:255',
             'ciudad' => 'required',
+            'image' => 'required|image',
+            'capacidad' => 'required|numeric|min:100|max:9999',
+             
         ]);
 
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
-    return response()->json(['errors' => $errors], 422);
+            return response()->json(['errors' => $errors], 422);
         }
         
 
@@ -31,9 +34,16 @@ class registerGestorController extends Controller
         $password = $request->input('password');
         $discoteca = $request->input('discoteca');
         $direccion = $request->input('direccion');
+        $capacidad = $request->input('capacidad');
         $ciudad = $request->input('ciudad');
         $ciudadEncontrada = DB::table('ciudades')->where('name', $ciudad)->first();
         $idCiudad = $ciudadEncontrada->id;
+
+        $imagen = $request->file('image');
+        $originalName = $imagen->getClientOriginalName();
+        $imageName = time() . '_' . $originalName;
+        $imagePath = 'img/discotecas';
+        $imagen->move(public_path($imagePath), $imageName);
 
     // Hacer la solicitud a la API de Geocodificación de Google Maps para obtener las coordenadas
     $apiKey = 'AIzaSyBHnWvq4QKI7BwTKqm5vXGxLxNz01jSyiY'; // Reemplaza 'TU_API_KEY' por tu propia clave de API de Google Maps
@@ -49,7 +59,9 @@ class registerGestorController extends Controller
         'direccion' => $direccion,
         'lat' => $latitud,
         'long' => $longitud,
-        'id_ciudad' => $idCiudad
+        'id_ciudad' => $idCiudad,
+        'image' => $imageName,
+        'capacidad'=> $capacidad
     ];
     
     $discotecaId = DB::table('discotecas')->insertGetId($discotecaData);

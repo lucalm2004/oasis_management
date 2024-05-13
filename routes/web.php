@@ -16,6 +16,7 @@ use App\Http\Controllers\ValoracionController;
 use App\Http\Controllers\DiscotecaController;
 use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\CamareroController;
+use App\Http\Controllers\registerCamareroController;
 
 use App\Http\Middleware\AdminOnly;
 use App\Http\Middleware\ClientOnly;
@@ -28,6 +29,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::post('/registerGestor', [registerGestorController::class, 'index'])->name('registerGestor');
+Route::post('/registerCamarero', [registerCamareroController::class, 'index'])->name('registerCamarero');
+
+
+
 
 Route::get('/google-auth/redirect', function () {
     return Socialite::driver('google')->redirect();
@@ -77,13 +82,18 @@ Route::middleware(GestorOnly::class)->group(function () {
     Route::get('/gestor', function (){
         return view('gestor');
     });
-Route::post('/eventosView', [eventosController::class, 'index'])->name('eventosView');
-Route::post('/borrarEvento', [eventosController::class, 'borrar'])->name('borrarEvento');
-Route::post('/eventoNew', [eventosController::class, 'new'])->name('eventoNew');
-Route::post('/eventoUpdate', [eventosController::class, 'update'])->name('eventoUpdate');
-Route::post('/cancionesView', [eventosController::class, 'canciones'])->name('cancionesView');
-Route::post('/playlistView', [eventosController::class, 'playlist'])->name('playlistView');
-Route::post('/cancionUpdate', [eventosController::class, 'cancionUpdate'])->name('cancionUpdate');
+    Route::post('/eventosView', [eventosController::class, 'index'])->name('eventosView');
+    Route::post('/borrarEvento', [eventosController::class, 'borrar'])->name('borrarEvento');
+    Route::post('/eventoNew', [eventosController::class, 'new'])->name('eventoNew');
+    Route::post('/eventoUpdate', [eventosController::class, 'update'])->name('eventoUpdate');
+    Route::post('/cancionesView', [eventosController::class, 'canciones'])->name('cancionesView');
+    Route::post('/playlistView', [eventosController::class, 'playlist'])->name('playlistView');
+    Route::post('/cancionUpdate', [eventosController::class, 'cancionUpdate'])->name('cancionUpdate');
+    Route::get('/solicitudes', [eventosController::class, 'showSolicitudes'])->name('showSolicitudes');
+    Route::post('/solcitudesaceptar/{id}', [eventosController::class, 'AceptarSolicitudes'])->name('AceptarSolicitudes');
+    Route::post('/solcitudrechazar/{id}', [eventosController::class, 'RechazarSolicitudes'])->name('RechazarSolicitudes');
+    
+    
 });
 
 

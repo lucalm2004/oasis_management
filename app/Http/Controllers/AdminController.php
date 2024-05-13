@@ -11,6 +11,7 @@ use App\Models\BonificacionUser;
 use App\Models\Carrito;
 use App\Models\Valoracion;
 use App\Models\Ciudad;
+use App\Models\CVUser;
 use App\Models\eventos;
 use App\Models\PlaylistCancion;
 use Illuminate\Http\Request;
@@ -220,10 +221,13 @@ class AdminController extends Controller
     
             // Eliminar registros relacionados de la tabla BonificacionUser si existen
             $BonificacionUsers = BonificacionUser::where('id_users', $id)->get();
-            foreach($BonificacionUsers as $BonificacionUser)
-            if($BonificacionUser){
-                $BonificacionUser->delete();
+            foreach($BonificacionUsers as $BonificacionUser){
+                if($BonificacionUser){
+                    $BonificacionUser->delete();
+                }
+
             }
+            
     
             // Eliminar registros relacionados de la tabla Carrito si existen
             $Carrito = Carrito::where('id_user', $id)->first();
@@ -236,6 +240,14 @@ class AdminController extends Controller
             foreach($Valoraciones as $Valoracion){
                 if($Valoracion){
                     $Valoracion->delete();
+                } 
+            }
+
+            #eliminar cv usuarios
+            $cv = CVUser::where('id_user', $id)->get();
+            foreach($cv as $cvs){
+                if($cvs){
+                    $cvs->delete();
                 } 
             }
     
@@ -326,18 +338,21 @@ class AdminController extends Controller
 
     /* Ver Solicitudes  */
     public function showSolicitudes(){
+        
         $solicitudes = DB::table('users')
         ->select('users.*', 'users_discotecas.id_discoteca', 'discotecas.name AS nombre_discoteca')
         ->leftJoin('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
         ->leftJoin('discotecas', 'users_discotecas.id_discoteca', '=', 'discotecas.id')
         ->where('users.verificado', '=', 0)
         ->where('users.habilitado', '=', 0)
+        ->where('users.id_rol', '=', 3)
         ->get();
         $count = DB::table('users')
         ->leftJoin('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
         ->leftJoin('discotecas', 'users_discotecas.id_discoteca', '=', 'discotecas.id')
         ->where('users.verificado', '=', 0)
         ->where('users.habilitado', '=', 0)
+        ->where('users.id_rol', '=', 3)
         ->count();
         /* dd($count); */
 
