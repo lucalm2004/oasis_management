@@ -595,21 +595,28 @@ button[type="button"] {
     .navbar-nav .nav-link {
         padding: 0.5rem;
     }
+
     .header-container {
         flex-direction: column;
         align-items: center;
     }
-    .welcome-message, .header-buttons {
+
+    .welcome-message,
+    .header-buttons {
         margin-left: 0;
         margin-right: 0;
         text-align: center;
     }
-    #logout-btn, #cerrarpop {
+
+    #logout-btn,
+    #cerrarpop {
         margin-left: 0;
     }
+
     .card {
         max-width: 100%;
     }
+
     .container {
         padding: 10px;
     }

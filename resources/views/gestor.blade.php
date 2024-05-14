@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,10 +22,10 @@
 
     {{-- Head1 --}}
     <header class="logo">
-       
-       
+
+
         <div class="textlogo">
-          
+
             Bienvenido <span><?php
             use Illuminate\Support\Facades\DB;
             use Illuminate\Support\Facades\Auth;
@@ -60,7 +59,7 @@
     </header>
 
     <section class="inicio" id="discoteca">
-   
+
 
         <div class="inicio-texto">
             <h5>Gestiona tu discoteca:</h5>
@@ -76,7 +75,7 @@
     {{-- Reproductor --}}
     <div class='reproductor'>
         <nav>
-            
+
             <img class="logos" draggable="false" src="img/oasisfy.svg" alt="Spotify">
             <hr class="hr1">
             <div>
@@ -84,7 +83,7 @@
                     <i class="fa-solid fa-music"></i>
                     Canciones
                 </p>
-               
+
                 <p id="playListOasisfy" class="pages">
                     <svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" role="img"
                         class="Svg-sc-1bi12j5-0 gSLhUO collection-active-icon" viewBox="0 0 24 24">
@@ -94,19 +93,19 @@
                     </svg>
                     Tus Playlist
                 </p>
-               
+
             </div>
             <hr class="hr2">
             <div id="canciones" class="list">
-               {{-- aqui se listan las canciones --}}
+                {{-- aqui se listan las canciones --}}
             </div>
             <div id="playlist" style="display: none" class="list">
                 {{-- aqui se listan las canciones --}}
-             </div>
-         
+            </div>
+
         </nav>
     </div>
-    
+
 
     {{-- eventos --}}
     <section class="quese" id="quese">
@@ -133,45 +132,45 @@
 
 </body>
 <script>
-var playListOasisfy = document.getElementById("playListOasisfy");
-var SongsOasisfy = document.getElementById("SongsOasisfy");
+    var playListOasisfy = document.getElementById("playListOasisfy");
+    var SongsOasisfy = document.getElementById("SongsOasisfy");
 
-playListOasisfy.addEventListener("click", function() {
-    var viewCanciones = document.getElementById('canciones');
-    var viewPlaylist = document.getElementById('playlist');
+    playListOasisfy.addEventListener("click", function() {
+        var viewCanciones = document.getElementById('canciones');
+        var viewPlaylist = document.getElementById('playlist');
 
-    if (viewPlaylist.style.display === 'none') {
-        viewCanciones.style.display = 'none';
-        viewPlaylist.style.display = 'flex';
-        playListOasisfy.classList.add('home-p');
-        SongsOasisfy.classList.remove('home-p');
-    } else {
-        viewCanciones.style.display = 'flex';
-        viewPlaylist.style.display = 'none';
-        SongsOasisfy.classList.add('home-p');
-        playListOasisfy.classList.remove('home-p');
-    }
-});
+        if (viewPlaylist.style.display === 'none') {
+            viewCanciones.style.display = 'none';
+            viewPlaylist.style.display = 'flex';
+            playListOasisfy.classList.add('home-p');
+            SongsOasisfy.classList.remove('home-p');
+        } else {
+            viewCanciones.style.display = 'flex';
+            viewPlaylist.style.display = 'none';
+            SongsOasisfy.classList.add('home-p');
+            playListOasisfy.classList.remove('home-p');
+        }
+    });
 
-SongsOasisfy.addEventListener("click", function() {
-    var viewCanciones = document.getElementById('canciones');
-    var viewPlaylist = document.getElementById('playlist');
+    SongsOasisfy.addEventListener("click", function() {
+        var viewCanciones = document.getElementById('canciones');
+        var viewPlaylist = document.getElementById('playlist');
 
-    if (viewCanciones.style.display === 'none') {
-        viewPlaylist.style.display = 'none';
-        viewCanciones.style.display = 'flex';
-        SongsOasisfy.classList.add('home-p');
-        playListOasisfy.classList.remove('home-p');
-    } else {
-        viewPlaylist.style.display = 'flex';
-        viewCanciones.style.display = 'none';
-        playListOasisfy.classList.add('home-p');
-        SongsOasisfy.classList.remove('home-p');
-    }
-});
+        if (viewCanciones.style.display === 'none') {
+            viewPlaylist.style.display = 'none';
+            viewCanciones.style.display = 'flex';
+            SongsOasisfy.classList.add('home-p');
+            playListOasisfy.classList.remove('home-p');
+        } else {
+            viewPlaylist.style.display = 'flex';
+            viewCanciones.style.display = 'none';
+            playListOasisfy.classList.add('home-p');
+            SongsOasisfy.classList.remove('home-p');
+        }
+    });
 
-    
-function oasisfy() {
+
+    function oasisfy() {
         var viewCanciones = document.getElementById('viewCanciones');
         var viewPlaylist = document.getElementById('playlist');
 
@@ -193,100 +192,103 @@ function oasisfy() {
     };
 
     function listarPlaylist() {
-    var resultado = document.getElementById('playlist');
-    var formdata = new FormData();
-    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    formdata.append('_token', csrfToken);
+        var resultado = document.getElementById('playlist');
+        var formdata = new FormData();
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        formdata.append('_token', csrfToken);
 
-    var ajax = new XMLHttpRequest();
-    ajax.open('POST', '/playlistView');
-    ajax.onload = function() {
-        var str = "";
-        if (ajax.status == 200) {
-            var json = JSON.parse(ajax.responseText);
-            var tabla = "";
-            for (var i = 0; i < json.eventos.length; i++) {
-                var evento = json.eventos[i];
-                var numCanciones = json.cancionesPorEvento[evento.id] || 0; // Obtener el número de canciones o establecerlo como 0 si no hay
-                str = "<div>";
-                str += "<img style='height: 100px' src='img/flyer/" + evento.flyer + "' alt=''>";
-                str += "<p>" + evento.name_playlist + "</p>";
-                str += "<a>DJ: " + evento.dj + "</a>";
-                str += "<a>Total de Canciones: " + numCanciones + "</a>";
-                str += "</div>";
-                tabla += str;
-            }
-            resultado.innerHTML = tabla;
-
-        } else {
-            resultado.innerText = "Error";
-        }
-    };
-    ajax.send(formdata);
-}
-
-
-async function listarCanciones() {
-    var resultado = document.getElementById('canciones');
-    var formdata = new FormData();
-    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    formdata.append('_token', csrfToken);
-
-    var ajax = new XMLHttpRequest();
-    ajax.open('POST', '/cancionesView');
-    ajax.onload = async function() {
-        var str = "";
-        if (ajax.status == 200) {
-            var data = JSON.parse(ajax.responseText);
-            var tabla = "";
-
-            // Array para almacenar todas las promesas de obtener carátulas
-            var promesasCaratulas = [];
-
-            // Construir todas las promesas para obtener las carátulas
-            data.canciones.forEach(function(cancion) {
-                promesasCaratulas.push(obtenerCaratula(cancion.name, cancion.artista));
-            });
-
-            // Esperar a que todas las promesas se completen
-            const urlsCaratulas = await Promise.all(promesasCaratulas);
-
-            // Mostrar canciones con sus carátulas
-            data.canciones.forEach(function(cancion, index) {
-                str = "<div id='viewCanciones'>";
-                str += "<select class='select' onchange='agregarCancionPlayList("+cancion.id+", this.value);'> <option>Playlist</option>";
-
-                for (var i = 0; i < data.eventos.length; i++) {
-                    str += "<option value="+data.eventos[i].id+">" + data.eventos[i].name_playlist + "</option>";
+        var ajax = new XMLHttpRequest();
+        ajax.open('POST', '/playlistView');
+        ajax.onload = function() {
+            var str = "";
+            if (ajax.status == 200) {
+                var json = JSON.parse(ajax.responseText);
+                var tabla = "";
+                for (var i = 0; i < json.eventos.length; i++) {
+                    var evento = json.eventos[i];
+                    var numCanciones = json.cancionesPorEvento[evento.id] ||
+                    0; // Obtener el número de canciones o establecerlo como 0 si no hay
+                    str = "<div>";
+                    str += "<img style='height: 100px' src='img/flyer/" + evento.flyer + "' alt=''>";
+                    str += "<p>" + evento.name_playlist + "</p>";
+                    str += "<a>DJ: " + evento.dj + "</a>";
+                    str += "<a>Total de Canciones: " + numCanciones + "</a>";
+                    str += "</div>";
+                    tabla += str;
                 }
+                resultado.innerHTML = tabla;
 
-                str += "</select>";
-                str += "<img src='"+urlsCaratulas[index]+"' alt=''>";
-                str += "<p>"+cancion.name+" | "+cancion.artista+"</p>";
-                str += "<a>Duracion: "+cancion.duracion+"</a>";
-                str += "</div>";
-                tabla += str;
-            });
+            } else {
+                resultado.innerText = "Error";
+            }
+        };
+        ajax.send(formdata);
+    }
 
-            // Mostrar eventos de la discoteca
-            resultado.innerHTML = tabla;
 
-        } else {
-            resultado.innerText = "Error";
-        }
-    };
-    ajax.send(formdata);
-}
+    async function listarCanciones() {
+        var resultado = document.getElementById('canciones');
+        var formdata = new FormData();
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        formdata.append('_token', csrfToken);
 
-function agregarCancionPlayList(idCancion, value){
-    var formdata = new FormData();
+        var ajax = new XMLHttpRequest();
+        ajax.open('POST', '/cancionesView');
+        ajax.onload = async function() {
+            var str = "";
+            if (ajax.status == 200) {
+                var data = JSON.parse(ajax.responseText);
+                var tabla = "";
+
+                // Array para almacenar todas las promesas de obtener carátulas
+                var promesasCaratulas = [];
+
+                // Construir todas las promesas para obtener las carátulas
+                data.canciones.forEach(function(cancion) {
+                    promesasCaratulas.push(obtenerCaratula(cancion.name, cancion.artista));
+                });
+
+                // Esperar a que todas las promesas se completen
+                const urlsCaratulas = await Promise.all(promesasCaratulas);
+
+                // Mostrar canciones con sus carátulas
+                data.canciones.forEach(function(cancion, index) {
+                    str = "<div id='viewCanciones'>";
+                    str += "<select class='select' onchange='agregarCancionPlayList(" + cancion.id +
+                        ", this.value);'> <option>Playlist</option>";
+
+                    for (var i = 0; i < data.eventos.length; i++) {
+                        str += "<option value=" + data.eventos[i].id + ">" + data.eventos[i]
+                            .name_playlist + "</option>";
+                    }
+
+                    str += "</select>";
+                    str += "<img src='" + urlsCaratulas[index] + "' alt=''>";
+                    str += "<p>" + cancion.name + " | " + cancion.artista + "</p>";
+                    str += "<a>Duracion: " + cancion.duracion + "</a>";
+                    str += "</div>";
+                    tabla += str;
+                });
+
+                // Mostrar eventos de la discoteca
+                resultado.innerHTML = tabla;
+
+            } else {
+                resultado.innerText = "Error";
+            }
+        };
+        ajax.send(formdata);
+    }
+
+    function agregarCancionPlayList(idCancion, value) {
+        var formdata = new FormData();
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         formdata.append('_token', csrfToken);
         formdata.append('idCancion', idCancion);
         formdata.append('idEvento', value);
 
-        
-    var ajax = new XMLHttpRequest();
+
+        var ajax = new XMLHttpRequest();
         ajax.open('POST', '/cancionUpdate');
         ajax.onload = function() {
             if (ajax.status == 200) {
@@ -315,7 +317,7 @@ function agregarCancionPlayList(idCancion, value){
             });
         };
         ajax.send(formdata);
-}
+    }
 
 
     $(function() {
@@ -332,17 +334,17 @@ function agregarCancionPlayList(idCancion, value){
         });
     });
 
-/* Filtros eventos */
-var buscar = document.getElementById('buscar')
-buscar.addEventListener("keyup", () => {
-    const valor = buscar.value;
-    if (valor == "") {
-        listarEventos('');
-    } else {
-        listarEventos(valor);
-    }
+    /* Filtros eventos */
+    var buscar = document.getElementById('buscar')
+    buscar.addEventListener("keyup", () => {
+        const valor = buscar.value;
+        if (valor == "") {
+            listarEventos('');
+        } else {
+            listarEventos(valor);
+        }
 
-});
+    });
 
     function listarEventos(valor) {
         var resultado = document.getElementById('crudGestor');
@@ -470,7 +472,7 @@ buscar.addEventListener("keyup", () => {
                 });
                 listarEventos();
                 listarCanciones();
-        listarPlaylist();
+                listarPlaylist();
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -511,7 +513,7 @@ buscar.addEventListener("keyup", () => {
             });
             listarEventos();
             listarCanciones();
-        listarPlaylist();
+            listarPlaylist();
         };
         ajax.send(formdata);
     }
@@ -609,7 +611,7 @@ buscar.addEventListener("keyup", () => {
                 });
                 listarEventos();
                 listarCanciones();
-        listarPlaylist();
+                listarPlaylist();
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -629,28 +631,31 @@ buscar.addEventListener("keyup", () => {
     }
 
     async function obtenerCaratula(cancion, artista) {
-    try {
-        const apiKey = 'ed420dfe24230d66234f98cdc646d658';
-        const url = `http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=${apiKey}&artist=${encodeURIComponent(artista)}&track=${encodeURIComponent(cancion)}&format=json`;
-        // console.log(url);
-        
-        const response = await fetch(url);
-        const data = await response.json();
-        
-        if (data.error) {
-            throw new Error(data.message);
+        try {
+            const apiKey = 'ed420dfe24230d66234f98cdc646d658';
+            const url =
+                `http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=${apiKey}&artist=${encodeURIComponent(artista)}&track=${encodeURIComponent(cancion)}&format=json`;
+            // console.log(url);
+
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.error) {
+                throw new Error(data.message);
+            }
+
+            const {
+                album
+            } = data.track;
+            const imageUrl = album.image.find(img => img.size === 'extralarge')['#text'];
+
+            return imageUrl;
+        } catch (error) {
+            console.error('Error al obtener la carÃ¡tula:', error);
+            return null;
         }
-        
-        const { album } = data.track;
-        const imageUrl = album.image.find(img => img.size === 'extralarge')['#text'];
-        
-        return imageUrl;
-    } catch (error) {
-        console.error('Error al obtener la carÃ¡tula:', error);
-        return null;
-    }
-    
-    
+
+
     }
 </script>
 

@@ -1,6 +1,7 @@
 /* Estilos para el fondo en movimiento */
 
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
+
 * {
     padding: 0;
     margin: 0;
@@ -13,10 +14,11 @@
 }
 
 body {
-    background: linear-gradient(135deg, #000000, #070606);
+
     background-size: 200% 200%;
     animation: gradientAnimation 10s infinite alternate;
     font-family: 'Roboto Slab', serif;
+    background-color: #10101A;
 }
 
 
@@ -174,13 +176,13 @@ body {
 /* Estilos para el Contenido */
 
 .content-box {
-    background-color:transparent;
+    background-color: transparent;
     padding: 30px;
     border-radius: 5px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     margin-bottom: 50px;
     border: #fafafa;
-   color: white;
+    color: white;
     border-style: double;
 }
 
@@ -359,6 +361,7 @@ body {
         opacity: 0;
         transform: translateX(-50px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -370,6 +373,7 @@ body {
         opacity: 0;
         transform: translateX(50px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -381,6 +385,7 @@ body {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -391,6 +396,7 @@ body {
     0% {
         background-position: 0% 50%;
     }
+
     100% {
         background-position: 100% 50%;
     }
@@ -403,6 +409,7 @@ body {
     0% {
         transform: translateX(0);
     }
+
     100% {
         transform: translateX(-100%);
     }
@@ -421,21 +428,27 @@ body {
     .my-5 {
         margin-bottom: 50px;
     }
+
     .inicio-section {
         padding: 80px 0;
     }
+
     .navbar-brand {
         padding: 0 10px;
     }
+
     .col-lg-6 {
         max-width: 100%;
     }
+
     .logo-img {
         max-width: 80%;
     }
+
     .content-box {
         padding: 20px;
     }
+
     .carousel-item img {
         height: 300px;
     }
@@ -451,21 +464,26 @@ body {
     .logo-img {
         max-width: 85%;
     }
+
     .inicio-section {
         padding: 2rem 0;
     }
+
     .inicio-section h2 {
         font-size: 1.5rem;
         margin-bottom: 0.5rem;
     }
+
     .inicio-section h1 {
         font-size: 2.5rem;
         margin-bottom: 1rem;
     }
+
     .inicio-section p {
         font-size: 1.8rem;
         margin-bottom: 1.5rem;
     }
+
     .inicio-section .btn {
         font-size: 0.9rem;
         padding: 0.5rem 1rem;
@@ -480,16 +498,20 @@ body {
         flex: 0 0 calc(100% - 10px);
         margin-right: 10px;
     }
+
     .slide img {
         width: 100%;
         height: auto;
     }
+
     .carousel-item img {
         height: 250px;
     }
+
     .slide img {
         height: 120px;
     }
+
     .slide {
         flex: 0 0 calc(100% - 10px);
         margin-right: 10px;

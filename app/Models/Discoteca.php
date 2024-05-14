@@ -12,7 +12,7 @@ class Discoteca extends Model
 
     public function ciudad()
     {
-        return $this->belongsTo(Ciudad::class, 'id');
+        return $this->belongsTo(Ciudad::class, 'id_ciudad');
     }
 
     public function evento()

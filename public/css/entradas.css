@@ -4,81 +4,81 @@ body {
     margin: 0;
     padding: 0;
     background-color: #10101A;
-    color: #FFFFFF; /* Color de texto principal */
+    color: #FFFFFF;
+    /* Color de texto principal */
 }
 
-/* Estilos de la barra de navegación */
+/* Estilos para el navbar */
 .navbar {
     padding: 1rem 0;
-    transition: background-color 0.3s ease;
-    background-color: #161624;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    /* Añade espacio alrededor del navbar */
 }
 
 .navbar-brand {
     font-size: 1.5rem;
-    color: #FFFFFF;
+    /* Tamaño de fuente del nombre de la marca */
 }
 
 .navbar-toggler {
     border: none;
-    transition: box-shadow 0.3s ease;
+    /* Elimina el borde del botón del toggler */
 }
 
 .navbar-nav .nav-link {
     padding: 0.5rem 1rem;
-    transition: color 0.3s ease;
-    color: #FFFFFF;
-}
-
-.navbar-nav .nav-link:hover {
-    color: orange;
+    /* Ajusta el espaciado de los enlaces del navbar */
 }
 
 .dropdown-menu {
     min-width: 10rem;
-    transition: transform 0.3s ease;
-    background-color: #161624;
-    border: none;
+    /* Ancho mínimo del menú desplegable */
 }
 
 .dropdown-item {
     padding: 0.5rem 1rem;
-    color: #FFFFFF;
+    /* Ajusta el espaciado de los elementos del menú desplegable */
 }
 
 .dropdown-item:hover {
-    background-color: #212133; /* Color de fondo más oscuro */
+    background-color: #f8f9fa;
+    /* Cambia el color de fondo al pasar el cursor por encima */
 }
 
 .orange-text {
     color: orange;
+    /* Cambia el color del texto destacado en naranja */
 }
 
 .logo {
     height: 40px;
+    /* Establece la altura del logotipo */
 }
 
 /* Estilos para los títulos */
-h1, h2 {
+h1,
+h2 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
     text-align: center;
     color: orange;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra suave para resaltar */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    /* Sombra suave para resaltar */
 }
 
 /* Estilos para el botón de cerrar sesión */
 button,
 #logout-btn {
-    padding: 10px 20px; /* Aumentar el padding para un aspecto más sustancial */
+    padding: 10px 20px;
+    /* Aumentar el padding para un aspecto más sustancial */
     background-color: #007bff;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    /* Sombra suave */
 }
+
 #logout-btn {
     margin-bottom: 20px;
 }
@@ -93,11 +93,12 @@ button,
 
 /* Estilos para los iconos del carrito */
 .cart-icon-container {
-    position: fixed;
+    position: relative;
     top: 20px;
     right: 20px;
     z-index: 1000;
 }
+
 .cart-icon-button {
     background-color: transparent;
     border: none;
@@ -116,6 +117,7 @@ button,
     list-style: none;
     padding: 20px;
 }
+
 .tipos-entrada-container li,
 .tipo-entrada-container {
     background-color: #1f1f2e;
@@ -126,6 +128,7 @@ button,
     justify-content: space-between;
     align-items: center;
 }
+
 /* Estilos para el campo de contador */
 .tipo-entrada-container input[type="number"] {
     width: 50px;
@@ -134,18 +137,21 @@ button,
     border: 1px solid #ccc;
     border-radius: 5px;
 }
+
 /* Estilos para la descripción y el precio */
 .descripcion-precio {
     flex-grow: 1;
     font-size: 16px;
     color: #fff;
 }
+
 /* Estilos para la descripción y precio del tipo de entrada */
 .tipo-entrada-container span {
     flex-grow: 1;
     margin-left: 10px;
     font-size: 16px;
 }
+
 /* Estilos para los botones de incremento/decremento */
 .contador-button {
     background-color: #007bff;
@@ -196,41 +202,57 @@ button,
     margin-bottom: 20px;
     flex-basis: calc(33.33% - 20px);
     box-sizing: border-box;
+    text-align: left;
 }
+
 #tiposEntradaContainer {
     list-style-type: none;
 }
+
 input[type="number"] {
     width: 60px;
     padding: 5px;
 }
+
 .boton-container {
     display: flex;
     align-items: center;
 }
+
 /* Estilos para el modal de la playlist */
 .swal2-container {
-    font-family: 'Rubik', sans-serif; /* Utiliza la misma fuente que el resto de la aplicación */
+    font-family: 'Rubik', sans-serif;
+    /* Utiliza la misma fuente que el resto de la aplicación */
 }
 
 .swal2-popup {
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave para el modal */
-    background-color: #1f1f2e; /* Color de fondo */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* Sombra suave para el modal */
+    background-color: #1f1f2e;
+    /* Color de fondo */
 }
 
 .swal2-title {
-    color: #FFA500; /* Color naranja para el título */
-    font-size: 28px; /* Tamaño de fuente más grande */
-    margin-bottom: 20px; /* Espaciado inferior adicional */
-    text-align: center; /* Centrar el título */
+    color: #FFA500;
+    /* Color naranja para el título */
+    font-size: 28px;
+    /* Tamaño de fuente más grande */
+    margin-bottom: 20px;
+    /* Espaciado inferior adicional */
+    text-align: center;
+    /* Centrar el título */
 }
 
 .swal2-content {
-    color: #fff; /* Color de texto blanco */
-    font-size: 18px; /* Tamaño de fuente más grande */
-    text-align: center; /* Centrar el contenido */
-    margin-bottom: 20px; /* Espaciado inferior adicional */
+    color: #fff;
+    /* Color de texto blanco */
+    font-size: 18px;
+    /* Tamaño de fuente más grande */
+    text-align: center;
+    /* Centrar el contenido */
+    margin-bottom: 20px;
+    /* Espaciado inferior adicional */
 }
 
 .swal2-actions {
@@ -239,30 +261,38 @@ input[type="number"] {
 }
 
 .swal2-button {
-    padding: 10px 20px; /* Aumentar el padding de los botones */
-    margin: 0 10px; /* Espaciado entre los botones */
-    font-size: 16px; /* Tamaño de fuente de los botones */
+    padding: 10px 20px;
+    /* Aumentar el padding de los botones */
+    margin: 0 10px;
+    /* Espaciado entre los botones */
+    font-size: 16px;
+    /* Tamaño de fuente de los botones */
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 .swal2-button:hover {
-    background-color: #FFA500; /* Color naranja al pasar el ratón sobre los botones */
-    color: #fff; /* Texto blanco al pasar el ratón sobre los botones */
+    background-color: #FFA500;
+    /* Color naranja al pasar el ratón sobre los botones */
+    color: #fff;
+    /* Texto blanco al pasar el ratón sobre los botones */
 }
 
 .swal2-close {
-    color: #FFA500; /* Color naranja para el botón de cerrar */
+    color: #FFA500;
+    /* Color naranja para el botón de cerrar */
 }
 
 /* Estilos específicos para el modal de confirmación */
 .swal2-confirm {
-    background-color: #007bff; /* Color azul para el botón de confirmación */
+    background-color: #007bff;
+    /* Color azul para el botón de confirmación */
 }
 
 .swal2-cancel {
-    background-color: #dc3545; /* Color rojo para el botón de cancelar */
+    background-color: #dc3545;
+    /* Color rojo para el botón de cancelar */
 }
 
 
@@ -280,6 +310,7 @@ input[type="number"] {
     margin-right: 100px;
     transform: translateX(100%);
 }
+
 .show-cart {
     right: 0;
     transition: transform 0.5s ease, left 0.5s ease;
@@ -302,18 +333,22 @@ input[type="number"] {
         transition: transform 0.3s ease;
         z-index: 999;
     }
+
     .navbar-collapse.show {
         transform: translateX(0);
     }
+
     .navbar-nav {
         flex-direction: column;
         align-items: center;
     }
+
     .navbar-nav .nav-link {
         padding: 1rem;
         color: #FFFFFF;
         text-align: center;
     }
+
     .navbar-toggler {
         display: block;
         position: absolute;
@@ -321,33 +356,59 @@ input[type="number"] {
         right: 1rem;
         z-index: 1000;
     }
-    .cart-icon-container {
-        display: none;
-    }
-    .content-container {
-        padding-top: 5rem;
-    }
+
+
 }
+
 @media screen and (max-width: 768px) {
     .content-container {
         padding: 10px;
     }
-    #carritoContainer {
-        right: -250px;
-    }
-    #cart-icon {
-        position: absolute;
-        right: 10px;
-        top: 10px;
-    }
+
+
+
     #detallesEvento,
     #tiposEntradaContainer {
         margin-bottom: 10px;
     }
 }
-@media screen and (max-width: 576px) {
-    #carritoContainer {
-        width: 100%;
-        right: 0;
+#responsiveMenuContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%; /* O ajusta el ancho según tus necesidades */
+    z-index: 1000;
+    background-color: #FFFFFF; /* Color de fondo del contenedor */
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
+}
+
+@media screen and (max-width: 991px) {
+    .navbar-collapse {
+        position: absolute;
+        top: 100%; /* Ajusta la posición vertical según tus necesidades */
+        left: 0;
+        width: 100%; /* O ajusta el ancho según tus necesidades */
+        background-color: #FFFFFF; /* Color de fondo del menú desplegable */
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2); /* Sombra suave */
+        z-index: 999;
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 1rem;
+        color: #000000; /* Color de texto */
+        text-align: center;
+    }
+
+    .navbar-toggler {
+        display: block;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        z-index: 1001; /* Asegura que el botón sea visible por encima del menú desplegable */
     }
 }

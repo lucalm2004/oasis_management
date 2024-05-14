@@ -70,8 +70,8 @@
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a href="{{ route('register') }}" class="nav-link"><i
-                                            class="fas fa-user-plus"></i> Registrarse</a>
+                                    <a href="{{ route('register') }}" class="nav-link"><i class="fas fa-user-plus"></i>
+                                        Registrarse</a>
                                 </li>
                             @endif
                         @endauth
@@ -80,24 +80,25 @@
             </div>
         </div>
     </nav>
-     <!-- Contenido principal -->
-     <div class="container mt-4">
+    <!-- Contenido principal -->
+    <div class="container mt-4">
         <div class="card">
             <div class="card-body">
                 <h2 class="card-title mb-4">Perfil de Usuario</h2>
-<!-- Monedas -->
-<div class="puntos-section">
-    <h4 class="text-center mb-4">Puntos</h4>
-    <div class="monedas">
-        <span>{{ $user->puntos ?? '0' }}</span>
-    </div>
-</div>
+                <!-- Monedas -->
+                <div class="puntos-section">
+                    <h4 class="text-center mb-4">Puntos</h4>
+                    <div class="monedas">
+                        <span>{{ $user->puntos ?? '0' }}</span>
+                    </div>
+                </div>
 
-<!-- Rol -->
-<div class="form-group">
-    <label for="rol">Rol:</label>
-    <input type="text" class="form-control" id="rol" value="{{ $user->rol->name ?? 'Sin Rol' }}" readonly>
-</div>
+                <!-- Rol -->
+                <div class="form-group">
+                    <label for="rol">Rol:</label>
+                    <input type="text" class="form-control" id="rol"
+                        value="{{ $user->rol->name ?? 'Sin Rol' }}" readonly>
+                </div>
 
 
                 <form id="profileForm" method="POST" action="{{ route('profile.update') }}">
@@ -140,36 +141,42 @@
     <br>
     <br>
 
-<!-- Footer Section -->
-<footer class="footer mt-auto py-5 bg-dark" id="contact" style="background-image: url('/img/oasisn2.jpg');">
-    <div class="container text-center">
-        <h2 class="text-white mb-4 animate__animated animate__fadeInUp">¿Listo para llevar tu negocio al siguiente nivel?</h2>
-        <p class="text-white mb-4 animate__animated animate__fadeInUp">Contáctanos para conocer cómo podemos colaborar juntos.</p>
-        <div class="mt-4">
-            <a href="mailto:oasis.management.daw@gmail.com" class="btn btn-outline-light btn-lg animate__animated animate__fadeInUp">
-                <i class="fas fa-envelope"></i> ¡Contáctanos ahora!
-            </a>
-        </div>
-        <div class="mt-4">
-            <a href="https://www.tiktok.com/@oasis_management2024?lang=es" class="text-white mr-3 animate__animated animate__fadeInUp">
-                <i class="fab fa-tiktok"></i> TikTok
-            </a>
-            <a href="https://www.instagram.com/oasis_management2024/" class="text-white mr-3 animate__animated animate__fadeInUp">
-                <i class="fab fa-instagram"></i> Instagram
-            </a>
-        </div>
-        <!-- Logos de Discotecas -->
-        <div id="slider" class="slider mt-5">
-            <div class="slide-track d-flex justify-content-center align-items-center">
-                @foreach ($discotecas as $discoteca)
-                    <div class="slide mr-3">
-                        <img src="{{ asset('img/discotecas/' . $discoteca->image) }}" alt="{{ $discoteca->name }}" class="img-fluid">
-                    </div>
-                @endforeach
+    <!-- Footer Section -->
+    <footer class="footer mt-auto py-5 bg-dark" id="contact" style="background-image: url('/img/oasisn2.jpg');">
+        <div class="container text-center">
+            <h2 class="text-white mb-4 animate__animated animate__fadeInUp">¿Listo para llevar tu negocio al siguiente
+                nivel?</h2>
+            <p class="text-white mb-4 animate__animated animate__fadeInUp">Contáctanos para conocer cómo podemos
+                colaborar juntos.</p>
+            <div class="mt-4">
+                <a href="mailto:oasis.management.daw@gmail.com"
+                    class="btn btn-outline-light btn-lg animate__animated animate__fadeInUp">
+                    <i class="fas fa-envelope"></i> ¡Contáctanos ahora!
+                </a>
+            </div>
+            <div class="mt-4">
+                <a href="https://www.tiktok.com/@oasis_management2024?lang=es"
+                    class="text-white mr-3 animate__animated animate__fadeInUp">
+                    <i class="fab fa-tiktok"></i> TikTok
+                </a>
+                <a href="https://www.instagram.com/oasis_management2024/"
+                    class="text-white mr-3 animate__animated animate__fadeInUp">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+            </div>
+            <!-- Logos de Discotecas -->
+            <div id="slider" class="slider mt-5">
+                <div class="slide-track d-flex justify-content-center align-items-center">
+                    @foreach ($discotecas as $discoteca)
+                        <div class="slide mr-3">
+                            <img src="{{ asset('img/discotecas/' . $discoteca->image) }}"
+                                alt="{{ $discoteca->name }}" class="img-fluid">
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
 
     <!-- Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

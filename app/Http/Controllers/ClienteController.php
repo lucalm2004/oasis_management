@@ -43,7 +43,7 @@ class ClienteController extends Controller
         $eventos = Evento::where('id_discoteca', $id)->get();
         return view('cliente.eventos', compact('discoteca', 'eventos', 'discotecas'));
     }
-    
+
 
     public function mostrar($id)
     {
@@ -138,10 +138,10 @@ class ClienteController extends Controller
     public function mostrarDetallesDiscoteca($id)
     {
         $discoteca = Discoteca::with('ciudad')->findOrFail($id);
-    
+
         return response()->json($discoteca);
     }
-    
+
 
 
 
@@ -212,8 +212,7 @@ class ClienteController extends Controller
         // Recorrer las entradas seleccionadas
         foreach ($entradasSeleccionadas as $tipoEntradaId) {
             // Consultar el producto asociado al tipo de entrada
-            $producto = Producto::find($tipoEntradaId);
-;
+            $producto = Producto::find($tipoEntradaId);;
             if ($producto) {
                 // dd($tipoEntradaId);
 
@@ -251,15 +250,15 @@ class ClienteController extends Controller
     {
         // Obtener el ID del usuario autenticado
         $idUsuario = auth()->user()->id;
-      /*   dd($idUsuario); */
+        /*   dd($idUsuario); */
 
         // Obtener los productos en el carrito del usuario con la información del producto
         $carrito = Carrito::where('id_user', $idUsuario)
-        ->join('productos', 'carrito.id_producto', '=', 'productos.id')
-        ->join('eventos', 'carrito.id_evento', '=', 'eventos.id') // Realizar un join con la tabla de eventos
-        ->select('carrito.*', 'productos.name', 'eventos.name') // Seleccionar el nombre del evento
-        ->get();
-    
+            ->join('productos', 'carrito.id_producto', '=', 'productos.id')
+            ->join('eventos', 'carrito.id_evento', '=', 'eventos.id') // Realizar un join con la tabla de eventos
+            ->select('carrito.*', 'productos.name', 'eventos.name') // Seleccionar el nombre del evento
+            ->get();
+
 
         // Devolver los productos en formato JSON
         return response()->json($carrito);
@@ -267,23 +266,24 @@ class ClienteController extends Controller
 
     public function eliminarProductoCarrito($id)
     {
-     /*    dd($id); */
+        /*    dd($id); */
         // Buscar el producto en el carrito por su ID
         /* $productoEnCarrito = Carrito::find($id); */
-       /*  dd($productoEnCarrito); */
+        /*  dd($productoEnCarrito); */
 
-       $productoEnCarrito = DB::table('carrito')
-       ->where('id', $id)->delete();
+        $productoEnCarrito = DB::table('carrito')
+            ->where('id', $id)->delete();
 
         if (!$productoEnCarrito) {
             // Si el producto no se encuentra en el carrito, devolver un error
             return response()->json(['error' => 'El producto no se encuentra en el carrito'], 404);
         }
 
-       /*  // Eliminar el producto del carrito
+        /*  // Eliminar el producto del carrito
         $productoEnCarrito->delete(); */
 
         // Devolver una respuesta exitosa
         return response()->json(['success' => true], 200);
     }
+    
 }

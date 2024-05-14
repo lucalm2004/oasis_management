@@ -1,132 +1,190 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <title>Oasis Managament - Bonificaciones Disponibles para Canjear</title>
+    <title>Oasis Management - Bonificaciones Disponibles para Canjear</title>
     <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
 
-   <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: sans-serif;
-        }
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+
+    <!-- GSAP Animation Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
 
         body {
             background-image: url('/img/atardecer.png');
-            /* Cambia 'background.jpg' por la ruta de tu imagen de fondo */
             background-size: cover;
             background-position: center;
-            /* Ajusta el tamaño y la posición de la imagen de fondo */
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            font-family: 'Rubik', sans-serif;
         }
 
         .container {
-            width: 100%;
-            height: 100vh;
+            width: 90%;
+            /* Ajusta el ancho del contenedor al 90% del viewport */
+            max-width: 1200px;
+            /* Establece un ancho máximo para el contenedor */
+            padding: 40px;
             color: white;
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-            justify-content: center;
-            background-color: rgba(9, 9, 33, 0.7);
-            /* Agrega un color de fondo semitransparente para mejorar la legibilidad del texto */
+            background-color: rgba(9, 9, 33, 0.9);
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            margin: 20px auto;
+            /* Añade un margen alrededor del contenedor y lo centra horizontalmente */
         }
 
         h1 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .bonificaciones-wrapper {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            /* Para distribuir las cards uniformemente */
+            font-size: 3rem;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #ffffff, #f9d423);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .card {
-            width: 300px;
-            padding: 10px;
-            margin: 0.25rem;
-            /* Ajusta el margen para reducir la separación */
-            cursor: pointer;
-            border-radius: 10px;
-            background-color: #10102a;
-            border: 1px solid #10102a;
-            transition: all .2s linear;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 20px;
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             color: white;
-            /* Establecer el color del texto en blanco */
+            margin-bottom: 20px;
+            /* Añade un espacio entre las tarjetas */
+            cursor: pointer;
+            width: 100%;
+            /* Ajusta el ancho del card al 100% del contenedor */
+            max-width: 400px;
+            /* Establece un ancho máximo para el card */
+            margin-left: auto;
+            /* Centra el card horizontalmente */
+            margin-right: auto;
         }
 
         .card:hover {
-            border-color: aqua;
-            transform: scale(1.01);
-            background-color: rgba(235, 152, 78);
-            box-shadow: 0 0px 5px 0px #cbc0c0;
+            background-color: rgba(235, 152, 78, 0.8);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transform: translateY(-10px) scale(1.05);
+            /* Eleva y escala la tarjeta al hacer hover */
         }
 
-        .top {
-            margin-bottom: 1rem;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
+        .icon {
+            font-size: 2rem;
+            margin-right: 10px;
+            transition: transform 0.3s ease;
         }
 
-        .top ul {
-            display: flex;
-            list-style: none;
+        .icon:hover {
+            transform: scale(1.2);
         }
 
-        .top ul li {
-            padding-left: 4px;
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 20px;
         }
 
-        article p {
-            font-size: 15px;
-            font-weight: 100;
-            margin-bottom: 1rem;
-            font-family: system-ui;
+        .review {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
         }
 
-        /* Estilos para el enlace */
-        a {
-            color: rgba(235, 152, 78);
-            text-decoration: none;
-            font-size: 1rem;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            background-color: rgba(255, 255, 255, 0.1);
-            /* Fondo semitransparente */
+        .points {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 30px;
+        }
+
+        .btn {
+            margin-top: 40px;
+            padding: 12px 24px;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 30px;
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        a:hover {
-            background-color: rgba(223, 146, 130);
-            /* Cambio de fondo al pasar el ratón */
+        .btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
             color: white;
+        }
+
+        /* Estilos adicionales */
+        .parallax-shadow {
+            transition: transform 0.3s ease;
+        }
+
+        .parallax-shadow:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .custom-bg {
+            transition: background-color 0.3s ease;
+        }
+
+        .custom-bg:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Media Query para dispositivos pequeños */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+                margin-bottom: 20px;
+            }
+
+            .card {
+                padding: 20px;
+                max-width: 100%;
+                /* Ajusta el ancho máximo del card al 100% en dispositivos pequeños */
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 
 <body>
-
     <div class="container">
-        <h1>Bonificaciones Disponibles para Canjear</h1>
-        <div class="bonificaciones-wrapper" id="bonificacionesContainer"></div>
 
-        <br><br>
-        <a href="{{ route('cliente.discoteca') }}">Volver a la lista de discotecas</a>
+        <h1>Bonificaciones Disponibles</h1>
+        <div class="row" id="bonificacionesContainer"></div>
+        <a href="{{ route('cliente.discoteca') }}" class="btn btn-primary custom-bg">Volver a la lista de discotecas</a>
     </div>
+
+    <!-- Bootstrap JS, jQuery, Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+        integrity="sha384-dtFUnYTAoXv19iWRynrP9+kXtV9z6k+gf2W6ZWrLvgF99mVn1eYHugRYQM0H1Xai" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-0pKIo0R4JfQn6dFwbW3hsO+9KcEwiPr/J5dd6G3adAtfMviqnlegjfzwMnqYyyi7" crossorigin="anonymous">
+    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -155,26 +213,63 @@
             bonificacionesContainer.innerHTML = '';
 
             bonificaciones.forEach(function(bonificacion) {
-                var bonificacionItem = document.createElement('div');
-                bonificacionItem.classList.add(
-                'card'); // Agregar la clase 'card' para aplicar los estilos de las cards
+                var bonificacionCard = document.createElement('div');
+                bonificacionCard.classList.add('col-md-6', 'col-lg-4', 'mb-4', 'animated-card');
 
                 var contenido = `
-                    <div class="top">
-                        <div class="clientImage">
-                            <img src="./client.png" alt="">
-                            <span>${bonificacion.name}</span>
+                    <div class="card parallax-shadow" onclick="animateCard(this)">
+                        <div class="card-body">
+                            <i class="fas fa-gift icon"></i>
+                            <div class="d-flex justify-content-center align-items-center mb-4">
+                                <h4 class="card-title">${bonificacion.name}</h4>
+                            </div>
+                            <div>
+                                <p class="review">${bonificacion.descripcion}</p>
+                                <p class="points"><i class="fas fa-coins icon"></i>${bonificacion.puntos} puntos</p>
+                            </div>
                         </div>
                     </div>
-                    <article>
-                        <p class="review">${bonificacion.descripcion}</p>
-                        <p>${bonificacion.puntos} puntos</p>
-                    </article>
                 `;
 
-                bonificacionItem.innerHTML = contenido;
-                bonificacionesContainer.appendChild(bonificacionItem);
+                bonificacionCard.innerHTML = contenido;
+                bonificacionesContainer.appendChild(bonificacionCard);
+
+                // Animación de entrada con GSAP
+                gsap.from(bonificacionCard, {
+                    opacity: 0,
+                    y: 50,
+                    duration: 0.6,
+                    ease: "power2.out"
+                });
             });
+        }
+
+        function animateCard(card) {
+            // Comprobar si la tarjeta ya está girando
+            if (!card.classList.contains('is-animating')) {
+                // Agregar una clase para marcar que la tarjeta está en proceso de animación
+                card.classList.add('is-animating');
+
+                // Animación de rotación con GSAP
+                gsap.to(card, {
+                    rotationY: '+=360', // Girar 360 grados adicionales cada vez que se hace clic
+                    duration: 0.85,
+                    ease: "power2.out",
+                    onComplete: function() {
+                        // Eliminar la clase de animación al completar la rotación
+                        card.classList.remove('is-animating');
+                    }
+                });
+
+                // Cargar la animación Lottie
+                const animation = lottie.loadAnimation({
+                    container: card,
+                    renderer: 'svg',
+                    loop: false,
+                    autoplay: true,
+                    path: 'https://assets2.lottiefiles.com/packages/lf20_2eNqyP.json'
+                });
+            }
         }
     </script>
 </body>

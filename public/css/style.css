@@ -1,11 +1,13 @@
-
 .container {
-    max-width: 800px; /* Ajusta el ancho máximo del contenido */
-    margin: 0 auto; /* Centra el contenido horizontalmente */
+    max-width: 800px;
+    /* Ajusta el ancho máximo del contenido */
+    margin: 0 auto;
+    /* Centra el contenido horizontalmente */
     padding: 20px;
     background-color: #ffffff;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
 }
 
 h1 {
@@ -42,7 +44,8 @@ h1 {
 }
 
 .table tbody tr:hover {
-    background-color: rgba(245, 118, 59, 0.1); /* Color de fondo al pasar el mouse */
+    background-color: rgba(245, 118, 59, 0.1);
+    /* Color de fondo al pasar el mouse */
 }
 
 /* Estilos globales */
@@ -51,7 +54,8 @@ body {
     margin: 0;
     padding: 0;
     background-color: #10101A;
-    color: #FFFFFF; /* Color de texto principal */
+    color: #FFFFFF;
+    /* Color de texto principal */
 }
 
 /* Estilos de la barra de navegación */
@@ -59,7 +63,8 @@ body {
     padding: 1rem 0;
     transition: background-color 0.3s ease;
     background-color: #161624;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    /* Sombra suave */
 }
 
 .navbar-brand {
@@ -95,7 +100,8 @@ body {
 }
 
 .dropdown-item:hover {
-    background-color: #212133; /* Color de fondo más oscuro */
+    background-color: #212133;
+    /* Color de fondo más oscuro */
 }
 
 .orange-text {
@@ -132,6 +138,7 @@ body {
     0% {
         transform: translateX(0);
     }
+
     100% {
         transform: translateX(-100%);
     }
@@ -141,6 +148,7 @@ body {
     from {
         transform: translateX(-100%);
     }
+
     to {
         transform: translateX(0);
     }

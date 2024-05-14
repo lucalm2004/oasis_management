@@ -271,7 +271,7 @@
                 valorarBtn.addEventListener('click', function() {
                     // Verificar si el usuario está autenticado
                     const authenticated =
-                    @json(auth()->check()); // Esto asume que estás usando Laravel y Blade
+                        @json(auth()->check()); // Esto asume que estás usando Laravel y Blade
 
                     if (!authenticated) {
                         // Mostrar popup SweetAlert si el usuario no está autenticado

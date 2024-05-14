@@ -82,7 +82,7 @@
 <div id="container">
     <!-- Puntos del Usuario -->
     <p class="points">Tienes <a href="#" id="puntosLink"><span id="puntosUsuario"></span></a> puntos.</p>
-    
+
     <div class="contenedor-input">
         <i class="fas fa-search lupa-naranja"></i>
         <input type="text" id="filtroNombre" placeholder="Filtrar por nombre...">
