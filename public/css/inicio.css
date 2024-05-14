@@ -174,11 +174,14 @@ body {
 /* Estilos para el Contenido */
 
 .content-box {
-    background-color: #ffffff;
+    background-color:transparent;
     padding: 30px;
     border-radius: 5px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     margin-bottom: 50px;
+    border: #fafafa;
+   color: white;
+    border-style: double;
 }
 
 .content-box h2 {
@@ -186,7 +189,7 @@ body {
 }
 
 .content-box p {
-    color: #000000;
+    color: #ffffff;
 }
 
 

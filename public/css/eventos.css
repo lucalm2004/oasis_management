@@ -11,7 +11,8 @@ body {
 a {
     color: #FFFFFF;
     text-decoration: none;
-    transition: color 0.3s ease; /* Transición suave para los enlaces */
+    transition: color 0.3s ease;
+    /* Transición suave para los enlaces */
 }
 
 a:hover {
@@ -23,7 +24,7 @@ a:hover {
 .navbar {
     padding: 1rem 0;
     transition: background-color 0.3s ease;
-    background-color: #161624;
+    background-color: #ffffff;
 }
 
 .navbar-brand {
@@ -79,10 +80,14 @@ a:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: #ffffff; /* Color de texto blanco */
-    border-radius: 10px; /* Bordes redondeados */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    animation: fadeInUp 0.5s ease; /* Animación de entrada al cargar */
+    color: #ffffff;
+    /* Color de texto blanco */
+    border-radius: 10px;
+    /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    animation: fadeInUp 0.5s ease;
+    /* Animación de entrada al cargar */
 }
 
 /* Animación de entrada */
@@ -91,6 +96,7 @@ a:hover {
         opacity: 0;
         transform: translateY(20px);
     }
+
     100% {
         opacity: 1;
         transform: translateY(0);
@@ -102,18 +108,23 @@ a:hover {
     font-size: 2rem;
     margin-bottom: 20px;
     text-align: center;
-    color: orange; /* Color de texto naranja */
+    color: orange;
+    /* Color de texto naranja */
 }
 
 /* Estilos para el contenedor de detalles de la discoteca */
 #detallesDiscoteca {
     width: 100%;
-    max-width: 800px; /* Ancho máximo para el contenido de detalles */
+    max-width: 800px;
+    /* Ancho máximo para el contenido de detalles */
     margin-top: 20px;
     padding: 20px;
-    border-radius: 8px; /* Bordes redondeados */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra suave */
-    animation: slideInLeft 0.5s ease; /* Animación de entrada al cargar */
+    border-radius: 8px;
+    /* Bordes redondeados */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* Sombra suave */
+    animation: slideInLeft 0.5s ease;
+    /* Animación de entrada al cargar */
 }
 
 /* Animación de deslizamiento desde la izquierda */
@@ -122,6 +133,7 @@ a:hover {
         opacity: 0;
         transform: translateX(-100%);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -132,7 +144,8 @@ a:hover {
 /* Estilos para los detalles de la Discoteca */
 .detalles-container {
     display: flex;
-    flex-wrap: wrap; /* Permitir que los elementos se envuelvan en pantallas más pequeñas */
+    flex-wrap: wrap;
+    /* Permitir que los elementos se envuelvan en pantallas más pequeñas */
     align-items: center;
     justify-content: space-between;
     padding: 20px;
@@ -168,29 +181,37 @@ a:hover {
 /* Media queries para ajustes responsivos */
 @media screen and (max-width: 768px) {
     .detalles-container {
-        flex-direction: column; /* Cambiar a disposición de columna en pantallas más pequeñas */
-        align-items: flex-start; /* Alinear elementos a la izquierda en pantallas más pequeñas */
+        flex-direction: column;
+        /* Cambiar a disposición de columna en pantallas más pequeñas */
+        align-items: flex-start;
+        /* Alinear elementos a la izquierda en pantallas más pequeñas */
     }
 
     .imagen-container img {
-        width: 100%; /* Hacer que la imagen ocupe todo el ancho del contenedor */
-        height: auto; /* Altura automática para mantener la proporción */
-        margin-bottom: 20px; /* Espacio entre la imagen y la información en pantallas más pequeñas */
+        width: 100%;
+        /* Hacer que la imagen ocupe todo el ancho del contenedor */
+        height: auto;
+        /* Altura automática para mantener la proporción */
+        margin-bottom: 20px;
+        /* Espacio entre la imagen y la información en pantallas más pequeñas */
     }
 
     .info-container {
-        margin-left: 0; /* Eliminar el margen izquierdo en pantallas más pequeñas */
+        margin-left: 0;
+        /* Eliminar el margen izquierdo en pantallas más pequeñas */
     }
 }
 
 
 /* Estilos para los títulos */
-h1, h2 {
+h1,
+h2 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
     text-align: center;
     color: orange;
 }
+
 /* Estilos para la sección de eventos */
 #eventosContainer {
     width: 100%;
@@ -207,14 +228,16 @@ h1, h2 {
 
 /* Estilos para cada tarjeta de evento */
 .reviewItem {
-    width: 100%; /* Ancho completo para ocupar el espacio disponible en cada columna */
+    width: 100%;
+    /* Ancho completo para ocupar el espacio disponible en cada columna */
     padding: 10px;
     cursor: pointer;
     border-radius: 10px;
     background-color: #161624;
     color: #FFFFFF;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    box-sizing: border-box; /* Incluir el padding y el borde en el ancho y alto del elemento */
+    box-sizing: border-box;
+    /* Incluir el padding y el borde en el ancho y alto del elemento */
 }
 
 .reviewItem:hover {
@@ -279,6 +302,7 @@ h1, h2 {
     0% {
         transform: translateX(0);
     }
+
     100% {
         transform: translateX(-100%);
     }
@@ -288,6 +312,7 @@ h1, h2 {
     from {
         transform: translateX(-100%);
     }
+
     to {
         transform: translateX(0);
     }
@@ -349,8 +374,10 @@ h1, h2 {
 .contenedor-input {
     display: flex;
     align-items: center;
-    justify-content: center; /* Centrar los elementos horizontalmente */
-    flex-wrap: wrap; /* Permitir que los elementos se envuelvan en pantallas más pequeñas */
+    justify-content: center;
+    /* Centrar los elementos horizontalmente */
+    flex-wrap: wrap;
+    /* Permitir que los elementos se envuelvan en pantallas más pequeñas */
     margin-bottom: 20px;
 }
 
@@ -362,14 +389,17 @@ h1, h2 {
 
 input[type="text"],
 input[type="date"] {
-    flex: 1; /* Ocupar el espacio restante */
+    flex: 1;
+    /* Ocupar el espacio restante */
     padding: 8px;
-    margin: 0 5px 10px 0; /* Ajustar los márgenes */
+    margin: 0 5px 10px 0;
+    /* Ajustar los márgenes */
     border: 1px solid #ccc;
     border-radius: 5px;
     background-color: #ffffff;
     color: #000000;
-    max-width: 200px; /* Establecer un ancho máximo para evitar que los elementos se estiren demasiado */
+    max-width: 200px;
+    /* Establecer un ancho máximo para evitar que los elementos se estiren demasiado */
 }
 
 /* Eventos */
@@ -381,10 +411,14 @@ input[type="date"] {
 
 /* Media query para pantallas más pequeñas */
 @media screen and (max-width: 768px) {
+
     .contenedor-input input[type="text"],
     .contenedor-input input[type="date"] {
-        max-width: none; /* Eliminar el ancho máximo en pantallas más pequeñas */
-        flex: 100%; /* Ocupar todo el ancho disponible */
-        margin-right: 0; /* Eliminar el margen derecho */
+        max-width: none;
+        /* Eliminar el ancho máximo en pantallas más pequeñas */
+        flex: 100%;
+        /* Ocupar todo el ancho disponible */
+        margin-right: 0;
+        /* Eliminar el margen derecho */
     }
 }

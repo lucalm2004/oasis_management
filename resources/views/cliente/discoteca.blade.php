@@ -150,6 +150,33 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.6/leaflet.awesome-markers.js"></script>
 
 <script>
+    function comoLlegar(lat, long) {
+    // Crear la URL para las direcciones usando latitud y longitud
+    var directionsUrl = "https://www.google.com/maps/dir/?api=1&destination=" + lat + "," + long;
+    
+    // Abrir una nueva pestaña o ventana del navegador con la URL de las direcciones
+    window.open(directionsUrl, "_blank");
+}
+
+    // Obtener la ubicación del usuario
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+        var lat = position.coords.latitude;
+        var lng = position.coords.longitude;
+
+        // Centrar el mapa en la ubicación del usuario
+        map.setView([lat, lng], 12); // Aquí puedes ajustar el nivel de zoom (12 es un ejemplo)
+
+        // Crear un marcador en la ubicación del usuario
+        var userMarker = L.marker([lat, lng]).addTo(map);
+        userMarker.bindPopup("¡Estás aquí!").openPopup();
+    }, function(error) {
+        console.error("Error al obtener la ubicación del usuario:", error);
+    });
+} else {
+    console.error("Geolocalización no soportada por este navegador.");
+}
+
 // Inicialización del mapa
     var map = L.map('mapid').setView([40.505, -100.09], 4);
 
@@ -173,7 +200,7 @@
                         <i class="fas fa-star"></i>
                     </button>
                     <button type="button" class="btn btn-info rounded-circle custom-btn" onclick="comoLlegar('{{ $discoteca->lat }}', '{{ $discoteca->long }}')">
-                        <i class="fas fa-directions"></i>
+                    <i class="fas fa-directions"></i>
                     </button>
                 </div>
             </div>
@@ -189,11 +216,7 @@
         // Lógica para marcar como favorito con el ID del lugar
     }
 
-    // Función para obtener direcciones de cómo llegar
-    function comoLlegar(lat, long) {
-        console.log("Obtener direcciones para: Latitud " + lat + ", Longitud " + long);
-        // Lógica para obtener direcciones de cómo llegar usando latitud y longitud
-    }
+
 </script>
 
 

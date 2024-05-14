@@ -1,129 +1,165 @@
+body {
+    font-family: 'Rubik', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #10101A;
+}
 
-        body {
-            font-family: 'Rubik', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #10101A;
-        }
 /* Estilos para el navbar */
 .navbar {
-    padding: 1rem 0; /* Añade espacio alrededor del navbar */
+    padding: 1rem 0;
+    /* Añade espacio alrededor del navbar */
 }
 
 .navbar-brand {
-    font-size: 1.5rem; /* Tamaño de fuente del nombre de la marca */
+    font-size: 1.5rem;
+    /* Tamaño de fuente del nombre de la marca */
 }
 
 .navbar-toggler {
-    border: none; /* Elimina el borde del botón del toggler */
+    border: none;
+    /* Elimina el borde del botón del toggler */
 }
 
 .navbar-nav .nav-link {
-    padding: 0.5rem 1rem; /* Ajusta el espaciado de los enlaces del navbar */
+    padding: 0.5rem 1rem;
+    /* Ajusta el espaciado de los enlaces del navbar */
 }
 
 .dropdown-menu {
-    min-width: 10rem; /* Ancho mínimo del menú desplegable */
+    min-width: 10rem;
+    /* Ancho mínimo del menú desplegable */
 }
 
 .dropdown-item {
-    padding: 0.5rem 1rem; /* Ajusta el espaciado de los elementos del menú desplegable */
+    padding: 0.5rem 1rem;
+    /* Ajusta el espaciado de los elementos del menú desplegable */
 }
 
 .dropdown-item:hover {
-    background-color: #f8f9fa; /* Cambia el color de fondo al pasar el cursor por encima */
+    background-color: #f8f9fa;
+    /* Cambia el color de fondo al pasar el cursor por encima */
 }
 
 .orange-text {
-    color: orange; /* Cambia el color del texto destacado en naranja */
+    color: orange;
+    /* Cambia el color del texto destacado en naranja */
 }
 
 .logo {
-    height: 40px; /* Establece la altura del logotipo */
+    height: 40px;
+    /* Establece la altura del logotipo */
 }
 
-        /* Nuevo estilo para el header */
-        header {
-            background-color: #666;
-            padding: 20px;
-            color: white;
-        }
+/* Nuevo estilo para el header */
+header {
+    background-color: #666;
+    padding: 20px;
+    color: white;
+}
 
-        /* Estilo para el contenedor del header */
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+/* Estilo para el contenedor del header */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-        /* Estilo para el mensaje de bienvenida */
-        .welcome-message {
-            flex: 1;
-            text-align: center;
-            margin-left: 260px;
-            /* Para centrar el texto horizontalmente */
-        }
+/* Estilo para el mensaje de bienvenida */
+.welcome-message {
+    flex: 1;
+    text-align: center;
+    margin-left: 260px;
+    /* Para centrar el texto horizontalmente */
+}
 
-        /* Estilo para los botones del header */
-        .header-buttons {
-            display: flex;
-            align-items: center;
-        }
+/* Estilo para los botones del header */
+.header-buttons {
+    display: flex;
+    align-items: center;
+}
 
-        /* Estilo para el botón de cerrar sesión */
-        .header-buttons form {
-            margin-left: 20px;
-        }
+/* Estilo para el botón de cerrar sesión */
+.header-buttons form {
+    margin-left: 20px;
+}
 
-        /* Ajustes para el botón de cerrar sesión */
-        #logout-btn {
-            background-color: #007bff;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.4s;
-            cursor: pointer;
-            border-radius: 8px;
-        }
+/* Estilos para el contenedor de puntos */
+.points {
+    font-size: 18px;
+    /* Tamaño de fuente */
+    color: #333;
+    /* Color de texto */
+    margin-bottom: 10px;
+    /* Espacio inferior */
+}
 
-        #cerrarpop {
-            background-color: #007bff;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.4s;
-            cursor: pointer;
-            border-radius: 8px;
-            align-items: center;
-        }
+/* Estilos para el enlace de puntos */
+#puntosLink {
+    text-decoration: none;
+    /* Eliminar subrayado */
+    color: #007bff;
+    /* Color de enlace */
+    transition: color 0.3s ease;
+    /* Transición de color suave */
+}
 
-        #logout-btn:hover {
-            color: #ddd;
-        }
+/* Estilos para el enlace de puntos al pasar el ratón */
+#puntosLink:hover {
+    color: #0056b3;
+    /* Cambiar color al pasar el ratón */
+}
 
-        /* Create two columns/boxes that floats next to each other */
-        #container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 20px auto; /* Añade margen exterior para centrar */
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+/* Ajustes para el botón de cerrar sesión */
+#logout-btn {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 8px;
+}
 
-        /* Style the footer */
-        /* footer {
+#cerrarpop {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 8px;
+    align-items: center;
+}
+
+#logout-btn:hover {
+    color: #ddd;
+}
+
+/* Create two columns/boxes that floats next to each other */
+#container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    /* Añade margen exterior para centrar */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Style the footer */
+/* footer {
             background-color: #777;
             padding: 10px;
             text-align: center;
@@ -131,70 +167,74 @@
             width: 100%;
         } */
 
-        /* Style the rest of the content */
-        h1,
-        p {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+/* Style the rest of the content */
+h1,
+p {
+    text-align: center;
+    margin-bottom: 20px;
+}
 
-        input[type="text"],
-        select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
+input[type="text"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+}
 
-        button[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #ffffff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
+button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #ffffff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
 
-        /* Estilos para el popup */
-        #popup {
-            display: none;
-            /* Inicialmente oculto */
-            position: fixed;
-            top: 50%;
-            /* Centrado verticalmente */
-            left: 50%;
-            /* Centrado horizontalmente */
-            transform: translate(-50%, -50%);
-            /* Centrado absoluto */
-            background-color: white;
-            padding: 20px;
-            border: 1px solid black;
-            border-radius: 5px;
-            z-index: 1000;
-            /* Valor alto para que esté por encima de otros elementos */
-        }
+/* Estilos para el popup */
+#popup {
+    display: none;
+    /* Inicialmente oculto */
+    position: fixed;
+    top: 50%;
+    /* Centrado verticalmente */
+    left: 50%;
+    /* Centrado horizontalmente */
+    transform: translate(-50%, -50%);
+    /* Centrado absoluto */
+    background-color: white;
+    padding: 20px;
+    border: 1px solid black;
+    border-radius: 5px;
+    z-index: 1000;
+    /* Valor alto para que esté por encima de otros elementos */
+}
 
 
 
-  /* Estilos para la tarjeta de discoteca */
-  .card {
+/* Estilos para la tarjeta de discoteca */
+.card {
     width: 300px;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     overflow: hidden;
-    margin-right: 20px; /* Agrega margen derecho */
-    margin-left: 20px; /* Agrega margen izquierdo */
+    margin-right: 20px;
+    /* Agrega margen derecho */
+    margin-left: 20px;
+    /* Agrega margen izquierdo */
 }
+
 /* Estilos personalizados para el mapa */
- /* Estilos del mapa */
- #mapid {
+/* Estilos del mapa */
+#mapid {
     border: 4px solid rgb(255, 255, 255);
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 30px;
 }
+
 .tooltip {
     background-color: #000;
     color: #fff;
@@ -209,8 +249,10 @@
     justify-content: center;
     align-items: center;
     border-radius: 50%;
-    color: white; /* Color del ícono */
-    background-color: rgb(0, 0, 0); /* Color del fondo del botón */
+    color: white;
+    /* Color del ícono */
+    background-color: rgb(0, 0, 0);
+    /* Color del fondo del botón */
     border: none;
     cursor: pointer;
 }
@@ -232,18 +274,26 @@
     align-items: center;
     cursor: pointer;
 }
+
 /* Ajustes para hacer el mapa más atractivo */
 .leaflet-popup-content-wrapper {
-    border-radius: 8px; /* Borde redondeado del popup */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra ligera */
-    padding: 10px; /* Espaciado interno */
-    background-color: white; /* Fondo blanco */
-    color: #333; /* Color del texto */
-    font-weight: bold; /* Texto en negrita */
+    border-radius: 8px;
+    /* Borde redondeado del popup */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* Sombra ligera */
+    padding: 10px;
+    /* Espaciado interno */
+    background-color: white;
+    /* Fondo blanco */
+    color: #333;
+    /* Color del texto */
+    font-weight: bold;
+    /* Texto en negrita */
 }
 
 .leaflet-popup-content {
-    text-align: center; /* Alinear contenido al centro */
+    text-align: center;
+    /* Alinear contenido al centro */
 }
 
 /* Estilos para los botones */
@@ -258,6 +308,7 @@ button[type="button"] {
     font-size: 16px;
     margin-top: 10px;
 }
+
 /* Estilos para la imagen de la tarjeta */
 .card-image {
     width: 100%;
@@ -275,185 +326,188 @@ button[type="button"] {
 }
 
 
-        .card:hover {
-            border-color: aqua;
-            transform: scale(1.01);
-            background-color: rgba(235, 152, 78);
-            box-shadow: 0 0px 5px 0px #cbc0c0;
-        }
+.card:hover {
+    border-color: aqua;
+    transform: scale(1.01);
+    background-color: rgba(235, 152, 78);
+    box-shadow: 0 0px 5px 0px #cbc0c0;
+}
 
-        .card h2 {
-            color: #fff;
-            font-size: 20px;
-            margin: 0;
-            padding: 10px;
-        }
+.card h2 {
+    color: #fff;
+    font-size: 20px;
+    margin: 0;
+    padding: 10px;
+}
 
-        .card p {
-            padding: 15px;
-            margin: 0;
-            color: #333;
-        }
+.card p {
+    padding: 15px;
+    margin: 0;
+    color: #333;
+}
 
-        .card a {
-            display: block;
-            text-align: center;
-            color: #fff;
-            text-decoration: none;
-            padding: 10px;
-        }
+.card a {
+    display: block;
+    text-align: center;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+}
 
-        /* Estilos para el contenedor de las tarjetas */
-        #discotecasContainer {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            /* Alinear los items al centro */
-            gap: 20px;
-            /* Espacio entre las tarjetas */
-        }
+/* Estilos para el contenedor de las tarjetas */
+#discotecasContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* Alinear los items al centro */
+    gap: 20px;
+    /* Espacio entre las tarjetas */
+}
 
-        h1 {
-            font-size: 24px;
-            margin-bottom: 10px;
-        }
+h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
 
-        .button {
-            background-color: orange;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            transition-duration: 0.4s;
-            cursor: pointer;
-            border-radius: 8px;
-        }
+.button {
+    background-color: orange;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 8px;
+}
 
-        .button:hover {
-            background-color: orange;
-            color: white;
-        }
+.button:hover {
+    background-color: orange;
+    color: white;
+}
 
-        .points {
-            text-align: center;
-            margin-top: 20px;
-        }
+.points {
+    text-align: center;
+    margin-top: 20px;
+}
 
-        .points a {
-            color: #007bff;
-            text-decoration: none;
-        }
+.points a {
+    color: #007bff;
+    text-decoration: none;
+}
 
-        .points a:hover {
-            text-decoration: underline;
-        }
+.points a:hover {
+    text-decoration: underline;
+}
 
-        #filtroNombre {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 300px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
+#filtroNombre {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 300px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
 
-        #selectCiudad {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            border: 1px solid #ccc;
-            border-radius: 300px;
-            font-size: 16px;
-            box-sizing: border-box;
-            margin-left: 30px
-        }
+#selectCiudad {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ccc;
+    border-radius: 300px;
+    font-size: 16px;
+    box-sizing: border-box;
+    margin-left: 30px
+}
 
-        /* Estilos para el botón de enviar */
-        button[type="submit"] {
-            background-color: orange;
-            /* Color de fondo */
-            color: white;
-            /* Color del texto */
-            padding: 10px 20px;
-            /* Espaciado interno */
-            border: none;
-            /* Sin borde */
-            border-radius: 5px;
-            /* Borde redondeado */
-            cursor: pointer;
-            /* Cambio de cursor al pasar el ratón */
-            font-size: 16px;
-            /* Tamaño de la fuente */
-        }
+/* Estilos para el botón de enviar */
+button[type="submit"] {
+    background-color: orange;
+    /* Color de fondo */
+    color: white;
+    /* Color del texto */
+    padding: 10px 20px;
+    /* Espaciado interno */
+    border: none;
+    /* Sin borde */
+    border-radius: 5px;
+    /* Borde redondeado */
+    cursor: pointer;
+    /* Cambio de cursor al pasar el ratón */
+    font-size: 16px;
+    /* Tamaño de la fuente */
+}
 
-        /* Estilos para el botón de cerrar */
-        button[type="button"] {
-            background-color: #f44336;
-            /* Color de fondo */
-            color: white;
-            /* Color del texto */
-            padding: 10px 20px;
-            /* Espaciado interno */
-            border: none;
-            /* Sin borde */
-            border-radius: 5px;
-            /* Borde redondeado */
-            cursor: pointer;
-            /* Cambio de cursor al pasar el ratón */
-            font-size: 16px;
-            /* Tamaño de la fuente */
-            margin-top: 10px;
-            /* Espacio superior */
-        }
+/* Estilos para el botón de cerrar */
+button[type="button"] {
+    background-color: #f44336;
+    /* Color de fondo */
+    color: white;
+    /* Color del texto */
+    padding: 10px 20px;
+    /* Espaciado interno */
+    border: none;
+    /* Sin borde */
+    border-radius: 5px;
+    /* Borde redondeado */
+    cursor: pointer;
+    /* Cambio de cursor al pasar el ratón */
+    font-size: 16px;
+    /* Tamaño de la fuente */
+    margin-top: 10px;
+    /* Espacio superior */
+}
 
-        .footer {
-            background-image: url('/img/oasisn2.jpg');
-            background-size: cover;
-            background-position: center;
-            padding: 60px 0;
-            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-            margin-top: 50px; /* Agrega margen superior */
-        }
+.footer {
+    background-image: url('/img/oasisn2.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 60px 0;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+    /* Agrega margen superior */
+}
 
 /* Estilos para los elementos dentro del footer */
 .footer a {
     color: #ffffff;
-    margin-right: 20px; /* Añade espacio entre enlaces */
+    margin-right: 20px;
+    /* Añade espacio entre enlaces */
 }
 
-        .footer a:hover {
-            color: #ffd54f;
-        }
+.footer a:hover {
+    color: #ffd54f;
+}
 
-        #puntosUsuario {
-            color: orange;
-            /* Color naranja */
-        }
+#puntosUsuario {
+    color: orange;
+    /* Color naranja */
+}
 
-        .points {
-            color: white;
-            /* Color blanco */
-        }
+.points {
+    color: white;
+    /* Color blanco */
+}
 
-        /* Contenedor para alinear los elementos */
-        .contenedor-input {
-            display: flex;
-            align-items: center;
-            padding-bottom: 40px;
-        }
+/* Contenedor para alinear los elementos */
+.contenedor-input {
+    display: flex;
+    align-items: center;
+    padding-bottom: 40px;
+}
 
-        /* Estilo para el icono de lupa en naranja */
-        .lupa-naranja {
-            color: orange;
-            margin-right: 15px;
-            /* Espacio entre el icono y el input */
-        }
-        /* Estilos para el slider */
+/* Estilo para el icono de lupa en naranja */
+.lupa-naranja {
+    color: orange;
+    margin-right: 15px;
+    /* Espacio entre el icono y el input */
+}
+
+/* Estilos para el slider */
 
 .slider {
     width: 100%;
@@ -474,6 +528,7 @@ button[type="button"] {
 .slide img {
     width: 100%;
 }
+
 /* Animaciones */
 
 @keyframes fadeInLeft {
@@ -481,6 +536,7 @@ button[type="button"] {
         opacity: 0;
         transform: translateX(-50px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -492,6 +548,7 @@ button[type="button"] {
         opacity: 0;
         transform: translateX(50px);
     }
+
     to {
         opacity: 1;
         transform: translateX(0);
@@ -503,6 +560,7 @@ button[type="button"] {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -513,6 +571,7 @@ button[type="button"] {
     0% {
         background-position: 0% 50%;
     }
+
     100% {
         background-position: 100% 50%;
     }
@@ -525,7 +584,33 @@ button[type="button"] {
     0% {
         transform: translateX(0);
     }
+
     100% {
         transform: translateX(-100%);
+    }
+}
+
+/* Estilos para elementos específicos */
+@media (max-width: 768px) {
+    .navbar-nav .nav-link {
+        padding: 0.5rem;
+    }
+    .header-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .welcome-message, .header-buttons {
+        margin-left: 0;
+        margin-right: 0;
+        text-align: center;
+    }
+    #logout-btn, #cerrarpop {
+        margin-left: 0;
+    }
+    .card {
+        max-width: 100%;
+    }
+    .container {
+        padding: 10px;
     }
 }
