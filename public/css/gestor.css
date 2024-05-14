@@ -968,21 +968,27 @@ hr,
 
 #tablaSolicitudes {
     max-width: 60%;
-    margin: 0 auto;
-    border-collapse: collapse;
+    margin: 5% auto;
+    /* Ajustar margen superior e inferior */
+    border-collapse: separate;
+    /* Separar los bordes de las celdas */
+    border-spacing: 10px;
+    /* Establecer el espacio entre las celdas */
     overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     color: black;
     background-color: white;
-    /* margin-right: 150px; */
-    margin-left: 20%;
+    margin-left: 10%;
     position: fixed;
     float: right;
     z-index: 99999;
-    margin-top: 5%;
-    /* Establecer la posición */
-    /* Ajustar el z-index */
+    text-align: center;
+}
+
+thead {
+    background-color: #F5763B;
+    color: white;
 }
 
 #aceptar {

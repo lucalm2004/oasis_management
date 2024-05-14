@@ -18,6 +18,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ClienteRegisterMail;
+use App\Mail\CambiarEstadorMail;
+use App\Mail\EliminarMail;
+use App\Mail\EditarMail;
+use App\Models\Discoteca;
 
 class AdminController extends Controller
 {
@@ -78,8 +84,12 @@ class AdminController extends Controller
 
             $user->habilitado = $user->habilitado == 1 ? 0 : 1;
             $user->save();
+            
 
             DB::commit();
+            $user_correo = User::findOrFail($user->id);
+            $email = $user_correo->email;
+            Mail::to($email)->send(new CambiarEstadorMail($user_correo));
 
           
             return response()->json(['success' => true]);
@@ -189,11 +199,23 @@ class AdminController extends Controller
                 }
           
             }
+           
         }else {
             DB::table('users_discotecas')->where('id_users', $id)->delete();
           
             
         }
+        $user_correo = User::findOrFail($id);
+        /*  dd($user_correo); */
+        $rol_correo = Rol::findOrFail($user_correo->id_rol);
+        $discotecaiD_correo = UserDiscoteca::where("id_users", "=", $user_correo->id)->first();
+        if ($discotecaiD_correo) {
+            $discoteca_correo = Discoteca::findOrFail($discotecaiD_correo->id_discoteca);
+        } else {
+            $discoteca_correo = null;
+        }
+         $email = $user_correo->email;
+         Mail::to($email)->send(new EditarMail($user_correo, $discoteca_correo, $rol_correo));
 
         // Confirmar la transacción
         DB::commit();
@@ -250,6 +272,9 @@ class AdminController extends Controller
                     $cvs->delete();
                 } 
             }
+            $user_correo = User::findOrFail($id);
+            $email = $user_correo->email;
+            Mail::to($email)->send(new EliminarMail($user_correo));
     
             // Eliminar el usuario principal si existe
             $user = User::findOrFail($id);
@@ -257,8 +282,10 @@ class AdminController extends Controller
                 $user->delete();
             }
             
+            
             // Confirmar la transacción
             DB::commit();
+           
     
             return response()->json(['success' => true, 'message' => 'Usuario eliminado correctamente']);
         } catch (\Exception $e) {
@@ -306,6 +333,8 @@ class AdminController extends Controller
             $user->verificado= 1;
             $user->save();
 
+           
+
             $discoteca = $request->input('discoteca');
             if ($discoteca !== null) {
                 $gestorExistente = UserDiscoteca::where('id_discoteca', $discoteca)
@@ -326,6 +355,9 @@ class AdminController extends Controller
             }
                
             DB::commit();
+            $user_correo = User::findOrFail($user->id);
+            $email = $user_correo->email;
+            Mail::to($email)->send(new ClienteRegisterMail($user_correo));
     
             return response()->json(['success' => 'Usuario creado correctamente.']);
         } catch (\Exception $e) {
