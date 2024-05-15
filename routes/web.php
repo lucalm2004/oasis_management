@@ -120,7 +120,10 @@ Route::middleware(AdminOnly::class)->group(function () {
         Route::get('/admin5', function () {
             return view('admin/crudeventos');
         })->middleware(['auth', 'verified'])->name('admin.crudeventos');
-    
+        Route::get('/admin6', function () {
+            return view('admin/crudcanciones');
+        })->middleware(['auth', 'verified'])->name('admin.crudcanciones');
+        
        
         Route::controller(AdminController::class)->group(function () {
     
@@ -166,6 +169,14 @@ Route::middleware(AdminOnly::class)->group(function () {
             /* CRUD EVENTOS */
             Route::post('admin5/crudeventos', 'showCrudEventos')->name('crud.showCrudEventos');
             Route::delete('admin5/crudeventos/{id}', 'EliminarEventos')->name('crud.EliminarEventos');
+
+            /* CRUD CANCIONES */
+            Route::post('admin6/crudcanciones', 'showCrudCanciones')->name('crud.showCrudCanciones');
+            Route::get('admin6/crudcanciones/artistas', 'obtenerArtistas')->name('crud.obtenerArtistas');
+            Route::delete('admi6/crudcanciones/{id}', 'EliminarCanciones')->name('crud.EliminarCanciones');
+            Route::get('admi6/crudcanciones/modadmin/{id}', 'editCanciones')->name('crud.editCanciones');
+            Route::post('admi6/crudcanciones/actualizar/{id}', 'actualizarCanciones')->name('crud.actualizarCanciones');
+            Route::post('admi6/crudcanciones/insercancion', 'storeCancion')->name('crud.storeCancion');
        
         });
     

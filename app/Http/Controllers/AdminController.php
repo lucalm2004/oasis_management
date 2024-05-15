@@ -15,8 +15,8 @@ use App\Models\CVUser;
 use App\Models\eventos;
 use App\Models\PlaylistCancion;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;  
+   use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ClienteRegisterMail;
@@ -27,7 +27,13 @@ use App\Mail\EventoEliminadoMail;
 use App\Mail\AcceptarSolicitudMail;
 use App\Mail\RechazarSolicitudMail;
 use App\Mail\DiscotecaEliminadaMail;
+use App\Mail\DiscotecaModificadaMail;
+use App\Models\Artista;
+use App\Models\ArtistaCancion;
 use App\Models\Discoteca;
+use App\Models\Cancion;
+use App\Models\Producto;
+
 
 class AdminController extends Controller
 {
@@ -44,7 +50,7 @@ class AdminController extends Controller
           if ($request->input('busqueda')) {
               $data = $request->input('busqueda');
               $query
-                  ->orWhere('email', 'like', "%$data%");
+                  ->orWhere('email  ', 'like', "%$data%");
           }
   
           // Verificar si se proporcionó un filtro de rol
@@ -720,6 +726,18 @@ class AdminController extends Controller
             $discotecaNueva->save();
     
             DB::commit();
+
+            $user_correo = DB::table('users')
+            ->join('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
+            ->where('users_discotecas.id_discoteca', $id)
+            ->where('users.id_rol', 3) // Suponiendo que el rol de camarero tiene id_rol = 4
+            ->select('users.*')
+            ->first();
+
+            $email = $user_correo->email;
+            $discoteca_correo = Discoteca::findOrFail($id);
+            $ciudad_correo = Ciudad::findOrfail($discoteca_correo->id_ciudad);
+            Mail::to($email)->send(new DiscotecaModificadaMail($user_correo, $discoteca_correo, $ciudad_correo));
     
             return response()->json(['success' => 'Discoteca creada correctamente.']);
         } catch (\Exception $e) {
@@ -1100,6 +1118,169 @@ class AdminController extends Controller
         }
 
     }
+
+    /* CRUD CANCIONES */
+
+    /* mostrar crud con filtros */
+    public function showCrudCanciones(Request $request){
+        $query = DB::table('canciones')
+            ->join('artistas_canciones', 'canciones.id', '=', 'artistas_canciones.id_cancion')
+            ->join('artistas', 'artistas_canciones.id_artista', '=', 'artistas.id')
+            ->select('canciones.*', 'artistas.name as nombre_artista');
+           
+        // Verificar si se proporcionó un filtro de búsqueda
+        if ($request->input('busqueda')) {
+            $data = $request->input('busqueda');
+            $query->where('canciones.name', 'like', "%$data%");
+        }
+    
+        // Verificar si se proporcionó un filtro de ciudad
+        if ($request->input('artista')) {
+            $artistaID = $request->input('artista');
+            $query->where('artistas_canciones.id_artista', $artistaID);
+        }
+    
+        // Ordenar por el ID de la discoteca
+        $query->orderBy('canciones.id');
+    
+        $artistas = $query->get(); 
+    
+        return response()->json($artistas);
+
+    }
+
+    /* mostrar en el desplegable artistas */
+    public function obtenerArtistas(){
+        $artistas = Artista::all();
+        return response()->json($artistas);
+
+    }
+
+
+    /* eliminar canciones */
+
+    public function EliminarCanciones($id){
+        try {
+            DB::beginTransaction();
+            $ArtistasCanciones= ArtistaCancion::where("id_cancion", $id)->get();
+            foreach($ArtistasCanciones as $ArtistasCancion){
+                $ArtistasCancion->delete();
+            }
+            PlaylistCancion::where("id_canciones", $id)->delete();
+            Cancion::findOrFail($id)->delete();
+            Producto::findOrFail($id)->delete();
+            // Confirmar la transacción
+            DB::commit();
+    
+            return response()->json(['success' => true, 'message' => 'Canción eliminada correctamente']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            return response()->json(['success' => false, 'error' => 'Error al eliminar canción: ' . $e->getMessage()], 500);
+        }
+    }
+
+    /* mostrar form editar */
+    public function editCanciones($id){
+
+        $canciones = Cancion::findOrFail($id);
+        $canciones_artistas = ArtistaCancion::where("id_cancion", $id)->first();
+        $ArtistaID = $canciones_artistas->id_artista;
+        return response()->json([
+            'canciones' => $canciones,
+            'ArtistaID' => $ArtistaID,
+        ]);
+
+    }
+
+    /* actualizar cancion */
+    public function actualizarCanciones($id, Request $request){
+        
+        try {
+
+            DB::beginTransaction();
+            $cancion = Cancion::findOrFail($id);
+            $nombre = $request->input("nombre");
+            $artista = $request->input("artista");
+        
+            // Verificar si ya existe una canción con el mismo nombre y el mismo ID de artista
+            $existeCancion = DB::table('canciones')
+                ->join('artistas_canciones', 'canciones.id', '=', 'artistas_canciones.id_cancion')
+                ->where('canciones.name', $nombre)
+                ->where('artistas_canciones.id_artista', $artista)
+                ->where('canciones.id', '!=', $id) // Excluir la canción actual de la búsqueda
+                ->exists();
+        
+            if ($existeCancion) {
+                return response()->json(['error' => 'Ya existe una canción con este nombre asociada al mismo artista.'], 400);
+            }
+    
+            $cancion->name = $nombre;
+            $cancion->save();
+    
+            $producto = Producto::findOrFail($id);
+            $producto->name = $nombre;
+            $producto->save();
+    
+            $ArtistasCancion = ArtistaCancion::where("id_cancion", $id)->first();
+            $ArtistasCancion->id_artista = $artista;
+            $ArtistasCancion->save();
+    
+            DB::commit();
+    
+            return response()->json(['message' => 'Canción actualizada correctamente']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Error al actualizar la canción: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function storeCancion(Request $request){
+        try {
+
+            DB::beginTransaction();
+           
+            $nombre = $request->input("nombre");
+            $artista = $request->input("artista");
+        
+            // Verificar si ya existe una canción con el mismo nombre y el mismo ID de artista
+            $existeCancion = DB::table('canciones')
+                ->join('artistas_canciones', 'canciones.id', '=', 'artistas_canciones.id_cancion')
+                ->where('canciones.name', $nombre)
+                ->where('artistas_canciones.id_artista', $artista)
+                ->exists();
+        
+            if ($existeCancion) {
+                return response()->json(['error' => 'Ya existe una canción con este nombre asociada al mismo artista.'], 400);
+            }
+           
+    
+            $producto = new Producto();
+            $producto->name = $nombre;
+            $producto->save();
+
+            $cancion = new Cancion;
+            $cancion->id = $producto->id;
+            $cancion->name = $nombre;
+            $cancion->precio = "3.00";
+            $cancion->save();
+            
+            $ArtistasCancion = new ArtistaCancion();
+            $ArtistasCancion->id_cancion = $producto->id;
+            $ArtistasCancion->id_artista = $artista;
+            $ArtistasCancion->save();
+    
+            DB::commit();
+    
+            return response()->json(['message' => 'Canción creada correctamente']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['error' => 'Error al crear la canción: ' . $e->getMessage()], 500);
+        }
+
+    }
+
+
     
     
 }
