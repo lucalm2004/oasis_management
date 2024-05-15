@@ -24,6 +24,9 @@ Oasis Management es una aplicación web diseñada para revolucionar la gestión 
 
 9. **Administración General:** Un administrador central supervisa todos los aspectos internos de la aplicación, asegurando su correcto funcionamiento y gestionando las actualizaciones y modificaciones necesarias.
 
+## Enlace Figma
+[Enlace a Figma](https://www.figma.com/file/HBt13tBzCn5kN9OCwGNQHp/MOCKUP-OASIS-MANAGMENT?type=design&node-id=256-761&mode=design&t=RmNfyJD0oIZHqXzm-0)
+
 ## Equipo de Desarrollo
 
 ### Backend:
