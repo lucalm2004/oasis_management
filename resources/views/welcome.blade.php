@@ -16,6 +16,12 @@
 
     <!-- SweetAlert CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <style>
+        .text-orange {
+            color: orange;
+            /* Define el color naranja */
+        }
+    </style>
 </head>
 
 <body>
@@ -116,12 +122,10 @@
 
 
     <section class="full-width-section py-5 animate__animated animate__delay-1s">
-        <div class="container-fluid"> <!-- Usar container-fluid para ocupar todo el ancho -->
-            <div class="row justify-content-center"> <!-- Centrar el contenido horizontalmente -->
+        <div class="container-fluid">
+            <div class="row justify-content-center">
                 <div class="col-md-9 col-lg-7 animated">
-                    <!-- Ajustar el tamaño de la columna para diferentes tamaños de pantalla -->
                     <div class="content-box text-center">
-                        <!-- Verifica la ruta y la extensión de la imagen -->
                         <img src="/img/gente.avif" class="img-fluid mb-4" alt="Imagen 4">
                         <h2 class="h2 mb-4"><i class="fas fa-glass-cheers"></i> Descubre el mejor entretenimiento
                             nocturno</h2>
@@ -134,6 +138,23 @@
         </div>
     </section>
 
+
+    <section class="py-5 bg-light animate__animated animate__fadeIn">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h2 class="h2 mb-4 text-orange"><i class="fas fa-star text-orange"></i> La Era Oasis</h2>
+                    <p class="lead mb-4">Explora la era de Oasis Management, gestionando clubes de ocio nocturno con
+                        innovación y dedicación total a nuestros clientes.</p>
+                    <p class="lead mb-4">Descubre cómo conectamos a los amantes del entretenimiento nocturno con los
+                        mejores eventos, ofreciendo experiencias únicas.</p>
+                </div>
+                <div class="col-md-6 text-center">
+                    <img src="/img/chat1.jpg" class="img-fluid mb-4" alt="Era Oasis Image">
+                </div>
+            </div>
+        </div>
+    </section>
 
 
     <!-- Sección de Quiénes somos -->
@@ -159,6 +180,28 @@
                         <p>Ofrecemos una interfaz robusta y fácil de usar para organizar y promover eventos, desde la
                             gestión de invitaciones hasta la reserva de entradas.</p>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Números -->
+    <section id="más-info" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="h2 mb-4 text-center">Por Los Números</h2>
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <h3 class="display-4 text-orange"><i class="fas fa-users"></i> {{ $numClubes }}</h3>
+                    <p>Clubes Se Han Unido</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <h3 class="display-4 text-orange"><i class="fas fa-smile"></i> {{ $numUsuarios }}</h3>
+                    <p>Usuarios Felices</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <h3 class="display-4 text-orange"><i class="fas fa-star"></i>
+                        {{ number_format($mediaEstrellas, 2) }}</h3>
+                    <p>Media de Estrellas</p>
                 </div>
             </div>
         </div>
@@ -193,8 +236,8 @@
     </section>
 
     <!-- Sección de Valorar discotecas -->
-    <section id="valorar" class="container text-center my-5 animate__animated animate__fadeInUp">
-        <div class="rating-section">
+    <section id="más-info" class="py-5 bg-light animate__animated animate__fadeIn">
+        <div class="container text-center">
             <h3 class="rating-title">Valora nuestras discotecas</h3>
             <p class="rating-description">¿Cómo calificarías tu experiencia en nuestras discotecas asociadas?</p>
             <div class="rating-button">
@@ -210,7 +253,80 @@
             </div>
         </div>
     </section>
+    <!-- Sección de Preguntas Frecuentes (FAQ) -->
+    <section class="py-5 ">
+        <div class="container">
+            <h2 class="h2 mb-4 text-orange"><i class="fas fa-question-circle text-orange"></i> Preguntas Frecuentes
+            </h2>
 
+            <!-- Lista de Preguntas y Respuestas -->
+            <div class="accordion" id="faqAccordion">
+
+                <!-- Pregunta 1 -->
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link" type="button" data-toggle="collapse"
+                                data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                ¿Cuáles son los beneficios de unirse a Oasis Management?
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                        data-parent="#faqAccordion">
+                        <div class="card-body">
+                            Al unirte a Oasis Management, tendrás acceso a los mejores eventos nocturnos, podrás
+                            reservar
+                            entradas fácilmente y disfrutar de promociones exclusivas. Además, nuestra plataforma
+                            facilita la
+                            gestión de eventos en discotecas.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pregunta 2 -->
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                ¿Cómo puedo contactar al equipo de Oasis Management?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#faqAccordion">
+                        <div class="card-body">
+                            Puedes contactarnos enviando un correo electrónico a oasis.management.daw@gmail.com o a
+                            través
+                            de nuestros perfiles en redes sociales como TikTok e Instagram.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pregunta 3 -->
+                <div class="card">
+                    <div class="card-header" id="headingThree">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse"
+                                data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                ¿Cómo puedo valorar las discotecas asociadas?
+                            </button>
+                        </h2>
+                    </div>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                        data-parent="#faqAccordion">
+                        <div class="card-body">
+                            Para valorar nuestras discotecas asociadas, puedes hacer clic en el botón "Valorar" en
+                            nuestra
+                            página web. Si no estás autenticado, será necesario iniciar sesión para realizar la
+                            valoración.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- Footer Section -->
     <footer class="footer mt-auto py-5 bg-dark" id="contact" style="background-image: url('/img/oasisn2.jpg');">
         <div class="container text-center">

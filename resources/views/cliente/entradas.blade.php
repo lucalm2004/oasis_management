@@ -18,70 +18,72 @@
 <body>
 
     <!-- Barra de Navegación -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white">
-    <div class="container">
-        <a class="navbar-brand" href="{{ route('welcome') }}">
-            <img src="/img/logonegro.png" class="logo mr-2" alt="Logo">
-            <span class="font-weight-bold text-uppercase">
-                Oasis <span class="orange-text">Management</span>
-            </span>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <!-- Elementos del Navbar -->
-                <!-- Botón de Perfil -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-user"></i> Mi Perfil
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container">
+            <a class="navbar-brand" href="{{ route('welcome') }}">
+                <img src="/img/logonegro.png" class="logo mr-2" alt="Logo">
+                <span class="font-weight-bold text-uppercase">
+                    Oasis <span class="orange-text">Management</span>
+                </span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <!-- Elementos del Navbar -->
+                    <!-- Botón de Perfil -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i> Mi Perfil
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            @auth
+                                <a class="dropdown-item" href="{{ route('perfil') }}">Ver Perfil</a>
+                                <form id="logoutForm" action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                                </form>
+                            @else
+                                <a class="dropdown-item" href="{{ route('login') }}">Iniciar Sesión</a>
+                                <a class="dropdown-item" href="{{ route('register') }}">Registrarse</a>
+                            @endauth
+                        </div>
+                    </li>
+                    <!-- Enlace de Contacto -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('contacto') }}">
+                            <i class="fas fa-envelope"></i> Contacto
+                        </a>
+                    </li>
+                    <!-- Elemento del Carrito -->
+                    <li class="nav-item">
+                        <a id="cart-icon" class="nav-link" href="#">
+                            <i class="fas fa-shopping-cart"></i>
+                        </a>
+                    </li>
+                    <!-- Otros Elementos -->
+                    @if (Route::has('login'))
                         @auth
-                            <a class="dropdown-item" href="{{ route('perfil') }}">Ver Perfil</a>
-                            <form id="logoutForm" action="{{ route('logout') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="dropdown-item">Cerrar Sesión</button>
-                            </form>
                         @else
-                            <a class="dropdown-item" href="{{ route('login') }}">Iniciar Sesión</a>
-                            <a class="dropdown-item" href="{{ route('register') }}">Registrarse</a>
-                        @endauth
-                    </div>
-                </li>
-                <!-- Enlace de Contacto -->
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('contacto') }}">
-                        <i class="fas fa-envelope"></i> Contacto
-                    </a>
-                </li>
-                <!-- Elemento del Carrito -->
-                <li class="nav-item">
-                    <a id="cart-icon" class="nav-link" href="#">
-                        <i class="fas fa-shopping-cart"></i>
-                    </a>
-                </li>
-                <!-- Otros Elementos -->
-                @if (Route::has('login'))
-                    @auth
-                    @else
-                        <li class="nav-item">
-                            <a href="/google-auth/redirect" class="nav-link"><i class="fab fa-google"></i> Login Google</a>
-                        </li>
-                        @if (Route::has('register'))
                             <li class="nav-item">
-                                <a href="{{ route('register') }}" class="nav-link"><i class="fas fa-user-plus"></i> Registrarse</a>
+                                <a href="/google-auth/redirect" class="nav-link"><i class="fab fa-google"></i> Login
+                                    Google</a>
                             </li>
-                        @endif
-                    @endauth
-                @endif
-            </ul>
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a href="{{ route('register') }}" class="nav-link"><i class="fas fa-user-plus"></i>
+                                        Registrarse</a>
+                                </li>
+                            @endif
+                        @endauth
+                    @endif
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
 
     <!-- Contenido Principal -->
@@ -215,7 +217,7 @@
                 if (canciones.length > 0) {
                     // Si hay canciones, construir el HTML de la playlist
                     canciones.forEach(function(cancion) {
-                        playlistHTML += '<p>' + cancion.name + '</p>';
+                        playlistHTML += '<p class="playlist-item">' + cancion.name + '</p>';
                     });
                 } else {
                     // Si no hay canciones, mostrar un mensaje indicando que no hay canciones en la playlist
@@ -250,11 +252,15 @@
             // Estilo CSS personalizado para el botón de confirmación
             const style = document.createElement('style');
             style.innerHTML = `
-        .btn-naranja {
-            background-color: orange !important;
-            border-color: orange !important;
-        }
-    `;
+    .btn-naranja {
+        background-color: orange !important;
+        border-color: orange !important;
+    }
+
+    .playlist-item {
+        color: white; /* Aplicar color blanco al texto de las canciones */
+    }
+`;
             document.head.appendChild(style);
 
 
@@ -535,7 +541,6 @@
                 xhr.open('GET', '/cliente/carrito', true);
                 xhr.send();
             }
-            
         </script>
 
 </body>

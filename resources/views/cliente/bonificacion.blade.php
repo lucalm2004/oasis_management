@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oasis Management - Bonificaciones Disponibles para Canjear</title>
     <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -30,10 +32,13 @@
             margin: 0;
             padding: 0;
             font-family: 'Rubik', sans-serif;
+            padding-top: 5%;
+            padding-bottom: 5%;
         }
 
         .container {
             width: 90%;
+
             /* Ajusta el ancho del contenedor al 90% del viewport */
             max-width: 1200px;
             /* Establece un ancho máximo para el contenedor */
@@ -142,6 +147,88 @@
             background-color: rgba(255, 255, 255, 0.2);
         }
 
+        /* Estilos para el botón de canjear */
+        .btn-canjear {
+            background-color: rgba(235, 152, 78);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-canjear:hover {
+            background-color: #10102a;
+        }
+
+        /* Estilos para el modal de la playlist */
+        .swal2-container {
+            font-family: 'Rubik', sans-serif;
+            /* Utiliza la misma fuente que el resto de la aplicación */
+        }
+
+        .swal2-popup {
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            /* Sombra suave para el modal */
+            background-color: #1f1f2e;
+            /* Color de fondo */
+        }
+
+        .swal2-title {
+            color: #FFA500;
+            /* Color naranja para el título */
+            font-size: 28px;
+            /* Tamaño de fuente más grande */
+            margin-bottom: 20px;
+            /* Espaciado inferior adicional */
+            text-align: center;
+            /* Centrar el título */
+        }
+
+        .swal2-content {
+            color: #fff;
+            /* Color de texto blanco */
+            font-size: 18px;
+            /* Tamaño de fuente más grande */
+            text-align: center;
+            /* Centrar el contenido */
+            margin-bottom: 20px;
+            /* Espaciado inferior adicional */
+        }
+
+        .swal2-actions {
+            display: flex;
+            justify-content: center;
+        }
+
+        .swal2-button {
+            padding: 10px 20px;
+            /* Aumentar el padding de los botones */
+            margin: 0 10px;
+            /* Espaciado entre los botones */
+            font-size: 16px;
+            /* Tamaño de fuente de los botones */
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .swal2-button:hover {
+            background-color: #FFA500;
+            /* Color naranja al pasar el ratón sobre los botones */
+            color: #fff;
+            /* Texto blanco al pasar el ratón sobre los botones */
+        }
+
+        .swal2-close {
+            color: #FFA500;
+            /* Color naranja para el botón de cerrar */
+        }
+
+
+
         /* Media Query para dispositivos pequeños */
         @media (max-width: 768px) {
             .container {
@@ -171,6 +258,8 @@
     <div class="container">
 
         <h1>Bonificaciones Disponibles</h1>
+        <p class="points">Hola {{ $nombreUsuario }}. Tienes <a href="#" id="puntosLink"><span
+                    id="puntosUsuario"></span></a> puntos.</p>
         <div class="row" id="bonificacionesContainer"></div>
         <a href="{{ route('cliente.discoteca') }}" class="btn btn-primary custom-bg">Volver a la lista de discotecas</a>
     </div>
@@ -189,6 +278,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             cargarBonificaciones();
+            cargarPuntosUsuario();
         });
 
         function cargarBonificaciones() {
@@ -205,6 +295,24 @@
             };
 
             xhr.open('GET', '/bonificaciones', true);
+            xhr.send();
+        }
+
+        function cargarPuntosUsuario() {
+            // Realizar una solicitud AJAX para obtener los puntos del usuario
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/cliente/mostrarpuntos", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var puntosUsuario = JSON.parse(xhr.responseText);
+                    // Verificar si puntosUsuario es un objeto y mostrar 0 en su lugar
+                    if (typeof puntosUsuario === 'object' || puntosUsuario === null) {
+                        puntosUsuario = 0;
+                    }
+                    // Actualizar el contenido del elemento HTML con el número de puntos
+                    document.getElementById("puntosUsuario").textContent = puntosUsuario;
+                }
+            };
             xhr.send();
         }
 
@@ -226,6 +334,7 @@
                             <div>
                                 <p class="review">${bonificacion.descripcion}</p>
                                 <p class="points"><i class="fas fa-coins icon"></i>${bonificacion.puntos} puntos</p>
+                                <button class="btn-canjear" onclick="canjearBonificacion(${bonificacion.id}, ${bonificacion.puntos})">Canjear</button>
                             </div>
                         </div>
                     </div>
@@ -244,32 +353,68 @@
             });
         }
 
-        function animateCard(card) {
-            // Comprobar si la tarjeta ya está girando
-            if (!card.classList.contains('is-animating')) {
-                // Agregar una clase para marcar que la tarjeta está en proceso de animación
-                card.classList.add('is-animating');
 
-                // Animación de rotación con GSAP
-                gsap.to(card, {
-                    rotationY: '+=360', // Girar 360 grados adicionales cada vez que se hace clic
-                    duration: 0.85,
-                    ease: "power2.out",
-                    onComplete: function() {
-                        // Eliminar la clase de animación al completar la rotación
-                        card.classList.remove('is-animating');
-                    }
-                });
+        function canjearBonificacion(idBonificacion, puntosRequeridos) {
+            // Obtener el token CSRF del contenido de la etiqueta meta
+            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-                // Cargar la animación Lottie
-                const animation = lottie.loadAnimation({
-                    container: card,
-                    renderer: 'svg',
-                    loop: false,
-                    autoplay: true,
-                    path: 'https://assets2.lottiefiles.com/packages/lf20_2eNqyP.json'
-                });
-            }
+            // Mostrar SweetAlert para confirmar el canje de la bonificación
+            Swal.fire({
+                title: '¿Estás seguro de canjear esta bonificación?',
+                text: 'Se restarán ' + puntosRequeridos + ' puntos de tu cuenta.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sí, canjear',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Realizar una solicitud AJAX para comparar los puntos del usuario y restar los puntos requeridos
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "/cliente/canjearbonificacion", true);
+                    xhr.setRequestHeader("Content-Type", "application/json");
+
+                    // Agregar el token CSRF al header de la solicitud
+                    xhr.setRequestHeader("X-CSRF-TOKEN", token);
+
+                    xhr.onreadystatechange = function() {
+                        if (xhr.readyState === 4) {
+                            if (xhr.status === 200) {
+                                var response = JSON.parse(xhr.responseText);
+                                if (response.success) {
+                                    // Si la operación es exitosa, actualizar los puntos del usuario y mostrar un mensaje
+                                    cargarPuntosUsuario();
+                                    cargarBonificaciones();
+                                    Swal.fire(
+                                        '¡Bonificación canjeada!',
+                                        'La bonificación ha sido canjeada correctamente.',
+                                        'success'
+                                    );
+                                } else {
+                                    // Si hay un error, mostrar un mensaje de error
+                                    Swal.fire(
+                                        'Error',
+                                        'No tienes suficientes puntos para canjear esta bonificación.',
+                                        'info'
+                                    );
+                                }
+                            } else {
+                                // Si hay un error en la solicitud AJAX, mostrar un mensaje de error genérico
+                                Swal.fire(
+                                    'Error',
+                                    'Hubo un problema al procesar tu solicitud. Por favor, inténtalo de nuevo más tarde.',
+                                    'error'
+                                );
+                            }
+                        }
+                    };
+                    // Enviar el ID de la bonificación al servidor para procesar el canje
+                    xhr.send(JSON.stringify({
+                        idBonificacion: idBonificacion
+                    }));
+                }
+            });
         }
     </script>
 </body>

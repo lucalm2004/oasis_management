@@ -13,6 +13,7 @@ use App\Models\Bonificacion;
 use App\Models\Cancion;
 use App\Models\Carrito;
 use App\Models\Producto;
+use App\Models\BonificacionUser;
 use App\Models\PlaylistCancion;
 use App\Models\ArtistaCancion;
 use App\Models\User;
@@ -82,8 +83,13 @@ class ClienteController extends Controller
 
     public function bonificacion()
     {
+        $user = Auth::user();
 
-        return view('cliente.bonificacion');
+        // Verificar si hay un usuario autenticado
+        $nombreUsuario = $user ? $user->name : null;
+
+        // Pasar la variable 'nombreUsuario' a la vista
+        return view('cliente.bonificacion', compact('nombreUsuario'));
     }
 
     public function mostrardisco(Request $request)
@@ -174,7 +180,19 @@ class ClienteController extends Controller
 
     public function fetchBonificaciones()
     {
-        $bonificaciones = Bonificacion::all();
+        // Obtener el usuario autenticado
+        $usuario = auth()->user();
+
+        // Obtener las bonificaciones que aún no han sido canjeadas por el usuario logueado
+        $bonificaciones = DB::table('bonificaciones')
+            ->leftJoin('users_bonificaciones', function ($join) use ($usuario) {
+                $join->on('bonificaciones.id', '=', 'users_bonificaciones.id_bonificacion')
+                    ->where('users_bonificaciones.id_users', '=', $usuario->id);
+            })
+            ->whereNull('users_bonificaciones.id_bonificacion')
+            ->select('bonificaciones.*')
+            ->get();
+
         return response()->json($bonificaciones);
     }
 
@@ -284,6 +302,43 @@ class ClienteController extends Controller
 
         // Devolver una respuesta exitosa
         return response()->json(['success' => true], 200);
+    }
+    public function canjearBonificacion(Request $request)
+    {
+        // Obtener el ID de la bonificación a canjear desde la solicitud
+        $idBonificacion = $request->input('idBonificacion');
+        // dd($idBonificacion);
+        $idUsuario = auth()->user()->id;
+
+        // Obtener la bonificación desde la base de datos
+        $bonificacion = Bonificacion::find($idBonificacion);
+
+        // Verificar si la bonificación existe
+        if (!$bonificacion) {
+            return response()->json(['success' => false, 'message' => 'La bonificación no existe.']);
+        }
+
+        // Obtener el usuario actual
+        // $usuario = Auth::user();
+        $usuario = User::find($idUsuario);
+
+        // Verificar si el usuario tiene suficientes puntos para canjear la bonificación
+        if ($usuario->puntos < $bonificacion->puntos) {
+            return response()->json(['success' => false, 'message' => 'No tienes suficientes puntos para canjear esta bonificación.']);
+        }
+
+        // Restar los puntos de la bonificación al usuario
+        $usuario->puntos -= $bonificacion->puntos;
+        $usuario->save();
+
+        $relacion = new BonificacionUser();
+        $relacion->id_users = $idUsuario;
+        $relacion->id_bonificacion = $idBonificacion;
+        $relacion->save();
+
+
+        // Devolver una respuesta de éxito
+        return response()->json(['success' => true, 'message' => 'La bonificación ha sido canjeada correctamente.']);
     }
     
 }

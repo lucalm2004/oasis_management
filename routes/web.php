@@ -196,6 +196,11 @@ Route::get('/perfil', [perfilController::class, 'edit'])->name('perfil');
 Route::put('/profile/update', [perfilController::class, 'update'])->name('profile.update');
 });
 
+// routes/web.php
+use App\Http\Controllers\NumerosController;
+
+Route::get('/numeros', [NumerosController::class, 'obtenerNumeros'])->name('numeros');
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
 Route::middleware(ClientOnly::class)->group(function () {
 Route::get('/cliente', [ClienteController::class, 'index'])->name('cliente.discoteca');
@@ -217,7 +222,8 @@ Route::post('/cliente/insertarEnCarrito', [ClienteController::class, 'insertarEn
 Route::get('/cliente/carrito', [ClienteController::class, 'obtenerCarrito'])->name('cliente.obtenerCarrito');
 Route::delete('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProductoCarrito'])->name('cliente.eliminarProductoCarrito');
 Route::get('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProductoCarrito'])->name('cliente.eliminarProductoCarrito');
-
+Route::post('/cliente/canjearbonificacion', [ClienteController::class, 'canjearBonificacion'])->name('cliente.canjearBonificacion');
+Route::get('/cliente/bonificacion', [ClienteController::class, 'bonificacion'])->name('cliente.bonificacion');
 });
 //  Ian
 
