@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +7,7 @@
   <!-- Se ha de añadir el token para poder usarlo en el formdata de AJAX -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-  <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/eventos.css') }}" rel="stylesheet">
   <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
   <script src="https://kit.fontawesome.com/e2c3124098.js" crossorigin="anonymous"></script>
 </head>
@@ -24,6 +23,7 @@
           <a href="{{ route('admin.crudciudades') }}">Ciudades | </a>
           <a href="{{ route('admin.crudeventos') }}">Eventos</a>
           <i class="fa-regular fa-bell" style="color: #F5763B; cursor: pointer;" id="campana"></i>
+          
           <a id="notificacion">0</a>
           <form method="POST" action="{{ route('logout') }}" id="logout" style="float: right; padding-left: 300px">
             @csrf
@@ -41,7 +41,8 @@
   </header>
 
   <div>
-    
+    <br>
+    <br>
     <table id="tablaSolicitudes" style="display: none">
       <thead>
         <tr>
@@ -57,7 +58,7 @@
       </tbody>
     </table>
   </div>
-  <h1 style="text-align: center">Eventos</h1>
+  <h1 style="text-align: center">EVENTOS</h1>
   <div class="container">
     <!-- Formulario de búsqueda -->
     <form action="" method="post" id="frmbusqueda">
@@ -71,8 +72,13 @@
         <option value=""></option>
       </select>
     </form>
-    
+    <br>
+    <br>
     <!-- Tabla con los datos del CRUD a mostrar -->
+
+    <div class="tabla_evento">
+
+
     <table>
       <thead>
         <tr>
@@ -89,7 +95,7 @@
       </tbody>
     </table>
   </div>
-
+</div>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <script src="{{ asset('js/adminEvento.js') }}"></script>
 </body>

@@ -1,15 +1,14 @@
-
-
 <!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
-
-    <title>Oasis Managament - Lista de Discotecas</title>
+    <title>Lista de Discotecas</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.6/leaflet.awesome-markers.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -23,7 +22,7 @@
             font-family: Arial, Helvetica, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f8f8f8;
+            background-color: #10101A;
         }
 
         /* Nuevo estilo para el header */
@@ -73,6 +72,22 @@
             transition-duration: 0.4s;
             cursor: pointer;
             border-radius: 8px;
+        }
+
+        #cerrarpop {
+            background-color: #007bff;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            border-radius: 8px;
+            align-items: center;
         }
 
         #logout-btn:hover {
@@ -156,8 +171,8 @@
             /* Ajusta el margen para reducir la separación */
             cursor: pointer;
             border-radius: 10px;
-            background-color: #10102a;
-            border: 1px solid #10102a;
+            background-color: #161624;
+            border: 1px solid #161624;
             transition: all .2s linear;
             color: white;
             /* Establecer el color del texto en blanco */
@@ -207,7 +222,7 @@
         }
 
         .button {
-            background-color: #4CAF50;
+            background-color: #F5763B;
             border: none;
             color: white;
             padding: 10px 20px;
@@ -222,7 +237,7 @@
         }
 
         .button:hover {
-            background-color: #45a049;
+            background-color: #F5763B;
             color: white;
         }
 
@@ -243,9 +258,9 @@
         #filtroNombre {
             width: 100%;
             padding: 10px;
-            margin-top: 20px;
+            margin-top: 10px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 300px;
             font-size: 16px;
             box-sizing: border-box;
         }
@@ -255,14 +270,15 @@
             padding: 10px;
             margin-top: 10px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 300px;
             font-size: 16px;
             box-sizing: border-box;
+            margin-left: 30px
         }
 
         /* Estilos para el botón de enviar */
         button[type="submit"] {
-            background-color: #4CAF50;
+            background-color: #F5763B;
             /* Color de fondo */
             color: white;
             /* Color del texto */
@@ -313,6 +329,29 @@
         .footer a:hover {
             color: #ffd54f;
         }
+
+        #puntosUsuario {
+            color: #F5763B;
+            /* Color naranja */
+        }
+
+        .points {
+            color: white;
+            /* Color blanco */
+        }
+
+        /* Contenedor para alinear los elementos */
+        .contenedor-input {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Estilo para el icono de lupa en naranja */
+        .lupa-naranja {
+            color: #F5763B;
+            margin-right: 15px;
+            /* Espacio entre el icono y el input */
+        }
     </style>
 </head>
 
@@ -339,14 +378,21 @@
     <div id="container">
 
         <!-- Marcador de puntos del usuario -->
-        <p class="points">Tienes <a href="#" id="puntosLink"><span id="puntosUsuario"></span> puntos.</a></p>
+        <p class="points">Tienes <a href="#" id="puntosLink"><span id="puntosUsuario"></span></a> puntos.</p>
 
-        <input type="text" id="filtroNombre" placeholder="Filtrar por nombre...">
+        <div class="contenedor-input">
+            <!-- Icono de lupa -->
+            <i class="fas fa-search lupa-naranja"></i>
+            <!-- Input de filtro por nombre -->
+            <input type="text" id="filtroNombre" placeholder="Filtrar por nombre...">
 
-        <select id="selectCiudad">
-            <option value="">Todas las ciudades</option>
-            <!-- Las opciones de ciudades se cargarán dinámicamente aquí -->
-        </select>
+            <select id="selectCiudad">
+                <option value="">Todas las ciudades</option>
+                <!-- Las opciones de ciudades se cargarán dinámicamente aquí -->
+            </select>
+        </div>
+
+
 
         <br>
         <br>
@@ -366,7 +412,8 @@
                 <input type="text" id="codigo" name="codigo"><br><br>
                 <button type="submit">Enviar</button>
             </form>
-            <button onclick="cerrarPopup()">Cerrar</button>
+            <br>
+            <button onclick="cerrarPopup()" id="cerrarpop">Cerrar</button>
         </div>
         {{-- </dialog> --}}
 
@@ -415,9 +462,10 @@
     </footer>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.6/leaflet.awesome-markers.js"></script>
 
     <script>
-        var map = L.map('mapid').setView([40.025868, -3.055922], 4); // Define la posición inicial del mapa y el nivel de zoom
+        var map = L.map('mapid').setView([40.505, -100.09], 4); // Define la posición inicial del mapa y el nivel de zoom
 
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -453,23 +501,19 @@
             xhr.open("GET", "/cliente/mostrarpuntos", true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
-                    console.log(xhr.responseText);
-                    // Verificar si la respuesta es un objeto vacío
-                    if (xhr.responseText === '{}' || xhr.responseText === 'null') {
-                        document.getElementById("puntosUsuario").textContent = "0";
-                    } else {
-                        var puntosUsuario = JSON.parse(xhr.responseText);
-                        // Actualizar el contenido del elemento HTML con el número de puntos
-                        if (puntosUsuario < 0) {
-                            document.getElementById("puntosUsuario").textContent = "0";
-                        } else {
-                            document.getElementById("puntosUsuario").textContent = puntosUsuario;
-                        }
+                    var puntosUsuario = JSON.parse(xhr.responseText);
+                    // Verificar si puntosUsuario es un objeto y mostrar 0 en su lugar
+                    if (typeof puntosUsuario === 'object' || puntosUsuario === null) {
+                        puntosUsuario = 0;
                     }
+                    // Actualizar el contenido del elemento HTML con el número de puntos
+                    document.getElementById("puntosUsuario").textContent = puntosUsuario;
                 }
             };
             xhr.send();
         }
+
+
 
         document.addEventListener("DOMContentLoaded", function() {
             cargarDatos();

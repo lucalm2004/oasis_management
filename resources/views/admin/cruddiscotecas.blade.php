@@ -8,7 +8,7 @@
   <!-- Se ha de añadir el token para poder usarlo en el formdata de AJAX -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-  <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/discotecas.css') }}" rel="stylesheet">
   <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
   <script src="https://kit.fontawesome.com/e2c3124098.js" crossorigin="anonymous"></script>
 </head>
@@ -24,6 +24,7 @@
           <a href="{{ route('admin.crudciudades') }}">Ciudades | </a>
           <a href="{{ route('admin.crudeventos') }}">Eventos</a>
           <i class="fa-regular fa-bell" style="color: #F5763B; cursor: pointer;" id="campana"></i>
+          
           <a id="notificacion">0</a>
           <form method="POST" action="{{ route('logout') }}" id="logout" style="float: right; padding-left: 300px">
             @csrf
@@ -41,6 +42,8 @@
   </header>
 
   <div>
+    <br>
+    <br>
     
     <table id="tablaSolicitudes" style="display: none">
       <thead>
@@ -58,9 +61,9 @@
     </table>
   </div>
     <h1 style="text-align: center">DISCOTECAS</h1>
+
   <div class="container">
-    <!-- Formulario de búsqueda -->
-    <div>
+    <button class="btn-success" id="CrearDiscoteca" style="margin-bottom: 10px"><i class="fa-solid fa-plus" style="color: #ffffff;"></i></button>
       <form action="" method="post" id="frmbusqueda">
         <div class="form-group">
           <i id="icono_buscar" class="fa-solid fa-magnifying-glass" style="color: #F5763B;"></i>
@@ -71,11 +74,14 @@
           <option value=""></option>
         </select>
       </form>
-    </div>
-    <br>
-    <button class="btn-success" id="CrearDiscoteca" style="margin-bottom: 10px"><i class="fa-solid fa-plus" style="color: #ffffff;"></i></button>
+      <br>
+      <br>
+        
+   
 
     <!-- Tabla con los datos del CRUD a mostrar -->
+    <div class="tabla_discoteca">
+
     <table>
       <thead>
         <tr>

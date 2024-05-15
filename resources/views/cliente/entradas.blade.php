@@ -1,11 +1,10 @@
+<!-- entradas/disponibles.blade.php -->
 
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Oasis Managament - Entradas Disponibles</title>
-    <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
-
+    <title>Entradas Disponibles</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
@@ -15,9 +14,10 @@
         /* Estilos generales */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f8f8;
             margin: 0;
             padding: 0;
+            background-color: #10101A;
+            color: white;
         }
 
         header {
@@ -91,7 +91,7 @@
         #detallesEvento,
         #tiposEntradaContainer,
         #carritoContainer {
-            background-color: #10102a;
+            background-color: #161624;
             color: #f8f8f8;
             border-radius: 5px;
             padding: 20px;
@@ -158,6 +158,42 @@
         .header-content button i {
             margin-right: 5px;
         }
+
+        /* Estilos personalizados para Sweet Alert */
+        .personalizado-swal-container {
+            font-family: Arial, sans-serif;
+            border-radius: 10px;
+        }
+
+        .personalizado-swal-title {
+            color: #F5763B;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .personalizado-swal-html-container {
+            color: black;
+            font-size: 18px;
+        }
+
+        .personalizado-swal-confirm-button {
+            background-color: #F5763B;
+            border-color: #F5763B;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            padding: 10px 20px;
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+
+        .personalizado-swal-confirm-button:hover {
+            background-color: #F5763B;
+            border-color: #F5763B;
+        }
+
+        .personalizado-swal-confirm-button:focus {
+            outline: none;
+        }
     </style>
 
 </head>
@@ -188,7 +224,7 @@
         </div>
 
 
-        <div id="carritoContainer" style="position: fixed; top: 22%; right: -100px; margin-right: 1.3%;" class="hidden">
+        <div id="carritoContainer" style="position: fixed; top: 25%; right: -100px; margin-right: 1.3%;" class="hidden">
             <!-- Aquí se mostrarán los productos en el carrito -->
         </div>
 
@@ -281,9 +317,8 @@
             detallesEvento.innerHTML += '<p>Fecha de Inicio: ' + detalles.fecha_inicio + '</p>';
             detallesEvento.innerHTML += '<p>Fecha final: ' + detalles.fecha_final + '</p>';
             detallesEvento.innerHTML += '<p>DJ: ' + detalles.dj + '</p>';
-            detallesEvento.innerHTML += '<p>Playlist: <a href="#" onclick="mostrarPlaylistAlert(' + detalles.id + ')">' +
-                detalles.name_playlist +
-                '</a></p>';
+            detallesEvento.innerHTML += '<p>Playlist:<a href="#" style="color: #F5763B;" onclick="mostrarPlaylistAlert(' +
+                detalles.id + ')">' + detalles.name_playlist + '</a></p>';
             // Agrega más detalles según sea necesario
         }
 
@@ -317,13 +352,40 @@
                 playlistHTML = '<p>No hay canciones en esta playlist.</p>';
             }
 
+            // Sweet Alert personalizado
             Swal.fire({
                 title: 'Playlist',
                 html: playlistHTML,
                 icon: 'info',
-                confirmButtonText: 'Aceptar'
+                confirmButtonText: 'Aceptar',
+                customClass: {
+                    // Clase para el contenedor del Sweet Alert
+                    container: 'personalizado-swal-container',
+                    // Clase para el título del Sweet Alert
+                    title: 'personalizado-swal-title',
+                    // Clase para el contenido HTML del Sweet Alert
+                    htmlContainer: 'personalizado-swal-html-container',
+                    // Clase para el botón de confirmación del Sweet Alert
+                    confirmButton: 'personalizado-swal-confirm-button'
+                },
+                // Estilo personalizado para el botón de confirmación
+                buttonsStyling: false,
+                // Color de fondo personalizado para el botón de confirmación
+                customClass: {
+                    confirmButton: 'btn-naranja'
+                }
             });
         }
+
+        // Estilo CSS personalizado para el botón de confirmación
+        const style = document.createElement('style');
+        style.innerHTML = `
+        .btn-naranja {
+            background-color: #F5763B !important;
+            border-color: #F5763B !important;
+        }
+    `;
+        document.head.appendChild(style);
 
 
         function cargarTiposEntrada() {
@@ -580,3 +642,5 @@
 </body>
 
 </html>
+message.txt
+25 KB

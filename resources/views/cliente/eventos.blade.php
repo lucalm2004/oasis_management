@@ -1,11 +1,8 @@
-
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Oasis Managament - Eventos de {{ $discoteca->name }}</title>
-    <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
-
+    <title>Eventos de {{ $discoteca->name }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -14,7 +11,8 @@
             font-family: Arial, Helvetica, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f8f8f8;
+            background-color: #10101A;
+            color: white;
         }
 
         /* Estilos para el botón "Ver Entradas" */
@@ -50,8 +48,8 @@
             margin: 1rem;
             cursor: pointer;
             border-radius: 10px;
-            background-color: #10102a;
-            border: 1px solid #10102a;
+            background-color: #161624;
+            border: 1px solid #161624;
             transition: all .2s linear;
             color: white;
         }
@@ -168,7 +166,7 @@
         #detallesDiscoteca {
             margin-bottom: 20px;
             padding: 20px;
-            background-color: #10102a;
+            background-color: #161624;
             border-radius: 10px;
             color: white;
         }
@@ -192,6 +190,7 @@
             border-radius: 5px;
             background-color: #ffffff;
             float: left;
+            margin-left: 15px;
             /* Alineamos los inputs horizontalmente */
         }
 
@@ -244,6 +243,16 @@
             text-align: center;
             margin-bottom: 20px;
         }
+
+        .contenedor-input {
+            display: flex;
+            align-items: center;
+        }
+        .lupa-naranja {
+            color: #F5763B;
+            margin-right: 15px;
+            /* Espacio entre el icono y el input */
+        }
     </style>
 </head>
 
@@ -268,18 +277,20 @@
     <div class="content-container">
         <!-- Detalles de la discoteca -->
         <h2>Detalles de la Discoteca</h2>
+        <br>
         <div id="detallesDiscoteca">
             <!-- Aquí se cargarán los eventos -->
         </div>
 
+        <br>
+        <br>
 
-        <!-- Filtro por nombre de evento -->
-        <label for="nombre">Filtrar por nombre del evento:</label>
-        <input type="text" id="nombre" placeholder="Nombre del evento">
 
-        <!-- Filtro por día de inicio -->
-        <label for="diaInicio">Filtrar por día de inicio:</label>
-        <input type="date" id="diaInicio">
+        <div class="contenedor-input">
+            <i class="fas fa-search lupa-naranja"></i>
+            <input type="text" id="nombre" placeholder="Nombre del evento">
+            <input type="date" id="diaInicio">
+        </div>
 
         <br>
         <br>
@@ -435,7 +446,7 @@
                     var contenido = `
                 <div class="top">
                     <div class="clientImage">
-                        <img src="./client.png" alt="">
+                        <img src="{{ asset('img/(${evento.flyer})') }}" alt="">
                         <span>${evento.name}</span>
                     </div>
                     <button onclick="mostrarEntradas(${evento.id})"><img src="{{ asset('img/entradas.png') }}" alt="Entradas" width="40px" height="40px"></button>
