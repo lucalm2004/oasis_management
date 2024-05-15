@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\discotecas;
+use App\Mail\AcceptarSolicitudMail;
+use App\Mail\RechazarSolicitudMail;
+use App\Mail\EventoCamareroMail;
+use App\Mail\EventoEliminadoMail;
+use App\Mail\EventoModificadoMail;
+use Illuminate\Support\Facades\Mail;
+use App\Models\Discoteca;
 
 class EventosController extends Controller
 {
@@ -42,17 +49,39 @@ class EventosController extends Controller
 
 
     public function borrar(Request $request) {
-        $id = $_POST['id'];
-        DB::transaction(function () use ($id) {
-            DB::table('playlists_canciones')->where('id_evento', $id)->delete();
+        $id = $request->input('id');
     
+        DB::transaction(function () use ($id) {
+            // Obtener el evento antes de eliminarlo
+            $evento = Evento::findOrFail($id);
+    
+            // Obtener la discoteca relacionada con el evento
+            $discoteca_correo = Discoteca::findOrFail($evento->id_discoteca);
+    
+            // Formatear la fecha de inicio
+            $evento->fecha_inicio = date('d/m/Y H:i', strtotime($evento->fecha_inicio));
+    
+            // Obtener todos los camareros de la discoteca
+            $camareros = DB::table('users')
+                ->join('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
+                ->where('users_discotecas.id_discoteca', $evento->id_discoteca)
+                ->where('users.id_rol', 4) // Suponiendo que el rol de camarero tiene id_rol = 4
+                ->select('users.*')
+                ->get();
+    
+            // Enviar correo a todos los camareros
+            foreach ($camareros as $camarero) {
+                Mail::to($camarero->email)->send(new EventoEliminadoMail($camarero, $discoteca_correo, $evento));
+            }
+    
+            // Eliminar registros relacionados con el evento
+            DB::table('playlists_canciones')->where('id_evento', $id)->delete();
             Evento::where('id', $id)->delete();
         });
-            return response()->json(['message' => 'Evento eliminado correctamente'], 200);
-          
-            
-
+    
+        return response()->json(['message' => 'Evento eliminado correctamente'], 200);
     }
+
     public function new(Request $request) {
         $user = $request->user();
 
@@ -77,7 +106,7 @@ class EventosController extends Controller
         $fechaFin = $_POST['fechaFin'];
         $playlistNombre = $_POST['playlistNombre'];
 
-        Evento::create([
+        $evento = Evento::create([
             'name' => $nombre,
             'descripcion' => $descripcion,
             'flyer' => $imageName,
@@ -87,6 +116,26 @@ class EventosController extends Controller
             'name_playlist' => $playlistNombre,
             'id_discoteca' => $idDiscoteca,
         ]);
+
+         // Formatear la fecha de inicio
+        $evento->fecha_inicio = date('d/m/Y H:i', strtotime($evento->fecha_inicio));
+        $user_correo = User::findOrFail($user->id);
+      
+        $discotecaiD_correo = UserDiscoteca::where("id_users", "=", $user_correo->id)->first();
+   
+        $discoteca_correo = Discoteca::findOrFail($discotecaiD_correo->id_discoteca);
+
+        // Obtener todos los camareros de la discoteca
+        $camareros = DB::table('users')
+        ->join('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
+        ->where('users_discotecas.id_discoteca', $idDiscoteca)
+        ->where('users.id_rol', 4) // Suponiendo que el rol de camarero tiene id_rol = 4
+        ->select('users.*')
+        ->get();
+
+        foreach ($camareros as $camarero) {
+            Mail::to($camarero->email)->send(new EventoCamareroMail($camarero, $discoteca_correo, $evento));
+        }
 
     }
     public function update(Request $request) {
@@ -114,6 +163,29 @@ class EventosController extends Controller
                 'fecha_inicio' => $inicioEdit,
                 'fecha_final' => $finalEdit,
             ]);
+             // Obtener el evento actualizado
+            $evento = Evento::findOrFail($id);
+          // Formatear la fecha de inicio
+          $evento->fecha_inicio = date('d/m/Y H:i', strtotime($evento->fecha_inicio));
+          $evento->fecha_final = date('d/m/Y H:i', strtotime($evento->fecha_final));
+
+          $user_correo = User::findOrFail($user->id);
+        
+          $discotecaiD_correo = UserDiscoteca::where("id_users", "=", $user_correo->id)->first();
+     
+          $discoteca_correo = Discoteca::findOrFail($discotecaiD_correo->id_discoteca);
+  
+          // Obtener todos los camareros de la discoteca
+          $camareros = DB::table('users')
+          ->join('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
+          ->where('users_discotecas.id_discoteca', $idDiscoteca)
+          ->where('users.id_rol', 4) // Suponiendo que el rol de camarero tiene id_rol = 4
+          ->select('users.*')
+          ->get();
+  
+          foreach ($camareros as $camarero) {
+              Mail::to($camarero->email)->send(new EventoModificadoMail($camarero, $discoteca_correo, $evento));
+          }
             
 
     }
@@ -246,6 +318,16 @@ public function AceptarSolicitudes($id){
         
         // Confirmar la transacción
         DB::commit();
+        $user_correo = User::findOrFail($id);
+      
+        $discotecaiD_correo = UserDiscoteca::where("id_users", "=", $user_correo->id)->first();
+   
+        $discoteca_correo = Discoteca::findOrFail($discotecaiD_correo->id_discoteca);
+            
+        $email = $user_correo->email;
+
+        Mail::to($email)->send(new AcceptarSolicitudMail($user_correo, $discoteca_correo));
+
 
         return response()->json(['success' => true, 'message' => 'Camarero aceptado correctamente']);
     } catch (\Exception $e) {
@@ -263,6 +345,14 @@ public function AceptarSolicitudes($id){
 public function RechazarSolicitudes($id){
     try {
         DB::beginTransaction();
+        $user_correo = User::findOrFail($id);
+      
+        $discotecaiD_correo = UserDiscoteca::where("id_users", "=", $user_correo->id)->first();
+   
+        $discoteca_correo = Discoteca::findOrFail($discotecaiD_correo->id_discoteca);
+            
+        $email = $user_correo->email;
+        Mail::to($email)->send(new RechazarSolicitudMail($user_correo, $discoteca_correo));
 
         // Eliminar registros relacionados de la tabla UserDiscoteca si existen
         $UserDiscotecas = UserDiscoteca::where('id_users', $id)->first();
