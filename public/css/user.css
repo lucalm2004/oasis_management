@@ -9,6 +9,7 @@ body {
     0% {
         background-position: 0% 50%;
     }
+
     100% {
         background-position: 100% 50%;
     }
@@ -48,7 +49,7 @@ body {
 .container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 0 15px;
+    padding: 20px;
 }
 
 .card {
@@ -56,7 +57,7 @@ body {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     background-color: #fff;
     transition: transform 0.3s ease;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 .card:hover {
@@ -121,42 +122,52 @@ body {
 
 /* Estilos para la sección de puntos */
 
+
+
+.card-body {
+    position: relative;
+    /* Establecer posición relativa para poder posicionar elementos absolutos dentro */
+    padding: 30px;
+}
+
 .puntos-section {
-    margin-top: 30px;
+    position: absolute;
+    top: 10px;
+    /* Distancia desde la parte superior del card-body */
+    right: 20px;
+    /* Distancia desde el lado derecho del card-body */
+    background-color: #ffc107;
+    color: #fff;
+    padding: 10px 10px;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(255, 193, 7, 0.2);
     text-align: center;
+    /* Centra el contenido horizontalmente */
+    margin-bottom: 20px;
+    /* Agrega espacio inferior */
+}
+
+.puntos-section h4 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
 }
 
 .monedas {
-    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    font-size: 36px;
+    align-items: center;
     font-weight: bold;
-    color: #ffc107;
-    /* Color amarillo para simular monedas */
-    border: 2px solid #ffc107;
-    /* Borde amarillo */
-    border-radius: 20px;
-    padding: 20px 30px;
-    /* Ajuste del padding para un mejor equilibrio */
-    display: inline-block;
-    transition: all 0.3s ease;
-    /* Transición para todos los cambios */
-    cursor: pointer;
-    /* Cambiar el cursor al pasar por encima */
-    box-shadow: 0 4px 10px rgba(255, 193, 7, 0.2);
-    /* Sombra suave */
+    padding: 10px;
+    border-radius: 5px;
 }
 
 
-/* Efecto de escala al pasar el ratón */
 
 .monedas:hover {
-    transform: scale(1.05);
-    /* Escala ligeramente menor para un efecto más suave */
-    box-shadow: 0 6px 15px rgba(255, 193, 7, 0.3);
-    /* Sombra más pronunciada */
-}
-
-.puntos:hover {
     transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(255, 193, 7, 0.3);
 }
 
 .orange-text {
@@ -186,10 +197,82 @@ body {
     width: 100%;
 }
 
+/* Estilos para el campo de carga de archivo */
+.form-group {
+    position: relative;
+    /* Posición relativa para alinear el botón de selección */
+}
+
+.form-control-file {
+    opacity: 0;
+    /* Oculta el campo de carga de archivo */
+    position: absolute;
+    /* Posiciona el campo de forma absoluta */
+    top: 0;
+    left: 0;
+    height: 100%;
+    /* Ajusta la altura al 100% */
+    width: 100%;
+    /* Ajusta el ancho al 100% */
+    cursor: pointer;
+    /* Cambia el cursor al pasar por encima */
+    z-index: 2;
+    /* Ajusta el índice z para que esté sobre el texto de la etiqueta */
+}
+
+.d-flex-container {
+    display: flex;
+    flex-direction: column;
+    /* Establece la dirección de los elementos como columna */
+    align-items: center;
+    /* Centra los elementos horizontalmente */
+    text-align: center;
+    /* Centra el texto */
+}
+
+.label-for-file {
+    position: relative;
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: #ffa600;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 123, 255, 0.1);
+}
+
+.label-for-file:hover {
+    background-color: #ffffff;
+}
+
+/* Estilo para el texto del botón de selección */
+.label-text {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+/* Estilo para el ícono del botón de selección */
+.label-icon {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Estilos para el ícono del botón de selección */
+.label-icon i {
+    font-size: 16px;
+    margin-right: 8px;
+}
+
+
+
 @keyframes scroll {
     0% {
         transform: translateX(0);
     }
+
     100% {
         transform: translateX(-100%);
     }
@@ -202,6 +285,7 @@ body {
     .card-title {
         font-size: 1.5rem;
     }
+
     .btn-primary {
         padding: 8px 16px;
     }
@@ -211,19 +295,94 @@ body {
     .navbar-brand {
         padding: 0 10px;
     }
+
     .navbar-nav .nav-link {
         padding: 10px;
     }
+
     .card-img-top {
         height: 150px;
     }
+
     .card-title {
         font-size: 1rem;
     }
+
     .btn-primary {
         padding: 8px 16px;
     }
+
     .slide img {
         height: 120px;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-nav .nav-link {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+}
+
+/* Estilos para hacer la navbar más compacta en dispositivos pequeños */
+@media (max-width: 992px) {
+    .navbar-nav .nav-link {
+        padding: 10px 0 !important;
+        /* Reducir el relleno vertical */
+    }
+}
+
+/* Estilos para ajustar el tamaño de la tarjeta y el título en dispositivos móviles */
+@media (max-width: 576px) {
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
+}
+
+/* Estilos para las imágenes de perfil y vista previa en dispositivos móviles */
+@media (max-width: 576px) {
+
+    #profileImage,
+    #previewImage {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+/* Estilos para el footer en dispositivos móviles */
+@media (max-width: 576px) {
+    .footer {
+        padding: 40px 0;
+    }
+
+    .footer h2,
+    .footer p,
+    .footer a {
+        font-size: 0.9rem;
     }
 }

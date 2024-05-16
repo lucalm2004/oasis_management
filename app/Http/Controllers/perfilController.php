@@ -38,6 +38,18 @@ class perfilController extends Controller
         if ($request->filled('password')) {
             $user->password = Hash::make($request->input('password'));
         }
+        if ($request->hasFile('foto')) {
+            // Obtener la imagen cargada
+            $image = $request->file('foto');
+            // Generar un nombre único para la imagen
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            // Mover la imagen a la carpeta deseada (por ejemplo, public/img/profiles/)
+            $image->move(public_path('img/profiles'), $imageName);
+            // Actualizar el campo 'foto' del usuario en la base de datos
+            $user->foto = $imageName;
+
+        }
+        
     
         // Guardar los cambios en el usuario
         $user->save();
@@ -57,4 +69,15 @@ class perfilController extends Controller
 
         return view('perfil', compact('discotecas', 'user'));
     }
+    public function bonificacion()
+    {
+        $user = Auth::user();
+    
+        // Verificar si hay un usuario autenticado
+        $nombreUsuario = $user ? $user->name : null;
+    
+        // Pasar la variable 'nombreUsuario' a la vista
+        return view('cliente.bonificacion', compact('nombreUsuario'));
+    }
+    
 }

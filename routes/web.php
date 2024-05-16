@@ -195,6 +195,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/perfil', [perfilController::class, 'edit'])->name('perfil');
 Route::put('/profile/update', [perfilController::class, 'update'])->name('profile.update');
 });
+Route::get('/bonificacion', [perfilController::class, 'bonificacion'])->name('bonificacion');
 
 // routes/web.php
 use App\Http\Controllers\NumerosController;

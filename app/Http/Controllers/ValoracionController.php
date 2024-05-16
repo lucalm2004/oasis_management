@@ -29,32 +29,36 @@ public function create($idEvento)
 
 public function store(Request $request)
 {
-    $request->validate([
-        'eventId' => 'required|integer', // Verifica que este campo sea el correcto
-        'rating' => 'required|numeric|min:1|max:5',
-        'descripcion' => 'nullable|string', // Permitir descripción opcional
-    ]);
-
     try {
-        // Crear una nueva instancia de Valoraciones con los datos validados
+        $request->validate([
+            'eventId' => 'required|integer',
+            'rating' => 'required|numeric|min:1|max:5',
+            'descripcion' => 'nullable|string',
+        ]);
+
+        // Verificar si el usuario ya ha enviado una valoración para este evento
+        $existingRating = Valoraciones::where('id_evento', $request->eventId)
+            ->where('id_user', Auth::id())
+            ->exists();
+
+        if ($existingRating) {
+            return response()->json(['error' => 'Ya has enviado una valoración para este evento. No se permiten múltiples valoraciones por evento.'], 400);
+        }
+
+        // Crear una nueva valoración si no hay una valoración existente del usuario para este evento
         $valoracion = new Valoraciones();
         $valoracion->id_evento = $request->eventId;
         $valoracion->rating = $request->rating;
-        $valoracion->descripcion = $request->descripcion; // Asignar la descripción si está presente
-        $valoracion->id_user = Auth::id(); // Asignar el ID del usuario autenticado
+        $valoracion->descripcion = $request->descripcion;
+        $valoracion->id_user = Auth::id();
 
-        $valoracion->save(); // Guardar la valoración en la base de datos
+        $valoracion->save();
 
-        return back()->with('success', 'Valoración enviada correctamente.');
+        return response()->json(['success' => 'Valoración enviada correctamente.'], 200);
     } catch (\Exception $e) {
-        dd($e->getMessage());
-
-        return back()->with('error', 'Error al enviar la valoración: ' . $e->getMessage());
+        return response()->json(['error' => 'Error al enviar la valoración: ' . $e->getMessage()], 500);
     }
 }
-
-
-
 
     public function createValoracion(Request $request)
     {
@@ -69,6 +73,8 @@ public function store(Request $request)
             Valoraciones::create([
                 'event_id' => $request->id_evento,  // Asegúrate de que sea 'event_id'
                 'rating' => $request->rating,
+                'descripcion' => $request->descripcion,
+                'id_user' => $request->id_user,
                 // Puedes incluir más campos según tu modelo de Valoracion
             ]);
     
@@ -137,9 +143,10 @@ public function showTopRatedUsers()
 {
     try {
         $topRatedUsers = DB::table('valoraciones')
-            ->select('users.name', 'valoraciones.rating', 'valoraciones.descripcion', 'eventos.name AS evento_nombre')
+            ->select('users.name', 'valoraciones.rating', 'valoraciones.descripcion', 'eventos.name AS evento_nombre', 'discotecas.name AS discoteca_nombre')
             ->join('users', 'users.id', '=', 'valoraciones.id_user')
             ->join('eventos', 'eventos.id', '=', 'valoraciones.id_evento')
+            ->join('discotecas', 'discotecas.id', '=', 'eventos.id_discoteca')
             ->orderBy('eventos.name') // Ordenar por nombre del evento
             ->orderByDesc('valoraciones.rating') // Ordenar por rating descendente
             ->limit(10) // Limitar a 10 usuarios por evento

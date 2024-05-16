@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $table = "users";
-    protected $fillable = ['name', 'email', 'password', 'google_id', 'habilitado', 'puntos', 'id_rol', 'verificado'];
+    protected $fillable = ['name', 'email', 'password', 'google_id', 'habilitado', 'puntos', 'id_rol', 'verificado','foto'];
     
     public function rol()
     {

@@ -85,27 +85,42 @@
         <div class="card">
             <div class="card-body">
                 <h2 class="card-title mb-4">Perfil de Usuario</h2>
-                <!-- Monedas -->
-                <div class="puntos-section">
-                    <h4 class="text-center mb-4">Puntos</h4>
-                    <div class="monedas">
-                        <span>{{ $user->puntos ?? '0' }}</span>
+                <div class="d-flex align-items-center mb-4 position-relative">
+                    <!-- Mostrar la imagen de perfil -->
+                    <img id="profileImage"
+                        src="{{ $user->foto ? asset('img/profiles/' . $user->foto) : asset('img/profiles/foto.png') }}"
+                        class="rounded-circle mr-3" alt="Foto de Perfil"
+                        style="width: 150px; height: 150px; cursor: pointer;">
+
+                    <div class="puntos-section">
+                        <!-- Enlace que dirige a bonificaciones.blade.php -->
+                        <a href="{{ route('bonificacion') }}" class="text-decoration-none">
+                            <h4 class="text-center mb-2">Puntos</h4>
+                        </a>
+                        <div class="monedas">
+                            <span>{{ $user->puntos ?? '0' }}</span>
+                        </div>
                     </div>
+
                 </div>
 
-                <!-- Rol -->
-                <div class="form-group">
-                    <label for="rol">Rol:</label>
-                    <input type="text" class="form-control" id="rol"
-                        value="{{ $user->rol->name ?? 'Sin Rol' }}" readonly>
-                </div>
-
-
-                <form id="profileForm" method="POST" action="{{ route('profile.update') }}">
+                <!-- Resto del formulario -->
+                <form id="profileForm" method="POST" action="{{ route('profile.update') }}"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-
                     <div class="form-group">
+                        <label for="foto" class="label-for-file">
+                            <span class="label-icon"><i class="fas fa-upload"></i></span>
+                            <span class="label-text">Subir foto</span>
+                        </label>
+                        <input type="file" class="form-control-file" id="fotoInput" name="foto">
+                        <!-- Vista previa de la imagen seleccionada -->
+                        <img id="previewImage" src="#" alt="Vista previa de la imagen"
+                            style="width: 200px; height: 200px; margin-top: 10px; display: none;">
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-user"></i>
                         <label for="name">Nombre:</label>
                         <input type="text" class="form-control" id="name" name="name"
                             value="{{ old('name', $user->name) }}" required>
@@ -113,6 +128,7 @@
                     </div>
 
                     <div class="form-group">
+                        <i class="fas fa-envelope"></i>
                         <label for="email">Correo Electrónico:</label>
                         <input type="email" class="form-control" id="email" name="email"
                             value="{{ old('email', $user->email) }}" required>
@@ -120,12 +136,14 @@
                     </div>
 
                     <div class="form-group">
+                        <i class="fas fa-lock"></i>
                         <label for="password">Nueva Contraseña:</label>
                         <input type="password" class="form-control" id="password" name="password">
                         <div id="passwordError" class="error-message"></div>
                     </div>
 
                     <div class="form-group">
+                        <i class="fas fa-lock"></i>
                         <label for="password_confirmation">Confirmar Nueva Contraseña:</label>
                         <input type="password" class="form-control" id="password_confirmation"
                             name="password_confirmation">
@@ -134,10 +152,10 @@
 
                     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </form>
-
             </div>
         </div>
     </div>
+
     <br>
     <br>
 
@@ -183,6 +201,38 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    <!-- Script para cambiar la imagen de perfil al hacer clic en ella -->
+    <script>
+        // Definir la función previewImage fuera de cualquier ámbito local
+        function previewImage(event) {
+            // Crear un nuevo objeto FileReader
+            var reader = new FileReader();
+
+            // Asignar una función al evento onload del FileReader
+            reader.onload = function() {
+                // Obtener el elemento de la imagen de previsualización por su ID
+                var imgElement = document.getElementById('previewImage');
+
+                // Establecer la fuente de la imagen de previsualización con el resultado de la lectura
+                imgElement.src = reader.result;
+
+                // Mostrar la imagen estableciendo su estilo a 'block'
+                imgElement.style.display = 'block';
+            };
+
+            // Leer el archivo seleccionado como URL de datos
+            reader.readAsDataURL(event.target.files[0]);
+        }
+        // Asociar evento onchange al elemento fotoInput
+        document.getElementById('fotoInput').addEventListener('change', function(event) {
+            previewImage(event);
+        });
+
+        // Asociar evento de clic en la imagen de perfil para abrir el selector de archivo
+        document.getElementById('profileImage').addEventListener('click', function() {
+            document.getElementById('fotoInput').click();
+        });
+    </script>
 </body>
 
 </html>

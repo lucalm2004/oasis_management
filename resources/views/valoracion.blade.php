@@ -177,51 +177,73 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        function submitRating(eventId, discotecaId) {
-            const rating = document.getElementById(`rating-${eventId}`).value;
-            const descripcion = document.getElementById(`descripcion-${eventId}`).value;
+ function submitRating(eventId, discotecaId) {
+    const starsContainer = document.getElementById(`rating-${eventId}`);
+    const stars = starsContainer.getElementsByClassName('fas').length; // Contar las estrellas seleccionadas
+    const descripcion = document.getElementById(`descripcion-${eventId}`).value;
 
-            fetch('/valoracion/store', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    },
-                    body: JSON.stringify({
-                        eventId,
-                        rating,
-                        descripcion
-                    })
-                })
-                .then(response => {
-                    if (response.ok) {
+    fetch('/valoracion/store', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        },
+        body: JSON.stringify({
+            eventId,
+            rating: stars, // Enviar el número de estrellas como valor de la valoración
+            descripcion
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Valoración enviada',
+                text: '¡Gracias por tu valoración!',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+            setTimeout(() => {
+                window.location.reload();
+            }, 2000);
+        } else {
+            if (response.status === 400) {
+                // Error de Bad Request (400) específico
+                response.json().then(data => {
+                    if (data.error && data.error.includes('Ya has enviado una valoración para este evento')) {
+                        // Mostrar SweetAlert con el mensaje de error
                         Swal.fire({
-                            icon: 'success',
-                            title: 'Valoración enviada',
-                            text: '¡Gracias por tu valoración!',
-                            timer: 2000,
+                            icon: 'info',
+                            title: 'Ya has valorado',
+                            text: 'Ya has enviado una valoración para este evento. No se permiten múltiples valoraciones por evento.',
+                            timer: 3000,
                             timerProgressBar: true,
                             showConfirmButton: false
                         });
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 2000);
                     } else {
-                        throw new Error('Hubo un problema al enviar la valoración.');
+                        throw new Error('Error en la solicitud de valoración.');
                     }
-                })
-                .catch(error => {
-                    console.error('Error al enviar la valoración:', error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Hubo un problema al enviar la valoración. Por favor, inténtalo nuevamente.',
-                        timer: 3000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    });
                 });
+            } else {
+                throw new Error('Error en la solicitud de valoración.');
+            }
         }
+    })
+    .catch(error => {
+        // Captura de errores generales
+        console.error('Error al enviar la valoración:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Hubo un problema al enviar la valoración. Por favor, inténtalo nuevamente.',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+    });
+}
+
     </script>
 </body>
 

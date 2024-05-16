@@ -158,17 +158,6 @@ function generateStarRating(rating) {
     return starsHtml;
 }
 
-
-
-
-
-
-
-
-
-
-
-
 // Mejores valoraciones
 let isTopRatedUsersVisible = false;
 
@@ -185,6 +174,7 @@ function toggleTopRatedUsers() {
         isTopRatedUsersVisible = true;
     }
 }
+
 
 function showTopRatedUsers() {
     const topRatedUsersContainer = document.getElementById('top-rated-users');
@@ -204,27 +194,31 @@ function showTopRatedUsers() {
                 // Group ratings by event
                 data.topRatedUsers.forEach(user => {
                     const evento_nombre = user.evento_nombre;
+                    const discoteca_nombre = user.discoteca_nombre; // Get the discotheque name
 
                     if (!eventRatingsMap[evento_nombre]) {
-                        eventRatingsMap[evento_nombre] = [];
+                        eventRatingsMap[evento_nombre] = {
+                            discoteca_nombre: discoteca_nombre,
+                            users: []
+                        };
                     }
 
                     // Add user to event group with limit check
-                    if (eventRatingsMap[evento_nombre].length < 3 && displayedCount < 9) {
-                        eventRatingsMap[evento_nombre].push(user);
+                    if (eventRatingsMap[evento_nombre].users.length < 3 && displayedCount < 9) {
+                        eventRatingsMap[evento_nombre].users.push(user);
                         displayedCount++;
                     }
                 });
 
                 // Display the top users per event
                 Object.keys(eventRatingsMap).forEach(evento_nombre => {
-                    const usersForEvent = eventRatingsMap[evento_nombre];
+                    const { discoteca_nombre, users } = eventRatingsMap[evento_nombre];
 
                     // Sort users by rating in descending order
-                    usersForEvent.sort((a, b) => b.rating - a.rating);
+                    users.sort((a, b) => b.rating - a.rating);
 
                     // Render the users as HTML cards
-                    usersForEvent.forEach(user => {
+                    users.forEach(user => {
                         const { name, rating, descripcion } = user;
 
                         // Calculate stars based on rating
@@ -237,18 +231,19 @@ function showTopRatedUsers() {
 
                         // Generate user card HTML with star icons and description
                         const userHtml = `
-                        <div class="user-card">
-                            <div class="user-info">Usuario: ${name}</div>
-                            <div>Evento: ${evento_nombre}</div>
-                            <div>Descripción: ${descriptionText}</div>
-                            <br>
-                            <div class="stars-container">
-                                ${'<i class="fas fa-star"></i>'.repeat(fullStars)}
-                                ${halfStar ? '<i class="fas fa-star-half-alt"></i>' : ''}
-                                ${'<i class="far fa-star"></i>'.repeat(emptyStars)}
+                            <div class="user-card">
+                                <div class="user-info">Usuario: ${name}</div>
+                                <div>Discoteca: ${discoteca_nombre}</div>
+                                <div>Evento: ${evento_nombre}</div>
+                                <div>Descripción: ${descriptionText}</div>
+                                <br>
+                                <div class="stars-container">
+                                    ${'<i class="fas fa-star"></i>'.repeat(fullStars)}
+                                    ${halfStar ? '<i class="fas fa-star-half-alt"></i>' : ''}
+                                    ${'<i class="far fa-star"></i>'.repeat(emptyStars)}
+                                </div>
                             </div>
-                        </div>
-                    `;
+                        `;
 
                         topRatedUsersContainer.innerHTML += userHtml;
                     });

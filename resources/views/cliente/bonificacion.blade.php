@@ -77,6 +77,7 @@
             margin-left: auto;
             /* Centra el card horizontalmente */
             margin-right: auto;
+            max-height: 90%
         }
 
         .card:hover {

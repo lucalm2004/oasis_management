@@ -184,6 +184,7 @@ body {
     border: #fafafa;
     color: white;
     border-style: double;
+    max-height: 91%;
 }
 
 .content-box h2 {

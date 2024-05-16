@@ -4,18 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Valoracion extends Model
+class Valoraciones extends Model
 {
     protected $table = 'valoraciones';
-    protected $fillable = ['rating', 'reseña', 'id_evento', 'id_user'];
+    protected $fillable = ['rating', 'descripcion', 'id_evento', 'id_user'];
 
     public function evento()
     {
         return $this->belongsTo(Evento::class, 'id_evento');
     }
 
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'id_user');
-    }
+
+public function user()
+{
+    return $this->belongsTo(User::class, 'id_user');
+}
+
 }

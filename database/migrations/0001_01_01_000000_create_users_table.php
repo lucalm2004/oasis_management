@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name', 45);
-            // $table->string('apellidos', 60);
             $table->string('email', 80);
             $table->string('password', 255)->nullable();
             $table->string('DNI', 9)->nullable();
@@ -22,6 +21,7 @@ return new class extends Migration
             $table->boolean('habilitado')->default("0");
             $table->integer('puntos')->nullable();
             $table->foreignId('id_rol')->default("2")->constrained('roles');
+            $table->string('foto')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
