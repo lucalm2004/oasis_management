@@ -630,6 +630,11 @@ input[type="file"] {
         white-space: nowrap; /* Evita el salto de línea automático */
     }
 
+    #CrearCiudades {
+       
+        margin-right: 53%;
+    }
+
     #tablaSolicitudes {
         margin-top: 27%;
         width: 100%;

@@ -610,7 +610,11 @@ input[type="file"] {
         width: 60%;
         height: 25%;
     }
-
+/* 
+    #CrearEvento {
+       
+        margin-right: 43%;
+    } */
     .nav-list {
         font-size: 4vw;
         text-align: center;

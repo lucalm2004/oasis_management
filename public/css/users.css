@@ -584,14 +584,18 @@ input[type="file"] {
         width: 100%; /* Opcional: asegura que el ancho sea del 100% */
         z-index: 1000; /* Opcional: establece un valor alto para asegurar que esté por encima de otros elementos */
     }
-    #frmbusqueda {
+    /* #frmbusqueda {
         margin-left: 85%;
 
-    }
+    } */
+   
     #logout {
     padding-left: 55%;
     }
     
+    .buscar {
+        margin-right: 53%; 
+    }
     .nav-container {
         margin-left: 25%;
     }
@@ -599,20 +603,20 @@ input[type="file"] {
         position: sticky;
     }
 
-    /* #icono_buscar {
-        margin-right: 70%;
-        margin-top: 10%;
+     #icono_buscar {
+        /* margin-right: 70%; */
+        margin-top: 20%;
       
        
-    }
+    } 
 
-    
+/*     
     #icono_user {
         margin-right: 80%;
         margin-top: 15%;
       
        
-    } */
+    }  */
 
  
  
@@ -649,8 +653,8 @@ input[type="file"] {
         white-space: nowrap; /* Evita el salto de línea automático */
     }
     #CrearUser {
-        margin-bottom: 75%; /* Puedes ajustar el valor según sea necesario */
-        margin-right: 43%;
+       
+        margin-right: 53%;
     }
     #tablaSolicitudes {
         margin-top: 27%;
@@ -683,6 +687,7 @@ input[type="file"] {
         /* margin-bottom: 10%; */
         width: 100%;
         position: flex;
+        margin-left: 5%;
     }
     table {
         width: 30%; /* Reduzco la anchura al 50% para que se vea más pequeña */

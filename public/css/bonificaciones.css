@@ -592,6 +592,9 @@ input[type="file"] {
     padding-left: 55%;
     }
     
+    .buscar {
+        margin-right: 23%;
+    }
     .nav-container {
         margin-left: 25%;
     }
@@ -599,12 +602,12 @@ input[type="file"] {
         position: sticky;
     }
 
-    /* #icono_buscar {
-        margin-right: 70%;
-        margin-top: 10%;
+     #icono_buscar {
+      
+        margin-top: 20%;
       
        
-    }
+    } 
 
     
     #icono_user {
@@ -612,7 +615,7 @@ input[type="file"] {
         margin-top: 15%;
       
        
-    } */
+    } 
 
  
  
@@ -648,8 +651,8 @@ input[type="file"] {
         align-items: center; /* Alinear verticalmente el contenido */
         white-space: nowrap; /* Evita el salto de línea automático */
     }
-    #CrearUser {
-        margin-bottom: 75%; /* Puedes ajustar el valor según sea necesario */
+    #crearBonificacion {
+
         margin-right: 43%;
     }
     #tablaSolicitudes {

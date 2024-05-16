@@ -60,6 +60,7 @@
   </div>
   <h1 style="text-align: center">EVENTOS</h1>
   <div class="container">
+    <button class="btn-success" id="CrearEvento" style="margin-bottom: 10px"><i class="fa-solid fa-plus" style="color: #ffffff;"></i></button>
     <!-- Formulario de búsqueda -->
     <form action="" method="post" id="frmbusqueda">
       <div class="form-group">
