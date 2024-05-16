@@ -55,6 +55,9 @@
         .toast-message{
             margin-left: 5%!important;
         }
+        .icono_nombre {
+        font-size: 3.5rem; /* Ajustado el tamaño del icono */
+    }
         #help{
             position: absolute;
     top: 95vh;
@@ -81,7 +84,7 @@
             <div class="email">
                 <label for="email" style="border-bottom: 1px solid;;opacity: 50%">Nombre y Apellidos</label>
                 <div class="sec-2">
-                    <i class="fa-regular fa-pen-to-square"></i>
+                    <i class="fa-regular fa-pen-to-square" class="icono_nombre"></i>
                     <x-text-input id="name" class="block mt-1 w-full" type="text" name="name"
                         :value="old('name')" required autofocus autocomplete="name" />
                 </div>
@@ -91,7 +94,7 @@
             <div class="password">
                 <label for="email" style="border-bottom: 1px solid;;opacity: 50%">Email</label>
                 <div class="sec-2">
-                    <ion-icon name="mail-outline"></ion-icon>
+                    <ion-icon name="mail-outline" class="icono_correo"></ion-icon>
                     <x-text-input id="email" class="block mt-1 w-full" type="email" name="email"
                         :value="old('email')" required autocomplete="username" />
                 </div>
@@ -101,7 +104,7 @@
             <div class="password">
                 <label for="password" style="border-bottom: 1px solid;opacity: 50%">Password</label>
                 <div class="sec-2">
-                    <ion-icon name="lock-closed-outline"></ion-icon>
+                    <ion-icon name="lock-closed-outline" class="icono_pwd"></ion-icon>
                     <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required
                         autocomplete="new-password" />
                     <ion-icon class="show-hide" id="eye_show1" name="eye-outline"></ion-icon>
@@ -113,7 +116,7 @@
             <div class="password">
                 <label for="password" style="border-bottom: 1px solid;opacity: 50%">Repet Password</label>
                 <div class="sec-2">
-                    <ion-icon name="lock-closed-outline"></ion-icon>
+                    <ion-icon name="lock-closed-outline" class="icono_pwd"></ion-icon>
                     <x-text-input id="password_confirmation" class="block mt-1 w-full" type="password"
                         name="password_confirmation" required autocomplete="new-password" />
 
@@ -124,7 +127,7 @@
             </div>
             <div style="display: flex; gap:2%">
 
-                <button class="login">Sign in</button>
+                <button class="registrar">Sign in</button>
                 <button onclick="window.location.href='/google-auth/redirect'" class="gsi-material-button">
                     <div class="gsi-material-button-state"></div>
                     <div class="gsi-material-button-content-wrapper">
