@@ -1186,9 +1186,10 @@ class AdminController extends Controller
         $canciones = Cancion::findOrFail($id);
         $canciones_artistas = ArtistaCancion::where("id_cancion", $id)->first();
         $ArtistaID = $canciones_artistas->id_artista;
+        $artista = Artista::where("id", $ArtistaID)->first();
         return response()->json([
             'canciones' => $canciones,
-            'ArtistaID' => $ArtistaID,
+            'artista' => $artista,
         ]);
 
     }
@@ -1200,14 +1201,17 @@ class AdminController extends Controller
 
             DB::beginTransaction();
             $cancion = Cancion::findOrFail($id);
-            $nombre = $request->input("nombre");
-            $artista = $request->input("artista");
+            $nombre = $request->input("nombreCancion");
+            $artista = $request->input("nombreArtista");
+
+            $artitaQuery = Artista::where("name", $artista)->first();
+            $artistaID = $artitaQuery->id;
         
             // Verificar si ya existe una canción con el mismo nombre y el mismo ID de artista
             $existeCancion = DB::table('canciones')
                 ->join('artistas_canciones', 'canciones.id', '=', 'artistas_canciones.id_cancion')
                 ->where('canciones.name', $nombre)
-                ->where('artistas_canciones.id_artista', $artista)
+                ->where('artistas_canciones.id_artista', $artistaID)
                 ->where('canciones.id', '!=', $id) // Excluir la canción actual de la búsqueda
                 ->exists();
         
@@ -1223,59 +1227,185 @@ class AdminController extends Controller
             $producto->save();
     
             $ArtistasCancion = ArtistaCancion::where("id_cancion", $id)->first();
-            $ArtistasCancion->id_artista = $artista;
+            $ArtistasCancion->id_artista = $artistaID;
             $ArtistasCancion->save();
     
             DB::commit();
     
-            return response()->json(['message' => 'Canción actualizada correctamente']);
+            return response()->json(['success' => true, 'message' => 'Canción modificada correctamente en la base de datos']);
         } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['error' => 'Error al actualizar la canción: ' . $e->getMessage()], 500);
+            // Revertir la transacción si hay un error
+            DB::rollback();
+    
+            // Devolver una respuesta JSON con un indicador de éxito falso y un mensaje de error
+            return response()->json(['success' => false, 'message' => 'Hubo un problema al modificar la canción en la base de datos'], 500);
         }
     }
 
-    public function storeCancion(Request $request){
+    public function storeCancion(Request $request) {
         try {
-
             DB::beginTransaction();
-           
-            $nombre = $request->input("nombre");
-            $artista = $request->input("artista");
-        
+    
+            $nombre = $request->input("nombreCancion");
+            $artista = $request->input("nombreArtista");
+            $ArtistaQuery = Artista::where("name", $artista)->first();
+    
+            if (!$ArtistaQuery) {
+                return response()->json(['success' => false, 'message' => 'Artista no encontrado.'], 404);
+            }
+    
+            $artistaID = $ArtistaQuery->id;
+    
             // Verificar si ya existe una canción con el mismo nombre y el mismo ID de artista
             $existeCancion = DB::table('canciones')
                 ->join('artistas_canciones', 'canciones.id', '=', 'artistas_canciones.id_cancion')
                 ->where('canciones.name', $nombre)
-                ->where('artistas_canciones.id_artista', $artista)
+                ->where('artistas_canciones.id_artista', $artistaID)
                 ->exists();
-        
+    
             if ($existeCancion) {
-                return response()->json(['error' => 'Ya existe una canción con este nombre asociada al mismo artista.'], 400);
+                return response()->json(['success' => false, 'message' => 'Ya existe una canción con este nombre asociada al mismo artista.'], 400);
             }
-           
     
             $producto = new Producto();
             $producto->name = $nombre;
             $producto->save();
-
+            $productoID = $producto->id;
+    
             $cancion = new Cancion;
-            $cancion->id = $producto->id;
+            $cancion->id = $productoID;
             $cancion->name = $nombre;
             $cancion->precio = "3.00";
             $cancion->save();
-            
+    
             $ArtistasCancion = new ArtistaCancion();
             $ArtistasCancion->id_cancion = $producto->id;
-            $ArtistasCancion->id_artista = $artista;
+            $ArtistasCancion->id_artista = $artistaID;
             $ArtistasCancion->save();
     
             DB::commit();
     
-            return response()->json(['message' => 'Canción creada correctamente']);
+            return response()->json(['success' => true, 'message' => 'Canción insertada correctamente en la base de datos']);
+        } catch (\Exception $e) {
+            // Revertir la transacción si hay un error
+            DB::rollback();
+    
+            // Devolver una respuesta JSON con un indicador de éxito falso y un mensaje de error
+            return response()->json(['success' => false, 'message' => 'Hubo un problema al intentar insertar la canción en la base de datos'], 500);
+        }
+    }
+    
+
+    /* CRUD ARTISTA */
+
+    /* mostrar artistas con filtros */
+
+    public function showCrudArtistas(Request $request){
+
+        if ($request->input('busqueda')) {
+            $data = $request->input('busqueda'); 
+            $artistas = Artista::where('name', 'like', "%$data%")->get();
+        } else {
+            $artistas = Artista::all();
+        }
+        return response()->json($artistas);
+
+    }
+
+    /* eliminar el artista */
+
+    public function EliminarArtistas($id){
+        try {
+            DB::beginTransaction();
+            $ArtistasCanciones= ArtistaCancion::where("id_artista", $id)->get();
+            foreach($ArtistasCanciones as $ArtistasCancion){
+                $idCancion = $ArtistasCancion->id_cancion;
+                $ArtistasCancion->delete();
+                PlaylistCancion::where("id_canciones", $idCancion)->delete();
+                Cancion::findOrFail($idCancion)->delete();
+                Producto::findOrFail($idCancion)->delete();
+                
+            }
+            Artista::findOrFail($id)->delete();
+            // Confirmar la transacción
+            DB::commit();
+    
+            return response()->json(['success' => true, 'message' => 'Artista eliminado correctamente']);
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['error' => 'Error al crear la canción: ' . $e->getMessage()], 500);
+    
+            return response()->json(['success' => false, 'error' => 'Error al eliminar artista: ' . $e->getMessage()], 500);
+        }
+
+    }
+
+    /* datos editar artistas */
+
+    public function editArtistas($id){
+        $artistas = Artista::findOrFail($id);
+        return response()->json($artistas);
+
+    }
+
+    /* actualizar artistas */
+    public function actualizarArtistas($id, Request $request){
+        try {
+            DB::beginTransaction();
+
+            $artista = Artista::findOrFail($id);
+    
+            $name = $request->input('nombre');
+       
+
+            $existingName = Artista::where('name', $name)->where('id', '!=', $id)->first();
+            if ($existingName) {
+                return response()->json(['error' => 'El nombre ya está en uso '], 422);
+            }
+
+            
+
+            $artista->name = $name;
+       
+            $artista->save();
+
+            DB::commit();
+
+            return response()->json(['message' => 'Artista actualizado correctamente']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            return response()->json(['error' => 'Error al actualizar artista: ' . $e->getMessage()], 500);
+        }
+
+
+    }
+
+    /* insertar artista */
+
+    public function storeArtista(Request $request){
+        try {
+            DB::beginTransaction();
+
+            $name = $request->input('nombre');
+           
+
+            $existingName = Artista::where('name', $name)->first();
+            if ($existingName) {
+                return response()->json(['error' => 'El nombre ya está en uso '], 422);
+            }
+
+
+            $ciudad = new Artista();
+            $ciudad->name = $name;
+            $ciudad->save();
+
+            DB::commit();
+
+            return response()->json(['message' => 'Artista creado correctamente']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+    
+            return response()->json(['error' => 'Error al crear artista: ' . $e->getMessage()], 500);
         }
 
     }

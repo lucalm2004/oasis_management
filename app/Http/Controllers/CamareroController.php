@@ -17,15 +17,18 @@ class CamareroController extends Controller
     
         // Inicializar la variable $listar_eventos
         $listar_eventos = null;
+        $currentDate = now();
+       /*  dd($currentDate); */
 //    dd($request);
         if (!empty($filtro['busqueda']) || (!empty($filtro['fecha']) && in_array($filtro['fecha'], ['asc', 'desc']))) {
             $user = Auth::user();
     // dd($user);
         $id = $user->id;
+        
             $listar_eventos = Evento::select(
                 'eventos.id',
-                'eventos.name AS nombre_evento',
-                'eventos.descripcion AS descripcion_evento',
+                'eventos.name',
+                'eventos.descripcion',
                 'eventos.flyer',
                 'eventos.fecha_inicio',
                 'eventos.fecha_final',
@@ -36,7 +39,8 @@ class CamareroController extends Controller
                 ->join('discotecas', 'eventos.id_discoteca', '=', 'discotecas.id')
                 ->join('users_discotecas', 'discotecas.id', '=', 'users_discotecas.id_discoteca')
                 ->join('users', 'users_discotecas.id_users', '=', 'users.id')
-                ->where('users.id', $id);
+                ->where('users.id', $id)
+                ->where('eventos.fecha_final', '>' , $currentDate);
     
             if (!empty($filtro['busqueda'])) {
                 $listar_eventos->where('eventos.name', 'like', '%' . $filtro['busqueda'] . '%');
@@ -53,8 +57,8 @@ class CamareroController extends Controller
                 $id = $user->id;
             $listar_eventos = Evento::select(
                 'eventos.id',
-                'eventos.name AS nombre_evento',
-                'eventos.descripcion AS descripcion_evento',
+                'eventos.name',
+                'eventos.descripcion',
                 'eventos.flyer',
                 'eventos.fecha_inicio',
                 'eventos.fecha_final',
@@ -65,7 +69,8 @@ class CamareroController extends Controller
                 ->join('discotecas', 'eventos.id_discoteca', '=', 'discotecas.id')
                 ->join('users_discotecas', 'discotecas.id', '=', 'users_discotecas.id_discoteca')
                 ->join('users', 'users_discotecas.id_users', '=', 'users.id')
-                ->where('users.id', $id);
+                ->where('users.id', $id)
+                ->where('eventos.fecha_final', '>' , $currentDate);
         }
     
         // Obtener los resultados de la consulta
@@ -73,5 +78,7 @@ class CamareroController extends Controller
     
         return response()->json(['listar_eventos' => $resultados]);
     }
+
+  
     
 }

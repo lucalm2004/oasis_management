@@ -45,6 +45,7 @@
             <a id="notificacion">0</a>
             <li><a id="primero" href="#discoteca">TU DISCOTECA</a></li>
             <li><a id="segundo" href="#quese">EVENTOS</a></li>
+            <li><a id="tercero" href="#personal">PERSONAL</a></li>
             <form method="POST" action="{{ route('logout') }}" id="logout">
                 @csrf
 
@@ -84,6 +85,8 @@
    
 
         <div class="inicio-texto">
+            
+
             <h5>Gestiona tu discoteca:</h5>
             <h1><?php echo $discoteca->name; ?></h1>
             <h6>direccion de la discoteca: <span><?php echo $discoteca->direccion; ?></span></h6>
@@ -124,6 +127,8 @@
             <div id="playlist" style="display: none" class="list">
                 {{-- aqui se listan las canciones --}}
              </div>
+             <div id="playlist_musica" style="display: none" class="list">
+             </div>
          
         </nav>
     </div>
@@ -149,6 +154,28 @@
 
             </div>
     </section>
+
+
+    <section class="quese" id="personal">
+        <form action="" method="post" id="frmbusqueda">
+            <div class="form-group">
+                <i id="icono_buscar" class="fa-solid fa-magnifying-glass" style="color: #F5763B;"></i>
+                <input type="text" name="buscar2" id="buscar2" placeholder="Buscar..." class="form-control">
+            </div>
+        </form>
+  
+        <div class="centro" style="margin-bottom: 20%">
+            <h3>TU <span>PERSONAL</span> </h3>
+        </div>
+        
+        <div class="container">
+            <div id="personalTabla" class="containerquese">
+                <!-- Aquí se listarán los usuarios -->
+            </div>
+        </div>
+    </section>
+
+    
 
 
 

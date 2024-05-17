@@ -522,7 +522,7 @@ notificacion.addEventListener("click", function() {
 
 /* aceptar la solicitud del gestor */
 function aceptarSolicitud(id) {
-    var rol = document.getElementById("rol").value;
+
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     Swal.fire({
         title: "Aceptar gestor",
@@ -562,7 +562,7 @@ function aceptarSolicitud(id) {
                             text: "Gestor aceptado correctamente",
                             icon: "success"
                         }).then(() => {
-                            ListarUsuarios('', rol);
+
                             mostrarSolicitud();
 
                         });
@@ -581,7 +581,7 @@ function aceptarSolicitud(id) {
 
 /* rechazar la solicitud del gestor */
 function rechazarSolicitud(id) {
-    var rol = document.getElementById("rol").value;
+
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     Swal.fire({
         title: "Rechazar gestor",
@@ -621,7 +621,7 @@ function rechazarSolicitud(id) {
                             text: "Gestor rechazado correctamente",
                             icon: "success"
                         }).then(() => {
-                            ListarUsuarios('', rol);
+
                             mostrarSolicitud();
 
                         });

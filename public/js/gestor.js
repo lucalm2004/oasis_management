@@ -4,15 +4,18 @@ var SongsOasisfy = document.getElementById("SongsOasisfy");
 playListOasisfy.addEventListener("click", function() {
     var viewCanciones = document.getElementById('canciones');
     var viewPlaylist = document.getElementById('playlist');
+    var playlist_musica = document.getElementById('playlist_musica');
 
     if (viewPlaylist.style.display === 'none') {
         viewCanciones.style.display = 'none';
+        playlist_musica.style.display = 'none';
         viewPlaylist.style.display = 'flex';
         playListOasisfy.classList.add('home-p');
         SongsOasisfy.classList.remove('home-p');
     } else {
         viewCanciones.style.display = 'flex';
         viewPlaylist.style.display = 'none';
+
         SongsOasisfy.classList.add('home-p');
         playListOasisfy.classList.remove('home-p');
     }
@@ -25,6 +28,8 @@ SongsOasisfy.addEventListener("click", function() {
     if (viewCanciones.style.display === 'none') {
         viewPlaylist.style.display = 'none';
         viewCanciones.style.display = 'flex';
+        playlist_musica.style.display = 'none';
+
         SongsOasisfy.classList.add('home-p');
         playListOasisfy.classList.remove('home-p');
     } else {
@@ -34,6 +39,7 @@ SongsOasisfy.addEventListener("click", function() {
         SongsOasisfy.classList.remove('home-p');
     }
 });
+
 
 
 function oasisfy() {
@@ -73,7 +79,7 @@ function listarPlaylist() {
             for (var i = 0; i < json.eventos.length; i++) {
                 var evento = json.eventos[i];
                 var numCanciones = json.cancionesPorEvento[evento.id] || 0; // Obtener el número de canciones o establecerlo como 0 si no hay
-                str = "<div>";
+                str = "<div onclick='editarPlaylist(" + evento.id + ")'>";
                 str += "<img style='height: 100px' src='img/flyer/" + evento.flyer + "' alt=''>";
                 str += "<p>" + evento.name_playlist + "</p>";
                 str += "<a>DJ: " + evento.dj + "</a>";
@@ -86,6 +92,100 @@ function listarPlaylist() {
         } else {
             resultado.innerText = "Error";
         }
+    };
+    ajax.send(formdata);
+}
+
+function editarPlaylist(id) {
+    document.getElementById('playlist').style.display = 'none';
+    var resultado = document.getElementById('playlist_musica')
+    document.getElementById('playlist_musica').style.display = 'flex';
+
+    var formdata = new FormData();
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    formdata.append('_token', csrfToken);
+    formdata.append('id', id);
+
+
+    var ajax = new XMLHttpRequest();
+    ajax.open('POST', '/editarPlaylist');
+    ajax.onload = async function() {
+        var str = "";
+        if (ajax.status == 200) {
+            var data = JSON.parse(ajax.responseText);
+            var tabla = "";
+
+            // Array para almacenar todas las promesas de obtener carátulas
+            var promesasCaratulas = [];
+
+            // Construir todas las promesas para obtener las carátulas
+            data.canciones.forEach(function(cancion) {
+                promesasCaratulas.push(obtenerCaratula(cancion.name, cancion.name_artista));
+            });
+
+            // Esperar a que todas las promesas se completen
+            const urlsCaratulas = await Promise.all(promesasCaratulas);
+
+            // Mostrar canciones con sus carátulas
+            data.canciones.forEach(function(cancion, index) {
+                console.log(index)
+                str = "<div id='viewCanciones'>";
+                str += "<i id='eliminar' onclick='borrar(" + cancion.id +
+                    "," + id + ")' class='fa-solid fa-trash' style='color: #f5763b; text-align: center; position: relative; border-radius: 10px; -webkit-appearance: none; color: white; -moz-appearance: none; appearance: none; background: #ff5500; padding: 2px 5px; font-size: 10px; border: 1px solid white; z-index: 99; margin-bottom: -17px; margin-left: 75%;'></i> ";
+                str += "<img src='" + urlsCaratulas[index] + "' alt=''>";
+                str += "<p>" + cancion.name + " | " + cancion.name_artista + "</p>";
+                /*  str += "<a>Duracion: " + cancion.duracion + "</a>"; */
+                str += "</div>";
+                tabla += str;
+            });
+
+            // Mostrar eventos de la discoteca
+            resultado.innerHTML = tabla;
+
+        } else {
+            resultado.innerText = "Error";
+        }
+    };
+    ajax.send(formdata);
+
+}
+
+function borrar(id, idE) {
+    var formdata = new FormData();
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    formdata.append('_token', csrfToken);
+    formdata.append('idCancion', id);
+    formdata.append('idEvento', idE);
+
+
+    var ajax = new XMLHttpRequest();
+    ajax.open('POST', '/playlistUpdate');
+    ajax.onload = function() {
+        if (ajax.status == 200) {
+            Swal.fire({
+                position: "top-end",
+                title: "La cancion se ha eliminado.",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            listarEventos();
+            listarCanciones();
+            listarPlaylist();
+            editarPlaylist(idE)
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un problema al añadir la cancion. Por favor, inténtalo de nuevo más tarde.'
+            });
+        }
+    };
+    ajax.onerror = function() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Hubo un problema al añadir la cancion. Por favor, inténtalo de nuevo más tarde.'
+        });
     };
     ajax.send(formdata);
 }
@@ -249,6 +349,10 @@ function listarEventos(valor) {
                     .name_playlist + "'>"
                 str += "    <input id='descEdit" + item.id + "' type='text' value='" + item
                     .descripcion + "'>"
+                str += "    <input id='capacidad" + item.id + "' type='number' value='" + item
+                    .capacidad + "'>"
+                str += "    <input id='capacidadVip" + item.id + "' type='number' value='" + item
+                    .capacidadVip + "'>"
                 str += "<input id='inicioEdit" + item.id + "' type='datetime-local' value='" + item
                     .fecha_inicio + "'>";
                 str += "<input id='finalEdit" + item.id + "' type='datetime-local' value='" + item
@@ -309,6 +413,12 @@ function update(id) {
     var finalEdit = 'finalEdit' + id;
     var finalEdit = document.getElementById(finalEdit).value;
 
+    var capacidad = 'capacidad' + id;
+    var capacidad = document.getElementById(capacidad).value;
+
+    var capacidadVip = 'capacidadVip' + id;
+    var capacidadVip = document.getElementById(capacidadVip).value;
+
 
     var formdata = new FormData();
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -320,6 +430,9 @@ function update(id) {
     formdata.append('inicioEdit', inicioEdit);
     formdata.append('finalEdit', finalEdit);
     formdata.append('id', id);
+    formdata.append('capacidad', capacidad);
+    formdata.append('capacidadVip', capacidadVip);
+
 
 
     var ajax = new XMLHttpRequest();
@@ -355,6 +468,7 @@ function update(id) {
 
 
 };
+
 
 
 function eliminar(id) {
@@ -393,6 +507,8 @@ crearEvento.addEventListener("click", function() {
         <input id="swal-fecha-fin" type="datetime-local" class="swal2-input" placeholder="Fecha de fin">
         <input id="swal-dj-nombre" class="swal2-input" placeholder="Nombre del DJ">
         <input id="swal-playlist-nombre" class="swal2-input" placeholder="Nombre de la playlist">
+        <input id="swal-playlist-capacidad" class="swal2-input" type='number' placeholder="Capacidad del evento">
+        <input id="swal-playlist-capacidadvip" class="swal2-input" type='number' placeholder="Capacidad de mesas Vip">
         <label class='custom-file-upload'><input id="swal-foto" type="file" class="swal2-input" accept="image/*" title='' placeholder="Subir una foto">Subir foto</label>
 
     `,
@@ -409,9 +525,11 @@ crearEvento.addEventListener("click", function() {
             const fechaFin = Swal.getPopup().querySelector('#swal-fecha-fin').value;
             const djNombre = Swal.getPopup().querySelector('#swal-dj-nombre').value;
             const playlistNombre = Swal.getPopup().querySelector('#swal-playlist-nombre').value;
-            console.log(fotoNombre);
+            const capacidad = Swal.getPopup().querySelector('#swal-playlist-capacidad').value;
+            const capacidadVip = Swal.getPopup().querySelector('#swal-playlist-capacidadvip').value;
+
             if (!nombre || !descripcion || !fechaInicio || !fechaFin || !djNombre || !
-                playlistNombre) {
+                playlistNombre || !capacidad || !capacidadVip) {
                 Swal.showValidationMessage('Por favor completa todos los campos');
             }
 
@@ -423,7 +541,9 @@ crearEvento.addEventListener("click", function() {
                 fechaInicio,
                 fechaFin,
                 djNombre,
-                playlistNombre
+                playlistNombre,
+                capacidad,
+                capacidadVip
             };
         }
     }).then((result) => {
@@ -435,12 +555,14 @@ crearEvento.addEventListener("click", function() {
                 fechaInicio,
                 fechaFin,
                 djNombre,
-                playlistNombre
+                playlistNombre,
+                capacidad,
+                capacidadVip
             } = result.value;
 
             // Aquí deberías enviar estos datos a la función añadirCat()
             añadirEvento(nombre, descripcion, fotoNombre, fechaInicio, fechaFin, djNombre,
-                playlistNombre);
+                playlistNombre, capacidad, capacidadVip);
         }
     });
 
@@ -448,7 +570,7 @@ crearEvento.addEventListener("click", function() {
 
 
 
-function añadirEvento(nombre, descripcion, fotoNombre, fechaInicio, fechaFin, djNombre, playlistNombre) {
+function añadirEvento(nombre, descripcion, fotoNombre, fechaInicio, fechaFin, djNombre, playlistNombre, capacidad, capacidadVip) {
     var formdata = new FormData();
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     formdata.append('_token', csrfToken);
@@ -460,6 +582,10 @@ function añadirEvento(nombre, descripcion, fotoNombre, fechaInicio, fechaFin, d
     formdata.append('fechaFin', fechaFin);
     formdata.append('djNombre', djNombre);
     formdata.append('playlistNombre', playlistNombre);
+    formdata.append('capacidad', capacidad);
+    formdata.append('capacidadVip', capacidadVip);
+    console.log(capacidad, capacidadVip)
+
 
     var ajax = new XMLHttpRequest();
     ajax.open('POST', '/eventoNew');
@@ -491,6 +617,7 @@ function añadirEvento(nombre, descripcion, fotoNombre, fechaInicio, fechaFin, d
     };
     ajax.send(formdata);
 }
+
 
 async function obtenerCaratula(cancion, artista) {
     try {
@@ -660,6 +787,7 @@ function aceptarSolicitud(id) {
                             icon: "success"
                         }).then(() => {
                             mostrarSolicitud();
+                            listarPersonal('');
 
                         });
                     } else {
@@ -718,6 +846,7 @@ function rechazarSolicitud(id) {
                         }).then(() => {
 
                             mostrarSolicitud();
+                            listarPersonal('');
 
                         });
                     } else {
@@ -731,4 +860,111 @@ function rechazarSolicitud(id) {
                 .catch(error => console.error('Error al aceptar el gestor:', error));
         }
     });
+}
+
+
+
+/* mostrar personal */
+
+/* Filtros artistas */
+var buscar2 = document.getElementById("buscar2");
+document.getElementById("buscar2").addEventListener("keyup", () => {
+    const valor = buscar2.value;
+    listarPersonal(valor);
+});
+
+listarPersonal('');
+
+function listarPersonal(valor) {
+    var resultado = document.getElementById('personalTabla');
+    var formdata = new FormData();
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    formdata.append('_token', csrfToken);
+    formdata.append('busqueda', valor);
+    var ajax = new XMLHttpRequest();
+    ajax.open('POST', '/personal', true);
+    ajax.onload = function() {
+        if (ajax.status == 200) {
+            var json = JSON.parse(ajax.responseText);
+            var tabla = '';
+            json.forEach(function(item) {
+                var fotoPerfil = item.foto ? `../img/fotoPerfil/${item.foto}` : '../img/foto.png';
+
+                tabla += `
+                    <div class='row'>
+                        <i id='eliminar' onclick='eliminarPersonal(${item.id})' class='fa-solid fa-trash' style='color: #f5763b; float:right; margin-bottom: 5%'></i>   
+                        <img style='height: 30%; width: 30%; border-radius: 50%;' src='${fotoPerfil}' alt=''>
+                        <div id='informacion${item.id}'>
+                            <h3>${item.name}</h3>
+                            <h5>${item.email}</h5>
+                        </div>
+                    </div>`;
+            });
+            resultado.innerHTML = tabla;
+        } else {
+            resultado.innerText = 'Error';
+        }
+    }
+    ajax.send(formdata);
+}
+
+
+
+function eliminarPersonal(id) {
+
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    Swal.fire({
+        title: "Eliminar personal",
+        text: `¿Seguro que desea eliminar el personal?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#0052CC",
+        confirmButtonText: "Eliminar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`eliminarPersonal/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+
+                        Swal.fire({
+                            title: "Ha ocurrido un error",
+                            text: "Error al eliminar personal",
+                            icon: "error"
+                        });
+                        return;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+
+                    if (data.success == true) {
+                        Swal.fire({
+                            title: "Borrado",
+                            text: "Personal eliminado correctamente",
+                            icon: "success"
+                        }).then(() => {
+                            listarPersonal('');
+
+
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error al eliminar el personal",
+                            text: data.message,
+                            icon: "error"
+                        });
+                    }
+                })
+                .catch(error => console.error('Error al eliminar el personal:', error));
+        }
+    });
+
 }

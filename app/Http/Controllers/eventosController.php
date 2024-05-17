@@ -17,6 +17,7 @@ use App\Mail\EventoCamareroMail;
 use App\Mail\EventoEliminadoMail;
 use App\Mail\EventoModificadoMail;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\EliminarPersonal;
 use App\Models\Discoteca;
 
 class EventosController extends Controller
@@ -105,8 +106,13 @@ class EventosController extends Controller
         $djNombre = $_POST['djNombre'];
         $fechaFin = $_POST['fechaFin'];
         $playlistNombre = $_POST['playlistNombre'];
+        $capacidad = $_POST['capacidad'];
+        $capacidadVip = $_POST['capacidadVip'];
 
-        $evento = Evento::create([
+        // dd($capacidad, $capacidadVip);
+
+
+        $evento= Evento::create([
             'name' => $nombre,
             'descripcion' => $descripcion,
             'flyer' => $imageName,
@@ -115,6 +121,8 @@ class EventosController extends Controller
             'dj' => $djNombre,
             'name_playlist' => $playlistNombre,
             'id_discoteca' => $idDiscoteca,
+            'capacidad' => $capacidad,
+            'capacidadVip' => $capacidadVip
         ]);
 
          // Formatear la fecha de inicio
@@ -139,9 +147,12 @@ class EventosController extends Controller
 
     }
     public function update(Request $request) {
+       
+   
         $user = $request->user();
 
         $idUsuario = $user->id;
+       /*  dd($idUsuario); */
 
         $idDiscoteca = DB::table('users_discotecas')
             ->where('id_users', $idUsuario)
@@ -153,6 +164,8 @@ class EventosController extends Controller
             $playEdit = $_POST['playEdit'];
             $inicioEdit = $_POST['inicioEdit'];
             $finalEdit = $_POST['finalEdit'];
+            $capacidad = $_POST['capacidad'];
+            $capacidadVip = $_POST['capacidadVip'];
             $id = $_POST['id'];
             
             Evento::where('id', $id)->update([
@@ -160,16 +173,22 @@ class EventosController extends Controller
                 'dj' => $djEdit,
                 'descripcion' => $descEdit,
                 'name_playlist' => $playEdit,
+                'capacidad' => $capacidad,
+                'capacidadVip' => $capacidadVip,
                 'fecha_inicio' => $inicioEdit,
                 'fecha_final' => $finalEdit,
             ]);
+            
+
+    
              // Obtener el evento actualizado
-            $evento = Evento::findOrFail($id);
+        $evento = Evento::findOrFail($id);
           // Formatear la fecha de inicio
           $evento->fecha_inicio = date('d/m/Y H:i', strtotime($evento->fecha_inicio));
           $evento->fecha_final = date('d/m/Y H:i', strtotime($evento->fecha_final));
 
-          $user_correo = User::findOrFail($user->id);
+          $user_correo = User::findOrFail($idUsuario);
+   
         
           $discotecaiD_correo = UserDiscoteca::where("id_users", "=", $user_correo->id)->first();
      
@@ -379,6 +398,119 @@ public function RechazarSolicitudes($id){
         DB::rollBack();
 
         return response()->json(['success' => false, 'error' => 'Error al aceptar camarero: ' . $e->getMessage()], 500);
+    }
+
+}
+
+public function editar(Request $request)
+{
+    $idEvento = $request->input('id');
+
+
+    $canciones = DB::table('canciones as c')
+    ->select('c.*', 'artistas.name as name_artista')
+    ->join('playlists_canciones as pc', 'c.id', '=', 'pc.id_canciones')
+    ->join('artistas_canciones', 'artistas_canciones.id_cancion', '=', 'c.id')
+    ->join('artistas', 'artistas_canciones.id_artista', '=', 'artistas.id')
+    ->where('pc.id_evento', '=', $idEvento)
+    ->get();
+
+
+
+    // dd($eventos);
+   
+    return response()->json([
+        'canciones' => $canciones,
+    ]);
+}
+
+public function playlistUpdate(Request $request)
+{
+    $idCancion = $request->input('idCancion');
+    $idEvento = $request->input('idEvento');
+
+    // Realizar la eliminaciÃ³n en la tabla playlists_canciones
+    DB::table('playlists_canciones')
+        ->where('id_evento', $idEvento)
+        ->where('id_canciones', $idCancion)
+        ->delete();
+}
+
+public function verPersonal(Request $request){
+
+    $user = Auth::user();
+    $userID = $user->id;
+    $userDiscoteca = UserDiscoteca::where("id_users", $userID)->first();
+    $discotecaID = $userDiscoteca->id_discoteca;
+   
+
+    if ($request->input('busqueda')) {
+        $data = $request->input('busqueda'); 
+        $camareros =  DB::table('users')
+        ->select('users.*')
+        ->leftJoin('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
+        ->where('users.verificado', '=', 1)
+        ->where('users.habilitado', '=', 1)
+        ->where('users.id_rol', '=', 4)
+        ->where('users_discotecas.id_discoteca', '=', $discotecaID)
+        ->where('name', 'like', "%$data%")
+        ->get();
+    } else {
+        $camareros =  DB::table('users')
+        ->select('users.*')
+        ->leftJoin('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
+        ->where('users.verificado', '=', 1)
+        ->where('users.habilitado', '=', 1)
+        ->where('users.id_rol', '=', 4)
+        ->where('users_discotecas.id_discoteca', '=', $discotecaID)
+        ->get();
+    }
+    return response()->json($camareros);
+
+
+}
+
+public function eliminarPersonal($id){
+
+    try {
+        DB::beginTransaction();
+
+        // Eliminar registros relacionados de la tabla UserDiscoteca si existen
+        $UserDiscoteca = UserDiscoteca::where('id_users', $id)->first();
+        $discoteca_correo = Discoteca::where("id", $UserDiscoteca->id_discoteca)->first();
+    /*     dd($discoteca_correo); */
+        if($UserDiscoteca){
+            $UserDiscoteca->delete();
+        }
+
+        #eliminar cv usuarios
+        $cv = CVUser::where('id_user', $id)->get();
+        foreach($cv as $cvs){
+            if($cvs){
+                $cvs->delete();
+            } 
+        }
+        $user_correo = User::findOrFail($id);
+        $email = $user_correo->email;
+        Mail::to($email)->send(new EliminarPersonal($user_correo, $discoteca_correo));
+
+        // Eliminar el usuario principal si existe
+        $user = User::findOrFail($id);
+        if ($user) {
+            $user->delete();
+        }
+        
+        
+        // Confirmar la transacción
+        DB::commit();
+       
+
+        return response()->json(['success' => true, 'message' => 'Usuario eliminado correctamente']);
+    } catch (\Exception $e) {
+     
+        DB::rollBack();
+
+        return response()->json(['success' => false, 'error' => 'Error al eliminar usuario: ' . $e->getMessage()], 500);
     }
 
 }

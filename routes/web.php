@@ -92,6 +92,11 @@ Route::middleware(GestorOnly::class)->group(function () {
     Route::get('/solicitudes', [eventosController::class, 'showSolicitudes'])->name('showSolicitudes');
     Route::post('/solcitudesaceptar/{id}', [eventosController::class, 'AceptarSolicitudes'])->name('AceptarSolicitudes');
     Route::post('/solcitudrechazar/{id}', [eventosController::class, 'RechazarSolicitudes'])->name('RechazarSolicitudes');
+    Route::post('/editarPlaylist', [eventosController::class, 'editar'])->name('editarPlaylist');
+    Route::get('/editarPlaylist', [eventosController::class, 'editar'])->name('editarPlaylist');
+    Route::post('/playlistUpdate', [eventosController::class, 'playlistUpdate'])->name('playlistUpdate');
+    Route::post('/personal', [eventosController::class, 'verPersonal'])->name('verPersonal');
+    Route::delete('eliminarPersonal/{id}', [eventosController::class, 'eliminarPersonal'])->name('eliminarPersonal');
     
     
 });
@@ -123,8 +128,11 @@ Route::middleware(AdminOnly::class)->group(function () {
         Route::get('/admin6', function () {
             return view('admin/crudcanciones');
         })->middleware(['auth', 'verified'])->name('admin.crudcanciones');
+        Route::get('/admin7', function () {
+            return view('admin/crudartistas');
+        })->middleware(['auth', 'verified'])->name('admin.crudartistas');
         
-       
+        
         Route::controller(AdminController::class)->group(function () {
     
             /* CRUD DE USUARIOS */
@@ -177,6 +185,13 @@ Route::middleware(AdminOnly::class)->group(function () {
             Route::get('admi6/crudcanciones/modadmin/{id}', 'editCanciones')->name('crud.editCanciones');
             Route::post('admi6/crudcanciones/actualizar/{id}', 'actualizarCanciones')->name('crud.actualizarCanciones');
             Route::post('admi6/crudcanciones/insercancion', 'storeCancion')->name('crud.storeCancion');
+
+            /* CRUD ARTISTAS */
+            Route::post('admin7/crudartistas', 'showCrudArtistas')->name('crud.showCrudArtistas');
+            Route::delete('admin7/crudartistas/{id}', 'EliminarArtistas')->name('crud.EliminarArtistas');
+            Route::get('admin7/crudartistas/modadmin/{id}', 'editArtistas')->name('crud.editArtistas');
+            Route::post('admin7/crudartistas/modadmin/{id}', 'actualizarArtistas')->name('crud.actualizarArtistas');
+            Route::post('admin7/crudartistas/insertartista', 'storeArtista')->name('crud.storeArtista');
        
         });
     
@@ -246,5 +261,8 @@ Route::get('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProducto
 Route::middleware(CamareroOnly::class)->group(function () {
 Route::get('/camarero', [CamareroController::class, 'camarero']);
 Route::post('/eventos', [CamareroController::class, 'listar_eventos']) ->name('eventos');
+Route::post('/playlistView', [eventosController::class, 'playlist'])->name('playlistView');
+Route::post('/editarPlaylist2', [eventosController::class, 'editar'])->name('editarPlaylist');
+Route::delete('/abandonarOasis', [CamareroController::class, 'abandonar'])->name('abandonar');
 });
 

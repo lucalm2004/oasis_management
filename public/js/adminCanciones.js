@@ -140,7 +140,7 @@ function Editar(id) {
     fetch(`admi6/crudcanciones/modadmin/${id}`)
         .then(response => response.json())
         .then(data => {
-            obtenerArtistasMod(data.ArtistaID);
+            obtenerArtistasMod(data.artista.name);
             // Crear el formulario con los datos recuperados
             Swal.fire({
                 title: "Modificar Canción",
@@ -210,9 +210,9 @@ function obtenerArtistasMod(idArtista) {
 
             data.forEach(artista => {
                 var option = document.createElement('option');
-                option.value = artista.id;
+                option.value = artista.name;
                 option.text = artista.name;
-                if (artista.id === idArtista) {
+                if (artista.name === idArtista) {
                     option.selected = true; // Seleccionar el rol correspondiente al usuario
                 }
                 selectMarcador.appendChild(option);
@@ -255,61 +255,45 @@ function validarFormularioMod() {
 
 /* enviar formulario para actualizar */
 
-function enviarFormularioModificado(id, formData) {
+async function enviarFormularioModificado(id, formData) {
 
-    var nombre = formData.nombre;
-    var artista = formData.artista;
+    var nombreCancion = formData.nombre;
+    var nombreArtista = formData.artista;
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
 
-    var bodyData = {
-        nombre: nombre,
-        artista: artista
-    };
+    try {
+        // Obtener la carátula usando await
+        const caratula = await obtenerCaratula(nombreCancion, nombreArtista);
 
-    // Obtener el token CSRF del documento HTML
-    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-    // Incluir el token CSRF en el encabezado de la solicitud
-    var headers = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'X-CSRF-TOKEN': token
-    };
-
-    fetch(`admi6/crudcanciones/actualizar/${id}`, {
+        // Realizar una solicitud HTTP POST para insertar la canción en la base de datos
+        const response = await fetch(`admi6/crudcanciones/actualizar/${id}`, {
             method: 'POST',
-            headers: headers,
-            body: JSON.stringify(bodyData),
-        })
-        .then(response => {
-            if (response.ok) {
-                Swal.fire({
-                    title: "Success",
-                    text: "Cambios guardados correctamente",
-                    icon: "success"
-                }).then(() => {
-                    Swal.close();
-
-                    var filtroNombre = document.getElementById("buscar").value;
-                    var filtroArtista = document.getElementById("artista").value;
-                    ListarCanciones(filtroNombre, filtroArtista);
-                });
-            } else {
-                Swal.fire({
-                    title: "Error",
-                    text: "Ha ocurrido un problema al guardar los cambios",
-                    icon: "error"
-                });
-            }
-        })
-        .catch(error => {
-            Swal.fire({
-                title: "Error",
-                text: "Ha ocurrido un problema al guardar los cambios",
-                icon: "error"
-            });
-            console.error('Error:', error);
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken // Añadir el token CSRF como encabezado
+            },
+            body: JSON.stringify({
+                nombreCancion: caratula.nombreCancion,
+                nombreArtista: caratula.nombreArtista
+            })
         });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            // Si la inserción es exitosa, muestra un mensaje de éxito
+            Swal.fire('¡Canción guardada!', data.message, 'success');
+            ListarCanciones('', '');
+        } else {
+            // Si hay un error, muestra un mensaje de error
+            Swal.fire('No se ha podido modificar la canción', data.message || 'Error desconocido', 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        // Si hay un error, muestra un mensaje de error
+        Swal.fire('Error', 'Comprueba el nombre de la canción o el artista agregado, no se ha encontrado la canción.', 'error');
+    }
 }
 
 
@@ -324,7 +308,7 @@ crearCancion.addEventListener("click", function() {
 function mostrarFormulario() {
     obtenerArtistasCrear('');
     Swal.fire({
-        title: "Crear Bonificación",
+        title: "Crear Canción",
         confirmButtonColor: "#0052CC",
         confirmButtonText: "Create",
         html: `
@@ -375,7 +359,7 @@ function obtenerArtistasCrear() {
 
             data.forEach(rol => {
                 var option = document.createElement('option');
-                option.value = rol.id;
+                option.value = rol.name;
                 option.text = rol.name;
                 selectMarcador.appendChild(option);
             });
@@ -428,49 +412,80 @@ function validarFormulario() {
 
 /* enviar los campos para insertarlos */
 
-function enviarFormulario() {
-    var nombre = document.getElementById('nombreCrear').value;
-    var artista = document.getElementById('artistaCrear').value;
+
+
+async function enviarFormulario() {
+    var nombreCancion = document.getElementById('nombreCrear').value;
+    var nombreArtista = document.getElementById('artistaCrear').value;
+    console.log(nombreCancion);
+    console.log(nombreArtista);
 
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    fetch('admi6/crudcanciones/insercancion', {
+    try {
+        // Obtener la carátula usando await
+        const caratula = await obtenerCaratula(nombreCancion, nombreArtista);
+
+        // Realizar una solicitud HTTP POST para insertar la canción en la base de datos
+        const response = await fetch('admi6/crudcanciones/insercancion', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken
+                'X-CSRF-TOKEN': csrfToken // Añadir el token CSRF como encabezado
             },
             body: JSON.stringify({
-                nombre: nombre,
-                artista: artista
-
-
+                nombreCancion: caratula.nombreCancion,
+                nombreArtista: caratula.nombreArtista
             })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error al crear la canción: ' + response.statusText);
-            }
-            return response.json();
-        })
-        .then(data => {
-
-
-            Swal.fire({
-                title: "Creada",
-                text: "Canción creada correctamente",
-                icon: "success"
-            }).then(() => {
-                var filtroNombre = document.getElementById("buscar").value;
-                var filtroArtista = document.getElementById("artista").value;
-                ListarCanciones(filtroNombre, filtroArtista);
-
-            });
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            Swal.fire('Error', 'Error al crear la bonificación', 'error');
         });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            // Si la inserción es exitosa, muestra un mensaje de éxito
+            Swal.fire('¡Canción guardada!', data.message, 'success');
+            ListarCanciones('', '');
+        } else {
+            // Si hay un error, muestra un mensaje de error
+            Swal.fire('No se ha podido insertar la canción', data.message || 'Error desconocido', 'error');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        // Si hay un error, muestra un mensaje de error
+        Swal.fire('Error', 'Comprueba el nombre de la canción o el artista agregado, no se ha encontrado la canción.', 'error');
+    }
+}
+
+
+async function obtenerCaratula(cancion, artista) {
+    try {
+        const apiKey = 'ed420dfe24230d66234f98cdc646d658';
+        const url =
+            `http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=${apiKey}&artist=${encodeURIComponent(artista)}&track=${encodeURIComponent(cancion)}&format=json`;
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.error) {
+            throw new Error(data.message);
+        }
+
+        const {
+            name: nombreCancion,
+            artist: {
+                name: nombreArtista
+            }
+        } = data.track;
+
+
+        return {
+            nombreCancion,
+            nombreArtista
+        };
+    } catch (error) {
+        console.error('Error al obtener la carátula:', error);
+        return null;
+    }
 }
 //ver solicitudes 
 //actualizar lista solicitudes casa segundo
@@ -572,7 +587,7 @@ notificacion.addEventListener("click", function() {
 
 /* aceptar la solicitud del gestor */
 function aceptarSolicitud(id) {
-    var rol = document.getElementById("rol").value;
+
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     Swal.fire({
         title: "Aceptar gestor",
@@ -612,7 +627,7 @@ function aceptarSolicitud(id) {
                             text: "Gestor aceptado correctamente",
                             icon: "success"
                         }).then(() => {
-                            ListarUsuarios('', rol);
+
                             mostrarSolicitud();
 
                         });
@@ -631,7 +646,7 @@ function aceptarSolicitud(id) {
 
 /* rechazar la solicitud del gestor */
 function rechazarSolicitud(id) {
-    var rol = document.getElementById("rol").value;
+
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     Swal.fire({
         title: "Rechazar gestor",
@@ -671,7 +686,7 @@ function rechazarSolicitud(id) {
                             text: "Gestor rechazado correctamente",
                             icon: "success"
                         }).then(() => {
-                            ListarUsuarios('', rol);
+
                             mostrarSolicitud();
 
                         });

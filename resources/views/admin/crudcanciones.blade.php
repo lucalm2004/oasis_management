@@ -10,6 +10,8 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
   <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
   <script src="https://kit.fontawesome.com/e2c3124098.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -24,6 +26,7 @@
             <a href="{{ route('admin.crudciudades') }}">Ciudades | </a>
             <a href="{{ route('admin.crudeventos') }}">Eventos |</a>
             <a href="{{ route('admin.crudcanciones') }}">Canciones |</a>
+            <a href="{{ route('admin.crudartistas') }}">Artistas</a>
           <i class="fa-regular fa-bell" style="color: #F5763B; cursor: pointer;" id="campana"></i>
           <a id="notificacion">0</a>
           <form method="POST" action="{{ route('logout') }}" id="logout" style="float: right; padding-left: 300px">

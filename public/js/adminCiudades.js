@@ -331,7 +331,7 @@ function enviarFormulario() {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Error al crear la bonificación: ' + response.statusText);
+                throw new Error('Error al crear la ciudad: ' + response.statusText);
             }
             return response.json();
         })
@@ -340,7 +340,7 @@ function enviarFormulario() {
 
             Swal.fire({
                 title: "Creada",
-                text: "Bonificación creada correctamente",
+                text: "Ciudad creada correctamente",
                 icon: "success"
             }).then(() => {
                 listarCiudades('');
@@ -349,7 +349,7 @@ function enviarFormulario() {
         })
         .catch(error => {
             console.error('Error:', error);
-            Swal.fire('Error', 'Error al crear la bonificación', 'error');
+            Swal.fire('Error', 'Error al crear la ciudad', 'error');
         });
 }
 
@@ -453,7 +453,7 @@ notificacion.addEventListener("click", function() {
 
 /* aceptar la solicitud del gestor */
 function aceptarSolicitud(id) {
-    var rol = document.getElementById("rol").value;
+
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     Swal.fire({
         title: "Aceptar gestor",
@@ -493,7 +493,7 @@ function aceptarSolicitud(id) {
                             text: "Gestor aceptado correctamente",
                             icon: "success"
                         }).then(() => {
-                            ListarUsuarios('', rol);
+
                             mostrarSolicitud();
 
                         });
@@ -512,7 +512,7 @@ function aceptarSolicitud(id) {
 
 /* rechazar la solicitud del gestor */
 function rechazarSolicitud(id) {
-    var rol = document.getElementById("rol").value;
+
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     Swal.fire({
         title: "Rechazar gestor",
@@ -552,7 +552,7 @@ function rechazarSolicitud(id) {
                             text: "Gestor rechazado correctamente",
                             icon: "success"
                         }).then(() => {
-                            ListarUsuarios('', rol);
+
                             mostrarSolicitud();
 
                         });
