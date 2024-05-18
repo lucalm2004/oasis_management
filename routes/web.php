@@ -97,6 +97,9 @@ Route::middleware(GestorOnly::class)->group(function () {
     Route::post('/playlistUpdate', [eventosController::class, 'playlistUpdate'])->name('playlistUpdate');
     Route::post('/personal', [eventosController::class, 'verPersonal'])->name('verPersonal');
     Route::delete('eliminarPersonal/{id}', [eventosController::class, 'eliminarPersonal'])->name('eliminarPersonal');
+    Route::get('/discoteca', [eventosController::class, 'discoteca'])->name('discoteca');
+    Route::post('/discotecaUpdate', [eventosController::class, 'discotecaUpdate'])->name('discotecaUpdate');
+    
     
     
 });
@@ -261,8 +264,8 @@ Route::get('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProducto
 Route::middleware(CamareroOnly::class)->group(function () {
 Route::get('/camarero', [CamareroController::class, 'camarero']);
 Route::post('/eventos', [CamareroController::class, 'listar_eventos']) ->name('eventos');
-Route::post('/playlistView', [eventosController::class, 'playlist'])->name('playlistView');
+Route::post('/playlistView2', [eventosController::class, 'playlist'])->name('playlistView');
 Route::post('/editarPlaylist2', [eventosController::class, 'editar'])->name('editarPlaylist');
-Route::delete('/abandonarOasis', [CamareroController::class, 'abandonar'])->name('abandonar');
+
 });
 

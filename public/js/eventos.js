@@ -172,7 +172,7 @@ function listarPlaylist() {
     formdata.append('_token', csrfToken);
 
     var ajax = new XMLHttpRequest();
-    ajax.open('POST', '/playlistView');
+    ajax.open('POST', '/playlistView2');
     ajax.onload = function() {
         var str = "";
         if (ajax.status == 200) {

@@ -61,6 +61,7 @@ window.onload = function() {
     listarEventos();
     listarCanciones();
     listarPlaylist();
+    discoteca();
 };
 
 function listarPlaylist() {
@@ -329,8 +330,9 @@ function listarEventos(valor) {
                     ")' id='eliminar' style='color: #f5763b; float: right; margin-left: 2%;'></i>"
                 str += "   <i id='eliminar' onclick='eliminar(" + item.id +
                     ")' class='fa-solid fa-trash' style='color: #f5763b; float:right; margin-bottom: 5%'></i> "
-                str += "   <img src='img/flyer/" + item.flyer + "'/>"
+
                 str += "   <div id='informacion" + item.id + "'>"
+                str += "   <img id='imagenEvento' src='img/flyer/" + item.flyer + "'/>"
                 str += "    <h3>" + item.name + "</h3>"
                 str += "   <h5>" + item.dj + " | " + item.name_playlist + "</h5>"
                 str += "   <p>" + item.descripcion + "</p>"
@@ -343,6 +345,12 @@ function listarEventos(valor) {
                 // inputs
                 str += "<div id='edicion" + item.id +
                     "' style='display: none;justify-content: center; align-items: center; flex-wrap: wrap;'>"
+                str += '<label id="label' + item.id + '" style="border: none;" class="custom-file-upload">' +
+                    '<input id="imagenMod' + item.id + '" type="file" class="swal2-input" accept="image/*" title="" placeholder="Subir una foto">' +
+                    '<img src="img/flyer/' + item.flyer + '" alt="">' +
+                    '</label>';
+
+
                 str += "    <input id='nameEdit" + item.id + "' type='text' value='" + item.name + "'>"
                 str += "    <input id='djEdit" + item.id + "' type='text' value='" + item.dj + "'>"
                 str += "    <input id='playEdit" + item.id + "' type='text' value='" + item
@@ -419,6 +427,12 @@ function update(id) {
     var capacidadVip = 'capacidadVip' + id;
     var capacidadVip = document.getElementById(capacidadVip).value;
 
+    var capacidadVip = 'capacidadVip' + id;
+    var capacidadVip = document.getElementById(capacidadVip).value;
+
+    var flyer = 'imagenMod' + id;
+    var flyer = document.getElementById(flyer).files[0];
+
 
     var formdata = new FormData();
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -432,6 +446,11 @@ function update(id) {
     formdata.append('id', id);
     formdata.append('capacidad', capacidad);
     formdata.append('capacidadVip', capacidadVip);
+    if (flyer) {
+        formdata.append('flyer', flyer);
+
+    }
+
 
 
 
@@ -441,7 +460,7 @@ function update(id) {
         if (ajax.status == 200) {
             Swal.fire({
                 position: "top-end",
-                title: "El evento se ha creado.",
+                title: "El evento se ha modificado.",
                 showConfirmButton: false,
                 timer: 1500
             });
@@ -966,5 +985,143 @@ function eliminarPersonal(id) {
                 .catch(error => console.error('Error al eliminar el personal:', error));
         }
     });
+
+}
+
+var formModificarDisco = document.getElementById("formModificarDisco");
+formModificarDisco.addEventListener("click", function() {
+    var discotecaInicio = document.getElementById("discotecaInicio");
+    var Modificardiscoteca = document.getElementById("Modificardiscoteca");
+    var imagenDiscoteca = document.getElementById("imagenDiscoteca");
+    var modificarFotoLabel = document.getElementById("modificarFotoLabel");
+
+    if (discotecaInicio.style.display === "none") {
+        discotecaInicio.style.display = "block";
+        Modificardiscoteca.style.display = "none";
+        imagenDiscoteca.style.display = "block";
+        modificarFotoLabel.style.display = "none";
+    } else {
+        discotecaInicio.style.display = "none";
+        Modificardiscoteca.style.display = "block";
+        imagenDiscoteca.style.display = "none";
+        modificarFotoLabel.style.display = "block";
+
+
+    }
+});
+
+
+function discoteca() {
+    var resultado = document.getElementById('discotecaInicio');
+
+    var formdata = new FormData();
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    formdata.append('_token', csrfToken);
+
+    var ajax = new XMLHttpRequest();
+    ajax.open('GET', '/discoteca');
+    ajax.onload = function() {
+        if (ajax.status == 200) {
+            var json = JSON.parse(ajax.responseText);
+            console.log(json);
+
+
+
+
+            // Actualizar datos de la discoteca
+            document.getElementById('discotecaName').innerHTML = json.name;
+            document.getElementById('discotecaDireccion').innerHTML = json.direccion;
+
+            // Actualizar formulario de modificación
+            document.getElementById('nameDiscoteca').value = json.name;
+            document.getElementById('direccionDiscoteca').value = json.direccion;
+            document.getElementById('capacidadDiscoteca').value = json.capacidad;
+            var nombreImagen = json.image;
+
+            // Establecer la fuente de las imágenes
+            document.getElementById('imagenDiscoteca').src = '../img/discotecas/' + nombreImagen;
+            document.getElementById('imagenPreview').src = '../img/discotecas/' + nombreImagen;
+
+
+            // Actualizar conteo de eventos
+
+
+            // Generar lista de eventos (si es necesario)
+            // Aquí puedes agregar el código para mostrar eventos si los necesitas
+
+        } else {
+            resultado.innerText = "Error";
+        }
+    };
+    ajax.send(formdata);
+}
+
+
+
+
+
+function updateDiscoteca(id) {
+
+    var name = document.getElementById("nameDiscoteca").value;
+    var direccion = document.getElementById("direccionDiscoteca").value;
+    var capacidad = document.getElementById("capacidadDiscoteca").value;
+    var imagen = document.getElementById("swal-foto-discoteca").files[0];
+
+
+
+
+
+    var formdata = new FormData();
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    formdata.append('_token', csrfToken);
+    formdata.append('name', name);
+    formdata.append('direccion', direccion);
+    formdata.append('capacidad', capacidad);
+    formdata.append('id', id);
+    if (imagen) {
+        formdata.append('imagen', imagen);
+
+    }
+
+
+
+
+
+    var ajax = new XMLHttpRequest();
+    ajax.open('POST', '/discotecaUpdate');
+    ajax.onload = function() {
+        if (ajax.status == 200) {
+            Swal.fire({
+                position: "top-end",
+                title: "Discoteca Modificada.",
+                showConfirmButton: false,
+                timer: 1500
+            });
+            discoteca();
+            var discotecaInicio = document.getElementById("discotecaInicio");
+            var Modificardiscoteca = document.getElementById("Modificardiscoteca");
+            var imagenDiscoteca = document.getElementById("imagenDiscoteca");
+            var modificarFotoLabel = document.getElementById("modificarFotoLabel");
+            discotecaInicio.style.display = "block";
+            Modificardiscoteca.style.display = "none";
+            imagenDiscoteca.style.display = "block";
+            modificarFotoLabel.style.display = "none";
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un problema al añadir el evento. Por favor, inténtalo de nuevo más tarde.'
+            });
+        }
+    };
+    ajax.onerror = function() {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Hubo un problema al añadir el evento. Por favor, inténtalo de nuevo más tarde.'
+        });
+    };
+    ajax.send(formdata);
+
 
 }

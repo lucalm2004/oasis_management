@@ -167,6 +167,21 @@ class EventosController extends Controller
             $capacidad = $_POST['capacidad'];
             $capacidadVip = $_POST['capacidadVip'];
             $id = $_POST['id'];
+
+            $evento = Evento::findOrFail($id);
+           
+            if($request->file('flyer')){
+                $imagen = $request->file('flyer');
+                $originalName = $imagen->getClientOriginalName();
+            
+                $imageName = time() . '_' . $originalName;
+                $imagePath = 'img/flyer';
+                $imagen->move(public_path($imagePath), $imageName);
+    
+            }else {
+                $imageName = $evento -> flyer;
+            }
+            
             
             Evento::where('id', $id)->update([
                 'name' => $nameEdit,
@@ -176,6 +191,7 @@ class EventosController extends Controller
                 'capacidad' => $capacidad,
                 'capacidadVip' => $capacidadVip,
                 'fecha_inicio' => $inicioEdit,
+                'flyer' => $imageName,
                 'fecha_final' => $finalEdit,
             ]);
             
@@ -511,6 +527,79 @@ public function eliminarPersonal($id){
         DB::rollBack();
 
         return response()->json(['success' => false, 'error' => 'Error al eliminar usuario: ' . $e->getMessage()], 500);
+    }
+
+}
+
+public function discoteca(){
+    $user = Auth::user();
+    $userID = $user->id;
+ 
+    $userdiscoteca = UserDiscoteca::where("id_users", $userID)->first();
+   /*  dd($userdiscoteca); */
+    $discotecaID = $userdiscoteca->id_discoteca;
+/*     dd($discotecaID); */
+    $discoteca = Discoteca::findOrFail($discotecaID);
+    
+    return response()->json($discoteca);
+}
+
+public function discotecaUpdate(Request $request){
+    try {
+        DB::beginTransaction();
+        $id = $request->input("id");
+       /*  dd($id);
+ */
+        $discotecaNueva = Discoteca::findOrFail($id);
+        $discotecaNuevaName = $request->input('name');
+        
+
+       /*  dd($request->hasFile('imagen')); */
+        if($request->file('imagen')){
+            $imagen = $request->file('imagen');
+            $originalName = $imagen->getClientOriginalName();
+        
+            $imageName = time() . '_' . $originalName;
+            $imagePath = 'img/discotecas';
+            $imagen->move(public_path($imagePath), $imageName);
+
+        }else {
+            $imageName = $discotecaNueva -> image;
+        }
+        
+         
+        
+       
+        $ciudad = $discotecaNueva->id_ciudad;
+        $ciudadEncontrada = DB::table('ciudades')->where('id', $ciudad)->first();
+        // Obtener latitud y longitud
+        $apiKey = 'AIzaSyBHnWvq4QKI7BwTKqm5vXGxLxNz01jSyiY';
+        $formattedAddress = urlencode($request->input('direccion') . ', ' . $ciudadEncontrada->name);
+      /*   dd($formattedAddress); */
+        $url = "https://maps.googleapis.com/maps/api/geocode/json?address={$formattedAddress}&key={$apiKey}";
+        $response = file_get_contents($url);
+        $json = json_decode($response);
+        $latitud = $json->results[0]->geometry->location->lat;
+        $longitud = $json->results[0]->geometry->location->lng; 
+
+        // Crear nueva discoteca
+       
+        $discotecaNueva->name = $discotecaNuevaName;
+        $discotecaNueva->direccion = $request->input('direccion');
+        $discotecaNueva->image = $imageName;
+        $discotecaNueva->lat = $latitud;
+        $discotecaNueva->long = $longitud;
+        $discotecaNueva->capacidad = $request->input('capacidad');
+        $discotecaNueva->save();
+
+        DB::commit();
+
+      
+
+        return response()->json(['success' => 'Discoteca creada correctamente.']);
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json(['error' => 'Error al crear discoteca: ' . $e->getMessage()], 500);
     }
 
 }

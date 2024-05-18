@@ -83,19 +83,31 @@
 
     <section class="inicio" id="discoteca">
    
-
+       
         <div class="inicio-texto">
-            
-
             <h5>Gestiona tu discoteca:</h5>
-            <h1><?php echo $discoteca->name; ?></h1>
-            <h6>direccion de la discoteca: <span><?php echo $discoteca->direccion; ?></span></h6>
+            <div id="discotecaInicio">
+                <h1 id="discotecaName"></h1>
+                <h6>Dirección de la discoteca: <span id="discotecaDireccion"></span></h6>
+            </div>
             <p>Tienes un total de <span id="eventosCount"></span> eventos</p>
-            <button class="login">Update Discoteca </button>
+            <button class="login" id="formModificarDisco"><i class='fa-solid fa-pen-to-square' style='color: white; font-size: 200%;'></i></button>
+            <div id="Modificardiscoteca" style="display: none">
+                <input id='nameDiscoteca' type='text'>
+                <input id='direccionDiscoteca' type='text'>
+                <input id='capacidadDiscoteca' type='number'>
+                <button id='updateDiscoteca' class='login' onclick="updateDiscoteca(<?php echo $discoteca->id; ?>)">Update Discoteca</button>
+            </div>
         </div>
+        
         <div class="imagenini">
-            <img src='img/discotecas/<?php echo $discoteca->image; ?>' alt="">
+            <label id="modificarFotoLabel" style="display: none; border: none;" class='custom-file-upload'>
+                <input id="swal-foto-discoteca" type="file" class="swal2-input" accept="image/*" title='' placeholder="Subir una foto">
+                <img id="imagenPreview" src='' alt="">
+            </label>
+            <img id="imagenDiscoteca" src='' alt="">
         </div>
+        
     </section>
     {{-- Reproductor --}}
     <div class='reproductor'>
