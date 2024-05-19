@@ -166,19 +166,59 @@ class AdminController extends Controller
         
         
         
-        if ($discotecaID !== null) {
+        if ($discotecaID !== null) {// Eliminar registros relacionados de la tabla BonificacionUser si existen
+            $BonificacionUsers = BonificacionUser::where('id_users', $id)->get();
+            foreach($BonificacionUsers as $BonificacionUser){
+                if($BonificacionUser){
+                    $BonificacionUser->delete();
+                }
+
+            }
+            // Eliminar registros relacionados de la tabla BonificacionUser si existen
+            $BonificacionUsers = BonificacionUser::where('id_users', $id)->get();
+            foreach($BonificacionUsers as $BonificacionUser){
+                if($BonificacionUser){
+                    $BonificacionUser->delete();
+                }
+
+            }
+            
+    
+            // Eliminar registros relacionados de la tabla Carrito si existen
+            $Carrito = Carrito::where('id_user', $id)->first();
+            if($Carrito){
+                $Carrito->delete();
+            }
+    
+            // Eliminar registros relacionados de la tabla Valoracion si existen
+            $Valoraciones = Valoracion::where('id_user', $id)->get();
+            foreach($Valoraciones as $Valoracion){
+                if($Valoracion){
+                    $Valoracion->delete();
+                } 
+            }
+
+            #eliminar cv usuarios
+            $cv = CVUser::where('id_user', $id)->get();
+            foreach($cv as $cvs){
+                if($cvs){
+                    $cvs->delete();
+                } 
+            }
+
             if ($request->input('rol') == 3) {
                 // Buscar un gestor diferente al usuario que se está actualizando en la misma discoteca
-                $existingGestor = UserDiscoteca::where('id_discoteca', $discotecaID)
-                                                ->where('id_users', '!=', $id) // Excluir el usuario actual
-                                                ->whereHas('user', function ($query) {
-                                                    $query->where('id_rol', 3); // Filtrar por usuarios con rol de gestor
-                                                })
-                                                ->first();
+                $existingGestor = DB::table('users')
+                ->select('users.*')
+                ->leftJoin('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
+                ->where('users.id_rol', '=', 3)
+                ->where('users.id', '!=', $id)
+                ->where('users_discotecas.id_discoteca', '=', $discotecaID)
+                ->first();
 
                 // Si existe un gestor diferente, no se permite la asignación
                 if ($existingGestor) {
-                    return response()->json(['error' => 'Ya existe un gestor diferente en esta discoteca'], 422);
+                return response()->json(['error' => 'Ya existe un gestor diferente en esta discoteca'], 422);
                 }
                 
                 $Usersdiscoteca = UserDiscoteca::where('id_users', '=', $id)->first();
@@ -347,11 +387,12 @@ class AdminController extends Controller
 
             $discoteca = $request->input('discoteca');
             if ($discoteca !== null) {
-                $gestorExistente = UserDiscoteca::where('id_discoteca', $discoteca)
-                ->whereHas('user', function ($query) {
-                    $query->where('id_rol', 3); // 3 representa el ID del rol de gestor
-                })
-                ->exists();
+                $gestorExistente = DB::table('users')
+                ->select('users.*')
+                ->leftJoin('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
+                ->where('users.id_rol', '=', 3)
+                ->where('users_discotecas.id_discoteca', '=', $discoteca)
+                ->first();
 
                 if ($gestorExistente) {
                     return response()->json(['error' => 'La discoteca ya tiene un gestor asignado'], 422);

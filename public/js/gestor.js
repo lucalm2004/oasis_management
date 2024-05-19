@@ -343,32 +343,31 @@ function listarEventos(valor) {
                 str += "</div>"
 
                 // inputs
-                str += "<div id='edicion" + item.id +
-                    "' style='display: none;justify-content: center; align-items: center; flex-wrap: wrap;'>"
+                str += "<div id='edicion" + item.id + "' style='display: none; justify-content: center; align-items: center; flex-wrap: wrap;'>";
                 str += '<label id="label' + item.id + '" style="border: none;" class="custom-file-upload">' +
                     '<input id="imagenMod' + item.id + '" type="file" class="swal2-input" accept="image/*" title="" placeholder="Subir una foto">' +
                     '<img src="img/flyer/' + item.flyer + '" alt="">' +
                     '</label>';
+                str += "<span id='errorNameEdit" + item.id + "' style='display: none; padding-bottom:2%'>></span>";
+                str += "<input id='nameEdit" + item.id + "' type='text' value='" + item.name + "' onkeyup='validarFormUpdateEvento(" + item.id + ")'>";
+                str += "<span id='errorDjEdit" + item.id + "'style='display: none; padding-bottom:2%'></span>";
+                str += "<input id='djEdit" + item.id + "' type='text' value='" + item.dj + "' onkeyup='validarFormUpdateEvento(" + item.id + ")'>";
+                str += "<span id='errorPlayEdit" + item.id + "' style='display: none; padding-bottom:2%'></span>";
+                str += "<input id='playEdit" + item.id + "' type='text' value='" + item.name_playlist + "' onkeyup='validarFormUpdateEvento(" + item.id + ")'>";
+                str += "<span id='errorDescEdit" + item.id + "' style='display: none; padding-bottom:2%'></span>";
+                str += "<input id='descEdit" + item.id + "' type='text' value='" + item.descripcion + "' onkeyup='validarFormUpdateEvento(" + item.id + ")'>";
+                str += "<span id='errorCapacidadEdit" + item.id + "' style='display: none; padding-bottom:2%'></span>";
+                str += "<input id='capacidad" + item.id + "' type='number' value='" + item.capacidad + "' onkeyup='validarFormUpdateEvento(" + item.id + ")'>";
+                str += "<span id='errorCapacidadVipEdit" + item.id + "' class='error-message'></span>";
+                str += "<input id='capacidadVip" + item.id + "' type='number' value='" + item.capacidadVip + "' onkeyup='validarFormUpdateEvento(" + item.id + ")'>";
+                str += "<span id='errorInicioEdit" + item.id + "' style='display: none; padding-bottom:2%'></span>";
+                str += "<input id='inicioEdit" + item.id + "' type='datetime-local' value='" + item.fecha_inicio + "' onkeyup='validarFormUpdateEvento(" + item.id + ")'>";
+                str += "<span id='errorFinalEdit" + item.id + "' style='display: none; padding-bottom:2%'></span>";
+                str += "<input id='finalEdit" + item.id + "' type='datetime-local' value='" + item.fecha_final + "' onkeyup='validarFormUpdateEvento(" + item.id + ")'>";
 
-
-                str += "    <input id='nameEdit" + item.id + "' type='text' value='" + item.name + "'>"
-                str += "    <input id='djEdit" + item.id + "' type='text' value='" + item.dj + "'>"
-                str += "    <input id='playEdit" + item.id + "' type='text' value='" + item
-                    .name_playlist + "'>"
-                str += "    <input id='descEdit" + item.id + "' type='text' value='" + item
-                    .descripcion + "'>"
-                str += "    <input id='capacidad" + item.id + "' type='number' value='" + item
-                    .capacidad + "'>"
-                str += "    <input id='capacidadVip" + item.id + "' type='number' value='" + item
-                    .capacidadVip + "'>"
-                str += "<input id='inicioEdit" + item.id + "' type='datetime-local' value='" + item
-                    .fecha_inicio + "'>";
-                str += "<input id='finalEdit" + item.id + "' type='datetime-local' value='" + item
-                    .fecha_final + "'>";
-                str += "<button onclick='update(" + item.id +
-                    ")' id='updateEvento' class='login'>Update Evento</button>"
-                str += "</div>"
-                str += "</div>"
+                str += "<button onclick='handleUpdateEvento(" + item.id + ")' id='updateEvento' class='login'>Update Evento</button>";
+                str += "</div>";
+                str += "</div>";
 
                 tabla += str;
 
@@ -385,13 +384,142 @@ function listarEventos(valor) {
     ajax.send(formdata);
 }
 
+
+function validarFormUpdateEvento(id) {
+
+    var nombre = document.getElementById('nameEdit' + id).value.trim();
+    var dj = document.getElementById('djEdit' + id).value.trim();
+    var playlist = document.getElementById('playEdit' + id).value.trim();
+    var descripcion = document.getElementById('descEdit' + id).value.trim();
+    var capacidad = document.getElementById('capacidad' + id).value.trim();
+    var capacidadVip = document.getElementById('capacidadVip' + id).value.trim();
+    var inicio = document.getElementById('inicioEdit' + id).value.trim();
+    var final = document.getElementById('finalEdit' + id).value.trim();
+
+    var nombreError = document.getElementById('errorNameEdit' + id);
+    var djError = document.getElementById('errorDjEdit' + id);
+    var playlistError = document.getElementById('errorPlayEdit' + id);
+    var descripcionError = document.getElementById('errorDescEdit' + id);
+    var capacidadError = document.getElementById('errorCapacidadEdit' + id);
+    var capacidadVipError = document.getElementById('errorCapacidadVipEdit' + id);
+    var inicioError = document.getElementById('errorInicioEdit' + id);
+    var finalError = document.getElementById('errorFinalEdit' + id);
+
+    // Validar nombre
+    if (nombre === "") {
+        nombreError.innerText = 'Por favor introduce un nombre';
+        nombreError.style.display = 'block';
+    } else if (nombre.length < 3) {
+        nombreError.innerText = 'Formato Incorrecto';
+        nombreError.style.display = 'block';
+    } else {
+        nombreError.innerText = '';
+        nombreError.style.display = 'none';
+    }
+
+    // Validar DJ
+    if (dj === "") {
+        djError.innerText = 'Por favor introduce el nombre del DJ';
+        djError.style.display = 'block';
+    } else if (dj.length < 3) {
+        djError.innerText = 'Formato Incorrecto';
+        djError.style.display = 'block';
+    } else {
+        djError.innerText = '';
+        djError.style.display = 'none';
+    }
+
+    // Validar Playlist
+    if (playlist === "") {
+        playlistError.innerText = 'Por favor introduce el nombre de la playlist';
+        playlistError.style.display = 'block';
+    } else if (playlist.length < 3) {
+        playlistError.innerText = 'Formato Incorrecto';
+        playlistError.style.display = 'block';
+    } else {
+        playlistError.innerText = '';
+        playlistError.style.display = 'none';
+    }
+
+    // Validar Descripción
+    if (descripcion === "") {
+        descripcionError.innerText = 'Por favor introduce una descripción';
+        descripcionError.style.display = 'block';
+    } else if (descripcion.length < 10) {
+        descripcionError.innerText = 'La descripción debe tener al menos 10 caracteres';
+        descripcionError.style.display = 'block';
+    } else {
+        descripcionError.innerText = '';
+        descripcionError.style.display = 'none';
+    }
+
+    // Validar capacidad
+    if (capacidad === "" || isNaN(capacidad) || capacidad <= 0 || capacidad.length > 4) {
+        capacidadError.innerText = 'Por favor introduce un valor numérico válido para la capacidad (máximo 4 cifras)';
+        capacidadError.style.display = 'block';
+    } else {
+        capacidadError.innerText = '';
+        capacidadError.style.display = 'none';
+    }
+
+    // Validar capacidad VIP
+    if (capacidadVip === "" || isNaN(capacidadVip) || capacidadVip <= 0 || capacidadVip.length > 4) {
+        capacidadVipError.innerText = 'Por favor introduce un valor numérico válido para la capacidad VIP (máximo 4 cifras)';
+        capacidadVipError.style.display = 'block';
+    } else {
+        capacidadVipError.innerText = '';
+        capacidadVipError.style.display = 'none';
+    }
+
+    // Obtener la fecha actual
+    var fechaActual = new Date();
+
+    // Convertir la fecha actual a un formato compatible con el input de tipo datetime-local
+    var fechaActualFormatoInput = fechaActual.toISOString().slice(0, 16);
+
+    // Validar fecha de inicio
+    if (inicio === "") {
+        inicioError.innerText = 'Por favor introduce una fecha de inicio';
+        inicioError.style.display = 'block';
+    } else if (inicio < fechaActualFormatoInput) {
+        inicioError.innerText = 'La fecha de inicio no puede ser anterior a la fecha actual';
+        inicioError.style.display = 'block';
+    } else {
+        inicioError.innerText = '';
+        inicioError.style.display = 'none';
+    }
+
+    // Validar fecha de finalización
+    if (final === "") {
+        finalError.innerText = 'Por favor introduce una fecha de finalización';
+        finalError.style.display = 'block';
+    } else if (final < inicio) {
+        finalError.innerText = 'La fecha de finalización no puede ser anterior a la fecha de inicio';
+        finalError.style.display = 'block';
+    } else if (final < fechaActualFormatoInput) {
+        finalError.innerText = 'La fecha de finalización no puede ser anterior a la fecha actual';
+        finalError.style.display = 'block';
+    } else {
+        finalError.innerText = '';
+        finalError.style.display = 'none';
+    }
+
+    return !nombreError.innerText && !djError.innerText && !playlistError.innerText &&
+        !descripcionError.innerText && !capacidadError.innerText && !capacidadVipError.innerText &&
+        !inicioError.innerText && !finalError.innerText;
+}
+
+function handleUpdateEvento(id) {
+    if (validarFormUpdateEvento(id)) {
+        update(id);
+    }
+}
+
 function editar(id) {
     var id = id;
     var informacionId = 'informacion' + id;
     var elementoInformacion = document.getElementById(informacionId);
-
-    var edicionId = 'edicion' + id;
-    var elementoEdicion = document.getElementById(edicionId);
+    var elementoEdicion = document.getElementById('edicion' + id);
 
     if (elementoEdicion.style.display === 'none') {
         elementoInformacion.style.display = 'none';
@@ -404,60 +532,55 @@ function editar(id) {
 
 function update(id) {
     var nameEdit = 'nameEdit' + id;
-    var nameEdit = document.getElementById(nameEdit).value;
+    var nameEditValue = document.getElementById(nameEdit).value;
 
     var djEdit = 'djEdit' + id;
-    var djEdit = document.getElementById(djEdit).value;
+    var djEditValue = document.getElementById(djEdit).value;
 
     var playEdit = 'playEdit' + id;
-    var playEdit = document.getElementById(playEdit).value;
+    var playEditValue = document.getElementById(playEdit).value;
 
     var descEdit = 'descEdit' + id;
-    var descEdit = document.getElementById(descEdit).value;
+    var descEditValue = document.getElementById(descEdit).value;
 
     var inicioEdit = 'inicioEdit' + id;
-    var inicioEdit = document.getElementById(inicioEdit).value;
+    var inicioEditValue = document.getElementById(inicioEdit).value;
 
     var finalEdit = 'finalEdit' + id;
-    var finalEdit = document.getElementById(finalEdit).value;
+    var finalEditValue = document.getElementById(finalEdit).value;
 
-    var capacidad = 'capacidad' + id;
-    var capacidad = document.getElementById(capacidad).value;
+    var capacidadInput = 'capacidad' + id;
+    var capacidadValue = document.getElementById(capacidadInput).value;
 
-    var capacidadVip = 'capacidadVip' + id;
-    var capacidadVip = document.getElementById(capacidadVip).value;
+    var capacidadVipInput = 'capacidadVip' + id;
+    var capacidadVipValue = document.getElementById(capacidadVipInput).value;
 
-    var capacidadVip = 'capacidadVip' + id;
-    var capacidadVip = document.getElementById(capacidadVip).value;
-
-    var flyer = 'imagenMod' + id;
-    var flyer = document.getElementById(flyer).files[0];
-
+    var flyerInput = 'imagenMod' + id;
+    var flyer = document.getElementById(flyerInput).files[0];
 
     var formdata = new FormData();
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     formdata.append('_token', csrfToken);
-    formdata.append('nameEdit', nameEdit);
-    formdata.append('djEdit', djEdit);
-    formdata.append('descEdit', descEdit);
-    formdata.append('playEdit', playEdit);
-    formdata.append('inicioEdit', inicioEdit);
-    formdata.append('finalEdit', finalEdit);
+    formdata.append('nameEdit', nameEditValue);
+    formdata.append('djEdit', djEditValue);
+    formdata.append('descEdit', descEditValue);
+    formdata.append('playEdit', playEditValue);
+    formdata.append('inicioEdit', inicioEditValue);
+    formdata.append('finalEdit', finalEditValue);
     formdata.append('id', id);
-    formdata.append('capacidad', capacidad);
-    formdata.append('capacidadVip', capacidadVip);
+    formdata.append('capacidad', capacidadValue);
+    formdata.append('capacidadVip', capacidadVipValue);
     if (flyer) {
         formdata.append('flyer', flyer);
-
     }
-
-
-
+    console.log(formdata);
 
     var ajax = new XMLHttpRequest();
     ajax.open('POST', '/eventoUpdate');
     ajax.onload = function() {
+        var response = JSON.parse(ajax.responseText);
         if (ajax.status == 200) {
+
             Swal.fire({
                 position: "top-end",
                 title: "El evento se ha modificado.",
@@ -468,25 +591,31 @@ function update(id) {
             listarCanciones();
             listarPlaylist();
         } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Hubo un problema al añadir el evento. Por favor, inténtalo de nuevo más tarde.'
-            });
+            if (response.error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: response.error
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Hubo un problema al modificar el evento. Por favor, inténtalo de nuevo más tarde.'
+                });
+            }
         }
     };
     ajax.onerror = function() {
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'Hubo un problema al añadir el evento. Por favor, inténtalo de nuevo más tarde.'
+            text: 'Hubo un problema al modificar el evento. Por favor, inténtalo de nuevo más tarde.'
         });
     };
     ajax.send(formdata);
+}
 
-
-
-};
 
 
 
@@ -520,16 +649,32 @@ crearEvento.addEventListener("click", function() {
     Swal.fire({
         title: 'Nuevo Evento',
         html: `
+        <span id="errorNombreCrear" style="display: none; padding-bottom: 2%;" class="error-message"></span>
         <input id="swal-nombre" class="swal2-input" placeholder="Nombre del evento">
+       
+        <span id="errorDescripcionCrear" style="display: none; padding-bottom: 2%;" class="error-message"></span>
         <input id="swal-descripcion" class="swal2-input" placeholder="Descripción del evento">
+        
+        <span id="errorFechaInicioCrear" style="display: none; padding-bottom: 2%;" class="error-message"></span>
         <input id="swal-fecha-inicio" type="datetime-local" class="swal2-input" placeholder="Fecha de inicio">
+       
+        <span id="errorFechaFinCrear" style="display: none; padding-bottom: 2%;" class="error-message"></span>
         <input id="swal-fecha-fin" type="datetime-local" class="swal2-input" placeholder="Fecha de fin">
+        
+        <span id="errorDjNombreCrear" style="display: none; padding-bottom: 2%;" class="error-message"></span>
         <input id="swal-dj-nombre" class="swal2-input" placeholder="Nombre del DJ">
+       
+        <span id="errorPlaylistNombreCrear" style="display: none; padding-bottom: 2%;" class="error-message"></span>
         <input id="swal-playlist-nombre" class="swal2-input" placeholder="Nombre de la playlist">
+        
+        <span id="errorCapacidadCrear" style="display: none; padding-bottom: 2%;" class="error-message"></span>
         <input id="swal-playlist-capacidad" class="swal2-input" type='number' placeholder="Capacidad del evento">
+        
+        <span id="errorCapacidadVipCrear" style="display: none; padding-bottom: 2%;" class="error-message"></span>
         <input id="swal-playlist-capacidadvip" class="swal2-input" type='number' placeholder="Capacidad de mesas Vip">
+       
+        <span id="errorFotoCrear" style="display: none; padding-bottom: 2%;" class="error-message"></span>
         <label class='custom-file-upload'><input id="swal-foto" type="file" class="swal2-input" accept="image/*" title='' placeholder="Subir una foto">Subir foto</label>
-
     `,
         showCancelButton: true,
         confirmButtonText: 'Confirmar',
@@ -550,9 +695,8 @@ crearEvento.addEventListener("click", function() {
             if (!nombre || !descripcion || !fechaInicio || !fechaFin || !djNombre || !
                 playlistNombre || !capacidad || !capacidadVip) {
                 Swal.showValidationMessage('Por favor completa todos los campos');
-            }
 
-            // Retornar un objeto con todos los datos ingresados
+            }
             return {
                 nombre,
                 descripcion,
@@ -579,14 +723,156 @@ crearEvento.addEventListener("click", function() {
                 capacidadVip
             } = result.value;
 
-            // Aquí deberías enviar estos datos a la función añadirCat()
             añadirEvento(nombre, descripcion, fotoNombre, fechaInicio, fechaFin, djNombre,
                 playlistNombre, capacidad, capacidadVip);
         }
     });
 
+    // Agregar eventos keyup para validar los campos
+    document.getElementById('swal-nombre').addEventListener('keyup', validarNombre);
+    document.getElementById('swal-descripcion').addEventListener('keyup', validarDescripcion);
+    document.getElementById('swal-fecha-inicio').addEventListener('change', validarFechaInicio);
+    document.getElementById('swal-fecha-fin').addEventListener('change', validarFechaFin);
+    document.getElementById('swal-dj-nombre').addEventListener('keyup', validarDJNombre);
+    document.getElementById('swal-playlist-nombre').addEventListener('keyup', validarPlaylistNombre);
+    document.getElementById('swal-playlist-capacidad').addEventListener('keyup', validarCapacidad);
+    document.getElementById('swal-playlist-capacidadvip').addEventListener('keyup', validarCapacidadVip);
+    document.getElementById('swal-foto').addEventListener('change', validarFoto);
 });
 
+function validarNombre() {
+    var nombre = document.getElementById('swal-nombre').value;
+    var errorNombre = document.getElementById('errorNombreCrear');
+
+    if (nombre.length < 3) {
+        errorNombre.innerText = 'El nombre debe tener al menos 3 caracteres';
+        errorNombre.style.display = 'block';
+    } else {
+        errorNombre.innerText = '';
+        errorNombre.style.display = 'none';
+    }
+}
+
+function validarDescripcion() {
+    var descripcion = document.getElementById('swal-descripcion').value;
+    var errorDescripcion = document.getElementById('errorDescripcionCrear');
+
+    if (descripcion.length < 10) {
+        errorDescripcion.innerText = 'La descripción debe tener al menos 10 caracteres';
+        errorDescripcion.style.display = 'block';
+    } else {
+        errorDescripcion.innerText = '';
+        errorDescripcion.style.display = 'none';
+    }
+}
+
+function validarFechaInicio() {
+    var fechaInicio = document.getElementById('swal-fecha-inicio').value;
+    var errorFechaInicio = document.getElementById('errorFechaInicioCrear');
+    var fechaActual = new Date();
+    var fechaSeleccionada = new Date(fechaInicio);
+
+    if (fechaInicio === "") {
+        errorFechaInicio.innerText = 'Por favor introduce una fecha de inicio';
+        errorFechaInicio.style.display = 'block';
+    } else if (fechaSeleccionada < fechaActual) {
+        errorFechaInicio.innerText = 'La fecha de inicio no puede ser anterior a la fecha actual';
+        errorFechaInicio.style.display = 'block';
+    } else {
+        errorFechaInicio.innerText = '';
+        errorFechaInicio.style.display = 'none';
+    }
+}
+
+function validarFechaFin() {
+    var fechaFin = document.getElementById('swal-fecha-fin').value;
+    var errorFechaFin = document.getElementById('errorFechaFinCrear');
+    var fechaInicio = document.getElementById('swal-fecha-inicio').value;
+    var fechaActual = new Date();
+    var fechaFinSeleccionada = new Date(fechaFin);
+    var fechaInicioSeleccionada = new Date(fechaInicio);
+
+    if (fechaFin === "") {
+        errorFechaFin.innerText = 'Por favor introduce una fecha de fin';
+        errorFechaFin.style.display = 'block';
+    } else if (fechaFinSeleccionada < fechaInicioSeleccionada) {
+        errorFechaFin.innerText = 'La fecha de fin no puede ser anterior a la fecha de inicio';
+        errorFechaFin.style.display = 'block';
+    } else if (fechaFinSeleccionada < fechaActual) {
+        errorFechaFin.innerText = 'La fecha de fin no puede ser anterior a la fecha actual';
+        errorFechaFin.style.display = 'block';
+    } else {
+        errorFechaFin.innerText = '';
+        errorFechaFin.style.display = 'none';
+    }
+}
+
+function validarDJNombre() {
+    var djNombre = document.getElementById('swal-dj-nombre').value;
+    var errorDJNombre = document.getElementById('errorDjNombreCrear');
+
+    if (djNombre.length < 3) {
+        errorDJNombre.innerText = 'El nombre del DJ debe tener al menos 3 caracteres';
+        errorDJNombre.style.display = 'block';
+    } else {
+        errorDJNombre.innerText = '';
+        errorDJNombre.style.display = 'none';
+    }
+}
+
+function validarPlaylistNombre() {
+    var playlistNombre = document.getElementById('swal-playlist-nombre').value;
+    var errorPlaylistNombre = document.getElementById('errorPlaylistNombreCrear');
+
+    if (playlistNombre.length < 3) {
+        errorPlaylistNombre.innerText = 'El nombre de la playlist debe tener al menos 3 caracteres';
+        errorPlaylistNombre.style.display = 'block';
+    } else {
+        errorPlaylistNombre.innerText = '';
+        errorPlaylistNombre.style.display = 'none';
+    }
+}
+
+function validarCapacidad() {
+    var capacidad = document.getElementById('swal-playlist-capacidad').value;
+    var errorCapacidad = document.getElementById('errorCapacidadCrear');
+
+    if (isNaN(capacidad) || capacidad <= 0 || capacidad.length > 4) {
+        errorCapacidad.innerText = 'Por favor introduce un valor numérico válido para la capacidad (máximo 4 cifras)';
+        errorCapacidad.style.display = 'block';
+    } else {
+        errorCapacidad.innerText = '';
+        errorCapacidad.style.display = 'none';
+    }
+}
+
+function validarCapacidadVip() {
+    var capacidadVip = document.getElementById('swal-playlist-capacidadvip').value;
+    var errorCapacidadVip = document.getElementById('errorCapacidadVipCrear');
+
+    if (isNaN(capacidadVip) || capacidadVip <= 0 || capacidadVip.length > 4) {
+        errorCapacidadVip.innerText = 'Por favor introduce un valor numérico válido para la capacidad VIP (máximo 4 cifras)';
+        errorCapacidadVip.style.display = 'block';
+    } else {
+        errorCapacidadVip.innerText = '';
+        errorCapacidadVip.style.display = 'none';
+    }
+}
+
+function validarFoto() {
+    var fotoInput = document.getElementById('swal-foto');
+    var fotoNombre = fotoInput.files[0];
+    var errorFoto = document.getElementById('errorFotoCrear');
+    var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
+    if (!allowedExtensions.exec(fotoNombre.name)) {
+        errorFoto.innerText = 'Formato de imagen no válido';
+        errorFoto.style.display = 'block';
+    } else {
+        errorFoto.innerText = '';
+        errorFoto.style.display = 'none';
+    }
+}
 
 
 function añadirEvento(nombre, descripcion, fotoNombre, fechaInicio, fechaFin, djNombre, playlistNombre, capacidad, capacidadVip) {
@@ -596,19 +882,17 @@ function añadirEvento(nombre, descripcion, fotoNombre, fechaInicio, fechaFin, d
     formdata.append('nombre', nombre);
     formdata.append('descripcion', descripcion);
     formdata.append('fotoNombre', fotoNombre);
-    // console.log(fotoNombre)
     formdata.append('fechaInicio', fechaInicio);
     formdata.append('fechaFin', fechaFin);
     formdata.append('djNombre', djNombre);
     formdata.append('playlistNombre', playlistNombre);
     formdata.append('capacidad', capacidad);
     formdata.append('capacidadVip', capacidadVip);
-    console.log(capacidad, capacidadVip)
-
 
     var ajax = new XMLHttpRequest();
     ajax.open('POST', '/eventoNew');
     ajax.onload = function() {
+        var response = JSON.parse(ajax.responseText);
         if (ajax.status == 200) {
             Swal.fire({
                 position: "top-end",
@@ -620,11 +904,19 @@ function añadirEvento(nombre, descripcion, fotoNombre, fechaInicio, fechaFin, d
             listarCanciones();
             listarPlaylist();
         } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Hubo un problema al añadir el evento. Por favor, inténtalo de nuevo más tarde.'
-            });
+            if (response.error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: response.error
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Hubo un problema al añadir el evento. Por favor, inténtalo de nuevo más tarde.'
+                });
+            }
         }
     };
     ajax.onerror = function() {
@@ -636,7 +928,6 @@ function añadirEvento(nombre, descripcion, fotoNombre, fechaInicio, fechaFin, d
     };
     ajax.send(formdata);
 }
-
 
 async function obtenerCaratula(cancion, artista) {
     try {
@@ -912,8 +1203,9 @@ function listarPersonal(valor) {
                 tabla += `
                     <div class='row'>
                         <i id='eliminar' onclick='eliminarPersonal(${item.id})' class='fa-solid fa-trash' style='color: #f5763b; float:right; margin-bottom: 5%'></i>   
-                        <img style='height: 30%; width: 30%; border-radius: 50%;' src='${fotoPerfil}' alt=''>
+                        
                         <div id='informacion${item.id}'>
+                            <img style='height: 30%; width: 30%; border-radius: 50%;' src='${fotoPerfil}' alt=''>
                             <h3>${item.name}</h3>
                             <h5>${item.email}</h5>
                         </div>
@@ -1011,6 +1303,8 @@ formModificarDisco.addEventListener("click", function() {
 });
 
 
+
+
 function discoteca() {
     var resultado = document.getElementById('discotecaInicio');
 
@@ -1024,9 +1318,6 @@ function discoteca() {
         if (ajax.status == 200) {
             var json = JSON.parse(ajax.responseText);
             console.log(json);
-
-
-
 
             // Actualizar datos de la discoteca
             document.getElementById('discotecaName').innerHTML = json.name;
@@ -1042,13 +1333,7 @@ function discoteca() {
             document.getElementById('imagenDiscoteca').src = '../img/discotecas/' + nombreImagen;
             document.getElementById('imagenPreview').src = '../img/discotecas/' + nombreImagen;
 
-
-            // Actualizar conteo de eventos
-
-
-            // Generar lista de eventos (si es necesario)
             // Aquí puedes agregar el código para mostrar eventos si los necesitas
-
         } else {
             resultado.innerText = "Error";
         }
@@ -1056,20 +1341,62 @@ function discoteca() {
     ajax.send(formdata);
 }
 
+function validarFormUpdateDiscoteca(id) {
+    var nombre = document.getElementById('nameDiscoteca').value.trim();
+    var direccion = document.getElementById('direccionDiscoteca').value.trim();
+    var capacidad = document.getElementById('capacidadDiscoteca').value.trim();
 
+    var nombreError = document.getElementById('errorNameDiscoteca');
+    var direccionError = document.getElementById('errorDireccionDiscoteca');
+    var capacidadError = document.getElementById('errorCapacidadDiscoteca');
 
+    // Validar nombre
+    if (nombre === "") {
+        nombreError.innerText = 'Por favor introduce un nombre';
+        nombreError.style.display = 'block';
+    } else if (nombre.length < 3) {
+        nombreError.innerText = 'Formato Incorrecto';
+        nombreError.style.display = 'block';
+    } else {
+        nombreError.innerText = '';
+        nombreError.style.display = 'none';
+    }
 
+    // Validar dirección
+    if (direccion === "") {
+        direccionError.innerText = 'Por favor introduce una dirección';
+        direccionError.style.display = 'block';
+    } else if (direccion.length < 8) {
+        direccionError.innerText = 'Introduce una dirección que sea válida';
+        direccionError.style.display = 'block';
+    } else {
+        direccionError.innerText = '';
+        direccionError.style.display = 'none';
+    }
+
+    // Validar capacidad
+    if (capacidad === "" || isNaN(capacidad) || capacidad <= 0) {
+        capacidadError.innerText = 'Por favor introduce un valor numérico válido';
+        capacidadError.style.display = 'block';
+    } else {
+        capacidadError.innerText = '';
+        capacidadError.style.display = 'none';
+    }
+
+    return !nombreError.innerText && !direccionError.innerText && !capacidadError.innerText;
+}
+
+function handleUpdateDiscoteca(id) {
+    if (validarFormUpdateDiscoteca()) {
+        updateDiscoteca(id);
+    }
+}
 
 function updateDiscoteca(id) {
-
-    var name = document.getElementById("nameDiscoteca").value;
-    var direccion = document.getElementById("direccionDiscoteca").value;
-    var capacidad = document.getElementById("capacidadDiscoteca").value;
+    var name = document.getElementById("nameDiscoteca").value.trim();
+    var direccion = document.getElementById("direccionDiscoteca").value.trim();
+    var capacidad = document.getElementById("capacidadDiscoteca").value.trim();
     var imagen = document.getElementById("swal-foto-discoteca").files[0];
-
-
-
-
 
     var formdata = new FormData();
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -1080,12 +1407,7 @@ function updateDiscoteca(id) {
     formdata.append('id', id);
     if (imagen) {
         formdata.append('imagen', imagen);
-
     }
-
-
-
-
 
     var ajax = new XMLHttpRequest();
     ajax.open('POST', '/discotecaUpdate');
@@ -1098,14 +1420,10 @@ function updateDiscoteca(id) {
                 timer: 1500
             });
             discoteca();
-            var discotecaInicio = document.getElementById("discotecaInicio");
-            var Modificardiscoteca = document.getElementById("Modificardiscoteca");
-            var imagenDiscoteca = document.getElementById("imagenDiscoteca");
-            var modificarFotoLabel = document.getElementById("modificarFotoLabel");
-            discotecaInicio.style.display = "block";
-            Modificardiscoteca.style.display = "none";
-            imagenDiscoteca.style.display = "block";
-            modificarFotoLabel.style.display = "none";
+            document.getElementById("discotecaInicio").style.display = "block";
+            document.getElementById("Modificardiscoteca").style.display = "none";
+            document.getElementById("imagenDiscoteca").style.display = "block";
+            document.getElementById("modificarFotoLabel").style.display = "none";
         } else {
             Swal.fire({
                 icon: 'error',
@@ -1122,6 +1440,4 @@ function updateDiscoteca(id) {
         });
     };
     ajax.send(formdata);
-
-
 }

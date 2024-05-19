@@ -92,11 +92,18 @@
             </div>
             <p>Tienes un total de <span id="eventosCount"></span> eventos</p>
             <button class="login" id="formModificarDisco"><i class='fa-solid fa-pen-to-square' style='color: white; font-size: 200%;'></i></button>
+            
             <div id="Modificardiscoteca" style="display: none">
-                <input id='nameDiscoteca' type='text'>
-                <input id='direccionDiscoteca' type='text'>
-                <input id='capacidadDiscoteca' type='number'>
-                <button id='updateDiscoteca' class='login' onclick="updateDiscoteca(<?php echo $discoteca->id; ?>)">Update Discoteca</button>
+                <span id="errorNameDiscoteca" style=" display: none; padding-bottom:2%"></span>
+                <input id="nameDiscoteca" type="text" onkeyup="validarFormUpdateDiscoteca(<?php echo $discoteca->id; ?>)">
+                
+                <span id="errorDireccionDiscoteca" style=" display: none; padding-bottom:2%"></span>
+                <input id="direccionDiscoteca" type="text" onkeyup="validarFormUpdateDiscoteca(<?php echo $discoteca->id; ?>)">
+                
+                <span id="errorCapacidadDiscoteca" style="display: none; padding-bottom:2%"></span>
+                <input id="capacidadDiscoteca" type="number" onkeyup="validarFormUpdateDiscoteca(<?php echo $discoteca->id; ?>)">
+                
+                <button id="updateDiscoteca" class="login" onclick="handleUpdateDiscoteca(<?php echo $discoteca->id; ?>)">Update Discoteca</button>
             </div>
         </div>
         

@@ -108,9 +108,22 @@ class EventosController extends Controller
         $playlistNombre = $_POST['playlistNombre'];
         $capacidad = $_POST['capacidad'];
         $capacidadVip = $_POST['capacidadVip'];
+        
+        
+        $totalCapacidad = $capacidad + $capacidadVip;
 
         // dd($capacidad, $capacidadVip);
+        $discoteca = Discoteca::findOrFail($idDiscoteca);
 
+        if ($discoteca->capacidad < $totalCapacidad) {
+            return response()->json(['error' => 'No se pueden vender más entradas que la propia capacidad'], 422);
+            
+        }
+        $fechaInicioExiste = Evento::where("fecha_inicio", $fechaInicio)->first();
+
+        if ($fechaInicioExiste) {
+            return response()->json(['error' => 'Ya existe un evento con estas fechas'], 422);
+        }
 
         $evento= Evento::create([
             'name' => $nombre,
@@ -144,11 +157,11 @@ class EventosController extends Controller
         foreach ($camareros as $camarero) {
             Mail::to($camarero->email)->send(new EventoCamareroMail($camarero, $discoteca_correo, $evento));
         }
+        return response()->json(['success' => 'Evento creado correctamente.']);
 
     }
     public function update(Request $request) {
-       
-   
+      /*  dd($request); */
         $user = $request->user();
 
         $idUsuario = $user->id;
@@ -181,6 +194,25 @@ class EventosController extends Controller
             }else {
                 $imageName = $evento -> flyer;
             }
+
+            $totalCapacidad = $capacidad + $capacidadVip;
+
+            // dd($capacidad, $capacidadVip);
+            $discoteca = Discoteca::findOrFail($idDiscoteca);
+    
+            if ($discoteca->capacidad < $totalCapacidad) {
+                return response()->json(['error' => 'No se pueden vender más entradas que la propia capacidad'], 422);
+                
+            }
+            $inicioEdit = date("Y-m-d H:i:s", strtotime($_POST['inicioEdit'])); // Convierte el valor a un formato compatible con la base de datos
+
+            $fechaInicioExiste = Evento::where("fecha_inicio", $inicioEdit)->where("id", "!=", $id)->first();
+
+            if ($fechaInicioExiste) {
+                return response()->json(['error' => 'Ya existe un evento con estas fechas'], 422);
+            }
+
+
             
             
             Evento::where('id', $id)->update([
@@ -194,6 +226,7 @@ class EventosController extends Controller
                 'flyer' => $imageName,
                 'fecha_final' => $finalEdit,
             ]);
+            
             
 
     
@@ -221,6 +254,10 @@ class EventosController extends Controller
           foreach ($camareros as $camarero) {
               Mail::to($camarero->email)->send(new EventoModificadoMail($camarero, $discoteca_correo, $evento));
           }
+
+        return response()->json(['success' => 'Evento modificado correctamente.']);
+
+          
             
 
     }
