@@ -325,11 +325,21 @@ function listarEventos(valor) {
             var json = JSON.parse(ajax.responseText);
             var tabla = "";
             json.forEach(function(item) {
+                var fechaActual = new Date();
+
+                // Convertir la fecha actual a un formato compatible con el input de tipo datetime-local
+                var fechaActualFormatoInput = fechaActual.toISOString().slice(0, 16);
+
+
                 str = " <div class='row'>"
-                str += "<i class='fa-solid fa-pen-to-square'  onclick='editar(" + item.id +
-                    ")' id='eliminar' style='color: #f5763b; float: right; margin-left: 2%;'></i>"
-                str += "   <i id='eliminar' onclick='eliminar(" + item.id +
-                    ")' class='fa-solid fa-trash' style='color: #f5763b; float:right; margin-bottom: 5%'></i> "
+                if (item.fecha_final > fechaActualFormatoInput) {
+                    str += "<i class='fa-solid fa-pen-to-square'  onclick='editar(" + item.id +
+                        ")' id='eliminar' style='color: #f5763b; float: right; margin-left: 2%;'></i>"
+                    str += "   <i id='eliminar' onclick='eliminar(" + item.id +
+                        ")' class='fa-solid fa-trash' style='color: #f5763b; float:right; margin-bottom: 5%'></i> "
+
+
+                }
 
                 str += "   <div id='informacion" + item.id + "'>"
                 str += "   <img id='imagenEvento' src='img/flyer/" + item.flyer + "'/>"
@@ -348,22 +358,22 @@ function listarEventos(valor) {
                     '<input id="imagenMod' + item.id + '" type="file" class="swal2-input" accept="image/*" title="" placeholder="Subir una foto">' +
                     '<img src="img/flyer/' + item.flyer + '" alt="">' +
                     '</label>';
-                str += "<span id='errorNameEdit" + item.id + "' style='display: none; padding-bottom:2%'>></span>";
+                str += "<span id='errorNameEdit" + item.id + "' style='display: none; padding-bottom:2%; text-align: center;'></span>";
                 str += "<input id='nameEdit" + item.id + "' type='text' value='" + item.name + "' onkeyup='validarFormUpdateEvento(" + item.id + ")'>";
-                str += "<span id='errorDjEdit" + item.id + "'style='display: none; padding-bottom:2%'></span>";
+                str += "<span id='errorDjEdit" + item.id + "' style='display: none; padding-bottom:2%; text-align: center;'></span>";
                 str += "<input id='djEdit" + item.id + "' type='text' value='" + item.dj + "' onkeyup='validarFormUpdateEvento(" + item.id + ")'>";
-                str += "<span id='errorPlayEdit" + item.id + "' style='display: none; padding-bottom:2%'></span>";
+                str += "<span id='errorPlayEdit" + item.id + "' style='display: none; padding-bottom:2%; text-align: center;'></span>";
                 str += "<input id='playEdit" + item.id + "' type='text' value='" + item.name_playlist + "' onkeyup='validarFormUpdateEvento(" + item.id + ")'>";
-                str += "<span id='errorDescEdit" + item.id + "' style='display: none; padding-bottom:2%'></span>";
+                str += "<span id='errorDescEdit" + item.id + "' style='display: none; padding-bottom:2%; text-align: center;'></span>";
                 str += "<input id='descEdit" + item.id + "' type='text' value='" + item.descripcion + "' onkeyup='validarFormUpdateEvento(" + item.id + ")'>";
-                str += "<span id='errorCapacidadEdit" + item.id + "' style='display: none; padding-bottom:2%'></span>";
+                str += "<span id='errorCapacidadEdit" + item.id + "' style='display: none; padding-bottom:2%; text-align: center;'></span>";
                 str += "<input id='capacidad" + item.id + "' type='number' value='" + item.capacidad + "' onkeyup='validarFormUpdateEvento(" + item.id + ")'>";
-                str += "<span id='errorCapacidadVipEdit" + item.id + "' class='error-message'></span>";
+                str += "<span id='errorCapacidadVipEdit" + item.id + "' style='display: none; padding-bottom:2%; text-align: center;'></span>";
                 str += "<input id='capacidadVip" + item.id + "' type='number' value='" + item.capacidadVip + "' onkeyup='validarFormUpdateEvento(" + item.id + ")'>";
-                str += "<span id='errorInicioEdit" + item.id + "' style='display: none; padding-bottom:2%'></span>";
-                str += "<input id='inicioEdit" + item.id + "' type='datetime-local' value='" + item.fecha_inicio + "' onkeyup='validarFormUpdateEvento(" + item.id + ")'>";
-                str += "<span id='errorFinalEdit" + item.id + "' style='display: none; padding-bottom:2%'></span>";
-                str += "<input id='finalEdit" + item.id + "' type='datetime-local' value='" + item.fecha_final + "' onkeyup='validarFormUpdateEvento(" + item.id + ")'>";
+                str += "<span id='errorInicioEdit" + item.id + "' style='display: none; padding-bottom:2%; text-align: center;'></span>";
+                str += "<input id='inicioEdit" + item.id + "' type='datetime-local' value='" + item.fecha_inicio + "' onchange='validarFormUpdateEvento(" + item.id + ")'>";
+                str += "<span id='errorFinalEdit" + item.id + "' style='display: none; padding-bottom:2%; text-align: center;'></span>";
+                str += "<input id='finalEdit" + item.id + "' type='datetime-local' value='" + item.fecha_final + "' onchange='validarFormUpdateEvento(" + item.id + ")'>";
 
                 str += "<button onclick='handleUpdateEvento(" + item.id + ")' id='updateEvento' class='login'>Update Evento</button>";
                 str += "</div>";
@@ -490,6 +500,7 @@ function validarFormUpdateEvento(id) {
     }
 
     // Validar fecha de finalización
+    // Validar fecha de finalización
     if (final === "") {
         finalError.innerText = 'Por favor introduce una fecha de finalización';
         finalError.style.display = 'block';
@@ -500,8 +511,21 @@ function validarFormUpdateEvento(id) {
         finalError.innerText = 'La fecha de finalización no puede ser anterior a la fecha actual';
         finalError.style.display = 'block';
     } else {
-        finalError.innerText = '';
-        finalError.style.display = 'none';
+        // Convertir las fechas de inicio y final a objetos Date
+        var fechaInicio = new Date(inicio);
+        var fechaFinal = new Date(final);
+
+        // Calcular la diferencia en milisegundos
+        var diferenciaMilisegundos = fechaFinal - fechaInicio;
+
+        // Validar que la diferencia sea menor o igual a 8 horas (28800000 milisegundos)
+        if (diferenciaMilisegundos > 28800000) {
+            finalError.innerText = 'La fecha de finalización es demasiado grande';
+            finalError.style.display = 'block';
+        } else {
+            finalError.innerText = '';
+            finalError.style.display = 'none';
+        }
     }
 
     return !nombreError.innerText && !djError.innerText && !playlistError.innerText &&
@@ -649,32 +673,34 @@ crearEvento.addEventListener("click", function() {
     Swal.fire({
         title: 'Nuevo Evento',
         html: `
-        <span id="errorNombreCrear" style="display: none; padding-bottom: 2%;" class="error-message"></span>
+        <span id="errorNombreCrear" style='display: none; padding-bottom:2%; text-align: center;' class="error-message"></span>
         <input id="swal-nombre" class="swal2-input" placeholder="Nombre del evento">
-       
-        <span id="errorDescripcionCrear" style="display: none; padding-bottom: 2%;" class="error-message"></span>
+        
+        <span id="errorDescripcionCrear" style='display: none; padding-bottom:2%; text-align: center;' class="error-message"></span>
         <input id="swal-descripcion" class="swal2-input" placeholder="Descripción del evento">
         
-        <span id="errorFechaInicioCrear" style="display: none; padding-bottom: 2%;" class="error-message"></span>
+        <span id="errorFechaInicioCrear" style='display: none; padding-bottom:2%; text-align: center;' class="error-message"></span>
         <input id="swal-fecha-inicio" type="datetime-local" class="swal2-input" placeholder="Fecha de inicio">
-       
-        <span id="errorFechaFinCrear" style="display: none; padding-bottom: 2%;" class="error-message"></span>
+        
+        <span id="errorFechaFinCrear" style='display: none; padding-bottom:2%; text-align: center;' class="error-message"></span>
         <input id="swal-fecha-fin" type="datetime-local" class="swal2-input" placeholder="Fecha de fin">
         
-        <span id="errorDjNombreCrear" style="display: none; padding-bottom: 2%;" class="error-message"></span>
+        <span id="errorDjNombreCrear" style='display: none; padding-bottom:2%; text-align: center;' class="error-message"></span>
         <input id="swal-dj-nombre" class="swal2-input" placeholder="Nombre del DJ">
-       
-        <span id="errorPlaylistNombreCrear" style="display: none; padding-bottom: 2%;" class="error-message"></span>
+        
+        <span id="errorPlaylistNombreCrear" style='display: none; padding-bottom:2%; text-align: center;' class="error-message"></span>
         <input id="swal-playlist-nombre" class="swal2-input" placeholder="Nombre de la playlist">
         
-        <span id="errorCapacidadCrear" style="display: none; padding-bottom: 2%;" class="error-message"></span>
+        <span id="errorCapacidadCrear" style='display: none; padding-bottom:2%; text-align: center;' class="error-message"></span>
         <input id="swal-playlist-capacidad" class="swal2-input" type='number' placeholder="Capacidad del evento">
         
-        <span id="errorCapacidadVipCrear" style="display: none; padding-bottom: 2%;" class="error-message"></span>
+        <span id="errorCapacidadVipCrear" style='display: none; padding-bottom:2%; text-align: center;' class="error-message"></span>
         <input id="swal-playlist-capacidadvip" class="swal2-input" type='number' placeholder="Capacidad de mesas Vip">
-       
-        <span id="errorFotoCrear" style="display: none; padding-bottom: 2%;" class="error-message"></span>
-        <label class='custom-file-upload'><input id="swal-foto" type="file" class="swal2-input" accept="image/*" title='' placeholder="Subir una foto">Subir foto</label>
+        
+        <span id="errorFotoCrear" style='display: none; padding-bottom:2%; text-align: center;' class="error-message"></span>
+        <label class='custom-file-upload'>
+            <input id="swal-foto" type="file" class="swal2-input" accept="image/*" title='' placeholder="Subir una foto">Subir foto
+        </label>
     `,
         showCancelButton: true,
         confirmButtonText: 'Confirmar',
@@ -795,15 +821,28 @@ function validarFechaFin() {
     if (fechaFin === "") {
         errorFechaFin.innerText = 'Por favor introduce una fecha de fin';
         errorFechaFin.style.display = 'block';
+        errorFechaFin.style.textAlign = 'center';
     } else if (fechaFinSeleccionada < fechaInicioSeleccionada) {
         errorFechaFin.innerText = 'La fecha de fin no puede ser anterior a la fecha de inicio';
         errorFechaFin.style.display = 'block';
+        errorFechaFin.style.textAlign = 'center';
     } else if (fechaFinSeleccionada < fechaActual) {
         errorFechaFin.innerText = 'La fecha de fin no puede ser anterior a la fecha actual';
         errorFechaFin.style.display = 'block';
+        errorFechaFin.style.textAlign = 'center';
     } else {
-        errorFechaFin.innerText = '';
-        errorFechaFin.style.display = 'none';
+        // Calcular la diferencia en milisegundos
+        var diferenciaMilisegundos = fechaFinSeleccionada - fechaInicioSeleccionada;
+
+        // Validar que la diferencia sea menor o igual a 8 horas (28800000 milisegundos)
+        if (diferenciaMilisegundos > 28800000) {
+            errorFechaFin.innerText = 'La fecha de fin es demasiado grande';
+            errorFechaFin.style.display = 'block';
+            errorFechaFin.style.textAlign = 'center';
+        } else {
+            errorFechaFin.innerText = '';
+            errorFechaFin.style.display = 'none';
+        }
     }
 }
 

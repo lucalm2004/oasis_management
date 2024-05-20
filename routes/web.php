@@ -264,8 +264,8 @@ Route::get('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProducto
 Route::middleware(CamareroOnly::class)->group(function () {
 Route::get('/camarero', [CamareroController::class, 'camarero']);
 Route::post('/eventos', [CamareroController::class, 'listar_eventos']) ->name('eventos');
-Route::post('/playlistView2', [eventosController::class, 'playlist'])->name('playlistView');
-Route::post('/editarPlaylist2', [eventosController::class, 'editar'])->name('editarPlaylist');
+Route::post('/playlistView2', [CamareroController::class, 'playlist'])->name('playlistView');
+Route::post('/editarPlaylist2', [CamareroController::class, 'editar'])->name('editarPlaylist');
 
 });
 
