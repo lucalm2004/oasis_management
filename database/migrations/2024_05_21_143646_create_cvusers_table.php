@@ -8,15 +8,18 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('ciudades', function (Blueprint $table) {
+        Schema::create('cv_users', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 45)->nullable();
+            $table->string('name_pdf', 255);
+            $table->unsignedBigInteger('id_user');
             $table->timestamps();
+
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('ciudades');
+        Schema::dropIfExists('cv_users');
     }
 };

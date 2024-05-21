@@ -77,8 +77,8 @@
 
           <h5>Trabaja en:</h5>
           <h1><?php echo $discoteca->name; ?></h1>
-          <h6>gestor de la discoteca: <span><?php echo $usergestor->name; ?></span></h6>
-          <h7>direccion de la discoteca: <span><?php echo $discoteca->direccion; ?></span></h7>
+          <h6>Gestor de la discoteca: <span><?php echo $usergestor->name; ?></span></h6>
+          <h7>Direccion de la discoteca: <span><?php echo $discoteca->direccion; ?></span></h7>
           <p>Tienes un total de <span id="eventosCount"></span> eventos</p>
         
       </div>

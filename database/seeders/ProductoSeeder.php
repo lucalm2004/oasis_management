@@ -31,7 +31,7 @@ class ProductoSeeder extends Seeder
         ]);
 
         Producto::create([
-            'name' => 'Exclava Remix',
+            'name' => 'Amanece',
             'tipo' => 'Canción',
 
         ]);
@@ -47,12 +47,12 @@ class ProductoSeeder extends Seeder
         ]);
 
         Producto::create([
-            'name' => 'Fardos',
+            'name' => 'Las Bratz',
             'tipo' => 'Canción',
         ]);
 
         Producto::create([
-            'name' => 'Perreo Lento',
+            'name' => 'Soy Peor',
             'tipo' => 'Canción',
         ]);
 

@@ -7,26 +7,30 @@ use App\Models\Bonificacion;
 
 class BonificacionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
-        // Crear bonificaciones de ejemplo
         Bonificacion::create([
             'name' => 'Consumición extra',
             'descripcion' => 'Si canjeas esta bonificación tendrás una consumición extra',
-            'puntos' => 100,
+            'puntos' => 800,
         ]);
 
         Bonificacion::create([
-            'name' => 'Subes con el DJ',
-            'descripcion' => 'Si canjeas esta bonificación podrás subir a disfrutar con el DJ',
-            'puntos' => 200,
+            'name' => 'Subir con el DJ',
+            'descripcion' => 'En esta bonificación podrás tener mesa con el Dj',
+            'puntos' => 500,
         ]);
 
-        // Puedes agregar más bonificaciones según sea necesario
+        Bonificacion::create([
+            'name' => 'Mesa VIP',
+            'descripcion' => 'Consigue una mesa VIP con botella incluida',
+            'puntos' => 3000,
+        ]);
+
+        Bonificacion::create([
+            'name' => 'Descuento GUESS',
+            'descripcion' => 'Puedes obtener un descuento de un 10% en GUESS',
+            'puntos' => 1000,
+        ]);
     }
 }

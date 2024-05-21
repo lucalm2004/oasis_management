@@ -15,11 +15,10 @@ class CiudadSeeder extends Seeder
     public function run()
     {
 
-        Ciudad::create(['name' => 'Barcelona']);
         Ciudad::create(['name' => 'Tarragona']);
-        Ciudad::create(['name' => 'Madrid']);
         Ciudad::create(['name' => 'Valencia']);
+        Ciudad::create(['name' => 'Barcelona']);
         Ciudad::create(['name' => 'Málaga']);
-
+    
     }
 }

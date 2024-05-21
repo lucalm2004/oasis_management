@@ -6,28 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('discotecas', function (Blueprint $table) {
             $table->id();
             $table->string('name', 45);
             $table->string('direccion', 80);
-            $table->string('image', 255);
+            $table->string('image', 255)->nullable();
             $table->string('lat', 45);
             $table->string('long', 45);
-            $table->integer('capacidad');
-            $table->foreignId('id_ciudad')->constrained('ciudades');
+            $table->integer('capacidad')->nullable();
+            $table->unsignedBigInteger('id_ciudad');
             $table->timestamps();
+
+            $table->foreign('id_ciudad')->references('id')->on('ciudades')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('discotecas');
     }

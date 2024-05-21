@@ -142,12 +142,25 @@
     margin-top: 4.4rem;
 }
 
-#personal {
+
+/* #personal {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, auto));
     grid-gap: 2rem;
     align-items: center;
     margin-top: 4.4rem;
+} */
+
+#tablaSolicitudes th {
+    border-radius: 50px;
+    padding: 5px;
+}
+
+#tablaSolicitudes td {
+    padding: 1%;
+    /*    font-size: 10px; */
+    padding: 0.5%;
+    /* O ajusta según sea necesario */
 }
 
 .resumen {

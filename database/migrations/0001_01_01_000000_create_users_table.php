@@ -14,16 +14,19 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name', 45);
-            // $table->string('apellidos', 60);
             $table->string('email', 80);
             $table->string('password', 255)->nullable();
             $table->string('DNI', 9)->nullable();
             $table->string('google_id', 45)->nullable();
-            $table->boolean('habilitado')->default("0");
+            $table->tinyInteger('habilitado')->default(0);
             $table->integer('puntos')->nullable();
-            $table->foreignId('id_rol')->default("2")->constrained('roles');
-            $table->rememberToken();
+            $table->unsignedBigInteger('id_rol')->default(2);
+            $table->string('remember_token', 100)->nullable();
             $table->timestamps();
+            $table->tinyInteger('verificado')->default(0);
+            $table->string('foto', 255)->nullable();
+
+            $table->foreign('id_rol')->references('id')->on('roles');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -51,4 +54,5 @@ return new class extends Migration
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
+ 
 };

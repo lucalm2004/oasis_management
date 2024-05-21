@@ -27,6 +27,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@example.com',
             'password' => bcrypt('password'),
             'habilitado' => true,
+            'verificado' => true,
             'DNI' => null,
             'id_rol' => $AdminRole->id,
         ]);
@@ -37,6 +38,7 @@ class UserSeeder extends Seeder
             'email' => 'dhernandez@gmail.com',
             'password' => bcrypt('password'),
             'habilitado' => true,
+            'verificado' => true,
             'DNI' => null,
             'id_rol' => $userRole->id,
         ]);
@@ -47,8 +49,9 @@ class UserSeeder extends Seeder
             'email' => 'smarin@gmail.com',
             'password' => bcrypt('password'),
             'habilitado' => true,
+            'verificado' => true,
             'DNI' => null,
-            'id_rol' => $userRole->id,
+            'id_rol' => $gestorRole->id,
         ]);
 
         User::create([
@@ -57,6 +60,7 @@ class UserSeeder extends Seeder
             'email' => 'gestor1@gmail.com',
             'password' => bcrypt('password'),
             'habilitado' => true,
+            'verificado' => true,
             'DNI' => '49902352B',
             'id_rol' => $gestorRole->id,
         ]);
@@ -67,6 +71,7 @@ class UserSeeder extends Seeder
             'email' => 'gestor2@gmail.com',
             'password' => bcrypt('password'),
             'habilitado' => true,
+            'verificado' => true,
             'DNI' => '49902352B',
             'id_rol' => $gestorRole->id,
         ]);
@@ -77,6 +82,7 @@ class UserSeeder extends Seeder
             'email' => 'iromero@gmail.com',
             'password' => bcrypt('password'),
             'habilitado' => true,
+            'verificado' => true,
             'DNI' => null,
             'id_rol' => $camareroRole->id,
         ]);

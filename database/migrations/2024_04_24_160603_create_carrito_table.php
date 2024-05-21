@@ -6,26 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('carrito', function (Blueprint $table) {
             $table->id();
-            $table->string('bonificacion', 45);
-            $table->decimal('precio_total', 2);
-            $table->foreignId('id_user')->constrained('users');
-            $table->foreignId('id_evento')->constrained('eventos');
-            $table->foreignId('id_producto')->constrained('productos');
+            $table->string('bonificacion', 45)->nullable();
+            $table->string('precio_total', 4);
+            $table->unsignedBigInteger('id_user');
+            $table->unsignedBigInteger('id_evento');
+            $table->unsignedBigInteger('id_producto');
             $table->timestamps();
+
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('id_evento')->references('id')->on('eventos')->onDelete('cascade');
+            $table->foreign('id_producto')->references('id')->on('productos')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('carrito');
     }

@@ -17,25 +17,42 @@ class EventoSeeder extends Seeder
     {
         // Crear eventos de ejemplo
         Evento::create([
-            'name' => 'Fiesta de inauguración',
-            'descripcion' => '¡Ven y únete a nosotros en nuestra gran fiesta de inauguración!',
-            'flyer' => 'imagen_fiesta_inauguracion.jpg',
-            'fecha_inicio' => '2024-04-30 20:00:00',
-            'fecha_final' => '2024-05-01 04:00:00',
-            'dj' => 'DJ Invitado',
-            'name_playlist' => 'Playlist de la Fiesta',
+            'name' => 'Noche de salsa',
+            'descripcion' => '¡Una noche llena de ritmo y sabor latino!',
+            'flyer' => 'magen_noche_salsa.jpg',
+            'fecha_inicio' => '2024-05-31 23:30:00',
+            'fecha_final' => '2024-06-01 06:00:00',
+            'dj' => 'DJ Salsas',
+            'name_playlist' => 'Salsa Playlist',
             'id_discoteca' => 1, // Suponiendo que esta es la ID de una discoteca existente
+            'capacidad' => 790, // Suponiendo que esta es la ID de una discoteca existente
+            'capacidadVip' => 10, // Suponiendo que esta es la ID de una discoteca existente
         ]);
 
         Evento::create([
-            'name' => 'Noche de salsa',
-            'descripcion' => '¡Una noche llena de ritmo y sabor latino!',
-            'flyer' => 'imagen_noche_salsa.jpg',
-            'fecha_inicio' => '2024-05-05 22:00:00',
-            'fecha_final' => '2024-05-06 04:00:00',
-            'dj' => 'DJ Salsa',
-            'name_playlist' => 'Salsa Playlist',
-            'id_discoteca' => 2, // Suponiendo que esta es la ID de otra discoteca existente
+            'name' => 'Semáforo',
+            'descripcion' => 'Bienvenidos a la Fiesta de Semáforo. Depende de tu color será lo que buscarás esa noche. Rojo no te interesa nada, intermitenmte te lo piensas y verde locurote.',
+            'flyer' => '1715005345_semaforo.jpg',
+            'fecha_inicio' => '2024-08-10 23:30:00',
+            'fecha_final' => '2024-08-11 06:00:00',
+            'dj' => 'DjMariio',
+            'name_playlist' => 'Desatada',
+            'id_discoteca' => 1, // Suponiendo que esta es la ID de otra discoteca existente
+            'capacidad' => 790, // Suponiendo que esta es la ID de una discoteca existente
+            'capacidadVip' => 10, // Suponiendo que esta es la ID de una discoteca existente
+        ]);
+        
+        Evento::create([
+            'name' => 'PerreoLand',
+            'descripcion' => 'Estais preparados para el perreo? Pues no te lo pienses y ven a PerreoLand donde el DR WALTER ALEJANDRO, doctorado en el perreo',
+            'flyer' => '1716042851_perrreooo.jpg',
+            'fecha_inicio' => '2024-09-11 23:30:00',
+            'fecha_final' => '2024-09-12 06:00:00',
+            'dj' => 'WalterAlejandro',
+            'name_playlist' => 'PerreoCity',
+            'id_discoteca' => 1, // Suponiendo que esta es la ID de otra discoteca existente
+            'capacidad' => 790, // Suponiendo que esta es la ID de una discoteca existente
+            'capacidadVip' => 10, // Suponiendo que esta es la ID de una discoteca existente
         ]);
 
         // Puedes agregar más eventos según sea necesario

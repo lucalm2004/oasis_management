@@ -56,7 +56,7 @@ Route::get('/dashboard', function () {
     $user = Auth::user();
     // dd($user);
     $rol = $user->id_rol; // Acceder al campo "rol" del usuario
-    // dd($rol);
+   
     if ($rol == '3'){
         return redirect('/gestor');
     }elseif($rol == '1'){
@@ -79,6 +79,7 @@ require __DIR__.'/auth.php';
 
 
 Route::middleware(GestorOnly::class)->group(function () {
+    
     Route::get('/gestor', function (){
         return view('gestor');
     });

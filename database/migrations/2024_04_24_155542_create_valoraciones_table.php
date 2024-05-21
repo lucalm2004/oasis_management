@@ -6,25 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::create('valoraciones', function (Blueprint $table) {
             $table->id();
-            $table->decimal('rating', 2);
-            $table->longText('reseña')->nullable();
-            $table->foreignId('id_evento')->constrained('eventos');
-            $table->foreignId('id_user')->constrained('users');
+            $table->string('rating', 4);
+            $table->longText('descripcion')->nullable();
+            $table->unsignedBigInteger('id_evento');
+            $table->unsignedBigInteger('id_user');
             $table->timestamps();
+
+            $table->foreign('id_evento')->references('id')->on('eventos')->onDelete('cascade');
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('valoraciones');
     }

@@ -102,7 +102,7 @@
                 
                 <span id="errorCapacidadDiscoteca" style="display: none; padding-bottom:2%"></span>
                 <input id="capacidadDiscoteca" type="number" onkeyup="validarFormUpdateDiscoteca(<?php echo $discoteca->id; ?>)">
-                
+                <br>
                 <button id="updateDiscoteca" class="login" onclick="handleUpdateDiscoteca(<?php echo $discoteca->id; ?>)">Update Discoteca</button>
             </div>
         </div>
@@ -176,6 +176,9 @@
 
 
     <section class="quese" id="personal">
+        <div class="centro" >
+            <h3>TU <span>PERSONAL</span> </h3>
+        </div>
         <form action="" method="post" id="frmbusqueda">
             <div class="form-group">
                 <i id="icono_buscar" class="fa-solid fa-magnifying-glass" style="color: #F5763B;"></i>
@@ -183,9 +186,7 @@
             </div>
         </form>
   
-        <div class="centro" style="margin-bottom: 20%">
-            <h3>TU <span>PERSONAL</span> </h3>
-        </div>
+        
         
         <div class="container">
             <div id="personalTabla" class="containerquese">

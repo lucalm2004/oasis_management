@@ -21,13 +21,23 @@ class PlaylistsCancionesSeeder extends Seeder
         ]);
 
         PlaylistCancion::create([
-            'id_evento' => 1, // ID del evento
+            'id_evento' => 2, // ID del evento
             'id_canciones' => 5, // ID de otra canción
         ]);
 
         PlaylistCancion::create([
-            'id_evento' => 2, // ID de otro evento
+            'id_evento' => 3, // ID de otro evento
             'id_canciones' => 5, // ID de la misma canción o otra
+        ]);
+        
+        PlaylistCancion::create([
+            'id_evento' => 1, // ID de otro evento
+            'id_canciones' => 6, // ID de la misma canción o otra
+        ]);
+        
+        PlaylistCancion::create([
+            'id_evento' => 2, // ID de otro evento
+            'id_canciones' => 7, // ID de la misma canción o otra
         ]);
 
     }
