@@ -210,9 +210,9 @@ body {
     text-decoration: none;
 }
 
-.nav-list {
+/* .nav-list {
     position: relative;
-}
+} */
 
 .listing,
 .nav-list,
@@ -474,9 +474,11 @@ input {
 
 .block {
     top: 10px;
-    position: fixed;
+    position: absolute;
     color: black;
     right: 20px;
+    margin-right: -15%;
+    margin-top: 2.5%;
 }
 
 #notificacion {
@@ -579,16 +581,19 @@ input[type="file"] {
 
 @media screen and (max-width: 838px) {
     .header {
-        height: 6%; /* Aumentamos la altura del header al 10% */
-        background-color: #fff; /* Color de fondo para evitar la transparencia */
-        width: 100%; /* Opcional: asegura que el ancho sea del 100% */
-        z-index: 1000; /* Opcional: establece un valor alto para asegurar que esté por encima de otros elementos */
+        height: 6%;
+        background-color: #fff;
+        width: 50%;
+        z-index: 1000;
     }
-    /* #frmbusqueda {
-        margin-left: 85%;
 
-    } */
-   
+    .logo img {
+        margin-left: -10%;
+    }
+     #frmbusqueda {
+        margin-left: 50%;
+
+    } 
     #logout {
     padding-left: 55%;
     }
@@ -600,23 +605,18 @@ input[type="file"] {
         margin-left: 25%;
     }
     body {
-        position: sticky;
+        
     }
 
-     #icono_buscar {
-        /* margin-right: 70%; */
-        margin-top: 20%;
-      
-       
-    } 
+    #icono_buscar {
 
-/*     
+    }
     #icono_user {
         margin-right: 80%;
         margin-top: 15%;
       
        
-    }  */
+    } 
 
  
  
@@ -638,14 +638,13 @@ input[type="file"] {
         font-size: 4vw;
         text-align: center;
         align-items: center;
-        margin: auto;
+        /* margin: auto; */
         margin-right: 4.5%;
     
        /* display: flex; */
 
     }
     a {
-        align-items: center;
         font-size: 3vw;
         padding: 2%;
         display: inline-flex;
@@ -654,7 +653,7 @@ input[type="file"] {
     }
     #CrearDiscoteca {
        
-        margin-right: 53%;
+        margin-left: 95%;
     }
     #tablaSolicitudes {
         margin-top: 27%;
@@ -667,8 +666,13 @@ input[type="file"] {
 #tablaSolicitudes th:nth-child(5) {
     display: none;
 } */
-    td:nth-child(2),
+    /* td:nth-child(2),
     th:nth-child(2) {
+        display: none;
+    } */
+
+    td:nth-child(3),
+    th:nth-child(3) {
         display: none;
     }
     td:nth-child(4),
@@ -685,9 +689,12 @@ input[type="file"] {
     }
     .container {
         /* margin-bottom: 10%; */
-        width: 100%;
+        margin-bottom: 10%;
+        width: 90%;
         position: flex;
         margin-left: 5%;
+        margin-right: 5%;
+    }
     }
     table {
         width: 30%; /* Reduzco la anchura al 50% para que se vea más pequeña */
@@ -699,5 +706,5 @@ input[type="file"] {
         font-size: 9px;
     }
 
-}
+
 

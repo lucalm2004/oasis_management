@@ -34,7 +34,7 @@
             bottom: 22px;
             left: 42px;
             z-index: 2;
-            background: url("img/gogogo.png") repeat-x 0px 0px;
+            background: url("{{ asset('img/juego/gogogo.png') }}") repeat-x 0px 0px;
             background-size: 291px 84px;
             background-position-x: 0px;
         }
@@ -53,7 +53,7 @@
             position: absolute;
             bottom: 0;
             left: 0;
-            background: url("img/suelo.png") repeat-x 0px 0px;
+            background: url("{{ asset('img/juego/suelo.png') }}") repeat-x 0px 0px;
             background-size: 50% 42px;
         }
 
@@ -71,19 +71,20 @@
             text-align: right;
         }
 
+        
         .cactus {
             width: 46px;
-            height: 96px;
+            height: 73px;
             position: absolute;
             bottom: 16px;
             z-index: 1;
-            background: url("img/cactus1.png");
+            background: url("{{ asset('img/juego/palmera.png') }}");
         }
 
         #gameOver {
             display: none;
             position: absolute;
-            top: 50%;
+            top: 25%;
             left: 50%;
             transform: translate(-50%, -50%);
             font-size: 48px;
@@ -117,6 +118,19 @@
     </style>
 </head>
 <body>
+
+    <audio id="intro" src="{{ asset('img/juego/eskeleto.mp3') }}"></audio>
+<script type="text/javascript">
+    window.onload = function() {
+        accionPlay();
+    }
+    function accionPlay(){  
+        document.getElementById('intro').play();    
+    }
+</script>
+    {{-- <audio controls autoplay loop>
+        <source src="{{ asset('img/juego/eskeleto.mp3') }}" type="audio/mpeg">
+    </audio> --}}
     <div class="container">
         <div class="suelo"></div>
         <div class="muñeco muñeco-corriendo"></div>
