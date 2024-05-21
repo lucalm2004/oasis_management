@@ -11,6 +11,8 @@
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
     <style>
         /* Estilos generales */
@@ -100,6 +102,8 @@
             margin-bottom: 20px;
             flex-basis: calc(33.33% - 20px);
             box-sizing: border-box;
+            /* max-height: 500px;
+            overflow-y: auto; */
         }
 
         #tiposEntradaContainer {
@@ -260,6 +264,131 @@
             margin-top: 10%;
             margin-bottom: 10%;
         }
+
+        /* Estilos CSS para el contenido interno del carrito */
+        .carrito-content {
+            max-height: 230px;
+            /* Establecer una altura máxima para el contenido interno */
+            overflow-y: auto;
+            /* Agregar desplazamiento vertical cuando el contenido excede la altura máxima */
+            padding-left: 3px;
+        }
+
+        ::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: rgba(111, 111, 111, 0.60);
+            border-radius: 40px;
+            -webkit-border-radius: 40px;
+            -moz-border-radius: 40px;
+            -ms-border-radius: 40px;
+            -o-border-radius: 40px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: rgba(111, 111, 111, 0.80);
+        }
+
+        .select {
+            text-align: center;
+            position: relative;
+            border-radius: 10px;
+            -webkit-appearance: none;
+            color: white;
+            -moz-appearance: none;
+            appearance: none;
+            background: orange;
+            padding: 1px 5px;
+            font-size: 10px;
+            border: 1px solid white;
+            z-index: 99;
+            margin-bottom: -17px;
+            margin-left: 15px;
+        }
+
+        .bonificaciones {
+            position: fixed;
+            top: 20%;
+            left: 1%;
+        }
+
+        #checkout {
+            margin-top: 5%;
+            width: 100%;
+            padding: 1em;
+            background: #ff5500;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-bottom: 5%;
+            padding: 4%;
+            font-size: 14px;
+        }
+
+        #checkout:hover {
+            -webkit-transition: 0.2s;
+            -moz-transition: 0.2s;
+            -ms-transition: 0.2s;
+            -o-transition: 0.2s;
+            -webkit-opacity: 0.5;
+            -moz-opacity: 0.5;
+            opacity: 0.8;
+        }
+
+        /* Media queries para hacer la interfaz responsive */
+        @media screen and (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .logout-form {
+                margin-top: 10px;
+                margin-left: 0;
+            }
+
+            .content-container {
+                padding: 10px;
+            }
+
+            #carritoContainer {
+                right: -250px;
+            }
+
+            #cart-icon {
+                position: absolute;
+                right: 10px;
+                top: 10px;
+            }
+
+            #detallesEvento,
+            #tiposEntradaContainer {
+                margin-bottom: 10px;
+            }
+        }
+
+        /* Media query para ajustar el ancho del carrito */
+        @media screen and (max-width: 1329px) {
+            #carritoContainer {
+                width: 300px;
+                /* Cambiar el ancho a medida que el ancho de la pantalla sea igual o menor a 1329px */
+            }
+        }
+
+        /* Media query para ajustar el ancho del carrito */
+        @media screen and (max-width: 1055px) {
+            #carritoContainer {
+                width: 200px;
+                /* Cambiar el ancho a medida que el ancho de la pantalla sea igual o menor a 1329px */
+            }
+        }
     </style>
 
 </head>
@@ -275,6 +404,7 @@
                     Volver
                     a los eventos</a>
                 <h1>Entradas Disponibles</h1>
+                <input type="hidden" id="discoteca" name="discoteca" value="{{ $ndiscoteca }}">
                 <!-- Botón de cerrar sesión -->
                 <form class="logout-form" action="{{ route('logout') }}" method="POST">
                     @csrf
@@ -311,6 +441,10 @@
         <!-- Botón para enviar las entradas seleccionadas -->
         <button onclick="enviarEntradasACarrito()"><i class="fas fa-shopping-cart"></i></button>
 
+        <div id="bonificaciones-container" class="bonificaciones">
+            <!-- Aquí se mostrarán las bonificaciones -->
+        </div>
+
 
     </div>
 
@@ -319,11 +453,14 @@
 
 
 
+
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             cargarDetallesEvento();
             cargarTiposEntrada();
             cargarCarrito();
+            cargarBonificaciones();
         });
 
 
@@ -611,24 +748,12 @@
             xhr.send(new FormData(form));
         }
 
-        document.getElementById('infoIcon').addEventListener('click', function() {
-            // Llama a la función para mostrar el Sweet Alert
-            mostrarAlerta();
-        });
 
-        // Define la función para mostrar el Sweet Alert
-        function mostrarAlerta() {
-            Swal.fire({
-                title: 'Información Importante',
-                text: 'La canción se mandará a revisar, si no es apropiada no se añadirá a la playlist del evento. La decisión será mandada por correo. Grácias por la atención.',
-                icon: 'info',
-                confirmButtonText: 'Aceptar'
-            });
-        }
 
         function mostrarCarrito(carrito) {
             var carritoContainer = document.getElementById('carritoContainer');
             var precioTotal = 0; // Inicializar el precio total
+            // var nombreCancion = "";
 
             carritoContainer.innerHTML = ''; // Limpiar el contenido previo del carrito
 
@@ -638,40 +763,46 @@
             carritoContainer.appendChild(carritoTitle);
 
             if (carrito.length > 0) {
-                // Si hay productos en el carrito, mostrar cada producto y sumar el precio total
+                // Crear un div para contener el contenido del carrito
+                var carritoContent = document.createElement('div');
+                carritoContent.classList.add('carrito-content');
+
+                // Crear un div para cada producto y agregar el botón de eliminación
                 carrito.forEach(function(item) {
                     var productoElement = document.createElement('div');
                     var productName = item.nombre_producto;
                     var precio = parseFloat(item.precio_total); // Convertir el precio a un número decimal
                     var eventoName = item.nombre_evento;
 
-                    // Si el ID del producto es menor de 3, mostrar también el nombre del evento
                     if (item.id_producto < 3) {
-                        productoElement.textContent = productName + ' de ' + eventoName + ' - ' +
-                            precio.toFixed(2) + ' ';
+                        productoElement.textContent = productName + ' de ' + eventoName + ' - ' + precio.toFixed(
+                            2) + ' ';
                     } else {
-                        // Si el ID del producto es mayor o igual a 3, solo mostrar el nombre del producto y el precio
                         productoElement.textContent = productName + ' de ' + eventoName + ' - ' + precio.toFixed(
                             2) + ' ';
                     }
 
-                    // Agregar un botón de eliminación para cada producto
                     var eliminarButton = document.createElement('button');
                     eliminarButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
                     eliminarButton.addEventListener('click', function() {
                         console.log(item.id);
-                        eliminarProductoCarrito(item
-                            .id); // Llamar a la función para eliminar el producto del carrito
+                        eliminarProductoCarrito(item.id);
                     });
 
-                    productoElement.appendChild(
-                        eliminarButton); // Agregar el botón de eliminación al elemento del producto
-
-                    carritoContainer.appendChild(productoElement);
-
+                    productoElement.appendChild(eliminarButton);
+                    carritoContent.appendChild(productoElement);
                     precioTotal += precio; // Sumar el precio al precio total
                 });
 
+
+
+                // Agregar el contenido del carrito al contenedor del carrito
+                carritoContainer.appendChild(carritoContent);
+
+                // Crear un espacio en blanco entre elementos
+                var espacioBlanco = document.createElement('div');
+                espacioBlanco.style.height = '20px'; // Establecer la altura del espacio en blanco según sea necesario
+                carritoContainer.appendChild(espacioBlanco);
 
                 // Mostrar el precio total al final del carrito
                 var precioTotalElement = document.createElement('div');
@@ -687,10 +818,24 @@
                 carritoContainer.appendChild(lineaSeparacion);
 
                 // Agregar el texto "¿Quieres elegir una canción?" al lado del section
-                var textoCancion = document.createElement('p');
+                var textoCancion = document.createElement('div');
                 textoCancion.innerHTML =
                     '<p>¿Quieres elegir una canción?</p> <i id="infoIcon" class="fas fa-info-circle" style="cursor: pointer;"></i>';
                 carritoContainer.appendChild(textoCancion);
+
+
+
+                // Agregar el evento click al elemento infoIcon
+                var infoIcon = document.getElementById('infoIcon');
+                infoIcon.addEventListener('click', function() {
+                    // Mostrar SweetAlert cuando se haga clic en el ícono de información
+                    Swal.fire({
+                        title: 'Información Importante',
+                        text: 'La canción se mandará a revisar, si no es apropiada no se añadirá a la playlist del evento. La decisión será mandada por correo. Grácias por la atención.',
+                        icon: 'info',
+                        confirmButtonText: 'Aceptar'
+                    });
+                });
 
                 // Agregar el section al final del carrito
                 var sectionElement = document.createElement('section');
@@ -730,12 +875,17 @@
                 // Agregar el div al final del contenedor del carrito
                 carritoContainer.appendChild(infoDiv);
                 // Escuchar el evento de cambio en el checkbox
+                var nombreCancion;
+
+                // Asegúrate de definir cancionesSeleccionadas antes de intentar usarla
+                var cancionesSeleccionadas = JSON.parse(localStorage.getItem('cancionesSeleccionadas')) || [];
+
                 checkbox.addEventListener('change', function() {
                     if (checkbox.checked) {
                         // Mostrar SweetAlert con inputs para ingresar el nombre de la canción y del artista
                         Swal.fire({
                             title: 'Ingrese el nombre de la canción y del artista',
-                            html: '<input id="nombreCancion" class="swal2-input" placeholder="Nombre de la canción">' +
+                            html: '<input id="nombreCancion" name="nombreCancion" class="swal2-input" placeholder="Nombre de la canción">' +
                                 '<input id="nombreArtista" class="swal2-input" placeholder="Nombre del artista">',
                             showCancelButton: true,
                             confirmButtonText: 'Guardar',
@@ -759,62 +909,160 @@
                                 // Guardar el nombre de la canción y del artista en la base de datos
                                 var nombreCancion = result.value.nombreCancion;
                                 var nombreArtista = result.value.nombreArtista;
-                                insertarCancionEnBaseDeDatos(nombreCancion,
-                                    nombreArtista
-                                ); // Llamar a la función para insertar la canción en la base de datos
+                                // Ahora que la variable cancionesSeleccionadas está definida, puedes usarla sin problemas
+                                cancionesSeleccionadas.push({
+                                    nombre: nombreCancion,
+                                    artista: nombreArtista
+                                });
+                                // localStorage.setItem('cancionesSeleccionadas', JSON.stringify(
+                                //     cancionesSeleccionadas));
+                                insertarCancionEnBaseDeDatos(nombreCancion, nombreArtista);
                             } else {
                                 // Desmarcar el checkbox si se cancela la operación
                                 checkbox.checked = false;
                             }
                         });
                     }
+                });
+
+                console.log(carrito)
+                var updateButton = document.createElement('button');
+                updateButton.id = 'checkout';
+                updateButton.textContent = 'Comprar Ahora';
+                updateButton.addEventListener('click', function() {
+                    // Almacenar los datos relevantes en el almacenamiento local
+                    localStorage.setItem('carrito', JSON.stringify(carrito));
+                    localStorage.setItem('precioTotal', precioTotal);
+
+                    // Obtener el nombre de la discoteca
+                    var discotecaNombre = document.getElementById('discoteca').value;
+
+                    // Redirigir a la pÃ¡gina de checkout incluyendo el nombre de la discoteca en la URL
+                    window.location.href = '/cliente/checkout?discoteca=' + encodeURIComponent(
+                        discotecaNombre);
+
 
                 });
+
+                carritoContainer.appendChild(updateButton);
+
+                // Crear un enlace que lleve a la página web de Last.fm
+                var enlaceLastFM = document.createElement('a');
+                enlaceLastFM.setAttribute('href', 'https://www.last.fm/');
+                enlaceLastFM.textContent = 'Visitar Last.fm y buscar las canciones disponibles.';
+                enlaceLastFM.setAttribute('target', '_blank'); // Abre el enlace en una nueva pestaña
+                carritoContainer.appendChild(enlaceLastFM);
             } else {
                 // Si el carrito está vacío, mostrar un mensaje indicando que está vacío
                 carritoContainer.textContent = 'El carrito está vacío';
             }
         }
 
+        // Función para mostrar las bonificaciones en la interfaz de usuario
+        function mostrarBonificaciones(data) {
+            var bonificacionesContainer = document.getElementById('bonificaciones-container');
+
+            // Limpiar el contenedor de bonificaciones antes de mostrar las nuevas bonificaciones
+            bonificacionesContainer.innerHTML = '';
+
+            // Agregar título de bonificaciones disponibles
+            var bonificacionesTitle = document.createElement('h2');
+            bonificacionesTitle.textContent = 'Bonificaciones disponibles';
+            bonificacionesContainer.appendChild(bonificacionesTitle);
+
+            // Verificar si se recibieron bonificaciones
+            if (data && data.length > 0) {
+                // Iterar sobre cada bonificación y crear un elemento para mostrarla
+                data.forEach(function(bonificacion) {
+                    // Crear un elemento de bonificación
+                    var bonificacionDiv = document.createElement('div');
+                    bonificacionDiv.textContent = bonificacion.name;
+
+                    // Agregar el elemento de bonificación al contenedor
+                    bonificacionesContainer.appendChild(bonificacionDiv);
+                });
+            } else {
+                // Si no se recibieron bonificaciones, mostrar un mensaje indicando que no hay bonificaciones disponibles
+                var noBonificacionesMessage = document.createElement('p');
+                noBonificacionesMessage.textContent = 'No hay bonificaciones disponibles';
+
+                // Agregar el mensaje al contenedor
+                bonificacionesContainer.appendChild(noBonificacionesMessage);
+            }
+        }
+
+        async function obtenerCaratula(cancion, artista) {
+            try {
+                const apiKey = 'ed420dfe24230d66234f98cdc646d658';
+                const url =
+                    `http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=${apiKey}&artist=${encodeURIComponent(artista)}&track=${encodeURIComponent(cancion)}&format=json`;
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.message);
+                }
+
+                const {
+                    name: nombreCancion,
+                    artist: {
+                        name: nombreArtista
+                    }
+                } = data.track;
+
+
+                return {
+                    nombreCancion,
+                    nombreArtista
+                };
+            } catch (error) {
+                console.error('Error al obtener la carátula:', error);
+                return null;
+            }
+        }
+
+
         // Función para insertar la canción en la base de datos
-        function insertarCancionEnBaseDeDatos(nombreCancion, nombreArtista) {
+        async function insertarCancionEnBaseDeDatos(nombreCancion, nombreArtista) {
             // Obtener el token CSRF de la etiqueta meta en el HTML
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-            // Realizar una solicitud HTTP POST para insertar la canción en la base de datos
-            fetch('/cliente/insertarCancion', {
+            try {
+                // Obtener la carátula usando await
+                const caratula = await obtenerCaratula(nombreCancion, nombreArtista);
+
+                // Realizar una solicitud HTTP POST para insertar la canción en la base de datos
+                const response = await fetch('/cliente/insertarCancion', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': csrfToken // Añadir el token CSRF como encabezado
                     },
                     body: JSON.stringify({
-                        nombreCancion: nombreCancion,
-                        nombreArtista: nombreArtista
+                        nombreCancion: caratula.nombreCancion,
+                        nombreArtista: caratula.nombreArtista
                     })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Si la inserción es exitosa, muestra un mensaje de éxito
-                        Swal.fire('¡Canción guardada!', data.message, 'success');
-                        cargarCarrito();
-                    } else {
-                        // Si hay un error, muestra un mensaje de error
-                        Swal.fire('Error', data.message, 'error');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    // Si hay un error, muestra un mensaje de error
-                    Swal.fire('Error', 'Hubo un problema al intentar guardar la canción en la base de datos.', 'error');
                 });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Si la inserción es exitosa, muestra un mensaje de éxito
+                    Swal.fire('¡Canción guardada!', data.message, 'success');
+                    cargarCarrito();
+                } else {
+                    // Si hay un error, muestra un mensaje de error
+                    Swal.fire('No se ha podido insertar la canción', data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // Si hay un error, muestra un mensaje de error
+                Swal.fire('Error',
+                    'Comprueba el nombre de la cancion o el artista agregado, no se a encontrado la cancion.',
+                    'error');
+            }
         }
-
-
-
-
-
 
 
 
@@ -825,6 +1073,9 @@
                     if (xhr.status === 200) {
                         var response = JSON.parse(xhr.responseText);
                         if (response.success) {
+                            // Eliminar el producto de localStorage
+                            eliminarProductoDeLocalStorage(productoId);
+                            // Recargar el carrito
                             cargarCarrito();
                         }
                     } else {
@@ -839,6 +1090,14 @@
             xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
 
             xhr.send();
+        }
+
+        function eliminarProductoDeLocalStorage(productoId) {
+            var carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            carrito = carrito.filter(function(producto) {
+                return producto.id !== productoId;
+            });
+            localStorage.setItem('carrito', JSON.stringify(carrito));
         }
         // Función para cargar el carrito
         function cargarCarrito() {
@@ -855,6 +1114,24 @@
             };
 
             xhr.open('GET', '/cliente/carrito', true);
+            xhr.send();
+        }
+
+        // Función para cargar el carrito
+        function cargarBonificaciones() {
+            var xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        mostrarBonificaciones(JSON.parse(xhr.responseText));
+                    } else {
+                        console.error('Error al cargar el carrito:', xhr.status);
+                    }
+                }
+            };
+
+            xhr.open('GET', '/cliente/bonificaciones', true);
             xhr.send();
         }
     </script>
