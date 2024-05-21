@@ -5,191 +5,215 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Discotecas - Oasis Management</title>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Scripts de Bootstrap y jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.6/leaflet.awesome-markers.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.6/leaflet.awesome-markers.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/discoteca.css') }}">
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white">
-    <div class="container">
-        <a class="navbar-brand" href="{{ route('welcome') }}">
-            <img src="/img/logonegro.png" class="logo mr-2" alt="Logo">
-            <span class="font-weight-bold text-uppercase">
-                Oasis <span class="orange-text">Management</span>
-            </span>
-        </a>
-        
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <!-- Botón de perfil -->
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-user"></i> Mi Perfil
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container">
+            <a class="navbar-brand" href="{{ route('welcome') }}">
+                <img src="/img/logonegro.png" class="logo mr-2" alt="Logo">
+                <span class="font-weight-bold text-uppercase">
+                    Oasis <span class="orange-text">Management</span>
+                </span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <!-- Botón de perfil -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i> Mi Perfil
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            @auth
+                                <a class="dropdown-item" href="{{ route('perfil') }}">Ver Perfil</a>
+                                <!-- Enlace para cerrar sesión -->
+                                <form id="logoutForm" action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                                </form>
+                            @else
+                                <a class="dropdown-item" href="{{ route('login') }}">Iniciar Sesión</a>
+                                <a class="dropdown-item" href="{{ route('register') }}">Registrarse</a>
+                            @endauth
+                        </div>
+                    </li>
+                    <!-- Fin del botón de perfil -->
+                    <!-- Enlace de contacto con emoticono -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('contacto') }}">
+                            <i class="fas fa-envelope"></i> Contacto
+                        </a>
+                    </li>
+
+                    <!-- Otros elementos del navbar -->
+                    @if (Route::has('login'))
                         @auth
-                            <a class="dropdown-item" href="{{ route('perfil') }}">Ver Perfil</a>
-                            <!-- Enlace para cerrar sesión -->
-                            <form id="logoutForm" action="{{ route('logout') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="dropdown-item">Cerrar Sesión</button>
-                            </form>
                         @else
-                            <a class="dropdown-item" href="{{ route('login') }}">Iniciar Sesión</a>
-                            <a class="dropdown-item" href="{{ route('register') }}">Registrarse</a>
-                        @endauth
-                    </div>
-                </li>
-                <!-- Fin del botón de perfil -->
-                <!-- Enlace de contacto con emoticono -->
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('contacto') }}">
-                        <i class="fas fa-envelope"></i> Contacto
-                    </a>
-                </li>
-
-                <!-- Otros elementos del navbar -->
-                @if (Route::has('login'))
-                    @auth
-                    @else
-                        <li class="nav-item">
-                            <a href="/google-auth/redirect" class="nav-link"><i class="fab fa-google"></i> Login Google</a>
-                        </li>
-                        @if (Route::has('register'))
                             <li class="nav-item">
-                                <a href="{{ route('register') }}" class="nav-link"><i class="fas fa-user-plus"></i> Registrarse</a>
+                                <a href="/google-auth/redirect" class="nav-link"><i class="fab fa-google"></i> Login
+                                    Google</a>
                             </li>
-                        @endif
-                    @endauth
-                @endif
-            </ul>
-        </div>
-    </div>
-</nav>
-
-
-<!-- Contenido Principal -->
-<div id="container">
-    <!-- Puntos del Usuario -->
-    <p class="points">Tienes <a href="#" id="puntosLink"><span id="puntosUsuario"></span></a> puntos.</p>
-
-    <div class="contenedor-input">
-        <i class="fas fa-search lupa-naranja"></i>
-        <input type="text" id="filtroNombre" placeholder="Filtrar por nombre...">
-        <select id="selectCiudad">
-            <option value="">Todas las ciudades</option>
-            <!-- Opciones de ciudades se cargarán dinámicamente aquí -->
-        </select>
-    </div>
-
-    <!-- Contenedor de Discotecas -->
-    <div id="discotecasContainer">
-        <!-- Las discotecas se mostrarán aquí -->
-    </div>
-
-    <!-- Mapa -->
-    <div id="mapid" style="width: 100%; height: 400px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></div>
-</div>
-
-<!-- Popup -->
-<div id="popup">
-    <h2>Introducir Código</h2>
-    <form action="" method="POST">
-        @csrf
-        <label for="codigo">Código:</label><br>
-        <input type="text" id="codigo" name="codigo"><br><br>
-        <button type="submit">Enviar</button>
-    </form>
-    <br>
-    <button onclick="cerrarPopup()" id="cerrarpop">Cerrar</button>
-</div>
-
-<!-- Footer Section -->
-<footer class="footer mt-auto py-5 bg-dark" id="contact" style="background-image: url('/img/oasisn2.jpg');">
-    <div class="container text-center">
-        <h2 class="text-white mb-4 animate__animated animate__fadeInUp">¿Listo para llevar tu negocio al siguiente nivel?</h2>
-        <p class="text-white mb-4 animate__animated animate__fadeInUp">Contáctanos para conocer cómo podemos colaborar juntos.</p>
-        <div class="mt-4">
-            <a href="mailto:oasis.management.daw@gmail.com" class="btn btn-outline-light btn-lg animate__animated animate__fadeInUp">
-                <i class="fas fa-envelope"></i> ¡Contáctanos ahora!
-            </a>
-        </div>
-        <div class="mt-4">
-            <a href="https://www.tiktok.com/@oasis_management2024?lang=es" class="text-white mr-3 animate__animated animate__fadeInUp">
-                <i class="fab fa-tiktok"></i> TikTok
-            </a>
-            <a href="https://www.instagram.com/oasis_management2024/" class="text-white mr-3 animate__animated animate__fadeInUp">
-                <i class="fab fa-instagram"></i> Instagram
-            </a>
-        </div>
-        <!-- Logos de Discotecas -->
-        <div id="slider" class="slider mt-5">
-            <div class="slide-track d-flex justify-content-center align-items-center">
-                @foreach ($discotecas as $discoteca)
-                    <div class="slide mr-3">
-                        <img src="{{ asset('img/discotecas/' . $discoteca->image) }}" alt="{{ $discoteca->name }}" class="img-fluid">
-                    </div>
-                @endforeach
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a href="{{ route('register') }}" class="nav-link"><i class="fas fa-user-plus"></i>
+                                        Registrarse</a>
+                                </li>
+                            @endif
+                        @endauth
+                    @endif
+                </ul>
             </div>
         </div>
+    </nav>
+
+
+    <!-- Contenido Principal -->
+    <div id="container">
+        <!-- Puntos del Usuario -->
+        <div class="points-container">
+            <div class="points-box" id="puntosLink">
+                <i class="fas fa-wallet points-icon"></i>
+                <p class="points-text">
+                    Tienes
+                    <a href="#" id="puntosLink" class="points-link">
+                        <span id="puntosUsuario" class="points-value"></span>
+                    </a>
+                    puntos.
+                </p>
+            </div>
+        </div>
+
+        <div class="contenedor-input">
+            <i class="fas fa-search lupa-naranja"></i>
+            <input type="text" id="filtroNombre" placeholder="Filtrar por nombre...">
+            <select id="selectCiudad">
+                <option value="">Todas las ciudades</option>
+                <!-- Opciones de ciudades se cargarán dinámicamente aquí -->
+            </select>
+        </div>
+
+        <!-- Contenedor de Discotecas -->
+        <div id="discotecasContainer">
+            <!-- Las discotecas se mostrarán aquí -->
+        </div>
+
+        <!-- Mapa -->
+        <div id="mapid"
+            style="width: 100%; height: 400px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></div>
     </div>
-</footer>
 
-<!-- JavaScript al final del cuerpo del documento para optimización de carga -->
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.6/leaflet.awesome-markers.js"></script>
+    <!-- Popup -->
+    <div id="popup">
+        <h2>Introducir Código</h2>
+        <form action="" method="POST">
+            @csrf
+            <label for="codigo">Código:</label><br>
+            <input type="text" id="codigo" name="codigo"><br><br>
+            <button type="submit">Enviar</button>
+        </form>
+        <br>
+        <button onclick="cerrarPopup()" id="cerrarpop">Cerrar</button>
+    </div>
 
-<script>
-    function comoLlegar(lat, long) {
-    // Crear la URL para las direcciones usando latitud y longitud
-    var directionsUrl = "https://www.google.com/maps/dir/?api=1&destination=" + lat + "," + long;
-    
-    // Abrir una nueva pestaña o ventana del navegador con la URL de las direcciones
-    window.open(directionsUrl, "_blank");
-}
+    <!-- Footer Section -->
+    <footer class="footer mt-auto py-5 bg-dark" id="contact" style="background-image: url('/img/oasisn2.jpg');">
+        <div class="container text-center">
+            <h2 class="text-white mb-4 animate__animated animate__fadeInUp">¿Listo para llevar tu negocio al siguiente
+                nivel?</h2>
+            <p class="text-white mb-4 animate__animated animate__fadeInUp">Contáctanos para conocer cómo podemos
+                colaborar juntos.</p>
+            <div class="mt-4">
+                <a href="mailto:oasis.management.daw@gmail.com"
+                    class="btn btn-outline-light btn-lg animate__animated animate__fadeInUp">
+                    <i class="fas fa-envelope"></i> ¡Contáctanos ahora!
+                </a>
+            </div>
+            <div class="mt-4">
+                <a href="https://www.tiktok.com/@oasis_management2024?lang=es"
+                    class="text-white mr-3 animate__animated animate__fadeInUp">
+                    <i class="fab fa-tiktok"></i> TikTok
+                </a>
+                <a href="https://www.instagram.com/oasis_management2024/"
+                    class="text-white mr-3 animate__animated animate__fadeInUp">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+            </div>
+            <!-- Logos de Discotecas -->
+            <div id="slider" class="slider mt-5">
+                <div class="slide-track d-flex justify-content-center align-items-center">
+                    @foreach ($discotecas as $discoteca)
+                        <div class="slide mr-3">
+                            <img src="{{ asset('img/discotecas/' . $discoteca->image) }}" alt="{{ $discoteca->name }}"
+                                class="img-fluid">
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </footer>
 
-    // Obtener la ubicación del usuario
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
-        var lat = position.coords.latitude;
-        var lng = position.coords.longitude;
+    <!-- JavaScript al final del cuerpo del documento para optimización de carga -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.6/leaflet.awesome-markers.js"></script>
 
-        // Centrar el mapa en la ubicación del usuario
-        map.setView([lat, lng], 12); // Aquí puedes ajustar el nivel de zoom (12 es un ejemplo)
+    <script>
+        function comoLlegar(lat, long) {
+            // Crear la URL para las direcciones usando latitud y longitud
+            var directionsUrl = "https://www.google.com/maps/dir/?api=1&destination=" + lat + "," + long;
 
-        // Crear un marcador en la ubicación del usuario
-        var userMarker = L.marker([lat, lng]).addTo(map);
-        userMarker.bindPopup("¡Estás aquí!").openPopup();
-    }, function(error) {
-        console.error("Error al obtener la ubicación del usuario:", error);
-    });
-} else {
-    console.error("Geolocalización no soportada por este navegador.");
-}
+            // Abrir una nueva pestaña o ventana del navegador con la URL de las direcciones
+            window.open(directionsUrl, "_blank");
+        }
 
-// Inicialización del mapa
-    var map = L.map('mapid').setView([40.505, -100.09], 4);
+        // Obtener la ubicación del usuario
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var lat = position.coords.latitude;
+                var lng = position.coords.longitude;
 
-    // Capa base del mapa (OpenStreetMap)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+                // Centrar el mapa en la ubicación del usuario
+                map.setView([lat, lng], 12); // Aquí puedes ajustar el nivel de zoom (12 es un ejemplo)
 
-    // Iterar sobre las discotecas y agregar marcadores con ventanas emergentes personalizadas
-    @foreach ($discotecas as $discoteca)
-        var marker = L.marker([{{ $discoteca->lat }}, {{ $discoteca->long }}]).addTo(map);
+                // Crear un marcador en la ubicación del usuario
+                var userMarker = L.marker([lat, lng]).addTo(map);
+                userMarker.bindPopup("¡Estás aquí!").openPopup();
+            }, function(error) {
+                console.error("Error al obtener la ubicación del usuario:", error);
+            });
+        } else {
+            console.error("Geolocalización no soportada por este navegador.");
+        }
 
-        var popupContent = `
+        // Inicialización del mapa
+        var map = L.map('mapid').setView([40.505, -100.09], 4);
+
+        // Capa base del mapa (OpenStreetMap)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Iterar sobre las discotecas y agregar marcadores con ventanas emergentes personalizadas
+        @foreach ($discotecas as $discoteca)
+            var marker = L.marker([{{ $discoteca->lat }}, {{ $discoteca->long }}]).addTo(map);
+
+            var popupContent = `
             <div style="max-width: 300px; padding: 15px;">
                 <img src="{{ asset('img/discotecas/' . $discoteca->image) }}" alt="{{ $discoteca->name }}" style="width: 100%; border-radius: 5px; margin-bottom: 10px;">
                 <p style="color: grey; margin-bottom: 10px;">{{ $discoteca->description }}</p>
@@ -206,18 +230,18 @@ if (navigator.geolocation) {
             </div>
         `;
 
-        // Asigna el contenido de la ventana emergente al marcador y deshabilita el cierre automático
-        marker.bindPopup(popupContent, { autoClose: false });
-    @endforeach
+            // Asigna el contenido de la ventana emergente al marcador y deshabilita el cierre automático
+            marker.bindPopup(popupContent, {
+                autoClose: false
+            });
+        @endforeach
 
-    // Función para marcar como favorito
-    function darFavorito(id) {
-        console.log("Marcado como favorito: " + id);
-        // Lógica para marcar como favorito con el ID del lugar
-    }
-
-
-</script>
+        // Función para marcar como favorito
+        function darFavorito(id) {
+            console.log("Marcado como favorito: " + id);
+            // Lógica para marcar como favorito con el ID del lugar
+        }
+    </script>
 
 
 
@@ -312,62 +336,63 @@ if (navigator.geolocation) {
             xhr.send();
         }
 
-    function mostrarDiscotecas(discotecas) {
-        var discotecasContainer = document.getElementById('discotecasContainer');
-        discotecasContainer.innerHTML = ''; // Limpiar el contenido anterior
+        function mostrarDiscotecas(discotecas) {
+            var discotecasContainer = document.getElementById('discotecasContainer');
+            discotecasContainer.innerHTML = ''; // Limpiar el contenido anterior
 
-        discotecas.forEach(function(discoteca) {
-        // Crear un div para la tarjeta
-        var cardDiv = document.createElement('div');
-        cardDiv.classList.add('card');
+            discotecas.forEach(function(discoteca) {
+                // Crear un div para la tarjeta
+                var cardDiv = document.createElement('div');
+                cardDiv.classList.add('card');
 
-        // Establecer estilos para la tarjeta
-        cardDiv.style.width = '300px';
-        cardDiv.style.border = '1px solid #ddd';
-        cardDiv.style.borderRadius = '8px';
-        cardDiv.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
-        cardDiv.style.marginBottom = '40px'; // Aumentar el margen inferior
-        cardDiv.style.overflow = 'hidden';
-        cardDiv.style.backgroundColor = 'black'; // Fondo negro
+                // Establecer estilos para la tarjeta
+                cardDiv.style.width = '300px';
+                cardDiv.style.border = '1px solid #ddd';
+                cardDiv.style.borderRadius = '8px';
+                cardDiv.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+                cardDiv.style.marginBottom = '40px'; // Aumentar el margen inferior
+                cardDiv.style.overflow = 'hidden';
+                cardDiv.style.backgroundColor = 'black'; // Fondo negro
 
-        // Crear una imagen para la foto de la discoteca
-        var cardImage = document.createElement('img');
-        cardImage.classList.add('card-image'); // Agregar clase para la imagen
-        cardImage.src = '{{ asset("img/discotecas/") }}' + '/' + discoteca.image; // Establecer la ruta completa de la imagen
-        cardImage.alt = discoteca.name; // Establecer el texto alternativo de la imagen
+                // Crear una imagen para la foto de la discoteca
+                var cardImage = document.createElement('img');
+                cardImage.classList.add('card-image'); // Agregar clase para la imagen
+                cardImage.src = '{{ asset('img/discotecas/') }}' + '/' + discoteca
+                .image; // Establecer la ruta completa de la imagen
+                cardImage.alt = discoteca.name; // Establecer el texto alternativo de la imagen
 
-        // Establecer estilos para la imagen
-        cardImage.style.width = '100%';
-        cardImage.style.height = '200px';
-        cardImage.style.objectFit = 'cover';
+                // Establecer estilos para la imagen
+                cardImage.style.width = '100%';
+                cardImage.style.height = '200px';
+                cardImage.style.objectFit = 'cover';
 
-        // Crear un encabezado para el nombre de la discoteca con los nuevos estilos
-        var cardHeader = document.createElement('h2');
-        cardHeader.classList.add('card-header'); // Agregar clase para el encabezado
-        cardHeader.textContent = discoteca.name;
+                // Crear un encabezado para el nombre de la discoteca con los nuevos estilos
+                var cardHeader = document.createElement('h2');
+                cardHeader.classList.add('card-header'); // Agregar clase para el encabezado
+                cardHeader.textContent = discoteca.name;
 
-        // Establecer estilos para el encabezado
-        cardHeader.style.fontSize = '20px';
-        cardHeader.style.padding = '10px';
-        cardHeader.style.backgroundColor = 'orange'; // Fondo naranja
-        cardHeader.style.color = 'white'; // Texto blanco
-        cardHeader.style.textAlign = 'center';
-        cardHeader.style.borderBottom = '1px solid #ddd';
-        cardHeader.style.cursor = 'pointer'; // Cambiar el cursor al puntero al pasar sobre el encabezado
+                // Establecer estilos para el encabezado
+                cardHeader.style.fontSize = '20px';
+                cardHeader.style.padding = '10px';
+                cardHeader.style.backgroundColor = 'orange'; // Fondo naranja
+                cardHeader.style.color = 'white'; // Texto blanco
+                cardHeader.style.textAlign = 'center';
+                cardHeader.style.borderBottom = '1px solid #ddd';
+                cardHeader.style.cursor = 'pointer'; // Cambiar el cursor al puntero al pasar sobre el encabezado
 
-        // Agregar un evento de clic al encabezado para redirigir a la página de eventos
-        cardHeader.addEventListener('click', function() {
-            window.location.href = '/cliente/' + discoteca.id + '/eventos';
-        });
+                // Agregar un evento de clic al encabezado para redirigir a la página de eventos
+                cardHeader.addEventListener('click', function() {
+                    window.location.href = '/cliente/' + discoteca.id + '/eventos';
+                });
 
-        // Agregar la imagen y el encabezado a la tarjeta
-        cardDiv.appendChild(cardImage);
-        cardDiv.appendChild(cardHeader);
+                // Agregar la imagen y el encabezado a la tarjeta
+                cardDiv.appendChild(cardImage);
+                cardDiv.appendChild(cardHeader);
 
-        // Agregar la tarjeta al contenedor de discotecas
-        discotecasContainer.appendChild(cardDiv);
-    });
-}
+                // Agregar la tarjeta al contenedor de discotecas
+                discotecasContainer.appendChild(cardDiv);
+            });
+        }
 
 
         // Función para cargar las ciudades disponibles
@@ -413,36 +438,36 @@ if (navigator.geolocation) {
         setInterval(cargarPuntosUsuario, 2000);
         cargarPuntosUsuario();
     </script>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Obtener el elemento del nombre de usuario en el menú
-        var userDropdown = document.querySelector('.nav-link.dropdown-toggle');
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Obtener el elemento del nombre de usuario en el menú
+            var userDropdown = document.querySelector('.nav-link.dropdown-toggle');
 
-        // Obtener el menú desplegable
-        var dropdownMenu = document.querySelector('.dropdown-menu');
+            // Obtener el menú desplegable
+            var dropdownMenu = document.querySelector('.dropdown-menu');
 
-        // Función para alternar la visibilidad del menú desplegable
-        function toggleDropdown() {
-            dropdownMenu.classList.toggle('show');
-        }
-
-        // Manejar el evento de clic en el nombre de usuario
-        userDropdown.addEventListener("click", function(event) {
-            // Evitar el comportamiento predeterminado del enlace
-            event.preventDefault();
-            // Alternar la visibilidad del menú desplegable al hacer clic en el nombre de usuario
-            toggleDropdown();
-        });
-
-        // Manejar clics fuera del menú desplegable para cerrarlo
-        document.addEventListener("click", function(event) {
-            if (!dropdownMenu.contains(event.target) && !userDropdown.contains(event.target)) {
-                // Si el clic no está dentro del menú desplegable ni en el nombre de usuario, ocultar el menú desplegable
-                dropdownMenu.classList.remove('show');
+            // Función para alternar la visibilidad del menú desplegable
+            function toggleDropdown() {
+                dropdownMenu.classList.toggle('show');
             }
+
+            // Manejar el evento de clic en el nombre de usuario
+            userDropdown.addEventListener("click", function(event) {
+                // Evitar el comportamiento predeterminado del enlace
+                event.preventDefault();
+                // Alternar la visibilidad del menú desplegable al hacer clic en el nombre de usuario
+                toggleDropdown();
+            });
+
+            // Manejar clics fuera del menú desplegable para cerrarlo
+            document.addEventListener("click", function(event) {
+                if (!dropdownMenu.contains(event.target) && !userDropdown.contains(event.target)) {
+                    // Si el clic no está dentro del menú desplegable ni en el nombre de usuario, ocultar el menú desplegable
+                    dropdownMenu.classList.remove('show');
+                }
+            });
         });
-    });
-</script>
+    </script>
 
 </body>
 
