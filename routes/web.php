@@ -17,6 +17,7 @@ use App\Http\Controllers\DiscotecaController;
 use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\CamareroController;
 use App\Http\Controllers\registerCamareroController;
+use App\Http\Controllers\CheckoutController;
 
 use App\Http\Middleware\AdminOnly;
 use App\Http\Middleware\ClientOnly;
@@ -56,7 +57,7 @@ Route::get('/dashboard', function () {
     $user = Auth::user();
     // dd($user);
     $rol = $user->id_rol; // Acceder al campo "rol" del usuario
-   if($user->id == 999999){
+   if($user->id == 2){
     return redirect('/chatify');
 
    }elseif ($rol == '3'){
@@ -242,32 +243,45 @@ Route::put('/profile/update', [perfilController::class, 'update'])->name('profil
 
 
 Route::middleware(ClientOnly::class)->group(function () {
- 
-
     Route::get('/cliente', [ClienteController::class, 'index'])->name('cliente.discoteca');
-
-
-Route::get('/cliente', [ClienteController::class, 'index'])->name('cliente.discoteca');
-Route::get('/cliente/{id}/eventos', [ClienteController::class, 'eventos'])->name('cliente.eventos');
-Route::get('/cliente/entradas/{id}', [ClienteController::class, 'mostrar'])->name('cliente.entradas');
-Route::get('/cliente/carrito', [ClienteController::class, 'carrito'])->name('cliente.carrito');
-Route::get('/cliente/bonificacion', [ClienteController::class, 'bonificacion'])->name('cliente.bonificacion');
-Route::get('/bonificaciones', [ClienteController::class, 'fetchBonificaciones'])->name('bonificaciones.ajax');
-Route::get('/cliente/mostrardisco', [ClienteController::class, 'mostrardisco'])->name('cliente.mostrardisco');
-Route::get('/cliente/mostrareventos/{id_discoteca}', [ClienteController::class, 'mostrareventos'])->name('cliente.mostrareventos');
-Route::get('/cliente/mostrarpuntos', [ClienteController::class, 'mostrarpuntos']);
-Route::get('/cliente/ciudades', [ClienteController::class, 'ciudades']);
-Route::get('/cliente/detallesdiscoteca/{id}', [ClienteController::class, 'mostrarDetallesDiscoteca']);
-Route::get('/cliente/tiposentrada/{id}', [ClienteController::class, 'mostrarTiposEntrada']);
-Route::get('/cliente/detallesevento/{id}', [ClienteController::class, 'mostrarDetallesEvento']);
-// Route::get('/cliente/logout', [ClienteController::class, 'logout'])->name('logout');
-Route::get('/cliente/mostrarCancionesEvento/{id}', [ClienteController::class, 'mostrarCancionesEvento'])->name('mostrarCancionesEvento');
-Route::post('/cliente/insertarEnCarrito', [ClienteController::class, 'insertarEnCarrito'])->name('cliente.insertarEnCarrito');
-Route::get('/cliente/carrito', [ClienteController::class, 'obtenerCarrito'])->name('cliente.obtenerCarrito');
-Route::delete('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProductoCarrito'])->name('cliente.eliminarProductoCarrito');
-Route::get('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProductoCarrito'])->name('cliente.eliminarProductoCarrito');
-
-
+    Route::get('/cliente/{id}/eventos', [ClienteController::class, 'eventos'])->name('cliente.eventos');
+    Route::get('/cliente/entradas/{id}', [ClienteController::class, 'mostrar'])->name('cliente.entradas');
+    Route::get('/cliente/carrito', [ClienteController::class, 'carrito'])->name('cliente.carrito');
+    Route::get('/cliente/bonificacion', [ClienteController::class, 'bonificacion'])->name('cliente.bonificacion');
+    Route::get('/bonificaciones', [ClienteController::class, 'fetchBonificaciones'])->name('bonificaciones.ajax');
+    Route::get('/cliente/mostrardisco', [ClienteController::class, 'mostrardisco'])->name('cliente.mostrardisco');
+    Route::get('/cliente/mostrareventos/{id_discoteca}', [ClienteController::class, 'mostrareventos'])->name('cliente.mostrareventos');
+    Route::get('/cliente/mostrarpuntos', [ClienteController::class, 'mostrarpuntos']);
+    Route::get('/cliente/ciudades', [ClienteController::class, 'ciudades']);
+    Route::get('/cliente/detallesdiscoteca/{id}', [ClienteController::class, 'mostrarDetallesDiscoteca']);
+    Route::get('/cliente/tiposentrada/{id}', [ClienteController::class, 'mostrarTiposEntrada']);
+    Route::get('/cliente/detallesevento/{id}', [ClienteController::class, 'mostrarDetallesEvento']);
+    Route::get('/cliente/mostrarCancionesEvento/{id}', [ClienteController::class, 'mostrarCancionesEvento'])->name('mostrarCancionesEvento');
+    Route::post('/cliente/insertarEnCarrito', [ClienteController::class, 'insertarEnCarrito'])->name('cliente.insertarEnCarrito');
+    Route::get('/cliente/carrito', [ClienteController::class, 'obtenerCarrito'])->name('cliente.obtenerCarrito');
+    Route::delete('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProductoCarrito'])->name('cliente.eliminarProductoCarrito');
+    Route::get('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProductoCarrito'])->name('cliente.eliminarProductoCarrito');
+    Route::post('/cliente/insertarCancion', [ClienteController::class, 'insertarCancion'])->name('cliente.insertarCancion');
+    Route::post('/cliente/canjearbonificacion', [ClienteController::class, 'canjearBonificacion'])->name('cliente.canjearBonificacion');
+    Route::get('/cliente/bonificaciones', [ClienteController::class, 'obtenerBonificaciones'])->name('cliente.obtenerBonificaciones');
+    Route::get('/cliente/cancionesSeleccionadas', [ClienteController::class, 'obtenerCancionesSeleccionadas']);
+    Route::get('/cliente/bonificacionesCanjeadas', [ClienteController::class, 'obtenerBonificacionesCanjeadas']);
+    
+    Route::get('/cliente/checkout', [checkoutController::class, 'index'])->name('carros');
+    Route::get('/cliente/checkout/pay', [checkoutController::class, 'checkout'])->name('checkout');
+    Route::get('/success', [CheckoutController::class, 'success'])->name('success');
+    
+    
+    
+    
+    
+    Route::post('/entrada', function () {
+        return view('cliente.entrada');
+    });
+    
+    Route::get('/payment', function () {
+        return view('payment2');
+    });
 
 
 });

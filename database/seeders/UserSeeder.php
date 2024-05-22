@@ -31,6 +31,17 @@ class UserSeeder extends Seeder
             'DNI' => null,
             'id_rol' => $AdminRole->id,
         ]);
+        User::create([
+            'name' => 'ChatControler',
+            // 'apellidos' => 'Romero',
+            'email' => 'ChatControler@gmail.com',
+            'password' => bcrypt('password'),
+            'habilitado' => true,
+            'verificado' => true,
+            'DNI' => null,
+            'id_rol' => $userRole->id,
+        ]);
+
 
         User::create([
             'name' => 'David',
@@ -86,18 +97,7 @@ class UserSeeder extends Seeder
             'DNI' => null,
             'id_rol' => $camareroRole->id,
         ]);
-        User::create([
-            'id' => '999999',
-            'name' => 'ChatControler',
-            // 'apellidos' => 'Romero',
-            'email' => 'ChatControler@gmail.com',
-            'password' => bcrypt('password'),
-            'habilitado' => true,
-            'verificado' => true,
-            'DNI' => null,
-            'id_rol' => $userRole->id,
-        ]);
-
+      
 
        
 

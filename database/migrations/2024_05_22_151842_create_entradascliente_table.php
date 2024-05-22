@@ -17,9 +17,11 @@ return new class extends Migration
             $table->integer('total_entradas'); // Total de entradas
             $table->decimal('precio_total', 10, 2); // Precio total
             $table->date('fecha'); // Fecha
+            $table->tinyInteger('tipo_entrada');// Relación con la tabla eventos
 
             // Claves foráneas y restricciones
-            $table->foreign('evento_id')->references('id')->on('eventos')->onDelete('cascade');
+            $table->foreign('evento_id')->references('id')->on('eventos');
+          
 
             // Timestamps (opcional)
             $table->timestamps();

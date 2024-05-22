@@ -60,6 +60,7 @@ class AdminController extends Controller
           }
            // Excluir los usuarios con verificado = 0
             $query->where('verificado', '=', 1);
+            $query->where('id', '!=', 2);
             $query->where('id', '!=', $userID);
             
           // Obtener los usuarios con la relación de rol cargada

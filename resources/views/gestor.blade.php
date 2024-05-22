@@ -218,7 +218,7 @@ function crearGrupoEvento(group_name, avatar) {
     console.log('ok2')
 
     var formData = new FormData();
-    var userId = 999999;
+    var userId = 2;
 
     formData.append('group_name', group_name);
     formData.append('user_ids', userId);

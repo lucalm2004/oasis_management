@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class RegistroEntrada extends Model
 {
     protected $table = 'registro_entradas';
-    protected $fillable = ['name', 'evento_id', 'total_entradas', 'precio_total', 'fecha'];
+    protected $fillable = ['name', 'evento_id', 'total_entradas', 'precio_total', 'fecha', 'tipo_entrada'];
 
     public function evento()
     {
         return $this->belongsTo(Evento::class, 'id_evento');
     }
+   
 }

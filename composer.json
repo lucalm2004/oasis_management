@@ -12,6 +12,7 @@
         "laravel/tinker": "^2.9",
         "munafio/chatify": "^1.6",
         "simplesoftwareio/simple-qrcode": "~4",
+        "stripe/stripe-php": "^14.7",
         "symfony/http-client": "^7.0",
         "symfony/mailgun-mailer": "^7.0"
     },

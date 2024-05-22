@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Carrito extends Model
 {
     protected $table = 'carrito';
-    protected $fillable = ['bonificacion', 'precio_total', 'id_user', 'id_evento', 'id_producto'];
+    protected $fillable = ['precio_total', 'id_user', 'id_evento', 'id_producto'];
 
     public function user()
     {

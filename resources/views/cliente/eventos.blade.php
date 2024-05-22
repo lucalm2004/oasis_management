@@ -248,6 +248,7 @@
             display: flex;
             align-items: center;
         }
+
         .lupa-naranja {
             color: orange;
             margin-right: 15px;
@@ -315,39 +316,6 @@
     </div>
 
     <footer class="footer mt-auto py-5 bg-dark" id="contact" style="background-image: url('/img/oasisn2.jpg');">
-        {{-- <div class="container text-center">
-            <h2 class="text-white mb-4 animateanimated animatefadeInUp">¿Listo para llevar tu negocio al siguiente
-                nivel?</h2>
-            <p class="text-white mb-4 animateanimated animatefadeInUp">Contáctanos para conocer cómo podemos colaborar
-                juntos.</p>
-            <div class="mt-4">
-                <a href="mailto:oasis.management.daw@gmail.com"
-                    class="btn btn-outline-light btn-lg animateanimated animatefadeInUp">
-                    <i class="fas fa-envelope"></i> ¡Contáctanos ahora!
-                </a>
-            </div>
-            <div class="mt-4">
-                <a href="https://www.tiktok.com/@oasis_management2024?lang=es"
-                    class="text-white mr-3 animateanimated animatefadeInUp">
-                    <i class="fab fa-tiktok"></i> TikTok
-                </a>
-                <a href="https://www.instagram.com/oasis_management2024/"
-                    class="text-white mr-3 animateanimated animatefadeInUp">
-                    <i class="fab fa-instagram"></i> Instagram
-                </a>
-            </div>
-            <!-- Logos de Discotecas -->
-            <div id="slider" class="slider mt-5">
-                <div class="slide-track d-flex justify-content-center align-items-center">
-                    @foreach ($discotecas as $discoteca)
-                        <div class="slide mr-3">
-                            <img src="{{ asset('img/' . $discoteca->image) }}" alt="{{ $discoteca->name }}"
-                                class="img-fluid">
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        </div> --}}
         <p>Footer</p>
     </footer>
 
@@ -431,7 +399,9 @@
         }
 
 
-        function mostrarEventos(eventos) {
+        function mostrarEventos(data) {
+            var discoteca = data.discoteca;
+            var eventos = data.eventos;
             var eventosContainer = document.getElementById('eventosContainer');
             eventosContainer.innerHTML = '';
 
@@ -443,19 +413,37 @@
                     eventoCard.style.width = '300px'; // Establecer el ancho de la card
 
                     // Crear el contenido de la card
-                    var contenido = `
-                <div class="top">
-                    <div class="clientImage">
-                        <img src="{{ asset('img/(${evento.flyer})') }}" alt="">
-                        <span>${evento.name}</span>
+                    var contenido;
+
+                    if (discoteca.capacidad > 0) {
+                        contenido = `
+                    <div class="top">
+                        <div class="clientImage">
+                            <img src="{{ asset('img/(${evento.flyer})') }}" alt="">
+                            <span>${evento.name}</span>
+                        </div>
+                        <button onclick="mostrarEntradas(${evento.id})"><img src="{{ asset('img/entradas.png') }}" alt="Entradas" width="40px" height="40px"></button>
                     </div>
-                    <button onclick="mostrarEntradas(${evento.id})"><img src="{{ asset('img/entradas.png') }}" alt="Entradas" width="40px" height="40px"></button>
-                </div>
-                <article>
-                    <p class="review">${evento.descripcion}</p>
-                    <p>${evento.fecha_inicio}</p>
-                </article>
-            `;
+                    <article>
+                        <p class="review">${evento.descripcion}</p>
+                        <p>${evento.fecha_inicio}</p>
+                    </article>
+                `;
+                    } else {
+                        contenido = `
+                    <div class="top">
+                        <div class="clientImage">
+                            <img src="{{ asset('img/(${evento.flyer})') }}" alt="">
+                            <span>${evento.name}</span>
+                        </div>
+                        <img src="{{ asset('img/soldout.png') }}" alt="Sold Out" width="40px" height="40px">
+                    </div>
+                    <article>
+                        <p class="review">${evento.descripcion}</p>
+                        <p>${evento.fecha_inicio}</p>
+                    </article>
+                `;
+                    }
 
                     // Agregar el contenido a la card
                     eventoCard.innerHTML = contenido;

@@ -19,4 +19,5 @@ class Producto extends Model
     {
         return $this->hasMany(Cancion::class, 'id');
     }
+    
 }
