@@ -56,8 +56,10 @@ Route::get('/dashboard', function () {
     $user = Auth::user();
     // dd($user);
     $rol = $user->id_rol; // Acceder al campo "rol" del usuario
-   
-    if ($rol == '3'){
+   if($user->id == 999999){
+    return redirect('/chatify');
+
+   }elseif ($rol == '3'){
         return redirect('/gestor');
     }elseif($rol == '1'){
         return redirect('/admin');
@@ -107,8 +109,10 @@ Route::middleware(GestorOnly::class)->group(function () {
 
 
 // Sergi
-
-
+Route::post('/create', 'grupoCreate@createGroupChat')->name('create');
+Route::get('/test', function () {
+    return view('test');
+});
 Route::middleware(AdminOnly::class)->group(function () {
     Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -238,6 +242,11 @@ Route::put('/profile/update', [perfilController::class, 'update'])->name('profil
 
 
 Route::middleware(ClientOnly::class)->group(function () {
+ 
+
+    Route::get('/cliente', [ClienteController::class, 'index'])->name('cliente.discoteca');
+
+
 Route::get('/cliente', [ClienteController::class, 'index'])->name('cliente.discoteca');
 Route::get('/cliente/{id}/eventos', [ClienteController::class, 'eventos'])->name('cliente.eventos');
 Route::get('/cliente/entradas/{id}', [ClienteController::class, 'mostrar'])->name('cliente.entradas');
@@ -257,6 +266,9 @@ Route::post('/cliente/insertarEnCarrito', [ClienteController::class, 'insertarEn
 Route::get('/cliente/carrito', [ClienteController::class, 'obtenerCarrito'])->name('cliente.obtenerCarrito');
 Route::delete('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProductoCarrito'])->name('cliente.eliminarProductoCarrito');
 Route::get('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProductoCarrito'])->name('cliente.eliminarProductoCarrito');
+
+
+
 
 });
 //  Ian

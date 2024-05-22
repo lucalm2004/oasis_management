@@ -19,7 +19,7 @@ class EventoSeeder extends Seeder
         Evento::create([
             'name' => 'Noche de salsa',
             'descripcion' => '¡Una noche llena de ritmo y sabor latino!',
-            'flyer' => 'magen_noche_salsa.jpg',
+            'flyer' => 'imagen_noche_salsa.jpg',
             'fecha_inicio' => '2024-05-31 23:30:00',
             'fecha_final' => '2024-06-01 06:00:00',
             'dj' => 'DJ Salsas',

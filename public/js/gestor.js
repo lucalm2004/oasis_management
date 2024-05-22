@@ -917,6 +917,7 @@ function validarFoto() {
 function añadirEvento(nombre, descripcion, fotoNombre, fechaInicio, fechaFin, djNombre, playlistNombre, capacidad, capacidadVip) {
     var formdata = new FormData();
     var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    var userId = $('meta[name="user-id"]').attr('content');
     formdata.append('_token', csrfToken);
     formdata.append('nombre', nombre);
     formdata.append('descripcion', descripcion);
@@ -942,6 +943,8 @@ function añadirEvento(nombre, descripcion, fotoNombre, fechaInicio, fechaFin, d
             listarEventos();
             listarCanciones();
             listarPlaylist();
+            console.log('ok')
+            crearGrupoEvento(nombre, fotoNombre);
         } else {
             if (response.error) {
                 Swal.fire({
@@ -967,6 +970,10 @@ function añadirEvento(nombre, descripcion, fotoNombre, fechaInicio, fechaFin, d
     };
     ajax.send(formdata);
 }
+
+
+
+
 
 async function obtenerCaratula(cancion, artista) {
     try {

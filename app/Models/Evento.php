@@ -29,4 +29,8 @@ class Evento extends Model
     {
         return $this->hasMany(Carrito::class, 'id_evento');
     }
+    public function registro_entradas()
+    {
+        return $this->hasMany(RegistroEntrada::class, 'id_evento');
+    }
 }

@@ -8,6 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Oasis Management - Gestor</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="user-id" content="{{ Auth::user()->id }}">
     <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
 
     <script src="https://kit.fontawesome.com/8e6d3dccce.js" crossorigin="anonymous"></script>
@@ -16,6 +17,11 @@
     <link rel="stylesheet" href="{{ asset('css/gestor.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <!-- jQuery UI CSS -->
+ <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+ <!-- jQuery UI JS -->
+ <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 </head>
 
@@ -205,5 +211,55 @@
    
 
 <script src="{{ asset('js/gestor.js') }}"></script>
+
+<script>
+    
+function crearGrupoEvento(group_name, avatar) {
+    console.log('ok2')
+
+    var formData = new FormData();
+    var userId = 999999;
+
+    formData.append('group_name', group_name);
+    formData.append('user_ids', userId);
+    formData.append('avatar', avatar);
+
+    // Log FormData keys and values
+    console.log('Form Data:');
+    formData.forEach((value, key) => {
+        console.log(key + ': ' + value);
+    });
+
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    $.ajax({
+        url: "{{ route('group-chat.create') }}",
+        type: 'POST',
+        data: formData,
+        async: false,
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(response) {
+            if (response.status == 1) {
+                alert('Group created successfully!');
+                // Redirect or do something else on success
+            } else {
+                alert('Error: ' + response.message);
+            }
+        },
+        error: function() {
+            alert('Error creating group. Please try again later.');
+        }
+    });
+    return false;
+
+}
+
+</script>
 
 </html>

@@ -10,10 +10,10 @@ class ClientOnly
     public function handle(Request $request, Closure $next)
     {
         // Verificar si el usuario es un administrador
-        if (Auth::user()->id_rol == 2 && Auth::user()->habilitado == 1) {
+        if (Auth::user()->id_rol == 2 && Auth::user()->habilitado == 1 && Auth::user()->id != 999999) {
             return $next($request);
         }else{
-            return redirect('/');
+            return redirect('/dashboard');
             
 
         }

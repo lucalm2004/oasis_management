@@ -18,7 +18,7 @@ class UserDiscotecasSeeder extends Seeder
         // Por ejemplo, usuario con ID 1 asistió a la discoteca con ID 1
         UserDiscoteca::create([
             'id_discoteca' => 1,
-            'id_users' => 2,
+            'id_users' => 3,
         ]);
 
         // Otro ejemplo, usuario con ID 2 asistió a la discoteca con ID 2

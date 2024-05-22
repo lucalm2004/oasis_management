@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::create('carrito', function (Blueprint $table) {
             $table->id();
-            $table->string('bonificacion', 45)->nullable();
             $table->string('precio_total', 4);
             $table->unsignedBigInteger('id_user');
             $table->unsignedBigInteger('id_evento');
