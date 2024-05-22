@@ -20,6 +20,30 @@
             padding: 0;
         }
 
+        
+#checkout {
+    margin-top: 5%;
+    width: 100%;
+    padding: 1em;
+    background: #ff5500;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: 600;
+    margin-bottom: 5%;
+    padding: 4%;
+    font-size: 14px;
+}
+
+#checkout:hover {
+    -webkit-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -ms-transition: 0.2s;
+    -o-transition: 0.2s;
+    -webkit-opacity: 0.5;
+    -moz-opacity: 0.5;
+    opacity: 0.8;
+}
         header {
             background-color: #666;
             padding: 20px;
@@ -173,6 +197,8 @@
                     Volver
                     a los eventos</a>
                 <h1>Entradas Disponibles</h1>
+                <input type="hidden" id="discoteca" name="discoteca" value="{{$ndiscoteca}}">
+
                 <!-- Botón de cerrar sesión -->
                 <form class="logout-form" action="{{ route('logout') }}" method="POST">
                     @csrf
@@ -484,55 +510,73 @@
         }
 
         function mostrarCarrito(carrito) {
-            var carritoContainer = document.getElementById('carritoContainer');
-            var precioTotal = 0; // Inicializar el precio total
+    var carritoContainer = document.getElementById('carritoContainer');
+    var precioTotal = 0; // Inicializar el precio total
 
-            carritoContainer.innerHTML = ''; // Limpiar el contenido previo del carrito
+    carritoContainer.innerHTML = ''; // Limpiar el contenido previo del carrito
 
-            // Crear un elemento para el título del carrito
-            var carritoTitle = document.createElement('h2');
-            carritoTitle.textContent = 'Carrito';
-            carritoContainer.appendChild(carritoTitle);
+    // Crear un elemento para el título del carrito
+    var carritoTitle = document.createElement('h2');
+    carritoTitle.textContent = 'Carrito';
+    carritoContainer.appendChild(carritoTitle);
 
-            if (carrito.length > 0) {
-                // Si hay productos en el carrito, mostrar cada producto y sumar el precio total
-                carrito.forEach(function(item) {
-                    var productoElement = document.createElement('div');
-                    var productName = item.name;
-                    var precio = parseFloat(item.precio_total); // Convertir el precio a un número decimal
+    if (carrito.length > 0) {
+        // Si hay productos en el carrito, mostrar cada producto y sumar el precio total
+        carrito.forEach(function(item) {
+            var productoElement = document.createElement('div');
+            var productName = item.name;
+            var precio = parseFloat(item.precio_total); // Convertir el precio a un número decimal
 
-                    // Obtener el nombre del evento
-                    var eventoName = item.nombre_evento;
+            // Obtener el nombre del evento
+            var eventoName = item.nombre_evento;
 
-                    // Mostrar el nombre del producto y su precio
-                    productoElement.textContent = productName + ' - Precio: ' + precio.toFixed(2) + ' ';
+            // Mostrar el nombre del producto y su precio
+            productoElement.textContent = productName + ' - Precio: ' + precio.toFixed(2) + ' ';
 
-                    // Agregar un botón de eliminación para cada producto
-                    var eliminarButton = document.createElement('button');
-                    eliminarButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
-                    eliminarButton.addEventListener('click', function() {
-                        console.log(item.id);
-                        eliminarProductoCarrito(item
-                            .id); // Llamar a la función para eliminar el producto del carrito
-                    });
+            // Agregar un botón de eliminación para cada producto
+            var eliminarButton = document.createElement('button');
+            eliminarButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
+            eliminarButton.addEventListener('click', function() {
+                console.log(item.id);
+                eliminarProductoCarrito(item.id); // Llamar a la función para eliminar el producto del carrito
+            });
 
-                    productoElement.appendChild(
-                        eliminarButton); // Agregar el botón de eliminación al elemento del producto
+            productoElement.appendChild(eliminarButton); // Agregar el botón de eliminación al elemento del producto
 
-                    carritoContainer.appendChild(productoElement);
+            carritoContainer.appendChild(productoElement);
 
-                    precioTotal += precio; // Sumar el precio al precio total
-                });
+            precioTotal += precio; // Sumar el precio al precio total
+        });
 
-                // Mostrar el precio total al final del carrito
-                var precioTotalElement = document.createElement('div');
-                precioTotalElement.textContent = 'Precio Total: ' + precioTotal.toFixed(2);
-                carritoContainer.appendChild(precioTotalElement);
-            } else {
-                // Si el carrito está vacío, mostrar un mensaje indicando que está vacío
-                carritoContainer.textContent = 'El carrito está vacío';
-            }
-        }
+        console.log(carrito)
+
+        // Crear el botón "Comprar Ahora"
+        var updateButton = document.createElement('button');
+        updateButton.id = 'checkout';
+updateButton.textContent = 'Comprar Ahora';
+updateButton.addEventListener('click', function() {
+    // Almacenar los datos relevantes en el almacenamiento local
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+    localStorage.setItem('precioTotal', precioTotal);
+
+    // Obtener el nombre de la discoteca
+    var discotecaNombre = document.getElementById('discoteca').value;
+
+    // Redirigir a la página de checkout incluyendo el nombre de la discoteca en la URL
+    window.location.href = '/cliente/checkout?discoteca=' + encodeURIComponent(discotecaNombre);
+});
+
+        carritoContainer.appendChild(updateButton);
+
+        // Mostrar el precio total al final del carrito
+        var precioTotalElement = document.createElement('div');
+        precioTotalElement.textContent = 'Precio Total: ' + precioTotal.toFixed(2);
+        carritoContainer.appendChild(precioTotalElement);
+    } else {
+        // Si el carrito está vacío, mostrar un mensaje indicando que está vacío
+        carritoContainer.textContent = 'El carrito está vacío';
+    }
+}
 
 
 

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Evento extends Model
 {
     protected $table = 'eventos';
-    protected $fillable = ['name', 'descripcion', 'flyer', 'fecha_inicio', 'fecha_final', 'dj', 'name_playlist', 'id_discoteca'];
+    protected $fillable = ['name', 'descripcion', 'flyer', 'fecha_inicio', 'fecha_final', 'dj', 'name_playlist', 'id_discoteca', 'capacidad', 'capacidadVip'];
 
     public function discoteca()
     {

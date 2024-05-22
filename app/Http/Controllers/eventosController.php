@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+
+
+
+
 class EventosController extends Controller
 {
     public function index(Request $request)
@@ -27,7 +31,6 @@ class EventosController extends Controller
                     $eventos = Evento::where('id_discoteca', $idDiscoteca)->where('name', 'like', "%$valor%")->get();
                 }else{
                     $eventos = Evento::where('id_discoteca', $idDiscoteca)->get();
-
                 }
 
 
@@ -72,6 +75,11 @@ class EventosController extends Controller
         $djNombre = $_POST['djNombre'];
         $fechaFin = $_POST['fechaFin'];
         $playlistNombre = $_POST['playlistNombre'];
+        $capacidad = $_POST['capacidad'];
+        $capacidadVip = $_POST['capacidadVip'];
+
+        // dd($capacidad, $capacidadVip);
+
 
         Evento::create([
             'name' => $nombre,
@@ -82,6 +90,8 @@ class EventosController extends Controller
             'dj' => $djNombre,
             'name_playlist' => $playlistNombre,
             'id_discoteca' => $idDiscoteca,
+            'capacidad' => $capacidad,
+            'capacidadVip' => $capacidadVip
         ]);
 
     }
@@ -100,6 +110,8 @@ class EventosController extends Controller
             $playEdit = $_POST['playEdit'];
             $inicioEdit = $_POST['inicioEdit'];
             $finalEdit = $_POST['finalEdit'];
+            $capacidad = $_POST['capacidad'];
+            $capacidadVip = $_POST['capacidadVip'];
             $id = $_POST['id'];
             
             Evento::where('id', $id)->update([
@@ -107,6 +119,8 @@ class EventosController extends Controller
                 'dj' => $djEdit,
                 'descripcion' => $descEdit,
                 'name_playlist' => $playEdit,
+                'capacidad' => $capacidad,
+                'capacidadVip' => $capacidadVip,
                 'fecha_inicio' => $inicioEdit,
                 'fecha_final' => $finalEdit,
             ]);
@@ -124,7 +138,7 @@ class EventosController extends Controller
         ->where('id_users', $idUsuario)
         ->value('id_discoteca');
 
-    $canciones = DB::table('cancion')->get();
+    $canciones = DB::table('canciones')->get();
     
     $eventos = DB::table('eventos')->where('id_discoteca', $idDiscoteca)->get();
     // dd($eventos);
@@ -134,6 +148,29 @@ class EventosController extends Controller
         'eventos' => $eventos,
     ]);
 }
+
+public function editar(Request $request)
+{
+    $idEvento = $request->input('id');
+
+
+    $canciones = DB::table('canciones as c')
+    ->select('c.*')
+    ->join('playlists_canciones as pc', 'c.id', '=', 'pc.id_canciones')
+    ->where('pc.id_evento', '=', $idEvento)
+    ->get();
+
+
+
+    // dd($eventos);
+   
+    return response()->json([
+        'canciones' => $canciones,
+    ]);
+}
+
+
+
 public function playlist(Request $request)
 {
     $user = $request->user();
@@ -184,5 +221,18 @@ public function cancionUpdate(Request $request)
         return response()->json(['error' => 'La canción ya está presente en este evento'], 422);
     }
 }
+
+public function playlistUpdate(Request $request)
+{
+    $idCancion = $request->input('idCancion');
+    $idEvento = $request->input('idEvento');
+
+    // Realizar la eliminación en la tabla playlists_canciones
+    DB::table('playlists_canciones')
+        ->where('id_evento', $idEvento)
+        ->where('id_canciones', $idCancion)
+        ->delete();
+}
+
        
 }

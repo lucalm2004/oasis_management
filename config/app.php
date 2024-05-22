@@ -123,4 +123,14 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+* Package Service Providers...
+*/
+\Chatify\ChatifyServiceProvider::class,
+
+/*
+* Class Aliases
+*/
+'Chatify' => Chatify\Facades\ChatifyMessenger::class,
+
 ];

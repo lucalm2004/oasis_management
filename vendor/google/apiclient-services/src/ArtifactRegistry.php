@@ -42,7 +42,6 @@ class ArtifactRegistry extends \Google\Service
   const CLOUD_PLATFORM_READ_ONLY =
       "https://www.googleapis.com/auth/cloud-platform.read-only";
 
-  public $media;
   public $projects;
   public $projects_locations;
   public $projects_locations_operations;
@@ -50,6 +49,7 @@ class ArtifactRegistry extends \Google\Service
   public $projects_locations_repositories_aptArtifacts;
   public $projects_locations_repositories_dockerImages;
   public $projects_locations_repositories_files;
+  public $projects_locations_repositories_genericArtifacts;
   public $projects_locations_repositories_goModules;
   public $projects_locations_repositories_googetArtifacts;
   public $projects_locations_repositories_kfpArtifacts;
@@ -79,26 +79,6 @@ class ArtifactRegistry extends \Google\Service
     $this->version = 'v1';
     $this->serviceName = 'artifactregistry';
 
-    $this->media = new ArtifactRegistry\Resource\Media(
-        $this,
-        $this->serviceName,
-        'media',
-        [
-          'methods' => [
-            'download' => [
-              'path' => 'v1/{+name}:download',
-              'httpMethod' => 'GET',
-              'parameters' => [
-                'name' => [
-                  'location' => 'path',
-                  'type' => 'string',
-                  'required' => true,
-                ],
-              ],
-            ],
-          ]
-        ]
-    );
     $this->projects = new ArtifactRegistry\Resource\Projects(
         $this,
         $this->serviceName,
@@ -407,7 +387,17 @@ class ArtifactRegistry extends \Google\Service
         'files',
         [
           'methods' => [
-            'get' => [
+            'download' => [
+              'path' => 'v1/{+name}:download',
+              'httpMethod' => 'GET',
+              'parameters' => [
+                'name' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+              ],
+            ],'get' => [
               'path' => 'v1/{+name}',
               'httpMethod' => 'GET',
               'parameters' => [
@@ -441,6 +431,26 @@ class ArtifactRegistry extends \Google\Service
                 'pageToken' => [
                   'location' => 'query',
                   'type' => 'string',
+                ],
+              ],
+            ],
+          ]
+        ]
+    );
+    $this->projects_locations_repositories_genericArtifacts = new ArtifactRegistry\Resource\ProjectsLocationsRepositoriesGenericArtifacts(
+        $this,
+        $this->serviceName,
+        'genericArtifacts',
+        [
+          'methods' => [
+            'upload' => [
+              'path' => 'v1/{+parent}/genericArtifacts:create',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'parent' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
                 ],
               ],
             ],

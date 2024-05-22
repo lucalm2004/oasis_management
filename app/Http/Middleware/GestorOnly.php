@@ -16,7 +16,7 @@ class GestorOnly
     public function handle(Request $request, Closure $next): Response
     {/* 
         dd(Auth::user()->verificado); */
-        if (Auth::user()->id_rol == 3 && Auth::user()->verificado == 1 && Auth::user()->habilitado == 1) {
+        if (Auth::user()->id_rol == 3  && Auth::user()->habilitado == 1) {
                 return $next($request);
         }else{
             return redirect('/');

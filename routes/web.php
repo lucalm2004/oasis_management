@@ -16,7 +16,7 @@ use App\Http\Controllers\ValoracionController;
 use App\Http\Controllers\DiscotecaController;
 use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\CamareroController;
-
+use App\Http\Controllers\checkoutController;
 use App\Http\Middleware\AdminOnly;
 use App\Http\Middleware\ClientOnly;
 use App\Http\Middleware\GestorOnly;
@@ -24,8 +24,20 @@ use App\Http\Middleware\CamareroOnly;
 
 
 
+
 Route::get('/', function () {
     return view('welcome');
+});
+
+// Route::name('group-chat.')->prefix('group-chat')->group(function () {
+//     Route::post('/create', 'grupoCreate@createGroupChat')->name('create');
+// });
+
+Route::post('/create', 'grupoCreate@createGroupChat')->name('create');
+
+
+Route::get('/test', function () {
+    return view('test');
 });
 Route::post('/registerGestor', [registerGestorController::class, 'index'])->name('registerGestor');
 
@@ -34,7 +46,7 @@ Route::get('/google-auth/redirect', function () {
 })->name('login.google');
 Route::get('/google-auth/callback-url', function () {
     $user_google = Socialite::driver('google')->user();
-    // dd($user_google->id);
+    // dd($user_google->id_rol);
     $user = User::updateOrCreate([
         'google_id' => $user_google->id,
     ], [
@@ -49,9 +61,9 @@ Route::get('/google-auth/callback-url', function () {
 });
 Route::get('/dashboard', function () {
     $user = Auth::user();
-    // dd($user);
+    // dd($user->id_rol);
     $rol = $user->id_rol; // Acceder al campo "rol" del usuario
-    // dd($rol);
+    // dd($user->id);
     if ($rol == '3'){
         return redirect('/gestor');
     }elseif($rol == '1'){
@@ -84,6 +96,11 @@ Route::post('/eventoUpdate', [eventosController::class, 'update'])->name('evento
 Route::post('/cancionesView', [eventosController::class, 'canciones'])->name('cancionesView');
 Route::post('/playlistView', [eventosController::class, 'playlist'])->name('playlistView');
 Route::post('/cancionUpdate', [eventosController::class, 'cancionUpdate'])->name('cancionUpdate');
+Route::post('/editarPlaylist', [eventosController::class, 'editar'])->name('editarPlaylist');
+Route::post('/playlistUpdate', [eventosController::class, 'playlistUpdate'])->name('playlistUpdate');
+
+
+
 });
 
 
@@ -217,7 +234,18 @@ Route::post('/cliente/insertarEnCarrito', [ClienteController::class, 'insertarEn
 Route::get('/cliente/carrito', [ClienteController::class, 'obtenerCarrito'])->name('cliente.obtenerCarrito');
 Route::delete('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProductoCarrito'])->name('cliente.eliminarProductoCarrito');
 Route::get('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProductoCarrito'])->name('cliente.eliminarProductoCarrito');
+// checkout
+Route::get('/cliente/checkout', [checkoutController::class, 'index'])->name('carros');
+Route::get('/cliente/checkout/pay', [checkoutController::class, 'checkout'])->name('checkout');
+Route::get('/success', [CheckoutController::class, 'success'])->name('success');
 
+Route::post('/entrada', function () {
+    return view('cliente.entrada');
+});
+
+Route::get('/payment', function () {
+    return view('payment2');
+});
 });
 //  Ian
 

@@ -672,6 +672,44 @@ body {
     overflow: hidden;
 }
 
+
+/* quitar eliminar borrar*/
+
+.ui-draggable {
+    left: 131px;
+    top: 165px;
+}
+
+
+/* quitar */
+
+.borrarCancion {
+    text-align: center;
+    position: relative;
+    border-radius: 10px;
+    -webkit-appearance: none;
+    color: white;
+    -moz-appearance: none;
+    appearance: none;
+    background: #ff5500;
+    padding: 1px 5px;
+    font-size: 10px;
+    border: 1px solid white;
+    z-index: 99;
+    margin-bottom: -17px;
+    margin-left: 45%;
+}
+
+.borrarCancion:hover {
+    -webkit-transition: 0.2s;
+    -moz-transition: 0.2s;
+    -ms-transition: 0.2s;
+    -o-transition: 0.2s;
+    -webkit-opacity: 0.5;
+    -moz-opacity: 0.5;
+    opacity: 0.8;
+}
+
 nav {
     width: 250px;
     height: 330px;

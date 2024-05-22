@@ -103,6 +103,8 @@
             <div id="playlist" style="display: none" class="list">
                 {{-- aqui se listan las canciones --}}
              </div>
+             <div id="playlist_musica" style="display: none" class="list">
+             </div>
          
         </nav>
     </div>
@@ -121,7 +123,6 @@
         </form>
         <i id="crearEvento" class="fa-solid fa-plus" style="color: #f5763b; float: right;"></i>
         <div class="container">
-            <!-- Formulario de bÃºsqueda -->
 
 
             <div id="crudGestor" class="containerquese">
@@ -139,15 +140,18 @@ var SongsOasisfy = document.getElementById("SongsOasisfy");
 playListOasisfy.addEventListener("click", function() {
     var viewCanciones = document.getElementById('canciones');
     var viewPlaylist = document.getElementById('playlist');
+    var playlist_musica = document.getElementById('playlist_musica');
 
     if (viewPlaylist.style.display === 'none') {
         viewCanciones.style.display = 'none';
+        playlist_musica.style.display = 'none';
         viewPlaylist.style.display = 'flex';
         playListOasisfy.classList.add('home-p');
         SongsOasisfy.classList.remove('home-p');
     } else {
         viewCanciones.style.display = 'flex';
         viewPlaylist.style.display = 'none';
+        
         SongsOasisfy.classList.add('home-p');
         playListOasisfy.classList.remove('home-p');
     }
@@ -160,6 +164,8 @@ SongsOasisfy.addEventListener("click", function() {
     if (viewCanciones.style.display === 'none') {
         viewPlaylist.style.display = 'none';
         viewCanciones.style.display = 'flex';
+        playlist_musica.style.display = 'none';
+
         SongsOasisfy.classList.add('home-p');
         playListOasisfy.classList.remove('home-p');
     } else {
@@ -206,9 +212,11 @@ function oasisfy() {
             var json = JSON.parse(ajax.responseText);
             var tabla = "";
             for (var i = 0; i < json.eventos.length; i++) {
+
                 var evento = json.eventos[i];
+                console.log(evento)
                 var numCanciones = json.cancionesPorEvento[evento.id] || 0; // Obtener el número de canciones o establecerlo como 0 si no hay
-                str = "<div>";
+                str = "<div onclick='editarPlaylist("+evento.id+")'>";
                 str += "<img style='height: 100px' src='img/flyer/" + evento.flyer + "' alt=''>";
                 str += "<p>" + evento.name_playlist + "</p>";
                 str += "<a>DJ: " + evento.dj + "</a>";
@@ -223,6 +231,100 @@ function oasisfy() {
         }
     };
     ajax.send(formdata);
+}
+
+function editarPlaylist(id){
+    document.getElementById('playlist').style.display = 'none';
+    var resultado = document.getElementById('playlist_musica')
+    document.getElementById('playlist_musica').style.display = 'flex';
+
+    var formdata = new FormData();
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    formdata.append('_token', csrfToken);
+    formdata.append('id', id);
+
+
+    var ajax = new XMLHttpRequest();
+    ajax.open('POST', '/editarPlaylist');
+    ajax.onload = async function() {
+        var str = "";
+        if (ajax.status == 200) {
+            var data = JSON.parse(ajax.responseText);
+            var tabla = "";
+
+            // Array para almacenar todas las promesas de obtener carátulas
+            var promesasCaratulas = [];
+
+            // Construir todas las promesas para obtener las carátulas
+            data.canciones.forEach(function(cancion) {
+                promesasCaratulas.push(obtenerCaratula(cancion.name, cancion.artista));
+            });
+
+            // Esperar a que todas las promesas se completen
+            const urlsCaratulas = await Promise.all(promesasCaratulas);
+
+            // Mostrar canciones con sus carátulas
+            data.canciones.forEach(function(cancion, index) {
+                console.log(index)
+                str = "<div id='viewCanciones'>";
+                    str += "<i id='eliminar' onclick='borrar(" + cancion.id +
+                        ","+id+")' class='fa-solid fa-trash' style='color: #f5763b; text-align: center; position: relative; border-radius: 10px; -webkit-appearance: none; color: white; -moz-appearance: none; appearance: none; background: #ff5500; padding: 2px 5px; font-size: 10px; border: 1px solid white; z-index: 99; margin-bottom: -17px; margin-left: 75%;'></i> ";
+                str += "<img src='"+urlsCaratulas[index]+"' alt=''>";
+                str += "<p>"+cancion.name+" | "+cancion.artista+"</p>";
+                str += "<a>Duracion: "+cancion.duracion+"</a>";
+                str += "</div>";
+                tabla += str;
+            });
+
+            // Mostrar eventos de la discoteca
+            resultado.innerHTML = tabla;
+
+        } else {
+            resultado.innerText = "Error";
+        }
+    };
+    ajax.send(formdata);
+
+}
+
+function borrar(id, idE){
+    var formdata = new FormData();
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        formdata.append('_token', csrfToken);
+        formdata.append('idCancion', id);
+        formdata.append('idEvento', idE);
+
+        
+    var ajax = new XMLHttpRequest();
+        ajax.open('POST', '/playlistUpdate');
+        ajax.onload = function() {
+            if (ajax.status == 200) {
+                Swal.fire({
+                    position: "top-end",
+                    title: "La cancion se ha eliminado.",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                listarEventos();
+                listarCanciones();
+                listarPlaylist();
+                editarPlaylist(idE)
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Hubo un problema al añadir la cancion. Por favor, inténtalo de nuevo más tarde.'
+                });
+            }
+        };
+        ajax.onerror = function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un problema al añadir la cancion. Por favor, inténtalo de nuevo más tarde.'
+            });
+        };
+        ajax.send(formdata);
 }
 
 
@@ -385,6 +487,10 @@ buscar.addEventListener("keyup", () => {
                         .name_playlist + "'>"
                     str += "    <input id='descEdit" + item.id + "' type='text' value='" + item
                         .descripcion + "'>"
+                        str += "    <input id='capacidad" + item.id + "' type='number' value='" + item
+                        .capacidad + "'>"
+                        str += "    <input id='capacidadVip" + item.id + "' type='number' value='" + item
+                        .capacidadVip + "'>"
                     str += "<input id='inicioEdit" + item.id + "' type='datetime-local' value='" + item
                         .fecha_inicio + "'>";
                     str += "<input id='finalEdit" + item.id + "' type='datetime-local' value='" + item
@@ -445,6 +551,12 @@ buscar.addEventListener("keyup", () => {
         var finalEdit = 'finalEdit' + id;
         var finalEdit = document.getElementById(finalEdit).value;
 
+        var capacidad = 'capacidad' + id;
+        var capacidad = document.getElementById(capacidad).value;
+
+        var capacidadVip = 'capacidadVip' + id;
+        var capacidadVip = document.getElementById(capacidadVip).value;
+
 
         var formdata = new FormData();
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -456,6 +568,9 @@ buscar.addEventListener("keyup", () => {
         formdata.append('inicioEdit', inicioEdit);
         formdata.append('finalEdit', finalEdit);
         formdata.append('id', id);
+        formdata.append('capacidad', capacidad);
+        formdata.append('capacidadVip', capacidadVip);
+
 
 
         var ajax = new XMLHttpRequest();
@@ -529,6 +644,8 @@ buscar.addEventListener("keyup", () => {
         <input id="swal-fecha-fin" type="datetime-local" class="swal2-input" placeholder="Fecha de fin">
         <input id="swal-dj-nombre" class="swal2-input" placeholder="Nombre del DJ">
         <input id="swal-playlist-nombre" class="swal2-input" placeholder="Nombre de la playlist">
+        <input id="swal-playlist-capacidad" class="swal2-input" type='number' placeholder="Capacidad del evento">
+        <input id="swal-playlist-capacidadvip" class="swal2-input" type='number' placeholder="Capacidad de mesas Vip">
         <label class='custom-file-upload'><input id="swal-foto" type="file" class="swal2-input" accept="image/*" title='' placeholder="Subir una foto">Subir foto</label>
 
     `,
@@ -545,9 +662,11 @@ buscar.addEventListener("keyup", () => {
                 const fechaFin = Swal.getPopup().querySelector('#swal-fecha-fin').value;
                 const djNombre = Swal.getPopup().querySelector('#swal-dj-nombre').value;
                 const playlistNombre = Swal.getPopup().querySelector('#swal-playlist-nombre').value;
-                console.log(fotoNombre);
+                const capacidad = Swal.getPopup().querySelector('#swal-playlist-capacidad').value;
+                const capacidadVip = Swal.getPopup().querySelector('#swal-playlist-capacidadvip').value;
+
                 if (!nombre || !descripcion || !fechaInicio || !fechaFin || !djNombre || !
-                    playlistNombre) {
+                    playlistNombre || !capacidad || !capacidadVip) {
                     Swal.showValidationMessage('Por favor completa todos los campos');
                 }
 
@@ -559,7 +678,9 @@ buscar.addEventListener("keyup", () => {
                     fechaInicio,
                     fechaFin,
                     djNombre,
-                    playlistNombre
+                    playlistNombre,
+                    capacidad,
+                    capacidadVip
                 };
             }
         }).then((result) => {
@@ -571,12 +692,14 @@ buscar.addEventListener("keyup", () => {
                     fechaInicio,
                     fechaFin,
                     djNombre,
-                    playlistNombre
+                    playlistNombre,
+                    capacidad,
+                    capacidadVip
                 } = result.value;
 
                 // Aquí deberías enviar estos datos a la función añadirCat()
                 añadirEvento(nombre, descripcion, fotoNombre, fechaInicio, fechaFin, djNombre,
-                    playlistNombre);
+                    playlistNombre, capacidad, capacidadVip);
             }
         });
 
@@ -584,7 +707,7 @@ buscar.addEventListener("keyup", () => {
 
 
 
-    function añadirEvento(nombre, descripcion, fotoNombre, fechaInicio, fechaFin, djNombre, playlistNombre) {
+    function añadirEvento(nombre, descripcion, fotoNombre, fechaInicio, fechaFin, djNombre, playlistNombre, capacidad, capacidadVip) {
         var formdata = new FormData();
         var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         formdata.append('_token', csrfToken);
@@ -596,6 +719,10 @@ buscar.addEventListener("keyup", () => {
         formdata.append('fechaFin', fechaFin);
         formdata.append('djNombre', djNombre);
         formdata.append('playlistNombre', playlistNombre);
+        formdata.append('capacidad', capacidad);
+        formdata.append('capacidadVip', capacidadVip);
+        console.log(capacidad, capacidadVip)
+
 
         var ajax = new XMLHttpRequest();
         ajax.open('POST', '/eventoNew');

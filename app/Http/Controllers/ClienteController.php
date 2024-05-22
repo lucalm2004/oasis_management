@@ -43,12 +43,13 @@ class ClienteController extends Controller
     {
         // Obtener el evento correspondiente al ID proporcionado
         $evento = Evento::findOrFail($id);
-
+        $discoteca = Discoteca::findOrFail($evento->id_discoteca);
+        $ndiscoteca = $discoteca->name;
         // Obtener los tipos de entrada disponibles
         $tiposEntradas = TipoEntrada::all();
 
         // Cargar la vista y pasar los datos del evento y los tipos de entrada disponibles
-        return view('cliente.entradas', compact('evento', 'tiposEntradas'));
+        return view('cliente.entradas', compact('evento', 'tiposEntradas', 'ndiscoteca'));
     }
 
     public function mostrarDetallesEvento($id)
