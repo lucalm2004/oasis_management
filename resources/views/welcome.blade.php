@@ -19,7 +19,72 @@
     <style>
         .text-orange {
             color: orange;
-            /* Define el color naranja */
+        }
+
+        .pagination-container {
+            overflow: hidden;
+        }
+
+        .swiper-pagination {
+            margin-top: 20px;
+        }
+
+        .content-box h2 {
+            color: #f58220;
+        }
+
+        .content-box p {
+            color: #ffffff;
+        }
+
+        .content-box {
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .content-box p {
+            color: #333;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-img-top {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+
+        .card-title {
+            font-size: 24px;
+            color: #333;
+            margin-top: 10px;
+        }
+
+        .card-text {
+            color: #666;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        /* Estilo responsivo para mostrar tres contenedores juntos en una fila */
+        @media (min-width: 992px) {
+            .swiper-slide .row>div {
+                flex: 0 0 33.333%;
+                max-width: 33.333%;
+            }
         }
     </style>
 </head>
@@ -139,88 +204,64 @@
             </div>
         </div>
     </section>
-    <style>
-        .pagination-container {
-            overflow: hidden;
-        }
-
-        .swiper-pagination {
-            margin-top: 20px;
-        }
-
-        .content-box {
-            background-color: transparent;
-            padding: 30px;
-            border-radius: 5px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            margin-bottom: 50px;
-            border: #fafafa;
-            color: white;
-            border-style: double;
-            max-height: 91%;
-            overflow: hidden;
-        }
-
-        .content-box h2 {
-            color: #f58220;
-        }
-
-        .content-box p {
-            color: #ffffff;
-        }
-
-        /* Estilo responsivo para mostrar tres contenedores juntos en una fila */
-        @media (min-width: 992px) {
-            .swiper-slide .row>div {
-                flex: 0 0 33.333%;
-                max-width: 33.333%;
-            }
-        }
-    </style>
     </head>
 
     <body>
-
         <section class="py-5 animate__animated animate__fadeIn">
             <div class="container">
                 <div class="swiper-container">
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="row align-items-center">
+                                <!-- Tarjeta: Quiénes somos -->
                                 <div class="col-md-6 animated d-flex">
                                     <div class="content-box flex-grow-1">
-                                        <img src="/img/dj.jpg" class="img-fluid mb-4" alt="Imagen 5">
-                                        <h2><i class="fas fa-users"></i> Quiénes somos</h2>
-                                        <p>Somos Oasis Management, una plataforma dedicada a la gestión de clubes de
-                                            ocio nocturno con
-                                            enfoque innovador.</p>
-                                        <p>Nuestro objetivo es conectar a los amantes del entretenimiento nocturno con
-                                            los mejores
-                                            eventos, ofreciendo experiencias únicas.</p>
+                                        <div class="card">
+                                            <img src="/img/dj.jpg" class="card-img-top" alt="Imagen 5">
+                                            <div class="card-body">
+                                                <h2 class="card-title"><i class="fas fa-users"></i> Quiénes somos</h2>
+                                                <p class="card-text">Somos Oasis Management, una plataforma dedicada a
+                                                    la gestión de clubes de ocio nocturno con enfoque innovador.</p>
+                                                <p class="card-text">Nuestro objetivo es conectar a los amantes del
+                                                    entretenimiento nocturno con los mejores eventos, ofreciendo
+                                                    experiencias únicas.</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- Tarjeta: Lo que nos destaca -->
                                 <div class="col-md-6 animated d-flex">
                                     <div class="content-box flex-grow-1">
-                                        <img src="/img/foto2.jpg" class="img-fluid mb-4" alt="Imagen 7">
-                                        <h2><i class="fas fa-hand-holding-heart"></i> Lo que nos destaca</h2>
-                                        <p>Destacamos por nuestra atención personalizada y capacidad para adaptarnos a
-                                            las necesidades
-                                            específicas de cada cliente.</p>
-                                        <p>Además, ofrecemos una amplia gama de servicios adicionales para garantizar
-                                            una experiencia
-                                            inolvidable en cada evento.</p><br>
+                                        <div class="card">
+                                            <img src="/img/foto2.jpg" class="card-img-top" alt="Imagen 7">
+                                            <div class="card-body">
+                                                <h2 class="card-title"><i class="fas fa-hand-holding-heart"></i> Lo
+                                                    que nos destaca</h2>
+                                                <p class="card-text text-black">Destacamos por nuestra atención
+                                                    personalizada y capacidad para adaptarnos a las necesidades
+                                                    específicas de cada cliente.</p>
+                                                <p class="card-text text-black">Además, ofrecemos una amplia gama de
+                                                    servicios adicionales para garantizar una experiencia inolvidable en
+                                                    cada evento.</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+                                <!-- Tarjeta: Promociones exclusivas -->
                                 <div class="col-md-6 animated d-flex">
                                     <div class="content-box flex-grow-1">
-                                        <img src="/img/foto4.jpg" class="img-fluid mb-4" alt="Imagen de Promoción">
-                                        <h2><i class="fas fa-gift"></i> Promociones exclusivas</h2>
-                                        <p>Aprovecha nuestras promociones exclusivas y descuentos especiales para
-                                            disfrutar al máximo en
-                                            nuestros eventos.</p>
-                                        <p>Regístrate para recibir ofertas personalizadas y beneficios adicionales como
-                                            miembro de Oasis
-                                            Management.</p>
+                                        <div class="card">
+                                            <img src="/img/foto4.jpg" class="card-img-top" alt="Imagen de Promoción">
+                                            <div class="card-body">
+                                                <h2 class="card-title"><i class="fas fa-gift"></i> Promociones
+                                                    exclusivas</h2>
+                                                <p class="card-text">Aprovecha nuestras promociones exclusivas y
+                                                    descuentos especiales para disfrutar al máximo en nuestros eventos.
+                                                </p>
+                                                <p class="card-text">Regístrate para recibir ofertas personalizadas y
+                                                    beneficios adicionales como miembro de Oasis Management.</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -241,17 +282,19 @@
             </div>
         </section>
 
-        <section class="inicio-section py-5 animate__animated animate__delay-1s">
+        <section class="inicio-section py-5 animate__animated animate__fadeIn animate__delay-1s">
             <div class="container">
-                <div class="row align-items">
+                <div class="row align-items-center">
                     <div class="col-md-6">
                         <h2 class="h2 mb-4 text-orange"><i class="fas fa-star text-orange"></i> La Era Oasis</h2>
                         <p class="lead mb-4 text-white">Explora la era de Oasis Management, gestionando clubes de ocio
-                            nocturno con
-                            innovación y dedicación total a nuestros clientes.</p>
+                            nocturno con innovación y dedicación total a nuestros clientes.</p>
                         <p class="lead mb-4 text-white">Descubre cómo conectamos a los amantes del entretenimiento
-                            nocturno con
-                            los mejores eventos, ofreciendo experiencias únicas.</p>
+                            nocturno con los mejores eventos, ofreciendo experiencias únicas.</p>
+
+                        <p class="lead mb-4 text-white">Únete a nosotros y sé parte de la comunidad Oasis, donde la
+                            diversión y la calidad van de la mano. Mantente al día con nuestras últimas noticias y
+                            eventos exclusivos, y no te pierdas ninguna de nuestras promociones especiales.</p>
                     </div>
                     <div class="col-md-6 text-center">
                         <img src="/img/chat1.jpg" class="img-fluid mb-4" alt="Era Oasis Image">
@@ -263,7 +306,7 @@
         <!-- Sección de Valorar discotecas -->
         <section id="más-info" class="py-5 bg-light animate__animated animate__fadeIn">
             <div class="container text-center">
-                <h3 class="rating-title">Valora nuestras discotecas</h3>
+                <h3 class="rating-title text-orange">Valora nuestras discotecas</h3>
                 <p class="rating-description">¿Cómo calificarías tu experiencia en nuestras discotecas asociadas?</p>
                 <div class="rating-button">
                     @auth
@@ -400,53 +443,6 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <!-- Script de SweetAlert -->
-        <script>
-            const OPENWEATHERMAP_API_KEY = "adafd0b1551b7ddfe30c0185383408ab";
-    
-            // Función para obtener el clima
-            function getWeather(city) {
-                const url =
-                    `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${OPENWEATHERMAP_API_KEY}&lang=es&units=metric`;
-    
-                function capitalizeFirstLetter(string) {
-                    return string.charAt(0).toUpperCase() + string.slice(1);
-                }
-                // Realiza la solicitud a la API de OpenWeatherMap
-                fetch(url)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('La solicitud no fue exitosa');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        // Maneja la respuesta de la API
-                        console.log(data);
-                        // Actualiza el contenido del div con la información del clima
-                        const temperature = Math.round(data.main.temp); // Redondea la temperatura
-                        const description = data.weather[0].description;
-                        // Llama a la función para capitalizar la primera letra de la descripción
-                        const capitalizedDescription = capitalizeFirstLetter(description);
-    
-                        const weatherInfo = `La temperatura en ${city} es de ${temperature}°C. ${capitalizedDescription}.`;
-    
-                        document.getElementById('weatherInfo').textContent = weatherInfo;
-                    })
-                    .catch(error => {
-                        console.error('Error al obtener el clima:', error);
-                        // Muestra una alerta de error si la solicitud falla
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'No se pudo obtener la información del clima. Por favor, inténtalo de nuevo más tarde.',
-                            icon: 'error',
-                            confirmButtonText: 'Cerrar'
-                        });
-                    });
-            }
-    
-            // Llama a la función getWeather con el nombre de la ciudad deseada
-            getWeather('Barcelona');
-        </script>
         <script>
             // Volver a ejecutar la animación al desplazarse por la página
             window.addEventListener('scroll', function() {

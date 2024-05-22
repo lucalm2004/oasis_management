@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 use App\Models\Discoteca;
 use Illuminate\Support\Facades\Redirect;
+use App\Models\User;
+
 
 class perfilController extends Controller
 {
@@ -27,37 +29,52 @@ class perfilController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(Request $request)
     {
-        $user = $request->user();
-    
-        // Actualizar los campos del usuario con los datos validados del formulario
-        $user->fill($request->validated());
-    
-        // Verificar si se proporcionó una nueva contraseña
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->input('password'));
-        }
-        if ($request->hasFile('foto')) {
-            // Obtener la imagen cargada
-            $image = $request->file('foto');
-            // Generar un nombre único para la imagen
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            // Mover la imagen a la carpeta deseada (por ejemplo, public/img/profiles/)
-            $image->move(public_path('img/profiles'), $imageName);
-            // Actualizar el campo 'foto' del usuario en la base de datos
-            $user->foto = $imageName;
+       
+        $user = User::find(Auth::id());
 
+        // Validar otros campos del formulario
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+
+        // Guardar la imagen subida si existe
+        if ($request->hasFile('foto')) {
+            $request->validate([
+                'foto' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+            ]);
+
+            $fileName = time() . '.' . $request->foto->extension();
+            $request->foto->move(public_path('img/profiles'), $fileName);
+            $user->foto = $fileName;
         }
-        
-    
-        // Guardar los cambios en el usuario
+
+        // Guardar la imagen capturada por la cámara si existe
+        if ($request->cameraImage) {
+            $imageData = $request->cameraImage;
+            $fileName = time() . '.png';
+            list($type, $data) = explode(';', $imageData);
+            list(, $data) = explode(',', $data);
+            $data = base64_decode($data);
+            file_put_contents(public_path('img/profiles') . '/' . $fileName, $data);
+            $user->foto = $fileName;
+        }
+
+        // Actualizar otros campos del usuario
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        if ($request->password) {
+            $user->password = bcrypt($request->password);
+        }
+
         $user->save();
-    
-        // Redirigir al usuario a la página de perfil con un mensaje de éxito
-        return redirect('/perfil')->with('status', 'profile-updated');
+
+        return redirect()->back()->with('success', 'Perfil actualizado correctamente');
     }
-    
 
     /**
      * Show the user's profile with role.

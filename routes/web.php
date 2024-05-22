@@ -203,6 +203,8 @@ use App\Http\Controllers\NumerosController;
 Route::get('/numeros', [NumerosController::class, 'obtenerNumeros'])->name('numeros');
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
+use App\Http\Controllers\FavoritoController;
+
 Route::middleware(ClientOnly::class)->group(function () {
 Route::get('/cliente', [ClienteController::class, 'index'])->name('cliente.discoteca');
 Route::get('/cliente/{id}/eventos', [ClienteController::class, 'eventos'])->name('cliente.eventos');
@@ -225,6 +227,9 @@ Route::delete('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProdu
 Route::get('/cliente/carrito/{id}', [ClienteController::class, 'eliminarProductoCarrito'])->name('cliente.eliminarProductoCarrito');
 Route::post('/cliente/canjearbonificacion', [ClienteController::class, 'canjearBonificacion'])->name('cliente.canjearBonificacion');
 Route::get('/cliente/bonificacion', [ClienteController::class, 'bonificacion'])->name('cliente.bonificacion');
+Route::post('/marcar-como-favorita', [FavoritoController::class, 'marcarComoFavorita']);
+Route::get('/obtener-discotecas-favoritas', [DiscotecaController::class, 'obtenerDiscotecasFavoritas'])->name('obtener.discotecas.favoritas');
+
 });
 //  Ian
 

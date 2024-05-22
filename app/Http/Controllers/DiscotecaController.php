@@ -29,4 +29,17 @@ class DiscotecaController extends Controller
             return response()->json(['error' => 'Error al obtener eventos: ' . $e->getMessage()], 500);
         }
     }
+    public function obtenerDiscotecasFavoritas()
+    {
+        // Lógica para obtener las discotecas favoritas del usuario
+        $usuario = auth()->user(); // Suponiendo que estás utilizando autenticación de usuarios
+        
+        if (!$usuario) {
+            return response()->json(['error' => 'Usuario no autenticado'], 401);
+        }
+        
+        $discotecasFavoritas = $usuario->discotecasFavoritas; // Suponiendo que tienes una relación definida en tu modelo de usuario
+        
+        return response()->json($discotecasFavoritas);
+    }
 }

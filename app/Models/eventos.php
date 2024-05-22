@@ -17,7 +17,7 @@ class eventos extends Model
 
     public function valoraciones()
     {
-        return $this->hasMany(Valoracion::class, 'id_evento');
+        return $this->hasMany(Valoraciones::class, 'id_evento');
     }
 
     public function playlistCanciones()

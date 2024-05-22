@@ -107,3 +107,49 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+const OPENWEATHERMAP_API_KEY = "adafd0b1551b7ddfe30c0185383408ab";
+
+// Función para obtener el clima
+function getWeather(city) {
+    const url =
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${OPENWEATHERMAP_API_KEY}&lang=es&units=metric`;
+
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
+    // Realiza la solicitud a la API de OpenWeatherMap
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('La solicitud no fue exitosa');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Maneja la respuesta de la API
+            console.log(data);
+            // Actualiza el contenido del div con la información del clima
+            const temperature = Math.round(data.main.temp); // Redondea la temperatura
+            const description = data.weather[0].description;
+            // Llama a la función para capitalizar la primera letra de la descripción
+            const capitalizedDescription = capitalizeFirstLetter(description);
+
+            const weatherInfo = `La temperatura en ${city} es de ${temperature}°C. ${capitalizedDescription}.`;
+
+            document.getElementById('weatherInfo').textContent = weatherInfo;
+        })
+        .catch(error => {
+            console.error('Error al obtener el clima:', error);
+            // Muestra una alerta de error si la solicitud falla
+            Swal.fire({
+                title: 'Error',
+                text: 'No se pudo obtener la información del clima. Por favor, inténtalo de nuevo más tarde.',
+                icon: 'error',
+                confirmButtonText: 'Cerrar'
+            });
+        });
+}
+
+// Llama a la función getWeather con el nombre de la ciudad deseada
+getWeather('Barcelona');

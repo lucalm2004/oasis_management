@@ -8,11 +8,8 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="css/user.css">
-    <script src="js/perfil.js"></script>
     <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- SweetAlert CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 </head>
 
@@ -31,7 +28,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
-                    <!-- Botón de perfil -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -40,7 +36,6 @@
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             @auth
                                 <a class="dropdown-item" href="{{ route('perfil') }}">Ver Perfil</a>
-                                <!-- Enlace para cerrar sesión -->
                                 <form id="logoutForm" action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <button type="submit" class="dropdown-item">Cerrar Sesión</button>
@@ -51,16 +46,11 @@
                             @endauth
                         </div>
                     </li>
-                    <!-- Fin del botón de perfil -->
-
-                    <!-- Enlace de contacto con emoticono -->
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('contacto') }}">
                             <i class="fas fa-envelope"></i> Contacto
                         </a>
                     </li>
-
-                    <!-- Otros elementos del navbar -->
                     @if (Route::has('login'))
                         @auth
                         @else
@@ -80,20 +70,18 @@
             </div>
         </div>
     </nav>
-    <!-- Contenido principal -->
+
     <div class="container mt-4">
         <div class="card">
             <div class="card-body">
                 <h2 class="card-title mb-4">Perfil de Usuario</h2>
                 <div class="d-flex align-items-center mb-4 position-relative">
-                    <!-- Mostrar la imagen de perfil -->
                     <img id="profileImage"
                         src="{{ $user->foto ? asset('img/profiles/' . $user->foto) : asset('img/profiles/foto.png') }}"
                         class="rounded-circle mr-3" alt="Foto de Perfil"
                         style="width: 150px; height: 150px; cursor: pointer;">
 
                     <div class="puntos-section">
-                        <!-- Enlace que dirige a bonificaciones.blade.php -->
                         <a href="{{ route('bonificacion') }}" class="text-decoration-none">
                             <h4 class="text-center mb-2">Puntos</h4>
                         </a>
@@ -101,24 +89,33 @@
                             <span>{{ $user->puntos ?? '0' }}</span>
                         </div>
                     </div>
-
                 </div>
 
-                <!-- Resto del formulario -->
                 <form id="profileForm" method="POST" action="{{ route('profile.update') }}"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" id="cameraImage" name="cameraImage">
+
+                    <div class="form-group">
+                        <button type="button" class="btn btn-secondary" id="cameraButton"><i class="fas fa-camera"></i>
+                            Abrir Cámara</button>
+                        <button type="button" class="btn btn-primary" id="captureButton"
+                            style="display: none;">Capturar Foto</button>
+                        <video id="camera" width="300" height="200" style="display: none;" autoplay></video>
+                        <canvas id="canvas" width="300" height="200" style="display: none;"></canvas>
+                    </div>
+
                     <div class="form-group">
                         <label for="foto" class="label-for-file">
                             <span class="label-icon"><i class="fas fa-upload"></i></span>
                             <span class="label-text">Subir foto</span>
                         </label>
                         <input type="file" class="form-control-file" id="fotoInput" name="foto">
-                        <!-- Vista previa de la imagen seleccionada -->
-                        <img id="previewImage" src="#" alt="Vista previa de la imagen"
+                        <img id="previewImageFile" src="#" alt="Vista previa de la imagen"
                             style="width: 200px; height: 200px; margin-top: 10px; display: none;">
                     </div>
+
                     <div class="form-group">
                         <i class="fas fa-user"></i>
                         <label for="name">Nombre:</label>
@@ -156,10 +153,6 @@
         </div>
     </div>
 
-    <br>
-    <br>
-
-    <!-- Footer Section -->
     <footer class="footer mt-auto py-5 bg-dark" id="contact" style="background-image: url('/img/oasisn2.jpg');">
         <div class="container text-center">
             <h2 class="text-white mb-4 animate__animated animate__fadeInUp">¿Listo para llevar tu negocio al siguiente
@@ -177,13 +170,16 @@
                     class="text-white mr-3 animate__animated animate__fadeInUp">
                     <i class="fab fa-tiktok"></i> TikTok
                 </a>
-                <a href="https://www.instagram.com/oasis_management2024/"
+                <a href="https://www.instagram.com/oasis.management2024/"
                     class="text-white mr-3 animate__animated animate__fadeInUp">
                     <i class="fab fa-instagram"></i> Instagram
                 </a>
+                <a href="https://www.linkedin.com/in/oasis-management-2024/"
+                    class="text-white animate__animated animate__fadeInUp">
+                    <i class="fab fa-linkedin"></i> LinkedIn
+                </a>
             </div>
-            <!-- Logos de Discotecas -->
-            <div id="slider" class="slider mt-5">
+            <div class="marquee-container animate__animated animate__fadeInUp">
                 <div class="slide-track d-flex justify-content-center align-items-center">
                     @foreach ($discotecas as $discoteca)
                         <div class="slide mr-3">
@@ -196,41 +192,56 @@
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <!-- Script para cambiar la imagen de perfil al hacer clic en ella -->
     <script>
-        // Definir la función previewImage fuera de cualquier ámbito local
         function previewImage(event) {
-            // Crear un nuevo objeto FileReader
             var reader = new FileReader();
-
-            // Asignar una función al evento onload del FileReader
             reader.onload = function() {
-                // Obtener el elemento de la imagen de previsualización por su ID
-                var imgElement = document.getElementById('previewImage');
-
-                // Establecer la fuente de la imagen de previsualización con el resultado de la lectura
+                var imgElement = document.getElementById('previewImageFile');
                 imgElement.src = reader.result;
-
-                // Mostrar la imagen estableciendo su estilo a 'block'
                 imgElement.style.display = 'block';
             };
-
-            // Leer el archivo seleccionado como URL de datos
             reader.readAsDataURL(event.target.files[0]);
         }
-        // Asociar evento onchange al elemento fotoInput
         document.getElementById('fotoInput').addEventListener('change', function(event) {
             previewImage(event);
         });
 
-        // Asociar evento de clic en la imagen de perfil para abrir el selector de archivo
         document.getElementById('profileImage').addEventListener('click', function() {
             document.getElementById('fotoInput').click();
+        });
+
+        const cameraButton = document.getElementById('cameraButton');
+        const captureButton = document.getElementById('captureButton');
+        const video = document.getElementById('camera');
+        const canvas = document.getElementById('canvas');
+        const cameraImageInput = document.getElementById('cameraImage');
+
+        cameraButton.addEventListener('click', async function() {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: true
+            });
+            video.srcObject = stream;
+            video.style.display = 'block';
+            captureButton.style.display = 'inline-block';
+        });
+
+        captureButton.addEventListener('click', function() {
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const dataUrl = canvas.toDataURL('image/png');
+            cameraImageInput.value = dataUrl;
+            const previewImage = document.getElementById('previewImageFile');
+            previewImage.src = dataUrl;
+            previewImage.style.display = 'block';
+            video.style.display = 'none';
+            captureButton.style.display = 'none';
+            const stream = video.srcObject;
+            const tracks = stream.getTracks();
+            tracks.forEach(track => track.stop());
         });
     </script>
 </body>

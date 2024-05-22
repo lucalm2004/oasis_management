@@ -5,9 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Discotecas - Oasis Management</title>
+    <!-- Otros elementos del head -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <!-- Aquí debes reemplazar "valor-del-token-aqui" con el valor real de tu token CSRF -->
     <!-- Scripts de Bootstrap y jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -18,7 +22,6 @@
 </head>
 
 <body>
-
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container">
             <a class="navbar-brand" href="{{ route('welcome') }}">
@@ -113,7 +116,10 @@
         <div id="discotecasContainer">
             <!-- Las discotecas se mostrarán aquí -->
         </div>
-
+        <div id="discotecasFavoritasContainer">
+            <!-- Aquí se mostrarán las discotecas favoritas del usuario -->
+        </div>
+        
         <!-- Mapa -->
         <div id="mapid"
             style="width: 100%; height: 400px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);"></div>
@@ -160,8 +166,8 @@
                 <div class="slide-track d-flex justify-content-center align-items-center">
                     @foreach ($discotecas as $discoteca)
                         <div class="slide mr-3">
-                            <img src="{{ asset('img/discotecas/' . $discoteca->image) }}" alt="{{ $discoteca->name }}"
-                                class="img-fluid">
+                            <img src="{{ asset('img/discotecas/' . $discoteca->image) }}"
+                                alt="{{ $discoteca->name }}" class="img-fluid">
                         </div>
                     @endforeach
                 </div>
@@ -174,6 +180,45 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.6/leaflet.awesome-markers.js"></script>
 
     <script>
+        // Función para cargar y mostrar las discotecas favoritas del usuario mediante AJAX
+function cargarDiscotecasFavoritas() {
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                // Parsear la respuesta JSON
+                var discotecasFavoritas = JSON.parse(xhr.responseText);
+
+                // Obtener el contenedor de discotecas favoritas
+                var discotecasFavoritasContainer = document.getElementById('discotecasFavoritasContainer');
+
+                // Limpiar el contenido anterior en caso de que haya
+                discotecasFavoritasContainer.innerHTML = '';
+
+                // Iterar sobre las discotecas favoritas y mostrarlas en el contenedor
+                discotecasFavoritas.forEach(function(discoteca) {
+                    var discotecaDiv = document.createElement('div');
+                    discotecaDiv.textContent = discoteca.nombre; // Aquí puedes mostrar los datos relevantes de la discoteca
+                    discotecasFavoritasContainer.appendChild(discotecaDiv);
+                });
+            } else {
+                console.error('Error al cargar las discotecas favoritas:', xhr.status);
+            }
+        }
+    };
+
+    // Realizar la solicitud AJAX para obtener las discotecas favoritas del usuario
+    xhr.open('GET', '/obtener-discotecas-favoritas', true);
+
+    xhr.send();
+}
+
+// Llamar a la función para cargar y mostrar las discotecas favoritas cuando se cargue la página
+document.addEventListener('DOMContentLoaded', function() {
+    cargarDiscotecasFavoritas();
+});
+
         function comoLlegar(lat, long) {
             // Crear la URL para las direcciones usando latitud y longitud
             var directionsUrl = "https://www.google.com/maps/dir/?api=1&destination=" + lat + "," + long;
@@ -236,11 +281,56 @@
             });
         @endforeach
 
-        // Función para marcar como favorito
-        function darFavorito(id) {
-            console.log("Marcado como favorito: " + id);
-            // Lógica para marcar como favorito con el ID del lugar
+        function darFavorito(discotecaId) {
+    var token = document.head.querySelector('meta[name="csrf-token"]');
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/marcar-como-favorita", true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader('X-CSRF-TOKEN', token.content);
+    
+    xhr.onreadystatechange = function() {
+    // Verificar si la solicitud se ha completado
+    if (xhr.readyState === 4) {
+        // Verificar si la respuesta del servidor es exitosa
+        if (xhr.status === 200) {
+            // Analizar la respuesta JSON del servidor
+            var response = JSON.parse(xhr.responseText);
+            // Verificar si la discoteca se marcó como favorita con éxito
+            if (response.success) {
+                // Mostrar un mensaje de éxito indicando que la discoteca se añadió a favoritos
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Añadida a Favoritos',
+                    text: 'La discoteca se ha añadido a tus favoritos.'
+                });
+            } else {
+                // Mostrar una advertencia indicando que la discoteca ya está en favoritos
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Ya la tienes en Favoritos',
+                    text: 'Esta discoteca ya está en tus favoritos.'
+                });
+            }
+        } else {
+            // Mostrar un mensaje de error en caso de problemas con la solicitud al servidor
+            var response = JSON.parse(xhr.responseText);
+            Swal.fire({
+                icon: 'error',
+                title: '¡Error!',
+                text: response.error
+            });
         }
+    }
+};
+
+    var data = JSON.stringify({
+        discoteca_id: discotecaId
+    });
+    xhr.send(data);
+}
+
+
     </script>
 
 
@@ -358,7 +448,7 @@
                 var cardImage = document.createElement('img');
                 cardImage.classList.add('card-image'); // Agregar clase para la imagen
                 cardImage.src = '{{ asset('img/discotecas/') }}' + '/' + discoteca
-                .image; // Establecer la ruta completa de la imagen
+                    .image; // Establecer la ruta completa de la imagen
                 cardImage.alt = discoteca.name; // Establecer el texto alternativo de la imagen
 
                 // Establecer estilos para la imagen
