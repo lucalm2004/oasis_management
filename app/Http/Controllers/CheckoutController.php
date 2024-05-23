@@ -28,6 +28,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\Carbon;
 use App\Models\RegistroEntrada;
+use App\Mail\TicketMail;
+use App\Models\UserDiscoteca;
+use Illuminate\Support\Facades\Mail;
+use Barryvdh\DomPDF\Facade\PDF;
+
 
 class CheckoutController extends Controller
 {
@@ -157,20 +162,7 @@ class CheckoutController extends Controller
             ->where('id_user', $userid)
             ->delete();
 
-       /*  // Restar capacidad normal
-
-        $discotecaN = Discoteca::where('name', $discoteca)->first();
-
-        if ($discotecaN) {
-            // Restar la cantidad de entradas compradas de la capacidad de la discoteca
-            $discotecaN->capacidad -= $totalEntradas;
-            $discotecaN->save();
-        } else {
-            // Si la discoteca no se encuentra, puedes manejar el error aquí
-            // Por ejemplo, devolver un mensaje de error o lanzar una excepción
-            return response()->json(['success' => false, 'message' => 'No se encontró la discoteca especificada.']);
-        }
-
+        
         // Restar capacidad VIP */
         $discotecas = Discoteca::where("name", $discoteca)->first();
         /* dd($discotecas); */
@@ -190,6 +182,43 @@ class CheckoutController extends Controller
         $RegistroEntrada->tipo_entrada = $tipoEntrada;
         $RegistroEntrada->save();
 
+        $userDiscotecas = UserDiscoteca::where("id_discoteca", $discotecaID)->get();
+        $gestorID = 0;
+        foreach($userDiscotecas as $userDiscoteca){
+            $userGestor = User::where("id", $userDiscoteca->id_users)->where("id_rol", 3)->first();
+            if ($userGestor) {
+
+                $gestorID = $userGestor->id;
+                /* dd($gestorID); */
+                break;
+                
+                
+            }
+           
+            
+          
+
+        }
+       /*  dd($nombreEvento); */
+        $id1 = DB::table('ch_channels')->where('name', $nombreEvento)->where('owner_id', $gestorID)->first();
+        /* dd($id1); */
+        $id =  $id1->id;
+        
+
+      
+        $userId = Auth::id();
+        $canalGrupo = DB::table('ch_channel_user')->where('channel_id', $id)->where('user_id', $userId)->first();
+        if (!$canalGrupo) {
+            DB::table('ch_channel_user')->insert([
+                'channel_id' => $id,
+                'user_id' => $userId
+            ]);
+        }else {
+            
+        }
+
+       
+
         // Construye el enlace que deseas incluir en el cÃ³digo QR
         $enlace = url('/payment') . '?precioTotal=' . $precioTotal . '&nombreEvento=' . urlencode($nombreEvento) . '&totalEntradas=' . $totalEntradas . '&codigo=' . $codigo . '&dia=' . $fechaHora . '&discoteca=' . urlencode($discoteca);
 
@@ -200,7 +229,7 @@ class CheckoutController extends Controller
             ->margin(1)
             ->generate($enlace); // Usar el enlace en lugar de 'Hello, World!'
 
-        // Pasa $qr a la vista junto con otros datos
+        // Datos para la vista payment2
         return view('payment2', [
             'qr' => $qr,
             'precioTotal' => $precioTotal,
@@ -210,5 +239,58 @@ class CheckoutController extends Controller
             'fechaHora' => $fechaHora,
             'discoteca' => $discoteca,
         ]);
+     /*    $viewData = [
+            'qr' => $qr,
+            'precioTotal' => $precioTotal,
+            'nombreEvento' => $nombreEvento,
+            'totalEntradas' => $totalEntradas,
+            'codigo' => $codigo,
+            'fechaHora' => $fechaHora,
+            'discoteca' => $discoteca,
+        ];
+        
+
+        // Generar el PDF desde la vista payment2
+        $pdfContent = PDF::loadView('cliente.entrada', $viewData);
+
+        // Datos del usuario
+        $userData = [
+            'name' => $user->name,
+            'email' => $user->email,
+            // cualquier otro dato que necesites
+        ];
+
+        // Enviar el correo con el PDF adjunto y los datos del usuario
+        Mail::to($user->email)->send(new TicketMail($pdfContent->output(), $viewData, $userData));
+
+        // Devolver la vista payment2
+        return view('payment2'); */
+       
+
+       
     }
+ /*    public function generatePdfAndSendEmail(Request $request)
+    {
+        $encodedHtmlContent = $request->input('htmlContent'); // Recupera el HTML codificado del cuerpo de la solicitud
+        $viewData = urldecode($encodedHtmlContent); // Decodifica el HTML
+    
+        $user = Auth::user();
+    
+        // Modifica este array asociativo según lo que necesites pasar a la vista
+        $data = [
+            'viewData' => $viewData,
+            'user' => $user,
+        ];
+    
+        $pdf = PDF::loadView('cliente.entrada', $data); // Carga la vista con los datos
+        $pdfContent = $pdf->output();
+        $userData = [
+            'name' => $user->name,
+            'email' => $user->email,
+            // cualquier otro dato que necesites
+        ];
+    
+        // Enviar el correo con el PDF adjunto
+        Mail::to($user->email)->send(new TicketMail($pdfContent, $viewData, $userData)); 
+    } */
 }

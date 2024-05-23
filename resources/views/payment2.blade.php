@@ -855,7 +855,29 @@
       // Marcar el formulario como enviado en el sessionStorage
       sessionStorage.setItem('formularioEnviado<?php echo $codigo; ?>', 'true');
     }
-    </script>
+    /* document.addEventListener('DOMContentLoaded', function() {
+        var htmlContent = document.documentElement.outerHTML;
+        
+        // Codifica el HTML antes de enviarlo en la solicitud
+        var encodedHtmlContent = encodeURIComponent(htmlContent);
+
+        fetch('/send-pdf', {
+            method: 'POST',
+            body: 'htmlContent=' + encodedHtmlContent, // Envía el HTML codificado como 'htmlContent'
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Asegúrate de incluir el token CSRF
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }); */
+    </script> 
 
 </body>
 

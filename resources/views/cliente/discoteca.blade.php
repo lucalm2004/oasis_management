@@ -365,7 +365,7 @@
             </div>
             <div class="header-buttons">
                 <!-- Botón para introducir código -->
-                <button class="button" onclick="mostrarPopup()">Chat</button>
+                <button class="button"><a style="text-decoration: none; color: white" href="{{ route('chatify') }}">Chat</a></button>
                 <!-- Botón de cerrar sesión -->
                 <form class="logout-form" action="{{ route('logout') }}" method="POST">
                     @csrf

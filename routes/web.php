@@ -270,6 +270,8 @@ Route::middleware(ClientOnly::class)->group(function () {
     Route::get('/cliente/checkout', [checkoutController::class, 'index'])->name('carros');
     Route::get('/cliente/checkout/pay', [checkoutController::class, 'checkout'])->name('checkout');
     Route::get('/success', [CheckoutController::class, 'success'])->name('success');
+    Route::post('/send-pdf', [CheckoutController::class, 'generatePdfAndSendEmail']);
+    
     
     
     
