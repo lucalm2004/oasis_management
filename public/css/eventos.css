@@ -1,0 +1,452 @@
+/* Estilos globales */
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #10101A;
+    color: #FFFFFF;
+}
+
+
+/* Estilos para enlaces */
+
+a {
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    /* Transición suave para los enlaces */
+}
+
+a:hover {
+    color: orange;
+    text-decoration: none;
+}
+
+
+/* Estilos de la barra de navegación */
+
+.navbar {
+    padding: 1rem 0;
+    transition: background-color 0.3s ease;
+    background-color: #ffffff;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    color: #FFFFFF;
+}
+
+.navbar-toggler {
+    border: none;
+    transition: box-shadow 0.3s ease;
+}
+
+.navbar-nav .nav-link {
+    padding: 0.5rem 1rem;
+    transition: color 0.3s ease;
+    color: #FFFFFF;
+}
+
+.navbar-nav .nav-link:hover {
+    color: orange;
+}
+
+.dropdown-menu {
+    min-width: 10rem;
+    transition: transform 0.3s ease;
+    background-color: #161624;
+    border: none;
+}
+
+.dropdown-item {
+    padding: 0.5rem 1rem;
+    color: #FFFFFF;
+}
+
+.dropdown-item:hover {
+    background-color: #ffffff;
+}
+
+.orange-text {
+    color: orange;
+}
+
+.logo {
+    height: 40px;
+}
+
+
+/* Estilos para el contenedor principal */
+
+.content-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #ffffff;
+    /* Color de texto blanco */
+    border-radius: 10px;
+    /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    animation: fadeInUp 0.5s ease;
+    /* Animación de entrada al cargar */
+}
+
+
+/* Animación de entrada */
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Estilos para el título de la sección */
+
+.content-container h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: orange;
+    /* Color de texto naranja */
+}
+
+
+/* Estilos para el contenedor de detalles de la discoteca */
+
+#detallesDiscoteca {
+    width: 100%;
+    max-width: 800px;
+    /* Ancho máximo para el contenido de detalles */
+    margin-top: 20px;
+    padding: 20px;
+    border-radius: 8px;
+    /* Bordes redondeados */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    /* Sombra suave */
+    animation: slideInLeft 0.5s ease;
+    /* Animación de entrada al cargar */
+}
+
+
+/* Animación de deslizamiento desde la izquierda */
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+
+/* Estilos para los detalles de la Discoteca */
+
+.detalles-container {
+    display: flex;
+    flex-wrap: wrap;
+    /* Permitir que los elementos se envuelvan en pantallas más pequeñas */
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #161624;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.imagen-container img {
+    width: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.imagen-container img:hover {
+    transform: scale(1.1);
+}
+
+.info-container {
+    flex: 1;
+    margin-left: 20px;
+    color: #FFFFFF;
+}
+
+.info-container p {
+    font-size: 18px;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+
+/* Media queries para ajustes responsivos */
+
+@media screen and (max-width: 768px) {
+    .detalles-container {
+        flex-direction: column;
+        /* Cambiar a disposición de columna en pantallas más pequeñas */
+        align-items: flex-start;
+        /* Alinear elementos a la izquierda en pantallas más pequeñas */
+    }
+    .imagen-container img {
+        width: 100%;
+        /* Hacer que la imagen ocupe todo el ancho del contenedor */
+        height: auto;
+        /* Altura automática para mantener la proporción */
+        margin-bottom: 20px;
+        /* Espacio entre la imagen y la información en pantallas más pequeñas */
+    }
+    .info-container {
+        margin-left: 0;
+        /* Eliminar el margen izquierdo en pantallas más pequeñas */
+    }
+}
+
+
+/* Estilos para los títulos */
+
+h1,
+h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: orange;
+}
+
+
+/* Estilos para la sección de eventos */
+
+#eventosContainer {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+
+/* Estilos para cada tarjeta de evento */
+
+.reviewItem {
+    width: 100%;
+    /* Ancho completo para ocupar el espacio disponible en cada columna */
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #161624;
+    color: #FFFFFF;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+    /* Incluir el padding y el borde en el ancho y alto del elemento */
+}
+
+.reviewItem:hover {
+    border-color: aqua;
+    transform: scale(1.05) translateY(-5px);
+    background-color: rgba(235, 152, 78, 0.8);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Estilos específicos para los contenidos de cada evento */
+
+.clientImage img {
+    width: 100%;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.eventName {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.button-entradas {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: orange;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-entradas:hover {
+    background-color: #FFA500;
+}
+
+
+/* Slider de logos */
+
+.slider {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.slide-track {
+    display: flex;
+    animation: scroll 40s linear infinite;
+}
+
+.slide {
+    flex: 0 0 200px;
+    margin-right: 20px;
+}
+
+.slide img {
+    width: 100%;
+}
+
+
+/* Animación de desplazamiento infinito */
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+
+/* Media queries para ajustes responsivos */
+
+@media screen and (max-width: 700px) {
+    .contenedor-input {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .reviewSection {
+        padding: 0;
+    }
+    .reviewItem {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .navbar-collapse {
+        background-color: #ffffff;
+    }
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+    .form-group {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+
+/* Estilos para el footer */
+
+.footer {
+    background-image: url('/img/oasisn2.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 60px 0;
+    text-align: center;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.footer a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #ffd54f;
+}
+
+
+/* Estilos para los filtros */
+
+.contenedor-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Centrar los elementos horizontalmente */
+    flex-wrap: wrap;
+    /* Permitir que los elementos se envuelvan en pantallas más pequeñas */
+    margin-bottom: 20px;
+}
+
+.contenedor-input i {
+    color: orange;
+    margin-right: 10px;
+    padding-bottom: 10px;
+}
+
+input[type="text"],
+input[type="date"] {
+    flex: 1;
+    /* Ocupar el espacio restante */
+    padding: 8px;
+    margin: 0 5px 10px 0;
+    /* Ajustar los márgenes */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #000000;
+    max-width: 200px;
+    /* Establecer un ancho máximo para evitar que los elementos se estiren demasiado */
+}
+
+
+/* Eventos */
+
+#eventosContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+
+/* Media query para pantallas más pequeñas */
+
+@media screen and (max-width: 768px) {
+    .contenedor-input input[type="text"],
+    .contenedor-input input[type="date"] {
+        max-width: none;
+        /* Eliminar el ancho máximo en pantallas más pequeñas */
+        flex: 100%;
+        /* Ocupar todo el ancho disponible */
+        margin-right: 0;
+        /* Eliminar el margen derecho */
+    }
+}

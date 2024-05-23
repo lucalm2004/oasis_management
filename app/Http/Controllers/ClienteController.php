@@ -28,23 +28,25 @@ class ClienteController extends Controller
 
     public function index()
     {
-        $todasdiscotecas = Discoteca::all();
+        $discotecas = Discoteca::all();
         $user = Auth::user();
 
         // Verificar si hay un usuario autenticado
         $nombreUsuario = $user ? $user->name : null;
 
         // Pasar la variable 'nombreUsuario' a la vista
-        return view('cliente.discoteca', compact('todasdiscotecas', 'nombreUsuario'));
+        return view('cliente.discoteca', compact('discotecas', 'nombreUsuario'));
     }
 
 
     public function eventos($id)
     {
-        $discoteca = Discoteca::findOrFail($id);
+        $discotecas = Discoteca::findOrFail($id);
+        $discoteca = Discoteca::all(); // Assuming this retrieves all discotecas
         $eventos = Evento::where('id_discoteca', $id)->get();
-        return view('cliente.eventos', compact('discoteca', 'eventos'));
+        return view('cliente.eventos', compact('discoteca', 'eventos', 'discotecas'));
     }
+
 
     public function mostrar($id)
     {
@@ -119,19 +121,8 @@ class ClienteController extends Controller
 
     public function mostrareventos(Request $request, $id_discoteca)
     {
-        // Obtener la fecha actual
-        $fecha_actual = date('Y-m-d');
-
-        // Obtener la discoteca por su ID
-        $discoteca = Discoteca::find($id_discoteca);
-
-        // Verificar si la discoteca existe
-        if (!$discoteca) {
-            return response()->json(['error' => 'Discoteca no encontrada'], 404);
-        }
-
         // Obtener todos los registros de eventos relacionados con la discoteca
-        $eventos = Evento::where('id_discoteca', $id_discoteca)->with('discoteca');
+        $eventos = Evento::where('id_discoteca', $id_discoteca);
 
         // Filtrar por nombre del evento si se proporciona
         if ($request->has('nombre')) {
@@ -139,31 +130,24 @@ class ClienteController extends Controller
             $eventos->where('name', 'like', '%' . $nombreEvento . '%');
         }
 
-        // Filtrar por día de inicio si se proporciona y si el evento aún no ha pasado
+        // Filtrar por día de inicio si se proporciona
         if ($request->has('diaInicio')) {
             $diaInicio = $request->input('diaInicio');
-            $eventos->where('fecha_inicio', '>=', $fecha_actual)->whereDate('fecha_inicio', $diaInicio);
-        } else {
-            // Si no se proporciona el día de inicio, filtrar solo los eventos que aún no han pasado
-            $eventos->where('fecha_inicio', '>=', $fecha_actual);
+            $eventos->whereDate('fecha_inicio', $diaInicio);
         }
 
-        // Obtener los resultados de eventos
-        $resultadosEventos = $eventos->get();
+        // Obtener los resultados
+        $resultados = $eventos->get();
 
-        // Devolver los resultados de eventos y la discoteca como JSON
-        return response()->json([
-            'discoteca' => $discoteca,
-            'eventos' => $resultadosEventos
-        ]);
+        // Devolver los resultados como JSON
+        return response()->json($resultados);
     }
-
 
 
 
     public function mostrarDetallesDiscoteca($id)
     {
-        $discoteca = Discoteca::findOrFail($id);
+        $discoteca = Discoteca::with('ciudad')->findOrFail($id);
 
         return response()->json($discoteca);
     }

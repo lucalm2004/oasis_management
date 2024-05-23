@@ -2,322 +2,139 @@
 <html>
 
 <head>
-    <title>Eventos de {{ $discoteca->name }}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #10101A;
-            color: white;
-        }
-
-        /* Estilos para el botón "Ver Entradas" */
-
-
-        .content-container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
-        .reviewSection {
-            padding: 1rem;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-around;
-        }
-
-        .reviewItem {
-            width: 300px;
-            padding: 10px;
-            margin: 1rem;
-            cursor: pointer;
-            border-radius: 10px;
-            background-color: #161624;
-            border: 1px solid #161624;
-            transition: all .2s linear;
-            color: white;
-        }
-
-        .reviewItem:hover {
-            border-color: aqua;
-            transform: scale(1.01);
-            background-color: rgba(235, 152, 78);
-            box-shadow: 0 0px 5px 0px #cbc0c0;
-        }
-
-        .top {
-            margin-bottom: 1rem;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .clientImage {
-            flex-direction: row;
-            align-items: center;
-        }
-
-        .clientImage span {
-            margin-left: 10px;
-        }
-
-        .clientImage img {
-            width: 40px;
-        }
-
-        article p {
-            font-size: 15px;
-            font-weight: 100;
-            margin-bottom: 1rem;
-            font-family: system-ui;
-        }
-
-        #eventosContainer {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        @media screen and (max-width:700px) {
-            .container {
-                height: auto;
-            }
-        }
-
-        @media screen and (max-width:375px) {
-            .reviewSection {
-                padding: 0;
-            }
-
-            .reviewItem {
-                width: 100%;
-            }
-
-            .clientImage {
-                margin-bottom: 0.6rem;
-            }
-
-            .top {
-                align-items: center;
-                flex-direction: column;
-                justify-content: center;
-            }
-        }
-
-        /* Estilos del header */
-        header {
-            background-color: #666;
-            padding-bottom: 20px;
-            padding-top: 20px;
-            color: white;
-        }
-
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header-buttons a,
-        .header-buttons button {
-            background-color: transparent;
-            border: none;
-            color: white;
-            font-size: 1rem;
-            cursor: pointer;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        /* Estilos para el icono de flecha */
-        .header-buttons a i {
-            margin-right: 5px;
-        }
-
-        /* Estilos para el icono de cerrar sesión */
-        .header-buttons button i {
-            margin-right: 5px;
-        }
-
-        /* Alineación del texto en el header */
-        h1 {
-            margin: 0;
-            /* Eliminar el margen por defecto del h1 */
-        }
-
-        /* Estilos para el contenedor de detalles de la discoteca */
-        #detallesDiscoteca {
-            margin-bottom: 20px;
-            padding: 20px;
-            background-color: #161624;
-            border-radius: 10px;
-            color: white;
-        }
-
-        /* Estilos para los filtros */
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #fff;
-        }
-
-        input[type="text"],
-        input[type="date"] {
-            display: inline-block;
-            /* Cambio a display inline-block */
-            width: auto;
-            /* Eliminamos el width 100% */
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #ffffff;
-            float: left;
-            margin-left: 15px;
-            /* Alineamos los inputs horizontalmente */
-        }
-
-        input[type="text"] {
-            margin-right: 10px;
-            /* Agregamos margen derecho para separar los inputs */
-        }
-
-        /* Estilos para el botón de volver */
-        a {
-            display: inline-block;
-            padding: 10px 15px;
-            margin-top: 20px;
-            /* background-color: #007bff; */
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        /* Style the footer */
-        .footer {
-            background-image: url('/img/oasisn2.jpg');
-            background-size: cover;
-            background-position: center;
-            padding: 60px 0;
-            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .footer a {
-            color: #ffffff;
-        }
-
-        .footer a:hover {
-            color: #ffd54f;
-        }
-
-        #logout-btn {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-right: 20px;
-        }
-
-        h1,
-        p {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .contenedor-input {
-            display: flex;
-            align-items: center;
-        }
-
-        .lupa-naranja {
-            color: orange;
-            margin-right: 15px;
-            /* Espacio entre el icono y el input */
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Discotecas - Oasis Management</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.6/leaflet.awesome-markers.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/eventos.css') }}">
 </head>
 
 <body>
-
-    <header>
-        <div class="header-container">
-            <div class="header-buttons">
-                <a href="{{ route('cliente.discoteca') }}"><i class="fas fa-arrow-left"></i> Volver a la lista de
-                    discotecas</a>
-            </div>
-            <h1>Eventos de {{ $discoteca->name }}</h1>
-            <div class="header-buttons">
-                <!-- Botón de cerrar sesión -->
-                <form class="logout-form" action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
-                </form>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container">
+            <a class="navbar-brand" href="{{ route('welcome') }}">
+                <img src="/img/logonegro.png" class="logo mr-2" alt="Logo">
+                <span class="font-weight-bold text-uppercase">
+                    Oasis <span class="orange-text">Management</span>
+                </span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <!-- Botón de perfil -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i> Mi Perfil
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            @auth
+                                <a class="dropdown-item" href="{{ route('perfil') }}">Ver Perfil</a>
+                                <!-- Enlace para cerrar sesión -->
+                                <form id="logoutForm" action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                                </form>
+                            @else
+                                <a class="dropdown-item" href="{{ route('login') }}">Iniciar Sesión</a>
+                                <a class="dropdown-item" href="{{ route('register') }}">Registrarse</a>
+                            @endauth
+                        </div>
+                    </li>
+                    <!-- Fin del botón de perfil -->
+                    <!-- Enlace de contacto con emoticono -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('contacto') }}">
+                            <i class="fas fa-envelope"></i> Contacto
+                        </a>
+                    </li>
+    
+                    <!-- Otros elementos del navbar -->
+                    @if (Route::has('login'))
+                        @auth
+                        @else
+                            <li class="nav-item">
+                                <a href="/google-auth/redirect" class="nav-link"><i class="fab fa-google"></i> Login Google</a>
+                            </li>
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a href="{{ route('register') }}" class="nav-link"><i class="fas fa-user-plus"></i> Registrarse</a>
+                                </li>
+                            @endif
+                        @endauth
+                    @endif
+                </ul>
             </div>
         </div>
-    </header>
+    </nav>
+    <!-- Contenedor principal -->
     <div class="content-container">
         <!-- Detalles de la discoteca -->
         <h2>Detalles de la Discoteca</h2>
-        <br>
         <div id="detallesDiscoteca">
-            <!-- Aquí se cargarán los eventos -->
+            <!-- Aquí se cargarán los detalles de la discoteca -->
         </div>
 
-        <br>
-        <br>
-
-
+        <!-- Contenedor de búsqueda -->
         <div class="contenedor-input">
             <i class="fas fa-search lupa-naranja"></i>
             <input type="text" id="nombre" placeholder="Nombre del evento">
             <input type="date" id="diaInicio">
         </div>
 
-        <br>
-        <br>
+        <!-- Título de la sección de eventos -->
+        <h1>Eventos de {{ $discotecas->name }}</h1>
 
-        <h1>Eventos de {{ $discoteca->name }}</h1>
-
-        <div id="eventosContainer">
+        <!-- Contenedor para los eventos -->
+        <div id="eventosContainer" class="eventos-grid">
             <!-- Aquí se cargarán los eventos -->
         </div>
-
-        <!-- Botón de volver -->
-        <br>
-        <br>
-
-
-
-        <div class="reviewSection">
-
-        </div>
-
-
     </div>
+    <br>
 
+    <!-- Footer Section -->
     <footer class="footer mt-auto py-5 bg-dark" id="contact" style="background-image: url('/img/oasisn2.jpg');">
-        <p>Footer</p>
+        <div class="container text-center">
+            <h2 class="text-white mb-4 animate__animated animate__fadeInUp">¿Listo para llevar tu negocio al siguiente nivel?</h2>
+            <p class="text-white mb-4 animate__animated animate__fadeInUp">Contáctanos para conocer cómo podemos colaborar juntos.</p>
+            <div class="mt-4">
+                <a href="mailto:oasis.management.daw@gmail.com" class="btn btn-outline-light btn-lg animate__animated animate__fadeInUp">
+                    <i class="fas fa-envelope"></i> ¡Contáctanos ahora!
+                </a>
+            </div>
+            <div class="mt-4">
+                <a href="https://www.tiktok.com/@oasis_management2024?lang=es" class="text-white mr-3 animate__animated animate__fadeInUp">
+                    <i class="fab fa-tiktok"></i> TikTok
+                </a>
+                <a href="https://www.instagram.com/oasis_management2024/" class="text-white mr-3 animate__animated animate__fadeInUp">
+                    <i class="fab fa-instagram"></i> Instagram
+                </a>
+            </div>
+            <!-- Logos de Discotecas -->
+            <div id="slider" class="slider mt-5">
+                <div class="slide-track d-flex justify-content-center align-items-center">
+                    @foreach ($discotecas as $discoteca)
+                        <div class="slide mr-3">
+                            <img src="{{ asset('img/discotecas/' . $discotecas->image) }}" alt="{{ $discotecas->name }}" class="img-fluid">
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
     </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.min.js"></script>
 
 
     <script>
@@ -349,26 +166,65 @@
                 }
             };
 
-            xhr.open('GET', '/cliente/detallesdiscoteca/{{ $discoteca->id }}', true);
+            xhr.open('GET', '/cliente/detallesdiscoteca/{{ $discotecas->id }}', true);
             xhr.send();
         }
 
         function mostrarDetallesDiscoteca(detalles) {
-            var detallesDiscoteca = document.getElementById('detallesDiscoteca');
-            detallesDiscoteca.innerHTML = '';
+    var detallesDiscoteca = document.getElementById('detallesDiscoteca');
+    detallesDiscoteca.innerHTML = '';
 
-            detallesDiscoteca.innerHTML += '<p>Nombre: ' + detalles.name + '</p>';
-            detallesDiscoteca.innerHTML += '<p>Dirección: ' + detalles.direccion + '</p>';
-            detallesDiscoteca.innerHTML += '<p>Capacidad: ' + detalles.capacidad + '</p>';
-            // Agrega más detalles según sea necesario
-        }
+    // Contenedor principal
+    var container = document.createElement('div');
+    container.classList.add('detalles-container');
+
+    // Contenedor de la imagen
+    var imagenContainer = document.createElement('div');
+    imagenContainer.classList.add('imagen-container');
+
+    // Crear un elemento de imagen
+    var imagen = document.createElement('img');
+    imagen.src = '{{ asset("img/discotecas/") }}' + '/' + detalles.image;
+    imagen.alt = detalles.name; // Establecer el texto alternativo de la imagen
+    imagen.style.width = '200px'; // Establecer un ancho fijo para la imagen (opcional)
+
+    // Agregar la imagen al contenedor de la imagen
+    imagenContainer.appendChild(imagen);
+
+    // Agregar el contenedor de la imagen al contenedor principal
+    container.appendChild(imagenContainer);
+
+    // Contenedor de la información
+    var infoContainer = document.createElement('div');
+    infoContainer.classList.add('info-container');
+
+    // Agregar detalles de la discoteca con iconos
+    infoContainer.innerHTML += '<p><i class="fas fa-user"></i>  ' + detalles.name + '</p>';
+    infoContainer.innerHTML += '<p><i class="fas fa-map-marker-alt"></i>  ' + detalles.direccion + '</p>';
+
+    if (detalles.ciudad) {
+        // Agregar el nombre de la ciudad si está disponible en los detalles
+        infoContainer.innerHTML += '<p><i class="fas fa-city"></i>  ' + detalles.ciudad.name + '</p>';
+    } else {
+        infoContainer.innerHTML += '<p><i class="fas fa-city"></i>  Desconocida</p>';
+    }
+
+    infoContainer.innerHTML += '<p><i class="fas fa-users"></i>  ' + detalles.capacidad + '</p>';
+
+    // Agregar el contenedor de la información al contenedor principal
+    container.appendChild(infoContainer);
+
+    // Agregar el contenedor principal al elemento detallesDiscoteca
+    detallesDiscoteca.appendChild(container);
+}
+
 
         function cargarEventos() {
             var nombreEvento = document.getElementById("nombre").value;
             var diaInicio = document.getElementById("diaInicio").value;
 
             // Obtener la ID de la discoteca
-            var idDiscoteca = '{{ $discoteca->id }}';
+            var idDiscoteca = '{{ $discotecas->id }}';
 
             var xhr = new XMLHttpRequest();
 
@@ -399,9 +255,7 @@
         }
 
 
-        function mostrarEventos(data) {
-            var discoteca = data.discoteca;
-            var eventos = data.eventos;
+        function mostrarEventos(eventos) {
             var eventosContainer = document.getElementById('eventosContainer');
             eventosContainer.innerHTML = '';
 
@@ -412,38 +266,33 @@
                     eventoCard.classList.add('reviewItem'); // Añadir la clase de la card
                     eventoCard.style.width = '300px'; // Establecer el ancho de la card
 
-                    // Crear el contenido de la card
-                    var contenido;
+// Crear el contenido de la card
+var contenido = `
+<div class="event-container">
+    <!-- Tarjeta de evento -->
+    <div class="event-card">
+        <div class="top">
+            <div class="clientDetails">
+                <div class="clientImage">
+                    <img src="{{ asset('img/flyer/${evento.flyer}') }}" alt="Flyer">
+                </div>
+                <div class="clientInfo">
+                    <h3 class="eventName">${evento.name}</h3>
+                    <button class="button-entradas" onclick="mostrarEntradas(${evento.id})">
+                        <img src="{{ asset('img/entradas.png') }}" alt="Entradas" width="40px" height="40px">
+                        <span class="button-text">Ver Entradas</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <article>
+            <p class="review">${evento.descripcion}</p>
+            <p class="eventDate">${evento.fecha_inicio}</p>
+        </article>
+    </div>
+</div>
 
-                    if (discoteca.capacidad > 0) {
-                        contenido = `
-                    <div class="top">
-                        <div class="clientImage">
-                            <img src="{{ asset('img/(${evento.flyer})') }}" alt="">
-                            <span>${evento.name}</span>
-                        </div>
-                        <button onclick="mostrarEntradas(${evento.id})"><img src="{{ asset('img/entradas.png') }}" alt="Entradas" width="40px" height="40px"></button>
-                    </div>
-                    <article>
-                        <p class="review">${evento.descripcion}</p>
-                        <p>${evento.fecha_inicio}</p>
-                    </article>
-                `;
-                    } else {
-                        contenido = `
-                    <div class="top">
-                        <div class="clientImage">
-                            <img src="{{ asset('img/(${evento.flyer})') }}" alt="">
-                            <span>${evento.name}</span>
-                        </div>
-                        <img src="{{ asset('img/soldout.png') }}" alt="Sold Out" width="40px" height="40px">
-                    </div>
-                    <article>
-                        <p class="review">${evento.descripcion}</p>
-                        <p>${evento.fecha_inicio}</p>
-                    </article>
-                `;
-                    }
+`;
 
                     // Agregar el contenido a la card
                     eventoCard.innerHTML = contenido;
