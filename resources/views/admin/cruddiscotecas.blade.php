@@ -65,7 +65,8 @@
   <div class="container">
     <div class="buscar">
     <button class="btn-success" id="CrearDiscoteca" style="margin-bottom: 10px"><i class="fa-solid fa-plus" style="color: #ffffff;"></i></button>
-      <form action="" method="post" id="frmbusqueda">
+    <div class="buscar">
+    <form action="" method="post" id="frmbusqueda" style="margin-left: 30%">
         <div class="form-group">
           <i id="icono_buscar" class="fa-solid fa-magnifying-glass" style="color: #F5763B;"></i>
           <input type="text" name="buscar" id="buscar" placeholder="Buscar..." class="form-control">

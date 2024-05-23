@@ -432,6 +432,11 @@ button {
     margin-right: 20px;
 }
 
+#CrearEvento {
+    float: right;
+    margin-right: 20px;
+}
+
 .swal2-styled.swal2-confirm {
     border: 0;
     border-radius: .25em;
@@ -651,8 +656,7 @@ input[type="file"] {
         white-space: nowrap; /* Evita el salto de línea automático */
     }
     #CrearEvento {
-       
-        margin-right: 45%;
+        margin-right: 48%;
     }
     #tablaSolicitudes {
         margin-top: 27%;

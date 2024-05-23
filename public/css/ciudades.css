@@ -587,6 +587,9 @@ input[type="file"] {
         z-index: 1000;
     }
 
+    #crearCiudad {
+        margin-right: 45%;
+    }
     .logo img {
         margin-left: -10%;
     }
@@ -609,6 +612,11 @@ input[type="file"] {
         
     }
 
+    #icono_buscar {
+        margin-left: 5%;
+        margin-top: 22%;
+    }
+
     
     #icono_user {
         margin-right: 80%;
@@ -617,7 +625,9 @@ input[type="file"] {
        
     } 
 
- 
+   #buscar {
+        margin-right: 94%;
+    }
  
     /* h1 {
         margin-bottom: 15%;
@@ -650,10 +660,7 @@ input[type="file"] {
         align-items: center; /* Alinear verticalmente el contenido */
         white-space: nowrap; /* Evita el salto de línea automático */
     }
-    #CrearCiudad {
-       
-        margin-right: 45%;
-    }
+ 
     #tablaSolicitudes {
         margin-top: 27%;
         width: 100%;

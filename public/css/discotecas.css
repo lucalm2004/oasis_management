@@ -653,7 +653,8 @@ input[type="file"] {
     }
     #CrearDiscoteca {
        
-        margin-left: 95%;
+        margin-right: -10%;
+        margin-top: -20%;
     }
     #tablaSolicitudes {
         margin-top: 27%;

@@ -58,11 +58,11 @@
       </tbody>
     </table>
   </div>
-  <h1 style="text-align: center">Ciudades</h1>
+  <h1 style="text-align: center">CIUDADES</h1>
 
   <div class="container">
     <button class="btn-success" id="crearCiudad"><i class="fa-solid fa-plus" style="color: #ffffff;"></i></button>
-    <div class="form-group">
+    <div class="form-group" style="margin-left: 37%">
       <i id="icono_buscar" class="fa-solid fa-magnifying-glass" style="color: #F5763B;"></i>
       <input type="text" name="buscar" id="buscar" placeholder="Buscar..." class="form-control">
     </div>

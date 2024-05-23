@@ -595,6 +595,10 @@ input[type="file"] {
 
     } */
    
+    #icono_buscar {
+        padding-top: 30%;
+        padding-left: 25%;
+    }
     #logout {
     padding-left: 55%;
     }
@@ -650,9 +654,9 @@ input[type="file"] {
         align-items: center; /* Alinear verticalmente el contenido */
         white-space: nowrap; /* Evita el salto de línea automático */
     }
-    #CrearUser {
-       
-        margin-right: 45%;
+    #crearBonificacion {
+       margin-top: 5%;
+        margin-right: -10%;
     }
     #tablaSolicitudes {
         margin-top: 27%;
@@ -689,7 +693,12 @@ input[type="file"] {
         margin-left: 5%;
         margin-right: 5%;
     }
+    .tabla_bonificacion {
+        width: 43%;
+        height: 15%;
     }
+    }
+
     table {
         width: 30%; /* Reduzco la anchura al 50% para que se vea más pequeña */
     }

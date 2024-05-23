@@ -62,7 +62,8 @@
   <div class="container">
     <button class="btn-success" id="CrearEvento" style="margin-bottom: 10px"><i class="fa-solid fa-plus" style="color: #ffffff;"></i></button>
     <!-- Formulario de búsqueda -->
-    <form action="" method="post" id="frmbusqueda">
+    <div class="buscar">
+    <form action="" method="post" id="frmbusqueda" style="margin-left: 30%">
       <div class="form-group">
         <i id="icono_buscar" class="fa-solid fa-magnifying-glass" style="color: #F5763B;"></i>
         <input type="text" name="buscar" id="buscar" placeholder="Buscar..." class="form-control">
@@ -73,6 +74,7 @@
         <option value=""></option>
       </select>
     </form>
+    </div>
     <br>
     <br>
     <!-- Tabla con los datos del CRUD a mostrar -->
