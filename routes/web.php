@@ -18,12 +18,14 @@ use App\Http\Controllers\ContactoController;
 use App\Http\Controllers\CamareroController;
 use App\Http\Controllers\registerCamareroController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\NumerosController;
+use App\Http\Controllers\FavoritoController;
 
 use App\Http\Middleware\AdminOnly;
 use App\Http\Middleware\ClientOnly;
 use App\Http\Middleware\GestorOnly;
 use App\Http\Middleware\CamareroOnly;
-
+use App\Http\Controllers\ScreenshotController;
 
 
 Route::get('/', function () {
@@ -33,7 +35,7 @@ Route::post('/registerGestor', [registerGestorController::class, 'index'])->name
 Route::post('/registerCamarero', [registerCamareroController::class, 'index'])->name('registerCamarero');
 
 
-
+Route::post('/capture-screenshot', [ScreenshotController::class, 'captureScreenshot']);
 
 Route::get('/google-auth/redirect', function () {
     return Socialite::driver('google')->redirect();
@@ -227,6 +229,7 @@ Route::get('/valoracion/form/{idEvento}', [ValoracionController::class, 'create'
 Route::post('/valoracion/store', [ValoracionController::class, 'store'])->name('valoracion.store');
 Route::get('/eventos/{idEvento}/resenas', [ValoracionController::class, 'showResenas'])->name('eventos.resenas');
 Route::get('/valoracion/top-rated-users', [ValoracionController::class, 'showTopRatedUsers'])->name('valoracion.topRatedUsers');
+Route::get('/numeros', [NumerosController::class, 'obtenerNumeros'])->name('numeros');
 
 // Rutas para discotecas y eventos
 Route::get('/discotecas/{id}/eventos', [DiscotecaController::class, 'getEventosByDiscoteca'])->name('discotecas.eventos');
@@ -271,7 +274,14 @@ Route::middleware(ClientOnly::class)->group(function () {
     Route::get('/cliente/checkout/pay', [checkoutController::class, 'checkout'])->name('checkout');
     Route::get('/success', [CheckoutController::class, 'success'])->name('success');
     Route::post('/send-pdf', [CheckoutController::class, 'generatePdfAndSendEmail']);
-    
+
+    Route::get('/cliente/bonificacion', [ClienteController::class, 'bonificacion'])->name('cliente.bonificacion');
+    Route::post('/marcar-como-favorita', [FavoritoController::class, 'marcarComoFavorita']);
+    Route::get('/obtener-discotecas-favoritas', [DiscotecaController::class, 'obtenerDiscotecasFavoritas'])->name('obtener.discotecas.favoritas');
+    Route::get('/perfil', [perfilController::class, 'edit'])->name('perfil');
+    Route::put('/profile/update', [perfilController::class, 'update'])->name('profile.update');
+   
+    Route::get('/bonificacion', [perfilController::class, 'bonificacion'])->name('bonificacion');
     
     
     

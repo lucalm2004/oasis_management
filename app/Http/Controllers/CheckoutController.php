@@ -239,34 +239,6 @@ class CheckoutController extends Controller
             'fechaHora' => $fechaHora,
             'discoteca' => $discoteca,
         ]);
-     /*    $viewData = [
-            'qr' => $qr,
-            'precioTotal' => $precioTotal,
-            'nombreEvento' => $nombreEvento,
-            'totalEntradas' => $totalEntradas,
-            'codigo' => $codigo,
-            'fechaHora' => $fechaHora,
-            'discoteca' => $discoteca,
-        ];
-        
-
-        // Generar el PDF desde la vista payment2
-        $pdfContent = PDF::loadView('cliente.entrada', $viewData);
-
-        // Datos del usuario
-        $userData = [
-            'name' => $user->name,
-            'email' => $user->email,
-            // cualquier otro dato que necesites
-        ];
-
-        // Enviar el correo con el PDF adjunto y los datos del usuario
-        Mail::to($user->email)->send(new TicketMail($pdfContent->output(), $viewData, $userData));
-
-        // Devolver la vista payment2
-        return view('payment2'); */
-       
-
        
     }
  /*    public function generatePdfAndSendEmail(Request $request)

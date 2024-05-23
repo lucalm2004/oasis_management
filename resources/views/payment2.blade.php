@@ -7,391 +7,12 @@
     <title>Document</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/a7409f463b.js" crossorigin="anonymous"></script>
-    <style>
-        /* #downloadPdfButton {
-            position: absolute;
-            left: 90%;
-            cursor: pointer;
-        } */
-
-
-        .ticket {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /* width: 700px; */
-            margin: 20px auto;
-            /* margin-right: 50%; */
-
-            /* padding-top: 20%; */
-            /* padding-bottom: 70%; */
-            .stub,
-            .check {
-                box-sizing: border-box;
-            }
-        }
-
-        .stub {
-            background: #F5763B;
-            height: 250px;
-            width: 350px;
-            color: white;
-            padding: 20px;
-            position: relative;
-
-            &:before {
-                content: '';
-                position: absolute;
-                top: 0;
-                right: 0;
-                border-top: 20px solid #10101a;
-                border-left: 20px solid #ef5658;
-                width: 0;
-            }
-
-            &:after {
-                content: '';
-                position: absolute;
-                bottom: 0;
-                right: 0;
-                border-bottom: 20px solid #10101a;
-                border-left: 20px solid #ef5658;
-                width: 0;
-            }
-
-            .top {
-                display: flex;
-                align-items: center;
-                height: 40px;
-                text-transform: uppercase;
-
-                .line {
-                    display: block;
-                    background: #fff;
-                    height: 40px;
-                    width: 3px;
-                    margin: 0 20px;
-                }
-
-                .num {
-                    font-size: 10px;
-
-                    span {
-                        color: #000;
-                    }
-                }
-            }
-
-            .number {
-                position: absolute;
-                /* left: 40px; */
-                top: 70px;
-                font-size: 150px;
-            }
-
-            .invite {
-                position: absolute;
-        left: 150px;
-        bottom: 45px;
-        color: white;
-        width: 50%;
-
-                &:before {
-                    content: '';
-                    background: #fff;
-                    display: block;
-                    width: 40px;
-                    height: 3px;
-                    margin-bottom: 5px;
-                }
-            }
-        }
-
-        .check {
-            background: #fff;
-            height: 250px;
-            width: 500px;
-            padding: 40px;
-            position: relative;
-
-            &:before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                border-top: 20px solid #10101a;
-                border-right: 20px solid #fff;
-                width: 0;
-            }
-
-            &:after {
-                content: '';
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                border-bottom: 20px solid #10101a;
-                border-right: 20px solid #fff;
-                width: 0;
-            }
-
-            .big {
-                font-size: 80px;
-                font-weight: 900;
-                line-height: .8em;
-            }
-
-            .number {
-                position: absolute;
-                top: 50px;
-                right: 50px;
-                color: #ef5658;
-                font-size: 40px;
-            }
-
-            .info {
-                display: flex;
-                justify-content: flex-start;
-                font-size: 12px;
-                margin-top: 20px;
-                width: 100%;
-
-                section {
-                    margin-right: 50px;
-
-                    &:before {
-                        content: '';
-                        background: #ef5658;
-                        display: block;
-                        width: 40px;
-                        height: 3px;
-                        margin-bottom: 5px;
-                    }
-
-                    .title {
-                        font-size: 10px;
-                        text-transform: uppercase;
-                    }
-                }
-            }
-        }
-
-        .contenido {
-
-            padding: 1% 4%;
-    margin-top: 1%;
-    text-align: justify;
-    background-color: white;
-    margin-right: 25%;
-    margin-left: 25%;
-    border-radius: 5px;
-        }
-
-        .container {
-            background-color: #F5763B;
-            text-align: center;
-            margin-right: 25%;
-            margin-left: 25%;
-            margin-top: 10px;
-            border-radius: 10px
-        }
-
-        .ayuda {
-            margin-top: 1%;
-            padding: 4%;
-            padding-top: 1%;
-            padding-bottom: 1%;
-            margin-bottom: 30px;
-            text-align: justify;
-            background-color: white;
-            margin-right: 25%;
-            margin-left: 25%;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        @media only screen and (max-width: 800px) {
-            .check {
-                display: none;
-            }
-            .imgs{
-                max-width: 25%!important;
-
-            }
-            .ayuda {
-           
-            margin-right: 2%;
-            margin-left: 2%;
-            padding-bottom: 5%;
-
-           
-        }
-
-            .ticket {
-                width: auto
-            }
-
-            .invite {
-                width: 35%;
-            }
-
-            .container {
-                background-color: #F5763B;
-                text-align: center;
-                margin-left: 2%;
-                margin-right: 2%;
-            }
-
-            .contenido {
-                padding: 4%;
-                padding-top: 2%;
-                margin-top: 2%;
-                text-align: justify;
-                background-color: white;
-                margin-right: 2%;
-                margin-left: 2%;
-                border-radius: 5px;
-                z-index: 99999;
-            }
-
-
-            .stub {
-                background: #F5763B;
-                height: 250px;
-                width: 350px;
-                color: white;
-                padding: 20px;
-                position: relative;
-
-                &:before {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                    border-top: 20px solid #10101a;
-                    border-left: 20px solid #ef5658;
-                    width: 0;
-                }
-
-                &:after {
-                    content: '';
-                    position: absolute;
-                    bottom: 0;
-                    right: 0;
-                    border-bottom: 20px solid #10101a;
-                    border-left: 20px solid #ef5658;
-                    width: 0;
-                }
-
-                .top {
-                    display: flex;
-                    align-items: center;
-                    height: 40px;
-                    text-transform: uppercase;
-
-                    .line {
-                        display: block;
-                        background: #fff;
-                        height: 40px;
-                        width: 3px;
-                        margin: 0 20px;
-                    }
-
-                    .num {
-                        font-size: 10px;
-
-                        span {
-                            color: #000;
-                        }
-                    }
-                }
-
-                .number {
-                    position: absolute;
-                    /* left: 40px; */
-                    top: 70px;
-                    font-size: 150px;
-                }
-
-            }
-        }
-
-        .check {
-            background: #fff;
-            height: 250px;
-            width: 500px;
-            padding: 40px;
-            position: relative;
-            display: none;
-
-            &:before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                border-top: 20px solid #10101a;
-                border-right: 20px solid #fff;
-                width: 0;
-            }
-
-            &:after {
-                content: '';
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                border-bottom: 20px solid #10101a;
-                border-right: 20px solid #fff;
-                width: 0;
-            }
-
-            .big {
-                font-size: 80px;
-                font-weight: 900;
-                line-height: .8em;
-            }
-
-            .number {
-                position: absolute;
-                top: 50px;
-                right: 50px;
-                color: #ef5658;
-                font-size: 40px;
-            }
-
-           
-
-            .info {
-                display: flex;
-                justify-content: flex-start;
-                font-size: 12px;
-                margin-top: 20px;
-                width: 100%;
-
-                section {
-                    margin-right: 50px;
-
-                    &:before {
-                        content: '';
-                        background: #ef5658;
-                        display: block;
-                        width: 40px;
-                        height: 3px;
-                        margin-bottom: 5px;
-                    }
-
-                    .title {
-                        font-size: 10px;
-                        text-transform: uppercase;
-                    }
-                }
-            }
-        }
-    </style>
+    
 </head>
 
-<body
-    style="background-color: #10101a; font-family: 'Open Sans', sans-serif; font-optical-sizing: auto; font-style: normal; font-variation-settings: 'wdth' 100; margin: 0; padding: 0;">
+<body style="background-color: #10101a; font-family: 'Open Sans', sans-serif; font-optical-sizing: auto; font-style: normal; font-variation-settings: 'wdth' 100; margin: 0; padding: 0;">
 
-    <div class="container">
+    <div class="container" style="background-color: #F5763B; text-align: center; margin-right: 25%; margin-left: 25%; margin-top: 10px; border-radius: 10px;">
         <svg style="    background-color: white;
         border-radius: 200px;" class="imgs" version="1.0" xmlns="http://www.w3.org/2000/svg"
         width="80.000000pt" height="80.000000pt" viewBox="0 0 736.000000 736.000000"
@@ -716,18 +337,18 @@
        
           
     </div>
-    <div class="contenido">
+    <div class="contenido" style="padding: 1% 4%; margin-top: 1%; text-align: justify; background-color: white; margin-right: 25%; margin-left: 25%; border-radius: 5px;">
         <h1 style="font-size: 50px; text-align: center;">                    <?php echo $_GET['nombreEvento']; ?>
         </h1>
         <p style="text-align: justify;">¡Gracias por tu compra! Adjunto encontrarás las entradas en formato PDF para el evento  <?php echo $_GET['nombreEvento']; ?>  en <?php echo $_GET['discoteca']; ?>. Por favor, asegúrate de guardar este correo y de tener las entradas a mano el día del evento, ya sea en formato digital o impreso.</p>
-        <div class="ticket">
-            <div class="stub">
-                <div class="top">
+        <div class="ticket" style="display: flex; justify-content: center; align-items: center; margin: 20px auto;">
+            <div class="stub" style="background: #F5763B; height: 250px; width: 350px; color: white; padding: 20px; position: relative;">
+                <div class="top" style="display: flex; align-items: center; height: 40px; text-transform: uppercase;">
                     <span class="admit">Total: <?php echo isset($_GET['precioTotal']) ? $_GET['precioTotal'] . '€' : 'N/A'; ?></span>
-                    <span class="line"></span>
-                    <span class="num">
+                    <span class="line" style="display: block; background: #fff; height: 40px; width: 3px; margin: 0 20px;"></span>
+                    <span class="num" style="font-size: 10px;">
                         Nº de entrada:
-                        <span>
+                        <span style="color: #000;">>
                             <?php
                             if (isset($_GET['codigo'])) {
                                 echo $_GET['codigo'];
@@ -739,7 +360,7 @@
                         </span>
                     </span>
                 </div>
-                <div class="number">
+                <div class="number" tyle="position: absolute; top: 70px; font-size: 150px;">
                     <?php
                     if (isset($_GET['dia'])) {
                         echo '#1';
@@ -749,7 +370,7 @@
                     ?>
                     <?php ?>
                 </div>
-                <div class="invite">
+                <div class="invite" style="position: absolute; left: 150px; bottom: 45px; color: white; width: 50%;">
                     <?php echo $_GET['discoteca'] . " | " . $_GET['nombreEvento']; ?></div>
                 </div>
             {{-- <div class="check">
@@ -791,13 +412,13 @@
         </div>
         <a id="downloadPdfButton" style="display: inline-block; text-decoration: none; width: 100%;"><button
                 class="acceder"
-                style="padding: 1em; background:  #ff5500; cursor: pointer;color: white; border: none; border-radius: 30px; font-weight: 600; margin-top: 5%; margin-bottom: 5%; font-size: 14px; display: block; margin-left: auto; margin-right: auto;">Descargar
+                style="padding: 1em; background: #ff5500; cursor: pointer; color: white; border: none; border-radius: 30px; font-weight: 600; margin-top: 5%; margin-bottom: 5%; font-size: 14px; display: block; margin-left: auto; margin-right: auto;">Descargar
                 Entrada</button></a>
         <p style="text-align: justify;">Atentamente,</p>
         <p style="text-align: justify;">El equipo de Oasis.</p>
     </div>
 
-    <div class="ayuda">
+    <div class="ayuda" style="margin-top: 1%; padding: 4%; padding-top: 1%; padding-bottom: 1%; margin-bottom: 30px; text-align: justify; background-color: white; margin-right: 25%; margin-left: 25%; border-radius: 5px; text-align: center;">
         <h2 style="font-size: 30px;">Need more help?</h2>
         <a href="http://oasismanagement.com:8000/contacto"
             style="text-decoration: none; color: #ff5500; font-size: 20px;">We're here, ready to talk</a>

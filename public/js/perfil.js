@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Función para validar el nombre
     function isValidName(name) {
-        return /^[a-zA-Z0-9]+$/.test(name); // Solo letras y números permitidos
+        return /^[a-zA-Z0-9\u00C0-\u024F\s]+$/.test(name); // Permitir letras, números, espacios y acentos
     }
 
     // Función para validar el formato de correo electrónico

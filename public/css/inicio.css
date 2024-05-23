@@ -13,18 +13,14 @@
 }
 
 body {
-    background: linear-gradient(135deg, #000000, #070606);
     background-size: 200% 200%;
     animation: gradientAnimation 10s infinite alternate;
     font-family: 'Roboto Slab', serif;
+    background-color: #10101A;
 }
 
 
 /* Estilos adicionales para la sección de inicio */
-
-.text-orange {
-    color: #f58220;
-}
 
 .text-white {
     color: #ffffff;
@@ -68,40 +64,6 @@ body {
 }
 
 
-/* Estilos para las secciones con imágenes y texto juntos */
-
-.content-box {
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 5px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-
-/* Estilos para las imágenes dentro de las secciones */
-
-.img-fluid {
-    max-width: 100%;
-    height: auto;
-}
-
-.slide img {
-    width: 100%;
-    height: auto;
-}
-
-.animated {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.animate-fadeInUp {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-
 /* Estilos para la Navbar */
 
 .navbar {
@@ -137,63 +99,70 @@ body {
 }
 
 
-/* Estilos para el Slider */
+/* Estilos para la sección de clima */
 
-.parallax {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    padding: 0;
-    margin: 0;
+#más-info {
+    padding: 50px 0;
 }
 
-.carousel {
-    width: 100%;
+.rating-title {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 20px;
 }
 
-.carousel-item img {
-    height: 400px;
-    object-fit: cover;
+.rating-description {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 30px;
 }
 
-
-/* Estilos para los controles del Carousel */
-
-.carousel-control-prev,
-.carousel-control-next {
-    width: 5%;
+.rating-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    height: 100%;
-    width: 100%;
+.weather-icon {
+    font-size: 3rem;
+    color: #FFA500;
+    /* Naranja */
+    margin-right: 10px;
+}
+
+.temperature {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
 }
 
 
 /* Estilos para el Contenido */
 
 .content-box {
-    background-color: #ffffff;
+    background-color: transparent;
     padding: 30px;
     border-radius: 5px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     margin-bottom: 50px;
+    border: #fafafa;
+    color: white;
+    border-style: double;
+    max-height: 91%;
+    width: 400px;
+    /* Ancho predeterminado */
+    height: 600px;
+    /* Altura predeterminada */
+    overflow: hidden;
+    /* Oculta el contenido que excede las dimensiones */
 }
 
-.content-box h2 {
-    color: #f58220;
-}
 
-.content-box p {
-    color: #000000;
-}
+/* Ajuste para los elementos de la fila */
 
-
-/* Estilos para el Botón de Valorar */
-
-.rating-button {
-    margin-top: 20px;
+.swiper-slide .row .col-md-6 {
+    flex: 1 0 0;
+    /* Flex-grow a 1 para que ocupen el espacio disponible */
 }
 
 
@@ -255,10 +224,6 @@ body {
     text-align: center !important;
 }
 
-.orange-text {
-    color: orange;
-}
-
 
 /* Estilos específicos para Botones */
 
@@ -271,16 +236,6 @@ body {
 .btn-primary {
     background-color: #f58220;
     border-color: #f58220;
-}
-
-
-/* Estilos para la sección de valoración de discotecas */
-
-.rating-section {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 30px;
-    border-radius: 5px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -412,6 +367,17 @@ body {
     .col-md-8 {
         max-width: 100%;
     }
+    .content-box {
+        background-color: transparent;
+        padding: 30px;
+        border-radius: 5px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        margin-bottom: 50px;
+        border: #fafafa;
+        color: white;
+        border-style: double;
+        max-height: 91%;
+    }
 }
 
 @media (min-width: 768px) {
@@ -436,11 +402,33 @@ body {
     .carousel-item img {
         height: 300px;
     }
+    .content-box {
+        background-color: transparent;
+        padding: 30px;
+        border-radius: 5px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        margin-bottom: 50px;
+        border: #fafafa;
+        color: white;
+        border-style: double;
+        max-height: 91%;
+    }
 }
 
 @media (max-width: 576px) {
     .col-md-6 {
         text-align: center;
+    }
+    .content-box {
+        background-color: transparent;
+        padding: 30px;
+        border-radius: 5px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        margin-bottom: 50px;
+        border: #fafafa;
+        color: white;
+        border-style: double;
+        max-height: 91%;
     }
 }
 
@@ -467,6 +455,17 @@ body {
         font-size: 0.9rem;
         padding: 0.5rem 1rem;
     }
+    .content-box {
+        background-color: transparent;
+        padding: 30px;
+        border-radius: 5px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        margin-bottom: 50px;
+        border: #fafafa;
+        color: white;
+        border-style: double;
+        max-height: 91%;
+    }
 }
 
 
@@ -490,5 +489,16 @@ body {
     .slide {
         flex: 0 0 calc(100% - 10px);
         margin-right: 10px;
+    }
+    .content-box {
+        background-color: transparent;
+        padding: 30px;
+        border-radius: 5px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        margin-bottom: 50px;
+        border: #fafafa;
+        color: white;
+        border-style: double;
+        max-height: 91%;
     }
 }
