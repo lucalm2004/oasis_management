@@ -19,6 +19,8 @@ return new class extends Migration
             $table->date('fecha'); // Fecha
             $table->tinyInteger('tipo_entrada');// Relación con la tabla eventos
             $table->unsignedBigInteger('id_user'); // Relación con la tabla eventos
+            $table->string('entrada', 255)->nullable();
+            
 
             // Claves foráneas y restricciones
             $table->foreign('evento_id')->references('id')->on('eventos');

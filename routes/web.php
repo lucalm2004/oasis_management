@@ -36,7 +36,7 @@ Route::post('/registerCamarero', [registerCamareroController::class, 'index'])->
 
 
 Route::post('/capture-screenshot', [ScreenshotController::class, 'captureScreenshot']);
-
+Route::get('/capture-screenshot', [ScreenshotController::class, 'captureScreenshot']);
 Route::get('/google-auth/redirect', function () {
     return Socialite::driver('google')->redirect();
 })->name('login.google');

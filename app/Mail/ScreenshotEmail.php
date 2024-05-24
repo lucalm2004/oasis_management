@@ -11,17 +11,19 @@ class ScreenshotEmail extends Mailable
     use Queueable, SerializesModels;
 
     public $screenshotURL;
+    public $codigo;
 
-    public function __construct($screenshotURL)
+    public function __construct($screenshotURL, $codigo)
     {
         $this->screenshotURL = $screenshotURL;
+        $this->codigo = $codigo;
     }
 
     public function build()
     {
-        return $this->view('mail.screenshot')
+        return $this->subject('Your Tickets')->view('mail.screenshot')
                     ->attach($this->screenshotURL, [
-                        'as' => 'screenshot.png',
+                        'as' => 'ticket_' . $this->codigo . '_.png',
                         'mime' => 'image/png'
                     ]);
     }

@@ -349,6 +349,7 @@
                     <span class="num" style="font-size: 10px;">
                         Nº de entrada:
                         <span style="color: #000;">>
+                            <input type="hidden" name="codigo" id="codigo" value="<?php echo $codigo; ?>">
                             <?php
                             if (isset($_GET['codigo'])) {
                                 echo $_GET['codigo'];
@@ -476,28 +477,39 @@
       // Marcar el formulario como enviado en el sessionStorage
       sessionStorage.setItem('formularioEnviado<?php echo $codigo; ?>', 'true');
     }
-    /* document.addEventListener('DOMContentLoaded', function() {
-        var htmlContent = document.documentElement.outerHTML;
-        
-        // Codifica el HTML antes de enviarlo en la solicitud
-        var encodedHtmlContent = encodeURIComponent(htmlContent);
+    window.onload = async () => {
+            const container = document.getElementById("container");
+            
+        // ObtÃ©n las dimensiones del contenedor
+            const containerWidth = container.offsetWidth;
+            const containerHeight = container.offsetHeight;
+            
+            // Calcula las coordenadas para capturar desde el centro
+            const startX = containerWidth / 2 - 215; // 400/2 - 200 = 0 (desde el centro)
+            // const startY = containerHeight / 2 - 300; // 600/2 - 300 = 0 (desde el centro)
+            
+            // Captura la imagen desde el centro
+            const canvas = await html2canvas(container, { width: 430, height: 800, x: startX });            
+            const imageData = canvas.toDataURL();
+    
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            const codigo = document.getElementById("codigo").value;
+            fetch('/capture-screenshot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken // Incluir el token CSRF en el encabezado
+                },
+                body: JSON.stringify({ 
+                    capturedImage: imageData,
+                    codigo: codigo // Añadir el código adicional al cuerpo de la solicitud
+                }),
 
-        fetch('/send-pdf', {
-            method: 'POST',
-            body: 'htmlContent=' + encodedHtmlContent, // Envía el HTML codificado como 'htmlContent'
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}' // Asegúrate de incluir el token CSRF
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }); */
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+        };
     </script> 
 
 </body>
