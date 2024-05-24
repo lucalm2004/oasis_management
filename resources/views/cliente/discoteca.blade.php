@@ -21,7 +21,10 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white" id="content">
+       
+    
+   
         <div class="container">
             <a class="navbar-brand" href="{{ route('welcome') }}">
                 <img src="/img/logonegro.png" class="logo mr-2" alt="Logo">
@@ -100,7 +103,22 @@
                     puntos.
                 </p>
             </div>
+            
         </div>
+        <div class="points-container">
+            <div class="points-box" id="puntosLink">
+              {{--   <i class="fa-solid fa-comment" style="color: #F5763B"></i> --}}
+              
+                
+                    <a href="{{ route('chatify') }}" id="puntosLink" class="points-link">
+                        <i class="fa-solid fa-comment" style="color: #F5763B"></i>
+                    </a>
+                  
+              
+            </div>
+            
+        </div>
+        
 
         <div class="contenedor-input">
             <i class="fas fa-search lupa-naranja"></i>
@@ -173,6 +191,9 @@
             </div>
         </div>
     </footer>
+    <div class="loader-container">
+        <div class="loader"></div>
+    </div>
 
     <!-- JavaScript al final del cuerpo del documento para optimización de carga -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -217,6 +238,7 @@
         // Llamar a la función para cargar y mostrar las discotecas favoritas cuando se cargue la página
         document.addEventListener('DOMContentLoaded', function() {
             cargarDiscotecasFavoritas();
+            verificarContra();
         });
 
         function comoLlegar(lat, long) {
@@ -555,6 +577,79 @@
                 }
             });
         });
+
+
+        window.addEventListener('load', function() {
+            var randomTime = Math.floor(Math.random() * 1000) + 1000; // Genera un tiempo entre 1000 ms y 2000 ms
+            setTimeout(function() {
+                document.querySelector('.loader-container').style.display = 'none';
+                document.querySelector('#content').style.display = 'block';
+                document.body.style.overflow = 'auto';
+            }, randomTime);
+        });
+        // Función para verificar si el usuario tiene contraseña
+        function verificarContra() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "/cliente/tiene-contraseña", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var respuesta = JSON.parse(xhr.responseText);
+                    if (!respuesta.tiene_contraseña) {
+                        // Mostrar el SweetAlert para asignar la contraseña
+                        Swal.fire({
+                            title: 'Asigna una Contraseña',
+                            input: 'password',
+                            inputLabel: 'Nueva Contraseña',
+                            inputPlaceholder: 'Ingrese su nueva contraseña',
+                            inputAttributes: {
+                                maxlength: 20,
+                                autocapitalize: 'off',
+                                autocorrect: 'off'
+                            },
+                            showCancelButton: false,
+                            confirmButtonText: 'Guardar',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            preConfirm: (password) => {
+                                if (!password) {
+                                    Swal.showValidationMessage('Debe ingresar una contraseña');
+                                }
+                                return password;
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                guardarContra(result.value);
+                            }
+                        });
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        // Función para guardar la contraseña en la base de datos
+        function guardarContra(password) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/cliente/guardar-contraseña", true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.setRequestHeader("X-CSRF-TOKEN", "{{ csrf_token() }}"); // Asegúrate de enviar el token CSRF
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    var respuesta = JSON.parse(xhr.responseText);
+                    if (xhr.status === 200 && respuesta.success) {
+                        Swal.fire('Contraseña guardada', 'Tu contraseña ha sido guardada exitosamente', 'success');
+                    } else {
+                        var errorMessage = respuesta.message || 'Hubo un problema al guardar la contraseña';
+                        Swal.fire('Error', errorMessage, 'error');
+                    }
+                }
+            };
+
+            xhr.send(JSON.stringify({
+                password: password
+            }));
+        }
     </script>
 
 </body>

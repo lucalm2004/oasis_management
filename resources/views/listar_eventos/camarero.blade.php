@@ -18,7 +18,7 @@
 
 </head>
 
-<body>
+<body id="content">
     
     {{-- Head1 --}}
     <header class="logo">
@@ -143,8 +143,25 @@
           <div id="crudCamarero" class="containerquese">
 
           </div>
+          
   </section>
+  <div class="loader-container">
+    <div class="loader"></div>
+</div>
     <script src="{{ asset('js/eventos.js') }}"></script>
+
+    <script>
+         
+      window.addEventListener('load', function() {
+            var randomTime = Math.floor(Math.random() * 1000) + 1000; // Genera un tiempo entre 1000 ms y 2000 ms
+            setTimeout(function() {
+                document.querySelector('.loader-container').style.display = 'none';
+                document.querySelector('#content').style.display = 'block';
+                document.body.style.overflow = 'auto';
+            }, randomTime);
+        });
+ 
+    </script>
 </div>
 </body>
 

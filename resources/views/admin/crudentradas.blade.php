@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Oasis Management - Administrar Usuarios</title>
+  <title>Oasis Management - Registro Entradas</title>
   <!-- Se ha de añadir el token para poder usarlo en el formdata de AJAX -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
@@ -11,7 +12,7 @@
   <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
   <script src="https://kit.fontawesome.com/e2c3124098.js" crossorigin="anonymous"></script>
 </head>
-<body id="content">
+<body>
   <header class="header">
     <div class="logo">
       <a href="{{ asset('principal') }}"><img src="{{ asset('img/logo_oasis.png') }}" alt="Imagen de logo"></a>
@@ -23,11 +24,10 @@
           <a href="{{ route('admin.crudciudades') }}">Ciudades | </a>
           <a href="{{ route('admin.crudeventos') }}">Eventos |</a>
           <a href="{{ route('admin.crudcanciones') }}">Canciones |</a>
-          <a href="{{ route('admin.crudartistas') }}">Artistas |</a>
-          <a href="{{ route('admin.crudentradas') }}">Registro Entradas</a>
+          <a href="{{ route('admin.crudartistas') }}">Artistas</a>
           <i class="fa-regular fa-bell" style="color: #F5763B; cursor: pointer;" id="campana"></i>
           <a id="notificacion">0</a>
-          <form method="POST" action="{{ route('logout') }}" id="logout" style="float: right; padding-left: 300px;">
+          <form method="POST" action="{{ route('logout') }}" id="logout" style="float: right; padding-left: 300px">
             @csrf
             <x-dropdown-link :href="route('logout')"
                     onclick="event.preventDefault();
@@ -59,52 +59,40 @@
       </tbody>
     </table>
   </div>
-  <h1 style="text-align: center">USUARIOS</h1>
+  <h1 style="text-align: center">Registro Entradas</h1>
   <div class="container">
+    <!-- Formulario de búsqueda -->
     <form action="" method="post" id="frmbusqueda">
       <div class="form-group">
         <i id="icono_buscar" class="fa-solid fa-magnifying-glass" style="color: #F5763B;"></i>
         <input type="text" name="buscar" id="buscar" placeholder="Buscar..." class="form-control">
       </div>
-      <i class="fa-regular fa-user" style="color: #F5763B;" id="icono_user"></i>
-      <select name="rol" id="rol" class="button-40">
+      {{-- <label for="discoteca">Discoteca</label> --}}
+      <i class="fa-solid fa-compact-disc" style="color: #F5763B;" id="icono_discoteca"></i>
+      <select name="discoteca" id="discoteca" class="button-40">
         <option value=""></option>
       </select>
     </form>
-    <br>
-    <button class="btn-success" id="CrearUser" style="margin-bottom: 10px"><i class="fa-solid fa-plus" style="color: #ffffff;"></i></button>
+    
+    <!-- Tabla con los datos del CRUD a mostrar -->
     <table>
       <thead>
         <tr>
           <th>ID</th>
-          <th>Nombre</th>
-          <th>Email</th>
-          <th>Rol</th>
-          <th>Estado</th>
-          <th>Editar</th>
-          <th>Eliminar</th>
+          <th>Evento</th>
+          <th>Cantidad</th>
+          <th>Total</th>
+          <th>Fecha</th>
+          <th>Tipo</th>
+          <th>Usuario</th>
         </tr>
       </thead>
       <tbody id="resultado">
       </tbody>
     </table>
-    <div class="loader-container">
-      <div class="loader"></div>
   </div>
-    
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-  <script src="{{ asset('js/adminUsers.js') }}"></script>
-  <script>
-      window.addEventListener('load', function() {
-            var randomTime = Math.floor(Math.random() * 1000) + 1000; // Genera un tiempo entre 1000 ms y 2000 ms
-            setTimeout(function() {
-                document.querySelector('.loader-container').style.display = 'none';
-                document.querySelector('#content').style.display = 'block';
-                document.body.style.overflow = 'auto';
-            }, randomTime);
-        });
-  </script>
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="{{ asset('js/adminEntrada.js') }}"></script>
 </body>
 </html>

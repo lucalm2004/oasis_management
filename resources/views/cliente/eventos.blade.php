@@ -255,55 +255,111 @@
         }
 
 
-        function mostrarEventos(eventos) {
-            var eventosContainer = document.getElementById('eventosContainer');
-            eventosContainer.innerHTML = '';
+        function mostrarEventos(data) {
+    console.log(data);
+    var registroEntradas = <?php echo json_encode($registroEntradas); ?> ?? []; // Valor predeterminado de []
+    var registroEntradasVIP = <?php echo json_encode($registroEntradasVIP); ?> ?? []; // Valor predeterminado de []
+    var registro = 0; // Valor predeterminado de 0
+    var registroVIP = 0; // Valor predeterminado de 0
 
-            if (eventos.length > 0) {
-                eventos.forEach(function(evento) {
-                    // Crear un contenedor para la card del evento
-                    var eventoCard = document.createElement('div');
-                    eventoCard.classList.add('reviewItem'); // Añadir la clase de la card
-                    eventoCard.style.width = '300px'; // Establecer el ancho de la card
+    // Iterar sobre los registros de entradas y actualizar los valores de registro y registroVIP
+    registroEntradas.forEach(function(entrada) {
+        console.log(entrada);
+        registro += entrada.total_entradas ?? 0; // Sumar total_entradas o 0 si es undefined
+    });
 
-// Crear el contenido de la card
-var contenido = `
-<div class="event-container">
-    <!-- Tarjeta de evento -->
-    <div class="event-card">
-        <div class="top">
-            <div class="clientDetails">
-                <div class="clientImage">
-                    <img src="{{ asset('img/flyer/${evento.flyer}') }}" alt="Flyer">
+    registroEntradasVIP.forEach(function(entradaVIP) {
+        console.log(entradaVIP);
+        registroVIP += entradaVIP.total_entradas ?? 0; // Sumar total_entradas o 0 si es undefined
+        console.log(registroVIP);
+    });
+
+    var discoteca = data.discotecas;
+    var eventos = data;
+    
+    var eventosContainer = document.getElementById('eventosContainer');
+    eventosContainer.innerHTML = '';
+
+    if (eventos.length > 0) {
+        eventos.forEach(function(evento) {
+            // Calcular las entradas disponibles
+            var totalEntradasCompradas = registro;
+            var totalEntradasCompradasVIP = registroVIP;
+            var entradasDisponibles = evento.capacidad - totalEntradasCompradas;
+            var entradasDisponiblesVIP = evento.capacidadVip - totalEntradasCompradasVIP;
+            
+            // Crear el contenido de la card
+            var contenido;
+
+            if ((entradasDisponibles > 0 && evento.capacidad !== null) || (entradasDisponiblesVIP > 0 && evento.capacidadVip !== null)) {
+                contenido = `
+                <div class="event-container">
+                    <!-- Tarjeta de evento -->
+                    <div class="event-card">
+                        <div class="top">
+                            <div class="clientDetails">
+                                <div class="clientImage">
+                                    <img src="{{ asset('img/flyer/${evento.flyer}') }}" alt="Flyer">
+                                </div>
+                                <div class="clientInfo">
+                                    <h3 class="eventName">${evento.name}</h3>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <article>
+                            <p class="review">${evento.descripcion}</p>
+                            <p class="eventDate">${evento.fecha_inicio}</p>
+                        </article>
+                        <button class="button-entradas" onclick="mostrarEntradas(${evento.id})">
+                                        <img src="{{ asset('img/entradas.png') }}" alt="Entradas" width="40px" height="40px">
+                                        <span class="button-text">Ver Entradas</span>
+                                    </button>
+                    </div>
                 </div>
-                <div class="clientInfo">
-                    <h3 class="eventName">${evento.name}</h3>
-                    <button class="button-entradas" onclick="mostrarEntradas(${evento.id})">
-                        <img src="{{ asset('img/entradas.png') }}" alt="Entradas" width="40px" height="40px">
-                        <span class="button-text">Ver Entradas</span>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <article>
-            <p class="review">${evento.descripcion}</p>
-            <p class="eventDate">${evento.fecha_inicio}</p>
-        </article>
-    </div>
-</div>
-
-`;
-
-                    // Agregar el contenido a la card
-                    eventoCard.innerHTML = contenido;
-
-                    // Agregar la card al contenedor de eventos
-                    eventosContainer.appendChild(eventoCard);
-                });
+                `;
             } else {
-                eventosContainer.innerHTML = '<p>No hay eventos disponibles para esta discoteca.</p>';
+                contenido = `
+                <div class="event-container">
+                    <!-- Tarjeta de evento -->
+                    <div class="event-card">
+                        <div class="top">
+                            <div class="clientDetails">
+                                <div class="clientImage">
+                                    <img src="{{ asset('img/flyer/${evento.flyer}') }}" alt="Flyer">
+                                </div>
+                                <div class="clientInfo">
+                                    <h3 class="eventName">${evento.name}</h3>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        <article>
+                            <p class="review">${evento.descripcion}</p>
+                            <p class="eventDate">${evento.fecha_inicio}</p>
+                        </article>
+                        <button class="button-entradas">
+                                        
+                                        <span class="button-text">Sold Out</span>
+                                    </button>
+                    </div>
+                </div>
+                `;
             }
-        }
+
+            // Agregar el contenido a la card
+            var eventoCard = document.createElement('div');
+            eventoCard.classList.add('reviewItem');
+            eventoCard.style.width = '300px';
+            eventoCard.innerHTML = contenido;
+
+            // Agregar la card al contenedor de eventos
+            eventosContainer.appendChild(eventoCard);
+        });
+    } else {
+        eventosContainer.innerHTML = '<p>No hay eventos disponibles para esta discoteca.</p>';
+    }
+}
 
         function mostrarEntradas(eventoId) {
             window.location.href = `/cliente/entradas/${eventoId}`;

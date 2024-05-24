@@ -142,6 +142,10 @@ Route::middleware(AdminOnly::class)->group(function () {
         Route::get('/admin7', function () {
             return view('admin/crudartistas');
         })->middleware(['auth', 'verified'])->name('admin.crudartistas');
+        Route::get('/admin8', function () {
+            return view('admin/crudentradas');
+        })->middleware(['auth', 'verified'])->name('admin.crudentradas');
+        
         
         
         Route::controller(AdminController::class)->group(function () {
@@ -203,6 +207,11 @@ Route::middleware(AdminOnly::class)->group(function () {
             Route::get('admin7/crudartistas/modadmin/{id}', 'editArtistas')->name('crud.editArtistas');
             Route::post('admin7/crudartistas/modadmin/{id}', 'actualizarArtistas')->name('crud.actualizarArtistas');
             Route::post('admin7/crudartistas/insertartista', 'storeArtista')->name('crud.storeArtista');
+
+
+            /* CRUD REGISTRO ENTRADAS */
+            Route::post('admin8/crudentrada', 'showCrudEntrada')->name('crud.showCrudEntrada');
+            Route::get('admin8/crudentrada', 'showCrudEntrada')->name('crud.showCrudEntrada');
        
         });
     
@@ -282,7 +291,14 @@ Route::middleware(ClientOnly::class)->group(function () {
     Route::put('/profile/update', [perfilController::class, 'update'])->name('profile.update');
    
     Route::get('/bonificacion', [perfilController::class, 'bonificacion'])->name('bonificacion');
+
+    Route::get('/calculadora_amor', function () {
+        return view('cliente/calculadora');
+    })->middleware(['auth', 'verified'])->name('calculadora.amor');
     
+   
+        Route::get('/cliente/tiene-contraseña', [ClienteController::class, 'tieneContra'])->name('cliente.tiene-contraseña');
+    Route::post('/cliente/guardar-contraseña', [ClienteController::class, 'guardarContra'])->name('cliente.guardar-contraseña');
     
     
     

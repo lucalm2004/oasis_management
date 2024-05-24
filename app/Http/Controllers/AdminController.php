@@ -1453,6 +1453,36 @@ class AdminController extends Controller
     }
 
 
+    /* mostrar filtro mas registros */
+    public function showCrudEntrada(Request $request){
+        $query = DB::table('registro_entradas')
+            ->select('registro_entradas.*', 'discotecas.name as nombre_discoteca', 'users.email as email_usuario', 'eventos.name as evento_name')
+            ->join('eventos', 'eventos.id', '=', 'registro_entradas.evento_id')
+            ->join('discotecas', 'discotecas.id', '=', 'eventos.id_discoteca')
+            ->join('users', 'users.id', '=', 'registro_entradas.id_user');
+        
+        // Verificar si se proporcionó un filtro de búsqueda
+        if ($request->input('busqueda')) {
+            $data = $request->input('busqueda');
+            $query->where('registro_entradas.id', 'like', "%$data%");
+        }
+        
+        // Verificar si se proporcionó un filtro de discoteca
+        if ($request->input('discoteca')) {
+            $discotecaId = $request->input('discoteca');
+            $query->where('discotecas.id', $discotecaId);
+        }
+
+        // Ordenar por el ID de la discoteca por defecto si no se especifica otro criterio de orden
+        $query->orderBy('registro_entradas.fecha');
+        
+        $discotecas = $query->get();
+      /*   dd($discotecas); */
+        
+        return response()->json($discotecas);
+    }
+
+
     
     
 }

@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 class ClienteController extends Controller
 {
@@ -33,7 +34,8 @@ class ClienteController extends Controller
 
         // Verificar si hay un usuario autenticado
         $nombreUsuario = $user ? $user->name : null;
-
+      /*   abort(500); */
+      
         // Pasar la variable 'nombreUsuario' a la vista
         return view('cliente.discoteca', compact('discotecas', 'nombreUsuario'));
     }
@@ -42,9 +44,19 @@ class ClienteController extends Controller
     public function eventos($id)
     {
         $discotecas = Discoteca::findOrFail($id);
-        $discoteca = Discoteca::all(); // Assuming this retrieves all discotecas
         $eventos = Evento::where('id_discoteca', $id)->get();
-        return view('cliente.eventos', compact('discoteca', 'eventos', 'discotecas'));
+        $registroEntradas = DB::table('registro_entradas')
+        ->where('evento_id', $id)
+        ->where('tipo_entrada', 0)
+        ->get();
+       
+        $registroEntradasVIP = DB::table('registro_entradas')
+        ->where('evento_id', $id)
+        ->where('tipo_entrada', 1)
+        ->get();
+        /* dd($registroEntradasVIP); */
+
+        return view('cliente.eventos', compact('eventos', 'discotecas', 'registroEntradas', 'registroEntradasVIP'));
     }
 
 
@@ -547,5 +559,39 @@ class ClienteController extends Controller
 
         // Retornar las bonificaciones en formato JSON
         return response()->json($bonificacionesCanjeadas);
+    }
+
+    public function tieneContra()
+    {
+        $usuario = Auth::user();
+        return response()->json(['tiene_contraseña' => !is_null($usuario->password)]);
+    }
+
+    public function guardarContra(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'password' => 'required|string|min:6',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first()
+            ], 400);
+        }
+
+        try {
+            $userid = Auth::user()->id;
+            $user = User::findOrFail($userid);
+            $user->password = bcrypt($request->password);
+            $user->save();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Hubo un problema al guardar la contraseña'
+            ], 500);
+        }
     }
 }
