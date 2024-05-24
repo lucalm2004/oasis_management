@@ -50,6 +50,7 @@ class perfilController extends Controller
             $fileName = time() . '.' . $request->foto->extension();
             $request->foto->move(public_path('img/profiles'), $fileName);
             $user->foto = $fileName;
+            $user->avatar = $fileName;
         }
 
         // Guardar la imagen capturada por la cÃ¡mara si existe
@@ -61,6 +62,7 @@ class perfilController extends Controller
             $data = base64_decode($data);
             file_put_contents(public_path('img/profiles') . '/' . $fileName, $data);
             $user->foto = $fileName;
+            $user->avatar = $fileName;
         }
 
         // Actualizar otros campos del usuario

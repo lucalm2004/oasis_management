@@ -1244,7 +1244,7 @@ function listarPersonal(valor) {
             var json = JSON.parse(ajax.responseText);
             var tabla = '';
             json.forEach(function(item) {
-                var fotoPerfil = item.foto ? `../img/fotoPerfil/${item.foto}` : '../img/foto.png';
+                var fotoPerfil = item.foto ? `../img/profiles/${item.foto}` : '../img/profiles/foto.png';
 
                 tabla += `
                     <div class='row'>

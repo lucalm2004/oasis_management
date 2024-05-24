@@ -77,7 +77,7 @@
                 <h2 class="card-title mb-4">Perfil de Usuario</h2>
                 <div class="d-flex align-items-center mb-4 position-relative">
                     <img id="profileImage"
-                        src="{{ $user->foto ? asset('img/profiles/' . $user->foto) : asset('img/profiles/foto.png') }}"
+                        src="{{ $user->foto ? asset('img/profiles/' . $user->foto) : asset('/img/profiles/foto.png') }}"
                         class="rounded-circle mr-3" alt="Foto de Perfil"
                         style="width: 150px; height: 150px; cursor: pointer;">
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 45);
             $table->longText('descripcion');
-            $table->string('flyer', 45);
+            $table->string('flyer', 255);
             $table->dateTime('fecha_inicio');
             $table->dateTime('fecha_final');
             $table->string('dj', 45);
