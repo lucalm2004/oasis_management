@@ -14,5 +14,9 @@ class RegistroEntrada extends Model
     {
         return $this->belongsTo(Evento::class, 'id_evento');
     }
+    public function factura_user()
+    {
+        return $this->belongsTo(Carrito::class, 'id_user');
+    }
    
 }

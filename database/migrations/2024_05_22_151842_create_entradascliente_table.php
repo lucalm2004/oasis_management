@@ -18,9 +18,11 @@ return new class extends Migration
             $table->decimal('precio_total', 10, 2); // Precio total
             $table->date('fecha'); // Fecha
             $table->tinyInteger('tipo_entrada');// Relación con la tabla eventos
+            $table->unsignedBigInteger('id_user'); // Relación con la tabla eventos
 
             // Claves foráneas y restricciones
             $table->foreign('evento_id')->references('id')->on('eventos');
+            $table->foreign('id_user')->references('id')->on('users');
           
 
             // Timestamps (opcional)

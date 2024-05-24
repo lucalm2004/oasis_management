@@ -37,7 +37,11 @@ class User extends Authenticatable
     }
     public function CVuser(){
         return $this->belongsTo(CVUser::class, 'id_user');
-        }
+    }
+    public function factura_user()
+    {
+        return $this->hasMany(Carrito::class, 'id_user');
+    }
 
 
     /**

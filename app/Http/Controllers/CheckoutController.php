@@ -134,6 +134,8 @@ class CheckoutController extends Controller
     public function success(Request $request)
     {
         $codigo = mt_rand(1000000000, 9999999999);
+       
+        
         $fechaHora = now()->format('Y-m-d');
         $precioTotal = $request->query('precioTotal');
         $nombreEvento = $request->query('nombreEvento');
@@ -172,7 +174,7 @@ class CheckoutController extends Controller
         $evento = Evento::where("name", $nombreEvento)->where("id_discoteca", $discotecaID)->first();
         
         $fechaActual = now();
-
+        $userCompraID = Auth::user()->id;
         $RegistroEntrada = new RegistroEntrada();
         $RegistroEntrada->id = $codigo;
         $RegistroEntrada->evento_id = $evento->id;
@@ -180,6 +182,7 @@ class CheckoutController extends Controller
         $RegistroEntrada->precio_total = $precioTotal;
         $RegistroEntrada->fecha = $fechaActual;
         $RegistroEntrada->tipo_entrada = $tipoEntrada;
+        $RegistroEntrada->id_user = $userCompraID;
         $RegistroEntrada->save();
 
         $userDiscotecas = UserDiscoteca::where("id_discoteca", $discotecaID)->get();
