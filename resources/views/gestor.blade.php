@@ -249,7 +249,7 @@ function crearGrupoEvento(group_name, avatar) {
         processData: false,
         success: function(response) {
             if (response.status == 1) {
-                alert('Group created successfully!');
+                console.log('Group created successfully!');
                 // Redirect or do something else on success
             } else {
                 alert('Error: ' + response.message);

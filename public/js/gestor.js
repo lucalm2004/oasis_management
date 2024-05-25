@@ -464,7 +464,7 @@ function validarFormUpdateEvento(id) {
     }
 
     // Validar capacidad
-    if (capacidad === "" || isNaN(capacidad) || capacidad <= 0 || capacidad.length > 4) {
+    if (capacidad === "" || isNaN(capacidad) || capacidad < 0 || capacidad.length > 4) {
         capacidadError.innerText = 'Por favor introduce un valor numérico válido para la capacidad (máximo 4 cifras)';
         capacidadError.style.display = 'block';
     } else {
@@ -473,7 +473,7 @@ function validarFormUpdateEvento(id) {
     }
 
     // Validar capacidad VIP
-    if (capacidadVip === "" || isNaN(capacidadVip) || capacidadVip <= 0 || capacidadVip.length > 4) {
+    if (capacidadVip === "" || isNaN(capacidadVip) || capacidadVip < 0 || capacidadVip.length > 4) {
         capacidadVipError.innerText = 'Por favor introduce un valor numérico válido para la capacidad VIP (máximo 4 cifras)';
         capacidadVipError.style.display = 'block';
     } else {
@@ -521,6 +521,9 @@ function validarFormUpdateEvento(id) {
         // Validar que la diferencia sea menor o igual a 8 horas (28800000 milisegundos)
         if (diferenciaMilisegundos > 28800000) {
             finalError.innerText = 'La fecha de finalización es demasiado grande';
+            finalError.style.display = 'block';
+        } else if (diferenciaMilisegundos < 14400000) {
+            finalError.innerText = 'La fecha de fin es demasiado pequeña';
             finalError.style.display = 'block';
         } else {
             finalError.innerText = '';
@@ -839,6 +842,10 @@ function validarFechaFin() {
             errorFechaFin.innerText = 'La fecha de fin es demasiado grande';
             errorFechaFin.style.display = 'block';
             errorFechaFin.style.textAlign = 'center';
+        } else if (diferenciaMilisegundos < 14400000) {
+            errorFechaFin.innerText = 'La fecha de fin es demasiado pequeña';
+            errorFechaFin.style.display = 'block';
+            errorFechaFin.style.textAlign = 'center';
         } else {
             errorFechaFin.innerText = '';
             errorFechaFin.style.display = 'none';
@@ -876,7 +883,7 @@ function validarCapacidad() {
     var capacidad = document.getElementById('swal-playlist-capacidad').value;
     var errorCapacidad = document.getElementById('errorCapacidadCrear');
 
-    if (isNaN(capacidad) || capacidad <= 0 || capacidad.length > 4) {
+    if (isNaN(capacidad) || capacidad < 0 || capacidad.length > 4) {
         errorCapacidad.innerText = 'Por favor introduce un valor numérico válido para la capacidad (máximo 4 cifras)';
         errorCapacidad.style.display = 'block';
     } else {
@@ -889,7 +896,7 @@ function validarCapacidadVip() {
     var capacidadVip = document.getElementById('swal-playlist-capacidadvip').value;
     var errorCapacidadVip = document.getElementById('errorCapacidadVipCrear');
 
-    if (isNaN(capacidadVip) || capacidadVip <= 0 || capacidadVip.length > 4) {
+    if (isNaN(capacidadVip) || capacidadVip < 0 || capacidadVip.length > 4) {
         errorCapacidadVip.innerText = 'Por favor introduce un valor numérico válido para la capacidad VIP (máximo 4 cifras)';
         errorCapacidadVip.style.display = 'block';
     } else {

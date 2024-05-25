@@ -28,17 +28,17 @@
             width: 85%;
         }
 
-        .screen-1 .login {
+        /* .screen-1 .login {
             /* height: 40px!important; */
             width: 50% !important;
-        }
+        } */
 
         .gsi-material-button .gsi-material-button-contents {
             font-size: 12px !important;
         }
 
         .gsi-material-button {
-            height: 45px !important;
+            height: 45px;
         }
 
         #eye_show1 {
@@ -75,7 +75,7 @@
     <div class="screen-1">
         <h2>Oasis | Register</h2>
 
-        <img src="{{ asset('img/redondoLetrasNegras.png') }}" alt="" class="logo">
+        <img src="{{ asset('img/redondoLetrasNegras.png') }}" alt="" class="logo" style="cursor: pointer" id="volverParaatras">
         <form method="POST" action="{{ route('register') }}">
             @csrf
             <div class="email">
@@ -122,7 +122,7 @@
                 <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
 
             </div>
-            <div style="display: flex; gap:2%">
+            <div class="botonesAbajo" style="display: flex; gap:2%">
 
                 <button class="login">Sign in</button>
                 <button onclick="window.location.href='/google-auth/redirect'" class="gsi-material-button">
@@ -220,7 +220,7 @@
                             <div class="input-data">
                                 <input type="text" name="direccion" required>
                                 <div class="underline"></div>
-                                <label for="">Dirección</label>
+                                <label for="">DirecciÃ³n</label>
                             </div>
                             <div class="input-data">
                                 <div class="dropdown">
@@ -404,7 +404,7 @@
                 processData: false,
                 success: function(response) {
                     toastr.success('Solicitud Enviada!');
-                    // Aquí puedes redirigir al usuario a otra página si es necesario
+                    // AquÃ­ puedes redirigir al usuario a otra pÃ¡gina si es necesario
                 },
                 error: function(xhr) {
                     var errors = xhr.responseJSON.errors;
@@ -416,7 +416,7 @@
                     errorList += '</ul>';
                     toastr.error(errorList, 'Errores', {
                         positionClass: 'toast-top-right',
-                        timeOut: 5000 // Duración del mensaje en milisegundos (por ejemplo, 5000 = 5 segundos)
+                        timeOut: 5000 // DuraciÃ³n del mensaje en milisegundos (por ejemplo, 5000 = 5 segundos)
                     });
                 }
             });
@@ -438,7 +438,7 @@
                 processData: false,
                 success: function(response) {
                     toastr.success('Solicitud Enviada!');
-                    // Aquí puedes redirigir al usuario a otra página si es necesario
+                    // AquÃ­ puedes redirigir al usuario a otra pÃ¡gina si es necesario
                 },
                 error: function(xhr) {
                     var errors = xhr.responseJSON.errors;
@@ -450,7 +450,7 @@
                     errorList += '</ul>';
                     toastr.error(errorList, 'Errores', {
                         positionClass: 'toast-top-right',
-                        timeOut: 5000 // Duración del mensaje en milisegundos (por ejemplo, 5000 = 5 segundos)
+                        timeOut: 5000 // DuraciÃ³n del mensaje en milisegundos (por ejemplo, 5000 = 5 segundos)
                     });
                 }
             });
@@ -538,7 +538,7 @@
     var eye_show1 = document.getElementById('eye_show1');
     var password = document.getElementById('password');
 
-    // Manejador de evento para cambiar el tipo de contraseña
+    // Manejador de evento para cambiar el tipo de contraseÃ±a
     eye_show1.addEventListener('click', function() {
         if (password.type === 'password') {
             password.type = 'text';
@@ -551,7 +551,7 @@
     var eye_show2 = document.getElementById('eye_show2');
     var password2 = document.getElementById('password_confirmation');
 
-    // Manejador de evento para cambiar el tipo de contraseña
+    // Manejador de evento para cambiar el tipo de contraseÃ±a
     eye_show2.addEventListener('click', function() {
         if (password2.type === 'password') {
             password2.type = 'text';
@@ -559,6 +559,13 @@
             password2.type = 'password';
         }
     });
+    var imagen = document.getElementById('volverParaatras');
+
+
+        imagen.addEventListener('click', function() {
+
+            window.location.href = '/';
+    }); 
 
 
 </script>

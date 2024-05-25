@@ -223,7 +223,7 @@ class CheckoutController extends Controller
        
 
         // Construye el enlace que deseas incluir en el cÃ³digo QR
-        $enlace = url('/payment') . '?precioTotal=' . $precioTotal . '&nombreEvento=' . urlencode($nombreEvento) . '&totalEntradas=' . $totalEntradas . '&codigo=' . $codigo . '&dia=' . $fechaHora . '&discoteca=' . urlencode($discoteca);
+        $enlace = url('/verificacion') . '?precioTotal=' . $precioTotal . '&nombreEvento=' . urlencode($nombreEvento) . '&totalEntradas=' . $totalEntradas . '&codigo=' . $codigo . '&dia=' . $fechaHora . '&discoteca=' . urlencode($discoteca);
 
         $qr = QrCode::size(125)
             ->style('dot')

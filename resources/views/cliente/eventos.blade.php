@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Discotecas - Oasis Management</title>
+    <title>Oasis Management - Eventos</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -12,12 +12,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.6/leaflet.awesome-markers.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/eventos.css') }}">
+    <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('welcome') }}">
+            <a class="navbar-brand" href="{{ route('cliente.discoteca') }}">
                 <img src="/img/logonegro.png" class="logo mr-2" alt="Logo">
                 <span class="font-weight-bold text-uppercase">
                     Oasis <span class="orange-text">Management</span>
@@ -363,6 +364,43 @@
 
         function mostrarEntradas(eventoId) {
             window.location.href = `/cliente/entradas/${eventoId}`;
+        }
+
+        setInterval(function() {
+            comprobarGrupos(); //actualizar mostrarSolictud()
+
+
+
+
+        }, 1000);
+        function comprobarGrupos(){
+            var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            fetch('/comprobar-grupos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken
+                },
+                body: JSON.stringify({}) // Send an empty body if no additional data is needed
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Group does not exist');
+                }
+            })
+            .then(data => {
+                if (data.exists) {
+                    console.log('Group exists.');
+                    // Update your UI or perform any necessary actions here
+                }
+            })
+            .catch(error => {
+                console.log('Group does not exist.');
+            });
+        }
+
         }
     </script>
 

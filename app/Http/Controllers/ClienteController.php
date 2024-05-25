@@ -141,12 +141,15 @@ class ClienteController extends Controller
             $nombreEvento = $request->input('nombre');
             $eventos->where('name', 'like', '%' . $nombreEvento . '%');
         }
+        $currentDate = now();
 
         // Filtrar por día de inicio si se proporciona
         if ($request->has('diaInicio')) {
             $diaInicio = $request->input('diaInicio');
             $eventos->whereDate('fecha_inicio', $diaInicio);
         }
+        $eventos->where('fecha_final', '>', $currentDate);
+        $eventos->orderBy('fecha_inicio', 'asc');
 
         // Obtener los resultados
         $resultados = $eventos->get();
@@ -593,5 +596,9 @@ class ClienteController extends Controller
                 'message' => 'Hubo un problema al guardar la contraseña'
             ], 500);
         }
+    }
+
+    public function comprobarGrupos(Request $request){
+        
     }
 }

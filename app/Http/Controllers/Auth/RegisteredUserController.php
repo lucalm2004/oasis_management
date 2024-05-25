@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use App\Mail\ClienteRegisterMail;
+use Illuminate\Support\Facades\Mail;
 
 class RegisteredUserController extends Controller
 {
@@ -44,9 +46,12 @@ class RegisteredUserController extends Controller
         ]);
 
         event(new Registered($user));
+        $user_correo = User::findOrFail($user->id);
+        $email = $user_correo->email;
+        Mail::to($email)->send(new ClienteRegisterMail($user_correo));
 
         Auth::login($user);
-
+      
         return redirect(route('dashboard', absolute: false));
     }
 }

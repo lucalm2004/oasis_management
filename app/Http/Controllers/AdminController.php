@@ -33,7 +33,7 @@ use App\Models\ArtistaCancion;
 use App\Models\Discoteca;
 use App\Models\Cancion;
 use App\Models\Producto;
-
+use App\Models\RegistroEntrada;
 
 class AdminController extends Controller
 {
@@ -175,16 +175,7 @@ class AdminController extends Controller
                 }
 
             }
-            // Eliminar registros relacionados de la tabla BonificacionUser si existen
-            $BonificacionUsers = BonificacionUser::where('id_users', $id)->get();
-            foreach($BonificacionUsers as $BonificacionUser){
-                if($BonificacionUser){
-                    $BonificacionUser->delete();
-                }
-
-            }
             
-    
             // Eliminar registros relacionados de la tabla Carrito si existen
             $Carrito = Carrito::where('id_user', $id)->first();
             if($Carrito){
@@ -206,6 +197,25 @@ class AdminController extends Controller
                     $cvs->delete();
                 } 
             }
+         
+                // Eliminar mensajes del usuario
+                DB::table('ch_messages')->where('from_id', $id)->delete();
+
+                // Eliminar favoritos del usuario
+                DB::table('ch_favorites')->where('user_id', $id)->delete();
+
+                
+                DB::table('ch_channel_user')->where('user_id', $id)->delete();
+
+        
+
+ 
+             $RegistrosEntradas = RegistroEntrada::where("id_user", $id)->get();
+             foreach($RegistrosEntradas as $RegistrosEntrada){
+                 if($RegistrosEntrada){
+                     $RegistrosEntrada->delete();
+                 } 
+             }
 
             if ($request->input('rol') == 3) {
                 // Buscar un gestor diferente al usuario que se está actualizando en la misma discoteca
@@ -249,10 +259,22 @@ class AdminController extends Controller
                     $UsersdiscotecaNueva->save();
                 }
           
+            }else{
+               /*  dd("hola"); */
+                $UserDiscoteca = UserDiscoteca::where("id_users", $id)->first();
+                $UserDiscoteca->delete();
+
             }
            
         }else {
-            DB::table('users_discotecas')->where('id_users', $id)->delete();
+            /* dd("hola"); */
+           $UserDiscoteca = UserDiscoteca::where("id_users", $id)->first();
+           $UserDiscoteca->delete();
+            /* dd($UserDiscoteca); */
+            // Verificar si hay canales asociados al usuario y eliminarlos condicionalmente
+            // Verificar si hay canales asociados al usuario y establecer owner_id como null condicionalmente
+   
+            
           
             
         }
@@ -323,6 +345,32 @@ class AdminController extends Controller
                     $cvs->delete();
                 } 
             }
+            // Eliminar mensajes del usuario
+            DB::table('ch_messages')->where('from_id', $id)->delete();
+
+            // Eliminar favoritos del usuario
+            DB::table('ch_favorites')->where('user_id', $id)->delete();
+
+            
+            DB::table('ch_channel_user')->where('user_id', $id)->delete();
+
+             // Verificar si hay canales asociados al usuario y eliminarlos condicionalmente
+            $channels = DB::table('ch_channels')->where('owner_id', $id)->get();
+            if ($channels->isNotEmpty()) {
+                $channelIds = $channels->pluck('id');
+                DB::table('ch_channel_user')->whereIn('channel_id', $channelIds)->delete();
+                DB::table('ch_channels')->whereIn('id', $channelIds)->delete();
+            }
+
+            
+
+            $RegistrosEntradas = RegistroEntrada::where("id_user", $id)->get();
+            foreach($RegistrosEntradas as $RegistrosEntrada){
+                if($RegistrosEntrada){
+                    $RegistrosEntrada->delete();
+                } 
+            }
+
             $user_correo = User::findOrFail($id);
             $email = $user_correo->email;
             Mail::to($email)->send(new EliminarMail($user_correo));
@@ -580,6 +628,30 @@ class AdminController extends Controller
                 ->whereIn('users.id_rol', [3, 4]) // Suponiendo que el rol de camarero tiene id_rol = 4
                 ->select('users.*')
                 ->get();
+                $gestor = DB::table('users')
+                ->join('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
+                ->where('users_discotecas.id_discoteca', $id)
+                ->where('users.id_rol', 3) // Suponiendo que el rol de camarero tiene id_rol = 4
+                ->select('users.*')
+                ->first();
+                $gestorID = $gestor->id;
+                /* dd($gestor); */
+            
+ 
+                // Verificar si hay canales asociados al usuario y eliminarlos condicionalmente
+                $channels = DB::table('ch_channels')->where('owner_id', $gestorID)->get();
+                if ($channels->isNotEmpty()) {
+                 $channelIds = $channels->pluck('id');
+                 DB::table('ch_channel_user')->whereIn('channel_id', $channelIds)->delete();
+                 
+                    // Eliminar mensajes del usuario
+                 DB::table('ch_messages')->where('to_channel_id', $channelIds)->delete();
+
+                   DB::table('ch_channels')->whereIn('id', $channelIds)->delete();
+                }
+                
+ 
+    
     
             // Enviar correo a todos los camareros
             foreach ($camareros as $camarero) {
@@ -634,7 +706,8 @@ class AdminController extends Controller
             if ($discoteca) {
                 $discoteca->delete();
             }
-    
+
+            
             // Confirmar la transacción
             DB::commit();
     
@@ -951,9 +1024,36 @@ class AdminController extends Controller
 
             // Obtener las discotecas asociadas a la ciudad
             $discotecas = discotecas::where('id_ciudad', $id)->get();
-
+     
+           
             // Eliminar las discotecas asociadas a la ciudad
             foreach ($discotecas as $discoteca) {
+            /*     dd($discoteca); */
+                $gestor = DB::table('users')
+                ->join('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
+                ->where('users_discotecas.id_discoteca', $discoteca->id)
+                ->where('users.id_rol', 3) // Suponiendo que el rol de camarero tiene id_rol = 4
+                ->select('users.*')
+                ->first();
+              /*   dd($gestor); */
+       
+              if ($gestor) {
+                // Si $gestor no es null
+                $gestorID = $gestor->id;
+                /* dd($gestor); */
+                            
+                // Verificar si hay canales asociados al usuario y eliminarlos condicionalmente
+                $channels = DB::table('ch_channels')->where('owner_id', $gestorID)->get();
+                if ($channels->isNotEmpty()) {
+                    $channelIds = $channels->pluck('id');
+                    DB::table('ch_channel_user')->whereIn('channel_id', $channelIds)->delete();
+                    
+                    // Eliminar mensajes del usuario
+                    DB::table('ch_messages')->where('to_channel_id', $channelIds)->delete();
+                    
+                    DB::table('ch_channels')->whereIn('id', $channelIds)->delete();
+                }
+            }
                 $eventos = eventos::where('id_discoteca', $discoteca->id)->get();
                 foreach($eventos as $evento){
                     $playlist = PlaylistCancion::where('id_evento', $evento->id);
@@ -981,6 +1081,8 @@ class AdminController extends Controller
                    
 
                 }
+                
+                
                 
 
                 // Eliminar registros de users_discoteca asociados a la discoteca
@@ -1134,6 +1236,29 @@ class AdminController extends Controller
                 ->whereIn('users.id_rol', [3, 4]) // Suponiendo que el rol de camarero tiene id_rol = 4
                 ->select('users.*')
                 ->get();
+
+            $gestor = DB::table('users')
+                ->join('users_discotecas', 'users.id', '=', 'users_discotecas.id_users')
+                ->where('users_discotecas.id_discoteca', $evento->id_discoteca)
+                ->where('users.id_rol', 3) // Suponiendo que el rol de camarero tiene id_rol = 4
+                ->select('users.*')
+                ->first();
+                $gestorID = $gestor->id;
+                /* dd($gestor); */
+            
+ 
+                // Verificar si hay canales asociados al usuario y eliminarlos condicionalmente
+                $channels = DB::table('ch_channels')->where('owner_id', $gestorID)->where('name', $evento->name)->first();
+                if ($channels->isNotEmpty()) {
+                 $channelIds = $channels->pluck('id');
+                 DB::table('ch_channel_user')->whereIn('channel_id', $channelIds)->delete();
+                 
+                    // Eliminar mensajes del usuario
+                 DB::table('ch_messages')->where('to_channel_id', $channelIds)->delete();
+
+                   DB::table('ch_channels')->whereIn('id', $channelIds)->delete();
+                }
+                
     
             // Enviar correo a todos los camareros
             foreach ($camareros as $camarero) {
@@ -1464,7 +1589,7 @@ class AdminController extends Controller
         // Verificar si se proporcionó un filtro de búsqueda
         if ($request->input('busqueda')) {
             $data = $request->input('busqueda');
-            $query->where('registro_entradas.id', 'like', "%$data%");
+            $query->where('registro_entradas.id', 'like', "%$data%")->orWhere('users.email', 'like', "%$data%");
         }
         
         // Verificar si se proporcionó un filtro de discoteca

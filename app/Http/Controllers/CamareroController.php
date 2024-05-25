@@ -71,7 +71,7 @@ class CamareroController extends Controller
                 ->join('users_discotecas', 'discotecas.id', '=', 'users_discotecas.id_discoteca')
                 ->join('users', 'users_discotecas.id_users', '=', 'users.id')
                 ->where('users.id', $id)
-                ->where('eventos.fecha_final', '>' , $currentDate);
+                ->where('eventos.fecha_final', '>' , $currentDate)->orderBy('eventos.fecha_inicio', 'asc');
         }
     
         // Obtener los resultados de la consulta

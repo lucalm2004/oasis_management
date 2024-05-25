@@ -546,3 +546,184 @@ form .form-row .textarea {
 .dropdown .dropdown-menu li:active {
     background-color: #e2e2e2
 }
+
+@media screen and (max-width: 1200px) {
+    label {
+        font-size: 45px;
+    }
+    .footer span {
+        font-size: 35px;
+    }
+    h2 {
+        font-size: 60px;
+    }
+    input {
+        font-size: 5.5vw
+    }
+    .screen-1 {
+        background: #f1f7fe;
+        padding: 1%;
+        display: flex;
+        flex-direction: column;
+        border-radius: 30px;
+        box-shadow: 0 0 2em #e6e9f9;
+        gap: 2em;
+        align-items: center;
+        width: 90%;
+        height: 90%;
+        padding-bottom: 70%;
+        margin: 0 auto;
+        align-items: center;
+        max-width: 100%;
+        position: fixed;
+    }
+    .screen-1 .logo {
+        width: 60%;
+        margin-bottom: 20%;
+        border: 1px solid #ff5500;
+        border-radius: 60%;
+    }
+    .screen-1 .login {
+        margin-top: 4.5%;
+        width: 80%;
+        padding-left: 100px;
+        padding: 1em;
+        background: #ff5500;
+        color: white;
+        border-radius: 20px;
+        margin-right: 5%;
+        font-weight: 600;
+        margin-bottom: 5.5%;
+        font-size: 245%;
+        width: 40%!important;
+    }
+    .botonesAbajo {
+        margin-left: 40px;
+    }
+    .screen-1 .registrar {
+        /* margin-top: 4.5%; */
+        width: 60%;
+        /* Reducido el ancho del botón */
+        padding: 0.5em;
+        /* Reducido el relleno del botón */
+        background: #ff5500;
+        color: white;
+        border-radius: 20px;
+        font-weight: 600;
+        margin-bottom: 5.5%;
+        font-size: 5vw;
+        /* Reducido el tamaño de la fuente */
+        height: 5%;
+        /* Reducida la altura del botón */
+    }
+    .screen-1 .email {
+        width: 100%;
+        flex-direction: column;
+        gap: 0.5em;
+        border-radius: 10px;
+        color: #4d4d4d;
+        /* margin-top: -2em; */
+        justify-content: center;
+        display: flex;
+        /* margin-left: 5%; */
+        height: 20%;
+    }
+    ion-icon {
+        font-size: 60px;
+    }
+    .screen-1 .password {
+        width: 100%;
+        flex-direction: column;
+        gap: 0.5em;
+        border-radius: 10px;
+        color: #4d4d4d;
+        /* margin-top: -2em; */
+        justify-content: center;
+        display: flex;
+        /* margin-left: 5%; */
+        margin-bottom: 50%;
+        height: 20%;
+    }
+    .botones_login {
+        width: 85%;
+        height: 45%;
+        font-weight: 600;
+    }
+    .screen-1 .gsi-material-button-state {
+        width: 100%;
+        padding: 1.5em;
+        font-weight: 600;
+        font-size: 10vw;
+        height: 45%;
+    }
+    i {
+        font-size: 3.5rem;
+        /* Ajustado el tamaño del icono */
+    }
+    .icono_correo {
+        font-size: 3.5rem;
+        /* Ajustado el tamaño del icono */
+    }
+    .icono_pwd {
+        font-size: 3.5rem;
+        /* Ajustado el tamaño del icono */
+    }
+    #eye_show1 {
+        font-size: 3.5rem;
+        /* Ajustado el tamaño del icono */
+    }
+    span {
+        font-size: 50px;
+    }
+    .screen-1 .footer {
+        font-size: 1.4em;
+    }
+    .gsi-material-button {
+        height: 130px!important;
+        background-color: #131314;
+        border: 1px solid #747775;
+        border-radius: 20px;
+        color: #e3e3e3;
+        cursor: pointer;
+        font-family: 'Roboto', arial, sans-serif;
+        font-size: 5vw;
+        height: 5%;
+        /* Altura ajustada para ser igual al otro botón */
+        letter-spacing: 0.25px;
+        outline: none;
+        overflow: hidden;
+        padding: 0.5em;
+        position: relative;
+        font-weight: 600;
+        text-align: center;
+        transition: background-color .218s, border-color .218s, box-shadow .218s;
+        vertical-align: middle;
+        white-space: nowrap;
+        width: 60%;
+        min-width: min-content;
+        border-color: #8e918f;
+        margin-bottom: 5.5%;
+    }
+    .gsi-material-button .gsi-material-button-icon {
+        margin-right: 8px;
+        margin-top: -10px;
+        min-width: 16px;
+        width: 10%;
+        transform: translateY(-10%);
+    }
+    .gsi-material-button .gsi-material-button-contents {
+        color: rgb(255, 253, 253);
+        font-family: 'Roboto', arial, sans-serif;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        vertical-align: top;
+        font-size: 3.5vw;
+        /* Tamaño de la fuente ajustado para ser igual al otro botón */
+    }
+    body::before {
+        content: none;
+        background-image: none;
+        /* Esto asegura que la imagen de fondo también se quite */
+    }
+}

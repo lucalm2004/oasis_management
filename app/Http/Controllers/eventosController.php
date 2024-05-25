@@ -36,9 +36,9 @@ class EventosController extends Controller
 
                 if($valor !== 'undefined'){
                     // dd($valor);
-                    $eventos = Evento::where('id_discoteca', $idDiscoteca)->where('name', 'like', "%$valor%")->get();
+                    $eventos = Evento::where('id_discoteca', $idDiscoteca)->where('name', 'like', "%$valor%")->orderBy('fecha_inicio', 'asc')->get();
                 }else{
-                    $eventos = Evento::where('id_discoteca', $idDiscoteca)->get();
+                    $eventos = Evento::where('id_discoteca', $idDiscoteca)->orderBy('fecha_inicio', 'asc')->get();
 
                 }
 
@@ -69,6 +69,22 @@ class EventosController extends Controller
                 ->where('users.id_rol', 4) // Suponiendo que el rol de camarero tiene id_rol = 4
                 ->select('users.*')
                 ->get();
+
+            
+            $gestorID = Auth::user()->id;
+        /*     dd($gestorID); */
+            // Verificar si hay canales asociados al usuario y eliminarlos condicionalmente
+            $channels = DB::table('ch_channels')->where('owner_id', $gestorID)->where('name', $evento->name)->first();
+           
+                $channelIds = $channels->id;
+              /*   dd($channels); */
+                 DB::table('ch_channel_user')->where('channel_id', $channelIds)->delete();
+                 
+                    // Eliminar mensajes del usuario
+                 DB::table('ch_messages')->where('to_channel_id', $channelIds)->delete();
+
+                   DB::table('ch_channels')->where('id', $channelIds)->delete();
+              
     
             // Enviar correo a todos los camareros
             foreach ($camareros as $camarero) {
@@ -154,6 +170,8 @@ class EventosController extends Controller
         ->select('users.*')
         ->get();
 
+        $gestorID = Auth::user()->id;
+
         foreach ($camareros as $camarero) {
             Mail::to($camarero->email)->send(new EventoCamareroMail($camarero, $discoteca_correo, $evento));
         }
@@ -180,7 +198,7 @@ class EventosController extends Controller
             $capacidad = $_POST['capacidad'];
             $capacidadVip = $_POST['capacidadVip'];
             $id = $_POST['id'];
-
+            $eventoPrevio = Evento::findOrFail($id);
             $evento = Evento::findOrFail($id);
            
             if($request->file('flyer')){
@@ -232,6 +250,18 @@ class EventosController extends Controller
     
              // Obtener el evento actualizado
         $evento = Evento::findOrFail($id);
+
+        $channel = DB::table('ch_channels')->where('owner_id', $idUsuario)->where('name', $eventoPrevio->name)->first();
+
+        if ($channel) {
+            // Use the query builder's update method
+            DB::table('ch_channels')
+                ->where('id', $channel->id)
+                ->update(['name' => $nameEdit]);
+        } else {
+            // Handle the case where no channel is found
+            return response()->json(['message' => 'Channel not found'], 404);
+        }
           // Formatear la fecha de inicio
           $evento->fecha_inicio = date('d/m/Y H:i', strtotime($evento->fecha_inicio));
           $evento->fecha_final = date('d/m/Y H:i', strtotime($evento->fecha_final));

@@ -26,14 +26,18 @@ use App\Http\Middleware\ClientOnly;
 use App\Http\Middleware\GestorOnly;
 use App\Http\Middleware\CamareroOnly;
 use App\Http\Controllers\ScreenshotController;
-
+use App\Http\Controllers\EntradaController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 Route::post('/registerGestor', [registerGestorController::class, 'index'])->name('registerGestor');
 Route::post('/registerCamarero', [registerCamareroController::class, 'index'])->name('registerCamarero');
+Route::get('/verificacion', function () {
+    return view('verificar');
+});
 
+Route::post('/revisarentrada', [EntradaController::class, 'revisarEntrada']);
 
 Route::post('/capture-screenshot', [ScreenshotController::class, 'captureScreenshot']);
 Route::get('/capture-screenshot', [ScreenshotController::class, 'captureScreenshot']);
@@ -50,7 +54,7 @@ Route::get('/google-auth/callback-url', function () {
         'email' => $user_google->email,
         'google_id' => $user_google->id,
         'habilitado'=> "1",
-        'habilitado'=> "1",
+        'verificado'=> "1",
     ]);
     Auth::login($user);
     return redirect('/dashboard');
@@ -289,6 +293,7 @@ Route::middleware(ClientOnly::class)->group(function () {
     Route::get('/obtener-discotecas-favoritas', [DiscotecaController::class, 'obtenerDiscotecasFavoritas'])->name('obtener.discotecas.favoritas');
     Route::get('/perfil', [perfilController::class, 'edit'])->name('perfil');
     Route::put('/profile/update', [perfilController::class, 'update'])->name('profile.update');
+    Route::post('/comprobar-grupos', [ClienteController::class, 'comprobarGrupos']);
    
     Route::get('/bonificacion', [perfilController::class, 'bonificacion'])->name('bonificacion');
 

@@ -24,7 +24,8 @@
           <a href="{{ route('admin.crudciudades') }}">Ciudades | </a>
           <a href="{{ route('admin.crudeventos') }}">Eventos |</a>
           <a href="{{ route('admin.crudcanciones') }}">Canciones |</a>
-          <a href="{{ route('admin.crudartistas') }}">Artistas</a>
+          <a href="{{ route('admin.crudartistas') }}">Artistas |</a>
+          <a href="{{ route('admin.crudentradas') }}">Registro Entradas</a>
           <i class="fa-regular fa-bell" style="color: #F5763B; cursor: pointer;" id="campana"></i>
           <a id="notificacion">0</a>
           <form method="POST" action="{{ route('logout') }}" id="logout" style="float: right; padding-left: 300px">

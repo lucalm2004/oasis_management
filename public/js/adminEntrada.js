@@ -34,10 +34,10 @@ function listarRegistro(valor, discoteca) {
             var tabla = '';
             json.forEach(function(item) {
                 str += "<tr>";
-                str += "<td>" + item.id + "</td>";
+                str += "<td><a target='_blank' href='../tickets/" + item.entrada + "' style='color: black; text-decoration: none;'>" + item.id + "</a></td>";
                 str += "<td>" + item.nombre_discoteca + " - " + item.evento_name + "</td>";
                 str += "<td>" + item.total_entradas + "</td>";
-                str += "<td>" + item.precio_total + "</td>";
+                str += "<td>" + item.precio_total + "€</td>";
                 str += "<td>" + item.fecha + "</td>";
                 if (item.tipo_entrada === 0) {
                     str += "<td>Normal</td>";
@@ -83,4 +83,221 @@ function obtenerDiscotecasMod() {
         })
         .catch(error => console.error('Error al obtener los marcadores:', error));
 
+}
+
+
+//ver solicitudes 
+//actualizar lista solicitudes casa segundo
+setInterval(function() {
+    mostrarSolicitud(); //actualizar mostrarSolictud()
+
+
+
+
+}, 1000);
+
+// MOSTRAR SOLICITUD 
+mostrarSolicitud('');
+//funcion para mostarr las solcitudes
+// Función para mostrar las solicitudes
+function mostrarSolicitud() {
+    var solicitudes = document.getElementById('solicitudes'); // Obtener elemento con el id "solicitudes"
+    var tabla = document.getElementById('tablaSolicitudes'); // Obtener elemento con el id "tablaSolicitudes"
+    var h3Solicitud = document.getElementById('h3solicitud'); // Obtener elemento con el id "h3solicitud"
+
+    // Creamos ajax
+    var ajax = new XMLHttpRequest();
+    // Definimos el método y la URL
+    ajax.open('GET', 'admin/crudusuarios/solcitudes', true);
+    ajax.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4) {
+            if (ajax.status == 200) {
+                try {
+                    var json = JSON.parse(ajax.responseText);
+                    if (json.error) {
+                        // Manejar el error, por ejemplo, mostrando un mensaje al usuario
+                        console.error('Error en la respuesta del servidor:', json.error);
+                    } else {
+                        // Resto del código para manejar la respuesta exitosa
+                        if (json.solicitudes.length === 0) {
+                            document.getElementById("notificacion").innerHTML = "0";
+                            solicitudes.innerHTML = "<p>Actualmente no hay solicitudes.</p>";
+                            // Oculta la tabla y el encabezado si no hay solicitudes
+                            tabla.style.display = 'none';
+                            h3Solicitud.style.display = 'none';
+                        } else {
+                            var tablaHTML = "";
+                            json.solicitudes.forEach(function(item) {
+                                // Construye una fila de la tabla con los datos del elemento actual
+                                var str = "<tr><td>" + item.id + "</td>";
+                                str += "<td>" + item.email + "</td>";
+                                str += "<td>" + item.DNI + "</td>";
+                                str += "<td>" + item.nombre_discoteca + "</td>";
+                                str += "<td><button type='button' id='aceptar' onclick='aceptarSolicitud(" + item.id + ")'><i class='fa-solid fa-circle-check' style='color: #45d408;'></i></button></td>";
+                                str += "<td><button type='button' id='rechazar' onclick='rechazarSolicitud(" + item.id + ")'><i class='fa-solid fa-circle-xmark' style='color: #ff0000;'></i></button></td>";
+                                str += "</tr>";
+                                tablaHTML += str;
+                            });
+                            solicitudes.innerHTML = tablaHTML;
+                            console.log(json.count)
+                            console.log("entra")
+                            if (json.count === undefined || json.count === null) {
+                                document.getElementById("notificacion").innerHTML = "0";
+                                mostrarSolicitud();
+                            } else {
+                                document.getElementById("notificacion").innerHTML = json.count;
+                            }
+
+
+                            // Muestra la tabla y el encabezado si hay solicitudes
+                            /*      tabla.style.display = 'block';
+                                 h3Solicitud.style.display = 'block'; */
+                        }
+                    }
+                } catch (e) {
+                    console.error('Error al parsear JSON:', e);
+                }
+            } else {
+                console.error('Error en la solicitud HTTP:', ajax.status);
+            }
+        }
+    };
+    ajax.send(); // Envía la solicitud HTTP al servidor 
+}
+
+var notificacion = document.getElementById("campana");
+notificacion.addEventListener("click", function() {
+    var solicitudes = document.getElementById('tablaSolicitudes');
+    /*    var viewPlaylist = document.getElementById('playlist');
+     */
+    if (solicitudes.style.display === 'none') {
+        /*  viewPlaylist.style.display = 'none'; */
+        solicitudes.style.display = 'block';
+
+
+    } else {
+        /*  viewPlaylist.style.display = 'block'; */
+        solicitudes.style.display = 'none';
+
+
+    }
+});
+
+/* aceptar la solicitud del gestor */
+function aceptarSolicitud(id) {
+
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    Swal.fire({
+        title: "Aceptar gestor",
+        text: `¿Seguro que desea aceptar el gestor?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#0052CC",
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`admin/crudusuarios/solcitudesaceptar/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+
+                        Swal.fire({
+                            title: "Ha ocurrido un error",
+                            text: "Error al aceptar el usuario",
+                            icon: "error"
+                        });
+                        return;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+
+                    if (data.success == true) {
+                        Swal.fire({
+                            title: "Aceptado",
+                            text: "Gestor aceptado correctamente",
+                            icon: "success"
+                        }).then(() => {
+
+                            mostrarSolicitud();
+
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error al eliminar el usuario",
+                            text: data.message,
+                            icon: "error"
+                        });
+                    }
+                })
+                .catch(error => console.error('Error al aceptar el gestor:', error));
+        }
+    });
+}
+
+/* rechazar la solicitud del gestor */
+function rechazarSolicitud(id) {
+
+    var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    Swal.fire({
+        title: "Rechazar gestor",
+        text: `¿Seguro que desea rechazar el gestor?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#0052CC",
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`admin/crudusuarios/solcitudrechazar/${id}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+
+                        Swal.fire({
+                            title: "Ha ocurrido un error",
+                            text: "Error al aceptar el usuario",
+                            icon: "error"
+                        });
+                        return;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+
+                    if (data.success == true) {
+                        Swal.fire({
+                            title: "Rechazado",
+                            text: "Gestor rechazado correctamente",
+                            icon: "success"
+                        }).then(() => {
+
+                            mostrarSolicitud();
+
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error al rechazar el usuario",
+                            text: data.message,
+                            icon: "error"
+                        });
+                    }
+                })
+                .catch(error => console.error('Error al aceptar el gestor:', error));
+        }
+    });
 }

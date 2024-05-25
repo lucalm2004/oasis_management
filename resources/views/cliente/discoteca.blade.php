@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Discotecas - Oasis Management</title>
+    <title>Oasis Management - Discotecas</title>
     <!-- Otros elementos del head -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Scripts de Bootstrap y jQuery -->
@@ -269,7 +269,7 @@
         }
 
         // Inicialización del mapa
-        var map = L.map('mapid').setView([40.505, -100.09], 4);
+        var map = L.map('mapid').setView([36.721261, -4.4212655], 4);
 
         // Capa base del mapa (OpenStreetMap)
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -283,13 +283,12 @@
             var popupContent = `
             <div style="max-width: 300px; padding: 15px;">
                 <img src="{{ asset('img/discotecas/' . $discoteca->image) }}" alt="{{ $discoteca->name }}" style="width: 100%; border-radius: 5px; margin-bottom: 10px;">
+                <p style="color: grey; margin-bottom: 10px;">{{ $discoteca->name }}</p>
                 <p style="color: grey; margin-bottom: 10px;">{{ $discoteca->description }}</p>
                 <hr>
                 <p style="margin-top: 10px;">{{ $discoteca->direccion }}</p>
                 <div style="display: flex; justify-content: space-around; margin-top: 10px;">
-                    <button type="button" class="btn btn-primary rounded-circle custom-btn" onclick="darFavorito({{ $discoteca->id }})">
-                        <i class="fas fa-star"></i>
-                    </button>
+                   
                     <button type="button" class="btn btn-info rounded-circle custom-btn" onclick="comoLlegar('{{ $discoteca->lat }}', '{{ $discoteca->long }}')">
                     <i class="fas fa-directions"></i>
                     </button>
