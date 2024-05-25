@@ -207,6 +207,7 @@ class AdminController extends Controller
                 
                 DB::table('ch_channel_user')->where('user_id', $id)->delete();
 
+
         
 
  
@@ -350,9 +351,10 @@ class AdminController extends Controller
 
             // Eliminar favoritos del usuario
             DB::table('ch_favorites')->where('user_id', $id)->delete();
-
+          
             
             DB::table('ch_channel_user')->where('user_id', $id)->delete();
+          
 
              // Verificar si hay canales asociados al usuario y eliminarlos condicionalmente
             $channels = DB::table('ch_channels')->where('owner_id', $id)->get();
@@ -646,6 +648,7 @@ class AdminController extends Controller
                  
                     // Eliminar mensajes del usuario
                  DB::table('ch_messages')->where('to_channel_id', $channelIds)->delete();
+                 DB::table('ch_favorites')->where('favorite_id', $channelIds)->delete();
 
                    DB::table('ch_channels')->whereIn('id', $channelIds)->delete();
                 }
@@ -1050,6 +1053,7 @@ class AdminController extends Controller
                     
                     // Eliminar mensajes del usuario
                     DB::table('ch_messages')->where('to_channel_id', $channelIds)->delete();
+                    DB::table('ch_favorites')->where('favorite_id', $channelIds)->delete();
                     
                     DB::table('ch_channels')->whereIn('id', $channelIds)->delete();
                 }
@@ -1255,6 +1259,7 @@ class AdminController extends Controller
                  
                     // Eliminar mensajes del usuario
                  DB::table('ch_messages')->where('to_channel_id', $channelIds)->delete();
+                 DB::table('ch_favorites')->where('favorite_id', $channelIds)->delete();
 
                    DB::table('ch_channels')->whereIn('id', $channelIds)->delete();
                 }

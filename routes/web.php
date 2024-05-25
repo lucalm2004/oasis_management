@@ -293,7 +293,7 @@ Route::middleware(ClientOnly::class)->group(function () {
     Route::get('/obtener-discotecas-favoritas', [DiscotecaController::class, 'obtenerDiscotecasFavoritas'])->name('obtener.discotecas.favoritas');
     Route::get('/perfil', [perfilController::class, 'edit'])->name('perfil');
     Route::put('/profile/update', [perfilController::class, 'update'])->name('profile.update');
-    Route::post('/comprobar-grupos', [ClienteController::class, 'comprobarGrupos']);
+    Route::delete('/comprobar-grupos', [ClienteController::class, 'comprobarGrupos']);
    
     Route::get('/bonificacion', [perfilController::class, 'bonificacion'])->name('bonificacion');
 

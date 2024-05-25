@@ -82,6 +82,7 @@ class EventosController extends Controller
                  
                     // Eliminar mensajes del usuario
                  DB::table('ch_messages')->where('to_channel_id', $channelIds)->delete();
+                 DB::table('ch_favorites')->where('favorite_id', $channelIds)->delete();
 
                    DB::table('ch_channels')->where('id', $channelIds)->delete();
               

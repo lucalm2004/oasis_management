@@ -366,42 +366,9 @@
             window.location.href = `/cliente/entradas/${eventoId}`;
         }
 
-        setInterval(function() {
-            comprobarGrupos(); //actualizar mostrarSolictud()
+        
 
-
-
-
-        }, 1000);
-        function comprobarGrupos(){
-            var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            fetch('/comprobar-grupos', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': csrfToken
-                },
-                body: JSON.stringify({}) // Send an empty body if no additional data is needed
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error('Group does not exist');
-                }
-            })
-            .then(data => {
-                if (data.exists) {
-                    console.log('Group exists.');
-                    // Update your UI or perform any necessary actions here
-                }
-            })
-            .catch(error => {
-                console.log('Group does not exist.');
-            });
-        }
-
-        }
+        
     </script>
 
 </body>

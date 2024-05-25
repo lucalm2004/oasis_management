@@ -22,6 +22,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\Http\Controllers\Carbon;
+use App\Models\RegistroEntrada;
 use Illuminate\Support\Facades\Validator;
 
 class ClienteController extends Controller
@@ -84,6 +85,16 @@ class ClienteController extends Controller
     public function mostrarTiposEntrada($id)
     {
         $tiposEntrada = TipoEntrada::all();
+        $evento = Evento::all();
+        $registroEntradas = DB::table('registro_entradas')
+        ->where('evento_id', $id)
+        ->where('tipo_entrada', 0)
+        ->get();
+       
+        $registroEntradasVIP = DB::table('registro_entradas')
+        ->where('evento_id', $id)
+        ->where('tipo_entrada', 1)
+        ->get();
 
         return response()->json($tiposEntrada);
     }
@@ -599,6 +610,37 @@ class ClienteController extends Controller
     }
 
     public function comprobarGrupos(Request $request){
-        
+
+        $currentDate = now();
+        $eventos = Evento::where("fecha_final", "<", $currentDate)->get();
+     /*    dd($eventos); */
+        $userID = Auth::user()->id;
+        foreach($eventos as $evento){
+            $eventoName = $evento->name;
+            /* $channels_user =  DB::table('ch_channels')->where('name', $eventoName)->get(); */
+            $channels_user = DB::table('ch_channels')
+                ->join('ch_channel_user', 'ch_channel_user.channel_id', '=', 'ch_channels.id')
+                ->join('ch_messages', 'ch_messages.to_channel_id', '=', 'ch_channels.id')
+                ->join('ch_favorites', 'ch_favorites.favorite_id', '=', 'ch_channels.id')
+                ->where('ch_channels.name', $eventoName)
+                ->where('ch_channel_user.user_id', $userID)
+                ->select('ch_channels.id')->get();
+        /*     dd($channels_user); */
+            if ($channels_user) {
+                foreach($channels_user as $channels_users){
+                    $channelIds = $channels_users->id;
+                    
+                    // Elimina primero los registros en ch_channel_user que hacen referencia al canal
+                    DB::table('ch_channel_user')->where('channel_id', $channelIds)->delete();
+                    
+                    // Luego, elimina otros registros relacionados con el canal
+                    DB::table('ch_messages')->where('to_channel_id', $channelIds)->delete();
+                    DB::table('ch_favorites')->where('favorite_id', $channelIds)->where('user_id', $userID)->delete();
+                    
+                    // Finalmente, elimina el canal
+                    DB::table('ch_channels')->where('id', $channelIds)->where('name', $eventoName)->delete();
+                }
+            }
+        }
     }
 }
