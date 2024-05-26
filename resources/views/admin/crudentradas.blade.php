@@ -8,16 +8,16 @@
   <!-- Se ha de añadir el token para poder usarlo en el formdata de AJAX -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-  <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/entradas.css') }}" rel="stylesheet">
   <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
   <script src="https://kit.fontawesome.com/e2c3124098.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <header class="header">
     <div class="logo">
-      <a href="{{ route('/') }}"><img src="{{ asset('img/logo_oasis.png') }}" alt="Imagen de logo"></a>
+        <a href="{{ asset('principal') }}"><img src="{{ asset('img/logo_oasis.png') }}" alt="Imagen de logo"></a>
       <div class="nav-container">
-        <ul class="nav-list" style="padding-top: 15px;">
+        <ul class="nav-list" style="padding-top: 15px; margin-left: 22%;">
           <a href="{{ route('admin.crudusuarios') }}">Usuarios | </a>
           <a href="{{ route('admin.cruddiscotecas') }}">Discotecas | </a>
           <a href="{{ route('admin.crudbonificaciones') }}">Bonificaciones | </a>
@@ -65,8 +65,10 @@
     <!-- Formulario de búsqueda -->
     <form action="" method="post" id="frmbusqueda">
       <div class="form-group">
+        <div class="buscar">
         <i id="icono_buscar" class="fa-solid fa-magnifying-glass" style="color: #F5763B;"></i>
-        <input type="text" name="buscar" id="buscar" placeholder="Buscar..." class="form-control">
+        <input type="text" name="buscar" id="buscar" placeholder="Buscar..." class="form-control" style="margin-left: 1%;">
+        </div>
       </div>
       {{-- <label for="discoteca">Discoteca</label> --}}
       <i class="fa-solid fa-compact-disc" style="color: #F5763B;" id="icono_discoteca"></i>
@@ -74,6 +76,8 @@
         <option value=""></option>
       </select>
     </form>
+    <br>
+    <br>
     
     <!-- Tabla con los datos del CRUD a mostrar -->
     <table>

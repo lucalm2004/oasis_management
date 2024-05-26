@@ -220,7 +220,7 @@
                             <div class="input-data">
                                 <input type="text" name="direccion" required>
                                 <div class="underline"></div>
-                                <label for="">DirecciÃ³n</label>
+                                <label for="">Dirección</label>
                             </div>
                             <div class="input-data">
                                 <div class="dropdown">
@@ -390,10 +390,20 @@
     // }
     $(document).ready(function() {
     $('#registerForm').submit(function(event) {
+        
             event.preventDefault();
 
             // Crear un nuevo objeto FormData
             var formData = new FormData($(this)[0]);
+
+            // Obtener el valor del campo DNI/NIE
+            var dni = $('input[name="dni_nie"]').val();
+
+            // Validar el DNI/NIE
+            if (!validarDNI(dni)) {
+                return; // Detener la ejecuciÃ³n si el DNI/NIE no es vÃ¡lido
+            }
+
 
             $.ajax({
                 url: $(this).attr('action'),
@@ -425,6 +435,13 @@
     $(document).ready(function() {
     $('#registerForm2').submit(function(event) {
             event.preventDefault();
+            // Obtener el valor del campo DNI/NIE
+            var dni = $('input[name="dni_nie"]').val();
+
+            // Validar el DNI/NIE
+            if (!validarDNI(dni)) {
+                return; // Detener la ejecuciÃ³n si el DNI/NIE no es vÃ¡lido
+            }
 
             // Crear un nuevo objeto FormData
             var formData = new FormData($(this)[0]);
@@ -566,6 +583,44 @@
 
             window.location.href = '/';
     }); 
+
+    function validarDNI(dni) {
+        var letras = 'TRWAGMYFPDXBNJZSQVHLCKE';
+        var numero;
+        var letra;
+        var letraCorrecta;
+
+        dni = dni.toUpperCase();
+
+        // Validar formato del DNI
+        var dniRegex = /^[XYZ]?\d{5,8}[A-Z]$/;
+        if (!dniRegex.test(dni)) {
+            toastr.error('Formato de DNI/NIE inválido', 'Error', {
+                positionClass: 'toast-top-right',
+                timeOut: 5000
+            });
+            return false;
+        }
+
+        // Extraer nÃºmero y letra
+        numero = dni.substr(0, dni.length - 1);
+        letra = dni.substr(dni.length - 1, 1);
+
+        // Calcular letra correcta
+        numero = numero.replace('X', 0).replace('Y', 1).replace('Z', 2);
+        letraCorrecta = letras[numero % 23];
+
+        // Comparar letra introducida con letra correcta
+        if (letra !== letraCorrecta) {
+            toastr.error('DNI/NIE no válido', 'Error', {
+                positionClass: 'toast-top-right',
+                timeOut: 5000
+            });
+            return false;
+        }
+
+        return true;
+    }
 
 
 </script>

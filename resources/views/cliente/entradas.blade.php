@@ -1,19 +1,24 @@
-<!-- entradas/disponibles.blade.php -->
-
 <!DOCTYPE html>
 <html>
 
 <head>
-    <title>Oasis Managament - Entradas Disponibles</title>
+    <title>Entradas Disponibles</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="{{ asset('css/entradas.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
         integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.6/leaflet.awesome-markers.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 
     <style>
         /* Estilos generales */
@@ -25,24 +30,365 @@
             color: white;
         }
 
-        header {
-            background-color: #666;
+        /* Estilos para el navbar */
+        .navbar {
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+        }
+
+        .navbar-toggler {
+            border: none;
+        }
+
+        .navbar-nav .nav-link {
+            padding: 0.5rem 1rem;
+        }
+
+        .dropdown-menu {
+            min-width: 10rem;
+        }
+
+        .dropdown-item {
+            padding: 0.5rem 1rem;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        .orange-text {
+            color: orange;
+        }
+
+        .logo {
+            height: 40px;
+        }
+
+        /* Estilos para los títulos */
+        h1,
+        h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: orange;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Estilos para el botón de cerrar sesión */
+        button,
+        #logout-btn {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        #logout-btn {
+            margin-bottom: 20px;
+        }
+
+        /* Estilos para el contenido */
+        .content-container {
+            max-width: 800px;
+            margin: 0 auto;
             padding: 20px;
-            color: white;
+            text-align: center;
         }
 
-        .header-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        /* Estilos para los iconos del carrito */
+        .cart-icon-container {
+            position: relative;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
         }
 
-        .header-content {
+        .cart-icon-button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Estilos para las secciones */
+        .section {
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        /* Estilos para la lista de tipos de entrada */
+        .tipos-entrada-container,
+        .tipo-entrada-container {
+            list-style: none;
+            padding: 20px;
+        }
+
+        .tipos-entrada-container li,
+        .tipo-entrada-container {
+            background-color: #1f1f2e;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+        }
+
+        /* Estilos para el campo de contador */
+        .tipo-entrada-container input[type="number"] {
+            width: 50px;
+            padding: 5px;
+            text-align: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Estilos para la descripción y el precio */
+        .descripcion-precio {
+            flex-grow: 1;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        /* Estilos para la descripción y precio del tipo de entrada */
+        .tipo-entrada-container span {
+            flex-grow: 1;
+            margin-left: 10px;
+            font-size: 16px;
+        }
+
+        /* Estilos para los botones de incremento/decremento */
+        .contador-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+
+        /* Estilos para el contador */
+        .contador {
+            font-size: 16px;
+            color: #fff;
+            padding: 8px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            width: 40px;
+            text-align: center;
+        }
+
+        /* Estilos para el botón "Agregar al Carrito" */
+        .add-to-cart-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-to-cart-button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Estilos específicos para la página */
+        #detallesEvento,
+        #tiposEntradaContainer,
+        #carritoContainer {
+            background-color: #161624;
+            color: #f8f8f8;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            flex-basis: calc(33.33% - 20px);
+            box-sizing: border-box;
+            text-align: left;
+        }
+
+        #tiposEntradaContainer {
+            list-style-type: none;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 5px;
+        }
+
+        .boton-container {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Estilos para el modal de la playlist */
+        .swal2-container {
+            font-family: 'Rubik', sans-serif;
+        }
+
+        .swal2-popup {
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            background-color: #1f1f2e;
+        }
+
+        .swal2-title {
+            color: #FFA500;
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .swal2-content {
+            color: #fff;
+            font-size: 18px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .swal2-actions {
+            display: flex;
+            justify-content: center;
+        }
+
+        .swal2-button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .swal2-button:hover {
+            background-color: #FFA500;
+            color: #fff;
+        }
+
+        .swal2-close {
+            color: #FFA500;
+        }
+
+        /* Clase para ocultar el carrito */
+        .hidden {
+            position: fixed;
+            top: 0;
+            right: -1000%;
+            transition: transform 0.5s ease, right 0.5s ease;
+            background-color: #fff;
+            padding: 20px;
+            z-index: 1000;
+            overflow-y: auto;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin-right: 100px;
+            transform: translateX(100%);
+        }
+
+        .show-cart {
+            right: 0;
+            transition: transform 0.5s ease, left 0.5s ease transform: translateX(0);
+        }
+
+        /* Media queries para hacer la interfaz responsive */
+        @media screen and (max-width: 991px) {
+            .navbar-collapse {
+                background-color: #161624;
+                box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+                padding: 1rem;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                overflow-y: auto;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                z-index: 999;
+            }
+
+            .navbar-collapse.show {
+                transform: translateX(0);
+            }
+
+            .navbar-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .navbar-nav .nav-link {
+                padding: 1rem;
+                color: #FFFFFF;
+                text-align: center;
+            }
+
+            .navbar-toggler {
+                display: block;
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                z-index: 1000;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .content-container {
+                padding: 10px;
+            }
+
+            #detallesEvento,
+            #tiposEntradaContainer {
+                margin-bottom: 10px;
+            }
+        }
+
+        /* Estilos específicos para el menú responsive */
+        #responsiveMenuContainer {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            max-width: 1200px;
+            z-index: 1000;
+            background-color: #FFFFFF;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        @media screen and (max-width: 991px) {
+            .navbar-collapse {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: #FFFFFF;
+                box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+                z-index: 999;
+            }
+
+            .navbar-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .navbar-nav .nav-link {
+                padding: 1rem;
+                color: #000000;
+                text-align: center;
+            }
+
+            .navbar-toggler {
+                display: block;
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+                z-index: 1001;
+            }
         }
 
         /* Estilos para el botón de cerrar sesión */
@@ -104,7 +450,7 @@
             flex-basis: calc(33.33% - 20px);
             box-sizing: border-box;
             /* max-height: 500px;
-            overflow-y: auto; */
+    overflow-y: auto; */
         }
 
         #tiposEntradaContainer {
@@ -314,10 +660,49 @@
         }
 
         .bonificaciones {
-            position: fixed;
-            top: 20%;
-            left: 1%;
+            background-color: #10101A;
+            /* Color de fondo */
+            border: 1px solid #2E2E42;
+            /* Borde */
+            border-radius: 8px;
+            /* Bordes redondeados */
+            padding: 20px;
+            /* Espaciado interno */
+            margin-top: 20px;
+            /* Margen superior */
         }
+
+        .bonificaciones h2 {
+            margin-top: 0;
+            /* Elimina el margen superior del título */
+            font-size: 1.5em;
+            /* Tamaño de fuente del título */
+            color: #ffa600;
+            /* Color del texto */
+            text-align: center;
+            /* Alineación del texto */
+        }
+
+        .bonificaciones div {
+            margin-bottom: 10px;
+            /* Espacio entre cada bonificación */
+            padding: 15px;
+            /* Espaciado interno */
+            background-color: #1E1E2B;
+            /* Color de fondo de cada bonificación */
+            border: 1px solid #2E2E42;
+            /* Borde */
+            border-radius: 5px;
+            /* Bordes redondeados */
+        }
+
+        .bonificaciones p {
+            margin: 0;
+            /* Elimina el margen del mensaje de no bonificaciones */
+            color: #FFFFFF;
+            /* Color del texto */
+        }
+
 
         #checkout {
             margin-top: 5%;
@@ -343,8 +728,80 @@
             opacity: 0.8;
         }
 
+        /* Estilos para el contenedor de tipos de entrada */
+        .tipos-entrada-container {
+            list-style-type: none;
+            /* Quita los estilos de viñeta de la lista */
+            padding: 0;
+            /* Elimina el relleno predeterminado de la lista */
+            margin: 0;
+            /* Elimina el margen predeterminado de la lista */
+        }
+
+        /* Estilos para cada tipo de entrada */
+        .tipo-entrada-container {
+            margin-bottom: 10px;
+            /* Espacio entre cada tipo de entrada */
+            border: 1px solid #ccc;
+            /* Borde del contenedor */
+            padding: 10px;
+            /* Espacio interno del contenedor */
+            border-radius: 5px;
+            /* Bordes redondeados */
+            background-color: #313b46;
+            /* Color de fondo */
+        }
+
+        .tipo-entrada-container span {
+            font-weight: bold;
+            /* Texto en negrita */
+        }
+
+        /* Estilos para los botones de incremento y decremento */
+        .boton {
+            display: inline-block;
+            background-color: orange;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .boton:hover {
+            background-color: darkorange;
+        }
+
+        .boton-menos {
+            margin-right: 5px;
+            /* Ajusta el margen derecho para que esté más cerca del número */
+        }
+
+        .boton-mas {
+            margin-left: 5px;
+            /* Ajusta el margen izquierdo para que esté más cerca del número */
+        }
+
+        .tipo-entrada-container input[type="number"] {
+            width: 50px;
+            /* Ancho del campo de entrada de número */
+            margin-right: 10px;
+            /* Espacio a la derecha del campo de entrada */
+        }
+
+        /* Estilos cuando se pasa el ratón sobre un tipo de entrada */
+        .tipo-entrada-container:hover {
+            background-color: #ff910a;
+            /* Cambia el color de fondo al pasar el ratón */
+        }
+
+
         /* Media queries para hacer la interfaz responsive */
         @media screen and (max-width: 768px) {
+
+            /* Estilos para pantalla con ancho máximo de 768px */
             .header-container {
                 flex-direction: column;
                 align-items: flex-start;
@@ -363,11 +820,6 @@
                 right: -250px;
             }
 
-            #cart-icon {
-                position: absolute;
-                right: 10px;
-                top: 10px;
-            }
 
             #detallesEvento,
             #tiposEntradaContainer {
@@ -390,64 +842,150 @@
                 /* Cambiar el ancho a medida que el ancho de la pantalla sea igual o menor a 1329px */
             }
         }
+
+        /* Media queries para hacer la interfaz responsive */
+        @media screen and (max-width: 768px) {
+
+            /* Estilos para pantalla con ancho máximo de 768px */
+            .content-container {
+                padding: 10px;
+            }
+
+            /* Ajustes para el contenedor de bonificaciones */
+            .bonificaciones {
+                padding: 15px;
+            }
+        }
+
+        @media screen and (max-width: 576px) {
+
+            /* Estilos para pantalla con ancho máximo de 576px */
+            .bonificaciones h2 {
+                font-size: 1.2em;
+            }
+        }
+
+        .fixed-cart {
+            position: fixed;
+            top: 130px;
+            /* Ajusta esta posición según tus necesidades */
+            right: 10px;
+        }
+
+        .carrito-container {
+            max-height: 400px;
+            /* Ajusta esta altura máxima según tus necesidades */
+            overflow-y: auto;
+            /* Habilitar el desplazamiento vertical cuando el contenido excede la altura máxima */
+        }
     </style>
 
 </head>
 
 <body>
-    <header>
-        <div class="header-container">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container">
+            <a class="navbar-brand" href="{{ URL::previous() }}">
+                <img src="/img/logonegro.png" class="logo mr-2" alt="Logo">
+                <span class="font-weight-bold text-uppercase">
+                    Oasis <span class="orange-text">Management</span>
+                </span>
+            </a>
 
-            <!-- Contenido del header -->
-            <div class="header-content">
-                <!-- Botón de volver -->
-                <a href="{{ route('cliente.eventos', $evento->id_discoteca) }}"> <i class="fas fa-arrow-left"></i>
-                    Volver
-                    a los eventos</a>
-                <h1>Entradas Disponibles</h1>
-                <input type="hidden" id="discoteca" name="discoteca" value="{{ $ndiscoteca }}">
-                <!-- Botón de cerrar sesión -->
-                <form class="logout-form" action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" id="logout-btn">Cerrar Sesión <i class="fas fa-sign-out-alt"></i></button>
-                </form>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <!-- Botón de perfil -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i> Mi Perfil
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            @auth
+                                <a class="dropdown-item" href="{{ route('perfil') }}">Ver Perfil</a>
+                                <!-- Enlace para cerrar sesión -->
+                                <form id="logoutForm" action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                                </form>
+                            @else
+                                <a class="dropdown-item" href="{{ route('login') }}">Iniciar Sesión</a>
+                                <a class="dropdown-item" href="{{ route('register') }}">Registrarse</a>
+                            @endauth
+                        </div>
+                    </li>
+                    <!-- Fin del botón de perfil -->
+                    <!-- Enlace de contacto con emoticono -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('contacto') }}">
+                            <i class="fas fa-envelope"></i> Contacto
+                        </a>
+                    </li>
+
+                    <!-- Otros elementos del navbar -->
+                    @if (Route::has('login'))
+                        @auth
+                        @else
+                            <li class="nav-item">
+                                <a href="/google-auth/redirect" class="nav-link"><i class="fab fa-google"></i> Login
+                                    Google</a>
+                            </li>
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a href="{{ route('register') }}" class="nav-link"><i class="fas fa-user-plus"></i>
+                                        Registrarse</a>
+                                </li>
+                            @endif
+                        @endauth
+                    @endif
+                </ul>
             </div>
         </div>
-    </header>
+    </nav>
 
     <div class="content-container">
-        <div style="position: fixed; right: 20px; cursor: pointer;">
-            <button id="cart-icon"><i class="fas fa-shopping-cart fa-3x"></i></button>
+        <div class="fixed-cart">
+            <div style="margin-right: 20px; cursor: pointer;">
+                <button id="cart-icon"><i class="fas fa-shopping-cart fa-3x"></i></button>
+            </div>
         </div>
+
 
 
         <div id="carritoContainer" style="position: fixed; top: 25%; right: -100px; margin-right: 1.3%;" class="hidden">
             <!-- Aquí se mostrarán los productos en el carrito -->
         </div>
 
-
-
         <!-- Detalles del evento -->
         <h2>Detalles del Evento</h2>
         <div id="detallesEvento">
             <!-- Aquí se cargarán los detalles del evento -->
         </div>
+        <div class="puntos-section">
+            <a href="{{route('cliente.bonificacion')}}" class="text-decoration-none">
+                <div id="bonificaciones-container" class="bonificaciones">
+                    <!-- Aquí se mostrarán las bonificaciones -->
+                </div>
+            </a>
+        </div>
 
+
+        <br>
         <!-- Lista de Tipos de Entrada -->
         <h2>Tipos de Entrada Disponibles</h2>
-        <ul id="tiposEntradaContainer">
+        <ul id="tiposEntradaContainer" class="tipos-entrada-container">
             <!-- Aquí se cargarán los tipos de entrada -->
         </ul>
 
         <!-- Botón para enviar las entradas seleccionadas -->
         <button onclick="enviarEntradasACarrito()"><i class="fas fa-shopping-cart"></i></button>
 
-        <div id="bonificaciones-container" class="bonificaciones">
-            <!-- Aquí se mostrarán las bonificaciones -->
-        </div>
-
-
     </div>
+
 
     <br>
     <br>
@@ -614,44 +1152,55 @@
             tiposEntradaContainer.innerHTML = '';
 
             if (tiposEntrada.length > 0) {
-                // Crear un array para almacenar los inputs
-                var inputElements = [];
-
                 tiposEntrada.forEach(function(tipoEntrada) {
-
-                 
-                    // Crear un contenedor para el tipo de entrada
                     var tipoEntradaDiv = document.createElement('div');
-                    tipoEntradaDiv.classList.add(
-                    'tipo-entrada-container'); // Agregar una clase para los estilos CSS
+                    tipoEntradaDiv.classList.add('tipo-entrada-container');
 
-                    // Crear un elemento de contador (input de tipo number)
+                    var contadorWrapper = document.createElement('div');
+                    contadorWrapper.classList.add('contador-wrapper');
+
+                    var botonMenos = document.createElement('button');
+                    botonMenos.innerHTML = '<i class="fas fa-minus"></i>';
+                    botonMenos.classList.add('boton');
+                    botonMenos.classList.add('boton-menos');
+                    botonMenos.addEventListener('click', function() {
+                        if (parseInt(contadorElement.value) > 0) {
+                            contadorElement.value = parseInt(contadorElement.value) - 1;
+                        }
+                    });
+                    contadorWrapper.appendChild(botonMenos);
+
                     var contadorElement = document.createElement('input');
                     contadorElement.type = 'number';
-                    contadorElement.value = 0; // Inicializar el contador en 0
+                    contadorElement.value = 0;
                     contadorElement.min = 0;
-                    contadorElement.id = 'contadorTipo' + tipoEntrada.id; // Asignar un ID único para el contador
-                    tipoEntradaDiv.appendChild(contadorElement);
+                    contadorElement.id = 'contadorTipo' + tipoEntrada.id;
+                    contadorWrapper.appendChild(contadorElement);
 
-                    // Agregar el input al array de inputs
-                    inputElements.push(contadorElement);
+                    var botonMas = document.createElement('button');
+                    botonMas.innerHTML = '<i class="fas fa-plus"></i>';
+                    botonMas.classList.add('boton');
+                    botonMas.classList.add('boton-mas');
+                    botonMas.addEventListener('click', function() {
+                        contadorElement.value = parseInt(contadorElement.value) + 1;
+                    });
+                    contadorWrapper.appendChild(botonMas);
 
-                    // Mostrar la descripción y el precio del tipo de entrada
+                    tipoEntradaDiv.appendChild(contadorWrapper);
+
                     var descripcionPrecioElement = document.createElement('span');
                     descripcionPrecioElement.textContent = ' - ' + tipoEntrada.descripcion + ' - ' + tipoEntrada
                         .precio;
                     tipoEntradaDiv.appendChild(descripcionPrecioElement);
 
-                    // Agregar un campo oculto para el ID del producto asociado al tipo de entrada
                     var idProductoInput = document.createElement('input');
                     idProductoInput.type = 'hidden';
-                    idProductoInput.name = 'productos[' + tipoEntrada.id +
-                    ']'; // Utiliza el ID del tipo de entrada como clave
+                    idProductoInput.name = 'productos[' + tipoEntrada.id + ']';
                     idProductoInput.value = tipoEntrada.id_producto;
                     tipoEntradaDiv.appendChild(idProductoInput);
 
-                    // Agregar el contenedor del tipo de entrada al contenedor principal
                     tiposEntradaContainer.appendChild(tipoEntradaDiv);
+
                 });
 
                 // Añadir evento de cambio a cada input
@@ -718,80 +1267,104 @@
             contadores.forEach(function(contador) {
                 var tipoEntradaId = contador.id.replace('contadorTipo', '');
                 var cantidadSeleccionada = parseInt(contador.value);
+
                 if (cantidadSeleccionada > 0) {
                     for (var i = 0; i < cantidadSeleccionada; i++) {
+                        var tipoEntradaInput = document.createElement('input');
+                        tipoEntradaInput.type = 'hidden';
+                        tipoEntradaInput.name = 'tipoEntrada[]';
+                        
+                        // Asignar el valor correcto a tipoEntrada en función de tipoEntradaId
+                        var tipoEntrada = (tipoEntradaId === '1' || tipoEntradaId === '2') ? 0 : 1;
+                        tipoEntradaInput.value = tipoEntrada;
+                        console.log(tipoEntradaInput);
+                        form.appendChild(tipoEntradaInput);
+
                         var inputTipoEntrada = document.createElement('input');
                         inputTipoEntrada.type = 'hidden';
-                        inputTipoEntrada.name =
-                            'entradas[]'; // Utiliza un array para enviar múltiples entradas del mismo tipo
+                        inputTipoEntrada.name = 'entradas[]'; // Utiliza un array para enviar múltiples entradas del mismo tipo
                         inputTipoEntrada.value = tipoEntradaId;
                         form.appendChild(inputTipoEntrada);
                     }
                 }
             });
 
-            // Enviar el formulario mediante AJAX
+            // Crear y enviar la solicitud AJAX
             var xhr = new XMLHttpRequest();
-
-            // Manejar la respuesta de la solicitud AJAX
-            // Manejar la respuesta de la solicitud AJAX
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4) {
-                    if (xhr.status === 200) {
-                        // Parsear la respuesta JSON
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4) {
                         var response = JSON.parse(xhr.responseText);
+                        if (xhr.status === 200) {
+                            // Verificar si la inserción en el carrito fue exitosa
+                            if (response.success === true) {
+                                // Mostrar un SweetAlert con el mensaje de éxito
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: '¡Éxito!',
+                                    text: 'Entradas insertadas en el carrito con éxito',
+                                    confirmButtonText: 'Aceptar'
+                                }).then((result) => {
+                                    // Redirigir a la vista de carrito si el usuario hace clic en "Aceptar"
+                                    if (result.isConfirmed) {
+                                        // Resetear contadores
+                                        if (contador1 || contador2) {
+                                            contador1.value = 0;
+                                            contador2.value = 0;
+                                        }
 
-                        // Verificar si la inserción en el carrito fue exitosa
-                        if (response.success === true) {
-                            // Función para establecer el valor de los contadores a cero
+                                        if (contador3) {
+                                            contador3.value = 0;
+                                        }
 
-                            // Mostrar un SweetAlert con el mensaje de éxito
-                            Swal.fire({
-                                icon: 'success',
-                                title: '¡Éxito!',
-                                text: 'Entradas insertadas en el carrito con éxito',
-                                confirmButtonText: 'Aceptar'
-                            }).then((result) => {
-                                // Redirigir a la vista de carrito si el usuario hace clic en "Aceptar"
-                                if (result.isConfirmed) {
-                                    // window.location.href = '/cliente/carrito';
-                                    if (contador1 || contador2) {
-                                        contador1.value = 0;
-                                        contador2.value = 0;
-                                        
+                                        // Llamar a la función cargarCarrito
+                                        cargarCarrito();
                                     }
-                                  
-                                    if (contador3) {
-                                        contador3.value = 0;
-                                        
-                                    }
-                                   
-
-                                    // Llamar a la función cargarCarrito
-                                    cargarCarrito();
-                                }
-                            });
+                                });
+                            } else {
+                                // Mostrar un SweetAlert con el mensaje de error
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.error || 'Hubo un error al insertar las entradas en el carrito',
+                                    confirmButtonText: 'Aceptar'
+                                });
+                            }
                         } else {
-                            // Si hay un error, mostrar un mensaje de error al usuario
-                            console.error('Error al insertar las entradas en el carrito');
+                            // Mostrar un SweetAlert con el mensaje de error del servidor
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: response.error || 'Hubo un error al procesar la solicitud',
+                                confirmButtonText: 'Aceptar'
+                            });
                         }
                     }
-                }
-            };
+                };
+
+                // Manejar errores de la solicitud AJAX
+                xhr.onerror = function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Hubo un error de red al realizar la solicitud',
+                        confirmButtonText: 'Aceptar'
+                    });
+                };
+
+                // Abrir la conexión y enviar la solicitud AJAX
+                xhr.open('POST', form.action, true);
+                xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
+                xhr.send(new FormData(form));
+            }
 
 
-            // Abrir la conexión y enviar la solicitud AJAX
-            xhr.open('POST', form.action, true);
-            xhr.setRequestHeader('X-CSRF-TOKEN', '{{ csrf_token() }}');
-            xhr.send(new FormData(form));
-        }
-
-
-
-        function mostrarCarrito(carrito) {
+            function mostrarCarrito(carrito) {
             var carritoContainer = document.getElementById('carritoContainer');
+            carritoContainer.classList.add('carrito-container');
             var precioTotal = 0; // Inicializar el precio total
             // var nombreCancion = "";
+
+
 
             carritoContainer.innerHTML = ''; // Limpiar el contenido previo del carrito
 
@@ -887,13 +1460,15 @@
 
                 // Crear un div con fondo blanco y tamaño fijo
                 var infoDiv = document.createElement('div');
+
                 infoDiv.style.backgroundColor = 'white';
                 infoDiv.style.padding = '10px'; // Ajusta el relleno según sea necesario
                 infoDiv.style.width = '300px'; // Establecer el ancho fijo 
                 infoDiv.style.border = '1px solid #ccc'; // Añadir borde
                 infoDiv.style.borderRadius = '5px'; // Añadir bordes redondeados
                 infoDiv.style.boxShadow = '0 2px 4px rgba(0,0,0,0.1)'; // Añadir sombra
-                infoDiv.style.marginTop = '20px'; // Añadir margen superior
+                infoDiv.style.margin =
+                '20px auto'; // Centrar horizontalmente con margen automático y añadir margen superior
                 infoDiv.style.display = 'flex'; // Cambiar la visualización a flexbox
                 infoDiv.style.alignItems = 'center'; // Centrar verticalmente los elementos hijos
                 infoDiv.style.justifyContent = 'space-between'; // Espaciar uniformemente los elementos hijos

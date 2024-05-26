@@ -1,5 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Rubik', sans-serif;
+    text-decoration: none;
+    list-style: none;
+    scroll-behavior: smooth;
+    scroll-padding-top: 2rem;
+}
+
 body {
-    background: linear-gradient(135deg, #000000, #000000);
+    background-color: #10101A;
     background-size: 200% 200%;
     animation: gradientAnimation 10s infinite alternate;
     font-family: 'Roboto Slab', serif;
@@ -12,10 +24,6 @@ body {
     100% {
         background-position: 100% 50%;
     }
-}
-
-.container {
-    max-width: 1200px;
 }
 
 
@@ -84,47 +92,223 @@ body {
 /* Estilos para las tarjetas de eventos */
 
 .card {
-    background-color: #ffa200;
-    border: 1px solid #dee2e6;
-    border-radius: 10px;
-    transition: transform 0.3s, box-shadow 0.3s;
-    /* Transición suave en la transformación y la sombra */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #262635;
+    border: 1px solid #e0e0e0;
+    /* Borde sutil */
+    border-radius: 12px;
+    /* Bordes ligeramente más redondeados */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Transición suave */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    /* Sombra más suave */
     margin-bottom: 20px;
+    /* Espacio inferior */
+    width: 100%;
+    /* Ancho para que quepan tres tarjetas por fila */
+    /* 20px de espacio entre tarjetas */
 }
 
 .card:hover {
     transform: translateY(-5px);
-    /* Levantar la tarjeta al pasar el cursor */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    /* Añadir sombra más pronunciada al pasar el cursor */
+    /* Efecto de elevación al pasar el cursor */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+    /* Sombra más pronunciada al pasar el cursor */
 }
 
 .card-img-top {
     height: 250px;
-    object-fit: cover;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    /* Altura fija para todas las imágenes */
+    object-fit: contain;
+    /* Ajuste de imagen para contener toda la imagen */
+    border-radius: 12px;
+    /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Sombra suave */
+    width: 100%;
+    /* Ajustar el ancho al 100% para garantizar el ajuste */
+}
+
+
+/* Centrar verticalmente la imagen */
+
+.card-img-top {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* Estilo para el título */
+
+.swal2-title {
+    color: #333;
+    /* Color del texto */
+    font-size: 24px;
+    /* Tamaño del texto */
+    font-weight: bold;
+    /* Peso de la fuente */
+}
+
+
+/* Estilo para el texto */
+
+.swal2-content {
+    color: #666;
+    /* Color del texto */
+    font-size: 18px;
+    /* Tamaño del texto */
+}
+
+
+/* Estilo para el botón de cerrar */
+
+.swal2-close {
+    color: #999;
+    /* Color del botón */
+}
+
+
+/* Estilo para el botón de confirmación */
+
+.swal2-confirm {
+    background-color: #007bff;
+    /* Color de fondo */
+    color: #fff;
+    /* Color del texto */
+    border: none;
+    /* Borde */
+    border-radius: 5px;
+    /* Borde redondeado */
+    padding: 10px 20px;
+    /* Espaciado interno */
+    font-size: 16px;
+    /* Tamaño del texto */
+    cursor: pointer;
+    /* Cursor al pasar */
+}
+
+
+/* Estilo para el temporizador de progreso */
+
+.swal2-timer-progress-bar {
+    background-color: #007bff;
+    /* Color de la barra de progreso */
 }
 
 .card-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #212529;
+    font-size: 1.25rem;
+    /* Tamaño de fuente ajustado */
+    font-weight: 600;
+    /* Negrita */
+    color: #ffffff;
+    /* Color de texto */
+    margin: 15px 15px 0;
+    /* Espaciado */
 }
 
 .card-text {
     font-size: 1rem;
-    color: #6c757d;
+    /* Tamaño de fuente */
+    color: #999999;
+    /* Color de texto secundario */
+    margin: 10px 15px 15px;
+    /* Espaciado */
+}
+
+
+/* Añadir suavidad visual */
+
+.card-body {
+    padding: 15px;
+    /* Padding interno */
 }
 
 .btn-primary {
-    background-color: #f58220;
+    background-color: #ffbb00;
+    /* Color de fondo del botón */
     border: none;
+    /* Sin borde */
+    border-radius: 5px;
+    /* Bordes redondeados */
+    padding: 10px 20px;
+    /* Padding */
+    font-size: 0.9rem;
+    /* Tamaño de fuente */
+    color: #000000;
+    /* Color de texto */
+    transition: background-color 0.3s ease;
+    /* Transición suave */
 }
 
 .btn-primary:hover {
-    background-color: #e0620d;
+    background-color: #ad7c0b;
+    /* Color de fondo al pasar el cursor */
+}
+
+
+/* Mejorar la estética del texto */
+
+.card-title,
+.card-text {
+    line-height: 1.5;
+    /* Altura de línea */
+}
+
+.btn-start {
+    background-color: #ffae0b;
+    color: #3a1c71;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-start:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #3a1c71;
+}
+
+.jumbotron {
+    background: linear-gradient(to right, #ffffff, #f6fa15, #ffc404dc);
+    color: #fff;
+    padding: 80px 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    font-weight: bold;
+}
+
+.jumbotron p {
+    color: #000000;
+}
+
+.rating .star {
+    font-size: 1.2em;
+    /* Tamaño de estrella */
+    color: #ffc107;
+    /* Color de estrella */
+    cursor: pointer;
+    /* Cursor en puntero */
+}
+
+
+/* Responsividad */
+
+@media (max-width: 768px) {
+    .card-img-top {
+        height: 150px;
+        /* Altura ajustada para pantallas más pequeñas */
+    }
+    .card-title {
+        font-size: 1.1rem;
+        /* Tamaño de fuente ajustado */
+    }
+    .card-text {
+        font-size: 0.9rem;
+        /* Tamaño de fuente ajustado */
+    }
 }
 
 
@@ -227,6 +411,8 @@ body {
     font-size: 1.2rem;
     font-weight: bold;
     margin-right: 10px;
+    color: #ddd;
+    margin-left: 10px;
 }
 
 .no-reviews {
@@ -286,7 +472,7 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
-    background-color: #f9f9f9;
+    background-color: #ffe3be;
     /* Color de fondo */
     border: 1px solid #ddd;
     /* Borde suave */
@@ -348,6 +534,22 @@ body {
 .stars-container {
     display: flex;
     align-items: center;
+}
+
+.user-card:hover {
+    transform: scale(1.02);
+}
+
+.stars-container .fa-star,
+.stars-container .fa-star-half-alt,
+.stars-container .fa-star-empty {
+    font-size: 1.2em;
+    color: #ffc107;
+}
+
+.user-info {
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
 

@@ -1256,13 +1256,13 @@ function listarPersonal(valor) {
     var ajax = new XMLHttpRequest();
     ajax.open('POST', '/personal', true);
     ajax.onload = function() {
-        if (ajax.status == 200) {
-            var json = JSON.parse(ajax.responseText);
-            var tabla = '';
-            json.forEach(function(item) {
-                var fotoPerfil = item.foto ? `../img/profiles/${item.foto}` : '../img/profiles/foto.png';
+            if (ajax.status == 200) {
+                var json = JSON.parse(ajax.responseText);
+                var tabla = '';
+                json.forEach(function(item) {
+                            var fotoPerfil = item.foto ? `../img/profiles/${item.foto}` : '../img/profiles/foto.png';
 
-                tabla += `
+                            tabla += `
                     <div class='row'>
                         <i id='eliminar' onclick='eliminarPersonal(${item.id})' class='fa-solid fa-trash' style='color: #f5763b; float:right; margin-bottom: 5%'></i>   
                         
@@ -1270,6 +1270,7 @@ function listarPersonal(valor) {
                             <img style='height: 30%; width: 30%; border-radius: 50%;' src='${fotoPerfil}' alt=''>
                             <h3>${item.name}</h3>
                             <h5>${item.email}</h5>
+                            <h5>${item.DNI ? `<h5>${item.DNI}</h5>` : ''}
                         </div>
                     </div>`;
             });

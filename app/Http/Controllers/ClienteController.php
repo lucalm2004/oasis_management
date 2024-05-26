@@ -291,17 +291,52 @@ class ClienteController extends Controller
     {
         // Obtener las entradas seleccionadas del formulario
         $entradasSeleccionadas = $request->input('entradas');
+        
         $idUsuario = $request->user()->id;
         $idEvento = $request->input('id_evento');
+        $tipoEntrada = $request->input('tipoEntrada');
+        /* dd($tipoEntrada); */
+        
+        $evento = Evento::findOrFail($idEvento);
+        $capacidad = $evento->capacidad;
+        $capacidadVip = $evento->capacidadVip;
+        // Contar el número de entradas seleccionadas
+        $numeroEntradasSeleccionadas = count($entradasSeleccionadas);
+        foreach ($tipoEntrada as $tipo) {
+            if ($tipo == 0) {
+                $entradasCompradas = RegistroEntrada::where("evento_id", $idEvento)->where("tipo_entrada", 0)->count();
+                $entradasTotales = $entradasCompradas + $numeroEntradasSeleccionadas;
+                if ($entradasTotales > $capacidad) {
+                    return response()->json(['error' => 'Has seleccionado demasiadas entradas del tipo normal'], 422);
+                }
+            } else {
+                $entradasCompradas = RegistroEntrada::where("evento_id", $idEvento)->where("tipo_entrada", 1)->count();
+                $entradasTotales = $entradasCompradas + $numeroEntradasSeleccionadas;
+                if ($entradasTotales > $capacidadVip) {
+                    return response()->json(['error' => 'Has seleccionado demasiadas entradas deel tipo VIP'], 422);
+                }
+            }
+        }
+   
+
+        // Verificar si hay entradas VIP en el carrito del usuario para este evento
+        $entradasVipEnCarrito = Carrito::where('id_user', $idUsuario)
+            ->where('id_evento', $idEvento)
+            ->where('id_producto', 3) // Suponiendo que el ID 3 es para entradas VIP
+            ->exists();
+
+        // Verificar si hay otras entradas en el carrito del usuario para este evento
+        $otrasEntradasEnCarrito = Carrito::where('id_user', $idUsuario)
+            ->where('id_evento', $idEvento)
+            ->whereIn('id_producto', [1, 2]) // Suponiendo que los ID 1 y 2 son para otras entradas
+            ->exists();
 
         // Recorrer las entradas seleccionadas
         foreach ($entradasSeleccionadas as $tipoEntradaId) {
             // Consultar el producto asociado al tipo de entrada
             $producto = Producto::find($tipoEntradaId);
             if ($producto) {
-                // dd($tipoEntradaId);
-
-                // Establecer el precio total según el ID del producto
+                // Determinar el precio total según el ID del producto
                 $precioTotal = 0;
                 if ($tipoEntradaId === '1') {
                     $precioTotal = 10;
@@ -311,10 +346,15 @@ class ClienteController extends Controller
                     $precioTotal = 125;
                 }
 
+                // Realizar las comprobaciones antes de insertar en el carrito
+                if ($tipoEntradaId === '3' && $otrasEntradasEnCarrito) {
+                    return response()->json(['error' => 'No se pueden comprar entradas VIP si ya hay otras entradas en el carrito'], 400);
+                } elseif (($tipoEntradaId === '1' || $tipoEntradaId === '2') && $entradasVipEnCarrito) {
+                    return response()->json(['error' => 'No se pueden comprar otras entradas si ya hay entradas VIP en el carrito'], 400);
+                }
+
                 // Crear una nueva entrada en el carrito para cada tipo de entrada seleccionada
                 $carrito = new Carrito();
-                // Aquí puedes obtener la bonificación y el precio total de alguna manera
-                /* $carrito->bonificacion = null; */
                 $carrito->precio_total = $precioTotal;
                 $carrito->id_user = $idUsuario;
                 $carrito->id_evento = $idEvento;

@@ -19,9 +19,9 @@ class DiscotecaController extends Controller
         try {
             // Buscar la discoteca por su ID
             $discoteca = Discoteca::findOrFail($id);
-
+            $currentDate = now();
             // Obtener los eventos asociados a esta discoteca
-            $eventos = Evento::where('id_discoteca', $id)->get();
+            $eventos = Evento::where('id_discoteca', $id)->where('fecha_final','<', $currentDate)->get();
 
             return response()->json(['discoteca' => $discoteca, 'eventos' => $eventos], 200);
         } catch (\Exception $e) {

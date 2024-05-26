@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; // Asegúrate de importar la clase DB si no lo has hecho aún
 use Illuminate\Support\Facades\Validator;
-
+use App\Models\discotecas;
+use App\Models\User;
+use App\Models\Users;
 class registerGestorController extends Controller
 {
     public function index(Request $request){
@@ -21,12 +23,13 @@ class registerGestorController extends Controller
             'capacidad' => 'required|numeric|min:100|max:9999',
              
         ]);
+      
 
         if ($validator->fails()) {
             $errors = $validator->errors()->all();
             return response()->json(['errors' => $errors], 422);
         }
-        
+      
 
         $nombreCompleto = $request->input('nombre_completo');
         $dniNie = $request->input('dni_nie');

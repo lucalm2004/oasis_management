@@ -7,16 +7,18 @@
   <!-- Se ha de añadir el token para poder usarlo en el formdata de AJAX -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-  <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/users.css') }}" rel="stylesheet">
   <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
   <script src="https://kit.fontawesome.com/e2c3124098.js" crossorigin="anonymous"></script>
 </head>
-<body id="content">
+<body>
   <header class="header">
     <div class="logo">
-      <a href="{{ route('/') }}"><img src="{{ asset('img/logo_oasis.png') }}" alt="Imagen de logo"></a>
+      <a href="{{ asset('principal') }}"><img src="{{ asset('img/logo_oasis.png') }}" alt="Imagen de logo"></a>
+   
       <div class="nav-container">
-        <ul class="nav-list" style="padding-top: 15px;">
+        
+        <ul class="nav-list" style="padding-top: 15px; margin-left: 22%;">
           <a href="{{ route('admin.crudusuarios') }}">Usuarios | </a>
           <a href="{{ route('admin.cruddiscotecas') }}">Discotecas | </a>
           <a href="{{ route('admin.crudbonificaciones') }}">Bonificaciones | </a>
@@ -26,8 +28,9 @@
           <a href="{{ route('admin.crudartistas') }}">Artistas |</a>
           <a href="{{ route('admin.crudentradas') }}">Registro Entradas</a>
           <i class="fa-regular fa-bell" style="color: #F5763B; cursor: pointer;" id="campana"></i>
+          
           <a id="notificacion">0</a>
-          <form method="POST" action="{{ route('logout') }}" id="logout" style="float: right; padding-left: 300px;">
+          <form method="POST" action="{{ route('logout') }}" id="logout" style="float: right; padding-left: 300px; padding-top: 5%;">
             @csrf
             <x-dropdown-link :href="route('logout')"
                     onclick="event.preventDefault();
@@ -41,8 +44,8 @@
       </div>
     </div>
   </header>
-
-  <div>
+    <br>
+    <br>
     
     <table id="tablaSolicitudes" style="display: none">
       <thead>
@@ -60,19 +63,29 @@
     </table>
   </div>
   <h1 style="text-align: center">USUARIOS</h1>
+
   <div class="container">
-    <form action="" method="post" id="frmbusqueda">
+    <button class="btn-success" id="CrearUser" style="margin-bottom: 10px"><i class="fa-solid fa-plus" style="color: #ffffff;"></i></button>
+    <div class="buscar">
+    <form action="" method="post" id="frmbusqueda" style="margin-left: 30%">
       <div class="form-group">
         <i id="icono_buscar" class="fa-solid fa-magnifying-glass" style="color: #F5763B;"></i>
         <input type="text" name="buscar" id="buscar" placeholder="Buscar..." class="form-control">
-      </div>
+        </div>
       <i class="fa-regular fa-user" style="color: #F5763B;" id="icono_user"></i>
       <select name="rol" id="rol" class="button-40">
         <option value=""></option>
       </select>
     </form>
+    </div>
     <br>
-    <button class="btn-success" id="CrearUser" style="margin-bottom: 10px"><i class="fa-solid fa-plus" style="color: #ffffff;"></i></button>
+    <br>
+    
+
+
+
+    <div class="tabla_user">
+    
     <table>
       <thead>
         <tr>
@@ -88,23 +101,9 @@
       <tbody id="resultado">
       </tbody>
     </table>
-    <div class="loader-container">
-      <div class="loader"></div>
   </div>
-    
   </div>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <script src="{{ asset('js/adminUsers.js') }}"></script>
-  <script>
-      window.addEventListener('load', function() {
-            var randomTime = Math.floor(Math.random() * 1000) + 1000; // Genera un tiempo entre 1000 ms y 2000 ms
-            setTimeout(function() {
-                document.querySelector('.loader-container').style.display = 'none';
-                document.querySelector('#content').style.display = 'block';
-                document.body.style.overflow = 'auto';
-            }, randomTime);
-        });
-  </script>
-
 </body>
 </html>
