@@ -618,6 +618,8 @@
                 var inputElements = [];
 
                 tiposEntrada.forEach(function(tipoEntrada) {
+
+                 
                     // Crear un contenedor para el tipo de entrada
                     var tipoEntradaDiv = document.createElement('div');
                     tipoEntradaDiv.classList.add(
@@ -753,9 +755,17 @@
                                 // Redirigir a la vista de carrito si el usuario hace clic en "Aceptar"
                                 if (result.isConfirmed) {
                                     // window.location.href = '/cliente/carrito';
-                                    contador1.value = 0;
-                                    contador2.value = 0;
-                                    contador3.value = 0;
+                                    if (contador1 || contador2) {
+                                        contador1.value = 0;
+                                        contador2.value = 0;
+                                        
+                                    }
+                                  
+                                    if (contador3) {
+                                        contador3.value = 0;
+                                        
+                                    }
+                                   
 
                                     // Llamar a la función cargarCarrito
                                     cargarCarrito();

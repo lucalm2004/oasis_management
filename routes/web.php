@@ -80,9 +80,8 @@ Route::get('/dashboard', function () {
     // return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/perfil', [perfilController::class, 'edit'])->name('perfil');
+    Route::put('/profile/update', [perfilController::class, 'update'])->name('profile.update');
 });
 require __DIR__.'/auth.php';
 
@@ -237,10 +236,7 @@ Route::post('/logout', function () {
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 
 // Rutas para valoraciones
-Route::get('/valoracion', [ValoracionController::class, 'showValoracionPage'])->name('valoracion');
-Route::get('/valoracion/form/{idEvento}', [ValoracionController::class, 'create'])->name('valoracion.create');
-Route::post('/valoracion/store', [ValoracionController::class, 'store'])->name('valoracion.store');
-Route::get('/eventos/{idEvento}/resenas', [ValoracionController::class, 'showResenas'])->name('eventos.resenas');
+
 Route::get('/valoracion/top-rated-users', [ValoracionController::class, 'showTopRatedUsers'])->name('valoracion.topRatedUsers');
 Route::get('/numeros', [NumerosController::class, 'obtenerNumeros'])->name('numeros');
 
@@ -291,8 +287,7 @@ Route::middleware(ClientOnly::class)->group(function () {
     Route::get('/cliente/bonificacion', [ClienteController::class, 'bonificacion'])->name('cliente.bonificacion');
     Route::post('/marcar-como-favorita', [FavoritoController::class, 'marcarComoFavorita']);
     Route::get('/obtener-discotecas-favoritas', [DiscotecaController::class, 'obtenerDiscotecasFavoritas'])->name('obtener.discotecas.favoritas');
-    Route::get('/perfil', [perfilController::class, 'edit'])->name('perfil');
-    Route::put('/profile/update', [perfilController::class, 'update'])->name('profile.update');
+    
     Route::delete('/comprobar-grupos', [ClienteController::class, 'comprobarGrupos']);
    
     Route::get('/bonificacion', [perfilController::class, 'bonificacion'])->name('bonificacion');
@@ -305,7 +300,10 @@ Route::middleware(ClientOnly::class)->group(function () {
         Route::get('/cliente/tiene-contraseña', [ClienteController::class, 'tieneContra'])->name('cliente.tiene-contraseña');
     Route::post('/cliente/guardar-contraseña', [ClienteController::class, 'guardarContra'])->name('cliente.guardar-contraseña');
     
-    
+    Route::get('/valoracion', [ValoracionController::class, 'showValoracionPage'])->name('valoracion');
+    Route::get('/valoracion/form/{idEvento}', [ValoracionController::class, 'create'])->name('valoracion.create');
+    Route::post('/valoracion/store', [ValoracionController::class, 'store'])->name('valoracion.store');
+    Route::get('/eventos/{idEvento}/resenas', [ValoracionController::class, 'showResenas'])->name('eventos.resenas');
     
     
     Route::post('/entrada', function () {

@@ -16,7 +16,7 @@
 <body>
   <header class="header">
     <div class="logo">
-      <a href="{{ asset('principal') }}"><img src="{{ asset('img/logo_oasis.png') }}" alt="Imagen de logo"></a>
+      <a href="{{ route('/') }}"><img src="{{ asset('img/logo_oasis.png') }}" alt="Imagen de logo"></a>
       <div class="nav-container">
         <ul class="nav-list" style="padding-top: 15px;">
           <a href="{{ route('admin.crudusuarios') }}">Usuarios | </a>

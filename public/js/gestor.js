@@ -476,6 +476,10 @@ function validarFormUpdateEvento(id) {
     if (capacidadVip === "" || isNaN(capacidadVip) || capacidadVip < 0 || capacidadVip.length > 4) {
         capacidadVipError.innerText = 'Por favor introduce un valor numérico válido para la capacidad VIP (máximo 4 cifras)';
         capacidadVipError.style.display = 'block';
+    } else if (capacidadVip === "0" && capacidad === "0") {
+        capacidadVipError.innerText = 'Las dos no puede ser 0';
+        capacidadVipError.style.display = 'block';
+
     } else {
         capacidadVipError.innerText = '';
         capacidadVipError.style.display = 'none';
@@ -894,11 +898,16 @@ function validarCapacidad() {
 
 function validarCapacidadVip() {
     var capacidadVip = document.getElementById('swal-playlist-capacidadvip').value;
+    var capacidad = document.getElementById('swal-playlist-capacidad').value;
     var errorCapacidadVip = document.getElementById('errorCapacidadVipCrear');
 
     if (isNaN(capacidadVip) || capacidadVip < 0 || capacidadVip.length > 4) {
         errorCapacidadVip.innerText = 'Por favor introduce un valor numérico válido para la capacidad VIP (máximo 4 cifras)';
         errorCapacidadVip.style.display = 'block';
+    } else if (capacidadVip === "0" && capacidad === "0") {
+        errorCapacidadVip.innerText = 'Las dos no puede ser 0';
+        errorCapacidadVip.style.display = 'block';
+
     } else {
         errorCapacidadVip.innerText = '';
         errorCapacidadVip.style.display = 'none';

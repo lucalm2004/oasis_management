@@ -288,11 +288,14 @@
             var totalEntradasCompradasVIP = registroVIP;
             var entradasDisponibles = evento.capacidad - totalEntradasCompradas;
             var entradasDisponiblesVIP = evento.capacidadVip - totalEntradasCompradasVIP;
-            
+            console.log (evento.name + totalEntradasCompradas);
+            console.log (evento.name + totalEntradasCompradasVIP);
+            console.log (evento.name + entradasDisponibles);
+            console.log (evento.name + entradasDisponiblesVIP);
             // Crear el contenido de la card
             var contenido;
 
-            if ((entradasDisponibles > 0 && evento.capacidad !== null) || (entradasDisponiblesVIP > 0 && evento.capacidadVip !== null)) {
+            if ((entradasDisponibles > 0 && evento.capacidad !== null && evento.capacidad !== "0") || (entradasDisponiblesVIP > 0 && evento.capacidadVip !== null && evento.capacidadVip !== "0")) {
                 contenido = `
                 <div class="event-container">
                     <!-- Tarjeta de evento -->

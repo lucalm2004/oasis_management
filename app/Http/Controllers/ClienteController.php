@@ -45,16 +45,24 @@ class ClienteController extends Controller
     public function eventos($id)
     {
         $discotecas = Discoteca::findOrFail($id);
-        $eventos = Evento::where('id_discoteca', $id)->get();
-        $registroEntradas = DB::table('registro_entradas')
-        ->where('evento_id', $id)
-        ->where('tipo_entrada', 0)
-        ->get();
-       
-        $registroEntradasVIP = DB::table('registro_entradas')
-        ->where('evento_id', $id)
-        ->where('tipo_entrada', 1)
-        ->get();
+      /*   dd($discotecas); */
+        $eventos = Evento::where('id_discoteca', $discotecas->id)->get();
+
+        foreach ($eventos as $evento){
+            $registroEntradas = DB::table('registro_entradas')
+            ->where('evento_id', $evento->id)
+            ->where('tipo_entrada', 0)
+            ->get();
+           
+            $registroEntradasVIP = DB::table('registro_entradas')
+            ->where('evento_id', $evento->id)
+            ->where('tipo_entrada', 1)
+            ->get();
+
+        }
+      
+
+      /*   dd($registroEntradas); */
         /* dd($registroEntradasVIP); */
 
         return view('cliente.eventos', compact('eventos', 'discotecas', 'registroEntradas', 'registroEntradasVIP'));
@@ -84,20 +92,49 @@ class ClienteController extends Controller
 
     public function mostrarTiposEntrada($id)
     {
-        $tiposEntrada = TipoEntrada::all();
-        $evento = Evento::all();
-        $registroEntradas = DB::table('registro_entradas')
-        ->where('evento_id', $id)
-        ->where('tipo_entrada', 0)
-        ->get();
-       
-        $registroEntradasVIP = DB::table('registro_entradas')
-        ->where('evento_id', $id)
-        ->where('tipo_entrada', 1)
-        ->get();
-
+        $evento = Evento::findOrFail($id);
+        $capacidadNormal = $evento->capacidad;
+        $capacidadVip = $evento->capacidadVip;
+    
+        // Contar las entradas vendidas
+        $entradasNormalesVendidas = DB::table('registro_entradas')
+            ->where('evento_id', $id)
+            ->where('tipo_entrada', 0)
+            ->count();
+    
+        $entradasVipVendidas = DB::table('registro_entradas')
+            ->where('evento_id', $id)
+            ->where('tipo_entrada', 1)
+            ->count();
+    
+            if ($capacidadNormal == 0 && $capacidadVip != 0 && $entradasVipVendidas < $capacidadVip) {
+                // Mostrar tipo de entrada VIP.
+                $tiposEntrada = TipoEntrada::where("id", 3)->get(); // Suponiendo que el tipo de entrada VIP tenga id = 1
+            } elseif ($capacidadVip == 0 && $capacidadNormal != 0 && $entradasNormalesVendidas < $capacidadNormal) {
+                // Mostrar tipo de entrada Normal.
+                $tiposEntrada = TipoEntrada::where("id", 2)->orwhere("id", 1)->get(); // Suponiendo que el tipo de entrada Normal tenga id = 2
+            } elseif ($capacidadNormal != 0 && $capacidadVip != 0) {
+                // Verificar si quedan entradas disponibles de cada tipo.
+                if ($entradasNormalesVendidas < $capacidadNormal && $entradasVipVendidas < $capacidadVip) {
+                    // Mostrar todas las entradas.
+                    $tiposEntrada = TipoEntrada::all();
+                } elseif ($entradasNormalesVendidas < $capacidadNormal) {
+                    // Mostrar solo las entradas normales.
+                    $tiposEntrada = TipoEntrada::where("id", 2)->orwhere("id", 1)->get(); // Suponiendo que el tipo de entrada Normal tenga id = 2
+                } elseif ($entradasVipVendidas < $capacidadVip) {
+                    // Mostrar solo las entradas VIP.
+                    $tiposEntrada = TipoEntrada::where("id", 3)->get(); // Suponiendo que el tipo de entrada VIP tenga id = 1
+                } else {
+                    // No hay entradas disponibles.
+                    $tiposEntrada = collect(); // Crear una colección vacía.
+                }
+            } else {
+                // No hay entradas disponibles.
+                $tiposEntrada = collect(); // Crear una colección vacía.
+            }
         return response()->json($tiposEntrada);
     }
+    
 
 
 

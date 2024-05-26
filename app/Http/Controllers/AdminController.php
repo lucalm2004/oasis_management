@@ -689,8 +689,19 @@ class AdminController extends Controller
                         $valoracion->delete();
                     }
 
+
                 }
+
+                $registroEntradas = RegistroEntrada::where('evento_id', $evento->id)->get();
+                foreach ($registroEntradas as $registroEntrada) {
+                    if ($registroEntrada) {
+                        $registroEntrada->delete();
+                    }
+
+                }
+                
                 $evento->delete();
+
                 
             }
     
@@ -1253,16 +1264,18 @@ class AdminController extends Controller
  
                 // Verificar si hay canales asociados al usuario y eliminarlos condicionalmente
                 $channels = DB::table('ch_channels')->where('owner_id', $gestorID)->where('name', $evento->name)->first();
-                if ($channels->isNotEmpty()) {
+                if ($channels) {
                  $channelIds = $channels->pluck('id');
-                 DB::table('ch_channel_user')->whereIn('channel_id', $channelIds)->delete();
+                 DB::table('ch_channel_user')->where('channel_id', $channelIds)->delete();
                  
                     // Eliminar mensajes del usuario
                  DB::table('ch_messages')->where('to_channel_id', $channelIds)->delete();
                  DB::table('ch_favorites')->where('favorite_id', $channelIds)->delete();
 
-                   DB::table('ch_channels')->whereIn('id', $channelIds)->delete();
+                   DB::table('ch_channels')->where('id', $channelIds)->delete();
                 }
+
+                DB::table('registro_entradas')->where('evento_id', $id)->delete();
                 
     
             // Enviar correo a todos los camareros
