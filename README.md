@@ -37,7 +37,9 @@ Oasis Management es una aplicación web diseñada para revolucionar la gestión 
 
 ## CREDENCIALES USUARIOS
 #ADMIN: admin@example.com -> password
+
 #GESTOR: smarin@gmail.com -> password
+
 #CAMARERO ivan.moreno@gmail.com -> asdASD123
 
 
