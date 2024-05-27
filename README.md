@@ -37,6 +37,18 @@ Oasis Management es una aplicación web diseñada para revolucionar la gestión 
 
 ## Información Adicional
 
-Oasis Management es una aplicación modular, lo que significa que los clientes pueden elegir y pagar solo por las funcionalidades que desean utilizar, adaptando así la plataforma a sus necesidades específicas. Esta flexibilidad asegura una experiencia personalizada tanto para los usuarios finales como para los gestores de clubes.
+Oasis Management es una aplicación intuitiva y fácil de manejar, adaptando así la plataforma a sus necesidades específicas. Esta flexibilidad asegura una experiencia personalizada tanto para los usuarios finales como para los gestores de clubes.
+
+Oasis Management también se enorgullece de ofrecer:
+
+Seguridad y Privacidad: Contamos con medidas de seguridad avanzadas para proteger los datos personales y financieros de nuestros usuarios, asegurando una experiencia segura y confiable.
+
+Soporte 24/7: Proveemos soporte técnico y atención al cliente las 24 horas del día, los 7 días de la semana, para resolver cualquier problema o consulta que puedan tener los usuarios y gestores.
+
+Integración con Redes Sociales: La plataforma permite a los usuarios compartir sus experiencias y eventos en sus redes sociales favoritas, aumentando la visibilidad de los eventos y atrayendo a más asistentes.
+
+Análisis y Valoración: Los usuarios clientes podrán valorar el evento una vez hayan estado y disfrutado.
+
+https://github.com/lucalm2004/oasis_management
 
 ¡Bienvenido a Oasis Management, donde la diversión y la eficiencia se encuentran en una sola plataforma!
