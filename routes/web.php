@@ -248,9 +248,9 @@ Route::get('/contacto', [ContactoController::class, 'index'])->name('contacto');
 
 // Rutas protegidas con autenticación
 Route::middleware('auth')->group(function () {
-// Ruta para mostrar y editar el perfil
-Route::get('/perfil', [perfilController::class, 'edit'])->name('perfil');
-Route::put('/profile/update', [perfilController::class, 'update'])->name('profile.update');
+    Route::get('/perfil', [perfilController::class, 'edit'])->name('perfil');
+    Route::post('/profile/update', [perfilController::class, 'update'])->name('profile.update');
+
 });
 
 

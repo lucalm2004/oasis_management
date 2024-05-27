@@ -1065,7 +1065,8 @@ function mostrarSolicitud() {
                                 var str = "<tr><td>" + item.email + "</td>";
                                 str += "<td>" + item.DNI + "</td>";
                                 str += "<td><a target='_blank' href=../doc/cv/" + item.cv + " style='color: black;'>" + item.cv + "</a></td>";
-                                str += "<td><a download=" + item.cv + " href=../doc/cv/" + item.cv + " style='color: black;' ><i class='fa-solid fa-download' style='color: #F5763B;'></i></a></td>";
+                                console.log(item.cv);
+                                str += "<td><a download=../doc/cv/" + item.cv + " href=../doc/cv/" + item.cv + " style='color: black;' ><i class='fa-solid fa-download' style='color: #F5763B;'></i></a></td>";
                                 str += "<td><button type='button' id='aceptar' onclick='aceptarSolicitud(" + item.id + ")'><i class='fa-solid fa-circle-check' style='color: #45d408; cursor: pointer;'></i></button></td>";
                                 str += "<td><button type='button' id='rechazar' onclick='rechazarSolicitud(" + item.id + ")'><i class='fa-solid fa-circle-xmark' style='color: #ff0000; cursor: pointer;' ></i></button></td>";
                                 str += "</tr>";

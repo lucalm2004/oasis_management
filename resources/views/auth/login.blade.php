@@ -62,7 +62,7 @@
           </div>
         </div>
       </button>
-        <div class="footer"><span onclick="window.location.href='{{ route('register') }}'">Signup</span><span onclick="window.location.href='{{ route('password.request') }}'">Forgot Password?</span></div>
+{{--         <div class="footer"><span onclick="window.location.href='{{ route('register') }}'">Signup</span><span onclick="window.location.href='{{ route('password.request') }}'">Forgot Password?</span></div> --}}
 </div>
 </form>
 

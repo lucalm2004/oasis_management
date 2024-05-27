@@ -302,7 +302,7 @@
                                 <label for="">Nombre completo</label>
                             </div>
                             <div class="input-data">
-                                <input type="text" name="dni_nie" required>
+                                <input type="text" name="dni_nie" required id="dni_nie">
                                 <div class="underline"></div>
                                 <label for="">DNI/NIE</label>
                             </div>
@@ -436,7 +436,7 @@
     $('#registerForm2').submit(function(event) {
             event.preventDefault();
             // Obtener el valor del campo DNI/NIE
-            var dni = $('input[name="dni_nie"]').val();
+            var dni = $('input[id="dni_nie"]').val();
 
             // Validar el DNI/NIE
             if (!validarDNI(dni)) {

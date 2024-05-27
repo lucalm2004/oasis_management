@@ -471,12 +471,12 @@ input {
     border-radius: 5px;
     color: black;
     background-color: white;
-    /* margin-right: 150px; */
-    margin-left: 20%;
+    margin-right: 150px;
+    margin-left: 45%;
     position: fixed;
-    float: right;
-    /* Establecer la posición */
-    /* Ajustar el z-index */
+    /* float: right; */
+    top: 60px;
+    /* margin-bottom: 20%; */
 }
 
 .block {

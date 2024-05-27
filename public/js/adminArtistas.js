@@ -244,7 +244,7 @@ crearArtista.addEventListener("click", function() {
 
 function mostrarFormulario() {
     Swal.fire({
-        title: "Crear Ciudad",
+        title: "Crear Artista",
         confirmButtonColor: "#0052CC",
         confirmButtonText: "Crear",
         html: `

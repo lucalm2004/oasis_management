@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Entradas Disponibles</title>
+    <title>Oasis Management - Entradas Disponibles</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="{{ asset('css/entradas.css') }}">
@@ -19,6 +19,7 @@
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.6/leaflet.awesome-markers.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link rel="shortcut icon" href="{{ asset('img/logo.png') }}" type="image/x-icon">
 
     <style>
         /* Estilos generales */
@@ -432,6 +433,7 @@
             text-decoration: none;
             border-radius: 5px;
             transition: background-color 0.3s ease;
+            border: none
         }
 
         a:hover {
@@ -886,9 +888,9 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white">
         <div class="container">
             <a class="navbar-brand" href="{{ URL::previous() }}">
-                <img src="/img/logonegro.png" class="logo mr-2" alt="Logo">
+                <img src="/img/logo_oasis.png" class="logo mr-2" alt="Logo">
                 <span class="font-weight-bold text-uppercase">
-                    Oasis <span class="orange-text">Management</span>
+                  {{--   Oasis <span class="orange-text">Management</span> --}}
                 </span>
             </a>
 
