@@ -35,6 +35,12 @@ Oasis Management es una aplicación web diseñada para revolucionar la gestión 
 - David
 - Ian
 
+## CREDENCIALES USUARIOS
+#ADMIN: admin@example.com -> password
+#GESTOR: smarin@gmail.com -> password
+#CAMARERO ivan.moreno@gmail.com -> asdASD123
+
+
 ## Información Adicional
 
 Oasis Management es una aplicación intuitiva y fácil de manejar, adaptando así la plataforma a sus necesidades específicas. Esta flexibilidad asegura una experiencia personalizada tanto para los usuarios finales como para los gestores de clubes.
